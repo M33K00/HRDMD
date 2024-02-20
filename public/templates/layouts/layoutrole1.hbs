@@ -1,0 +1,62 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      HRDMD Document Manager
+      {{title}}
+    </title>
+    {{#block "head"}}
+      <script src="https://kit.fontawesome.com/64cf43ccc2.js"></script>
+      <link rel="stylesheet" href="/css/role1.css" />
+    {{/block}}
+  </head>
+  {{#block "nav"}}
+    <nav
+      class="navbar navbar-expand-lg bg-primary nav-border"
+      data-bs-theme="dark"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Human Resources Department</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">HR
+                <span class="visually-hidden">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Sign Out</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="side-nav">
+      <a href="base.html" class="logo">
+        <img src="../images/logo.png" class="logo-img" />
+      </a>
+      <ul class="nav-links">
+        <li>
+          <a href="#"><i class="fa-solid fa-house"></i>
+            <p>Home</p></a>
+        </li>
+        <li>
+          <a href="#"><i class="fa-solid fa-magnifying-glass"></i>
+            <p>File Search</p></a>
+        </li>
+        <div class="active-button"></div>
+      </ul>
+    </div>
+  {{/block}}
+</html>

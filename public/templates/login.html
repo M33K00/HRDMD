@@ -1,0 +1,31 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../css/bootstrap.css" />
+    <link rel="stylesheet" href="../css/login.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="card centered-box">
+      <div class="card-body">
+        <div class="logo-container">
+          <img src="../images/logo.png" class="logo-login" />
+        </div>
+
+        <h4 class="card-title">
+          Human Resources Department of the City Hall of Bacoor
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">
+          Log in or Sign up to get started
+        </h6>
+        <form action="/login" method="post">
+          <input type="text" name="name" placeholder="Name" />
+          <input type="password" name="password" placeholder="Password" />
+          <input type="submit" />
+        </form>
+        <a href="/signup">Make a new Account</a>
+        <a href="/home">Bypass</a>
+      </div>
+    </div>
+  </body>
+</html>
