@@ -1,5 +1,7 @@
-const URI = "mongodb://localhost:27017";
+const URI = "mongodb://0.0.0.0:27017/HRDMD";
 const DB_NAME = "LogInCollection";
+
+PORT = 5000;
 
 module.exports = {
   URI,

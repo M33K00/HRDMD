@@ -1,5 +1,4 @@
-const { app, BrowserWindow } = require("electron/main");
-const Globals = require("./global");
+const { app, BrowserWindow } = require("electron");
 const Index = require("./index");
 const PORT = process.env.PORT || 4000;
 
@@ -26,14 +25,19 @@ app.whenReady().then(() => {
   });
 });
 
-//Global exception handler
-process.on("uncaughtException", function (err) {
-  console.log(err);
-});
+try {
+  require("electron-reloader")(module);
+} catch {}
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
 });
-app.disableHardwareAcceleration();
+
+//Global exception handler
+process.on("uncaughtException", function (err) {
+  console.log(err);
+});
+
+app.disableHardwareAcceleration;

@@ -3,6 +3,7 @@ const LogInCollection = require("../models/logincollections");
 const router = express.Router();
 const multer = require("multer");
 const logincollections = require("../models/logincollections");
+const fs = require("fs");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -49,17 +50,15 @@ router.post("/addacc", upload, async (req, res) => {
     };
 
     // Redirect to manage_accounts page
-    res.redirect("/manage_accounts");
+    res.redirect("manage_accounts");
   } catch (error) {
     // Set error message in session
     req.session.message = {
       type: "DANGER",
       message: error.message,
     };
-
-    // Redirect to manage_accounts page
-    res.redirect("/manage_accounts");
   }
+  res.redirect("manage_accounts");
 });
 
 router.get("/", (req, res) => {
@@ -131,6 +130,99 @@ router.get("/role/role1", (request, response) => {
 
 router.get("/addacc", (req, res) => {
   res.render("addacc");
+});
+
+// Edit a user
+router.get("/edit/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+    let logincollections = await LogInCollection.findById(id);
+
+    if (!logincollections) {
+      return res.redirect("/manage_accounts");
+    }
+
+    res.render("edit_users", {
+      title: "Edit Account",
+      logincollections: logincollections,
+    });
+  } catch (err) {
+    console.error(err);
+    res.redirect("manage_accounts");
+  }
+});
+
+// Update a user
+router.post("/update/:id", upload, async (req, res) => {
+  try {
+    let id = req.params.id;
+    let new_image = "";
+
+    if (req.file) {
+      new_image = req.file.filename;
+      try {
+        // Delete old image if a new image is uploaded
+        fs.unlinkSync("./files/" + req.body.old_image);
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      new_image = req.body.old_image;
+    }
+
+    // Update user information in the database
+    const result = await LogInCollection.findByIdAndUpdate(
+      id,
+      {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        hrrole: req.body.hrrole,
+        image: new_image,
+      },
+      { new: true } // Return the modified document after update
+    );
+
+    if (!result) {
+      return res.json({ message: "User not found", type: "DANGER" });
+    }
+
+    req.session.message = {
+      type: "SUCCESS",
+      message: "User updated successfully",
+    };
+    res.redirect("/manage_accounts");
+  } catch (err) {
+    console.error(err);
+    res.json({ message: err.message, type: "DANGER" });
+  }
+  res.redirect("manage_accounts");
+});
+
+// Delete a user
+router.get("/delete/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await LogInCollection.findByIdAndDelete(id);
+
+    if (result && result.image !== "") {
+      try {
+        fs.unlinkSync("./files/" + result.image);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    req.session.message = {
+      type: "info",
+      message: "User deleted successfully",
+    };
+
+    res.redirect("manage_accounts");
+  } catch (err) {
+    console.error(err);
+    res.json({ message: err.message, type: "DANGER" });
+  }
 });
 
 module.exports = router;

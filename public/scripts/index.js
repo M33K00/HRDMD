@@ -13,13 +13,13 @@ const { request } = require("http");
 const PORT = process.env.PORT || 4000;
 const templatePath = path.join(__dirname, "../templates");
 const layoutPath = path.join(__dirname, "../templates/layouts");
+const publicPath = path.join("public");
 
 wax.on(hbs.handlebars);
 wax.setLayoutPath(layoutPath);
 
-app.use(express.static("public"));
+app.use(express.static(publicPath));
 app.use(express.static("files"));
-app.use(express.json());
 app.set("view engine", "hbs");
 app.set("view engine", "ejs");
 app.set("views", templatePath);
