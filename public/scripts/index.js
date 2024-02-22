@@ -20,7 +20,6 @@ wax.setLayoutPath(layoutPath);
 
 app.use(express.static(publicPath));
 app.use(express.static("files"));
-app.set("view engine", "hbs");
 app.set("view engine", "ejs");
 app.set("views", templatePath);
 app.use(express.urlencoded({ extended: false }));

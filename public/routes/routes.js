@@ -62,11 +62,11 @@ router.post("/addacc", upload, async (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  res.render("login.hbs");
+  res.render("login");
 });
 router.get("/login", (req, res) => {
   //localhost:3000/signup
-  http: res.render("login.hbs");
+  http: res.render("login");
 });
 
 router.post("/signup", async (req, res) => {
@@ -78,7 +78,7 @@ router.post("/signup", async (req, res) => {
 
   await LogInCollection.insertMany([data]);
 
-  res.render("login.hbs");
+  res.render("login");
 });
 
 router.post("/login", async (req, res) => {
@@ -86,23 +86,23 @@ router.post("/login", async (req, res) => {
     const check = await LogInCollection.findOne({ name: req.body.name });
 
     if (check.password === req.body.password && check.hrrole === "ROLE 1") {
-      res.render("role/role1.hbs");
+      res.render("role/role1");
     } else if (
       check.password === req.body.password &&
       check.hrrole === "ROLE 2"
     ) {
-      res.render("role/role2.hbs");
+      res.render("role/role2");
     } else if (
       check.password === req.body.password &&
       check.hrrole === "ADMIN"
     ) {
-      res.render("home.hbs");
+      res.render("home");
     } else {
-      res.render("login.hbs");
+      res.render("login");
       console.log("ERROOOOOR BOBO AYAW GUMANA FUCK SHIT ASS BITCH CUNT");
     }
   } catch {
-    res.render("login.hbs");
+    res.render("login");
   }
 });
 
@@ -117,15 +117,15 @@ router.get("/manage_accounts", async (req, res) => {
 });
 
 router.get("/home", (request, response) => {
-  response.render("home.hbs");
+  response.render("home");
 });
 
 router.get("/login", (request, response) => {
-  response.render("login.hbs");
+  response.render("login");
 });
 
 router.get("/role/role1", (request, response) => {
-  response.render("role1.hbs");
+  response.render("role1");
 });
 
 router.get("/addacc", (req, res) => {

@@ -1,8 +1,9 @@
-{{#extends "layoutrole1"}}{{/extends}}
+<%- include('../layouts/role1layout') -%>
 <body>
+<%- include('../layouts/nav') -%> <%- include('../layouts/sidenav') %>
 <div class="page-body">
     <div class="page-name">
-          <h1>ROLE 1</h1>
+          <h1>ROLE 1 DASHBOARD</h1>
           <button type="button" class="btn btn-primary">
             <i class="fa-solid fa-plus"></i>
             ADD DOCUMENT
@@ -17,3 +18,4 @@
           <div class="page-item"><img src="../images/migu.jpg" /></div>
         </div>
 </body>
+<%- include('../layouts/footer') -%>
