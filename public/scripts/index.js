@@ -3,10 +3,8 @@ const express = require("express");
 const session = require("express-session");
 const app = express();
 const fs = require("fs");
-const wax = require("wax-on");
 const path = require("path");
 const ejse = require("ejs-electron");
-const hbs = require("hbs");
 const mongoose = require("mongoose");
 const { request } = require("http");
 
@@ -14,9 +12,6 @@ const PORT = process.env.PORT || 4000;
 const templatePath = path.join(__dirname, "../templates");
 const layoutPath = path.join(__dirname, "../templates/layouts");
 const publicPath = path.join("public");
-
-wax.on(hbs.handlebars);
-wax.setLayoutPath(layoutPath);
 
 app.use(express.static(publicPath));
 app.use(express.static("files"));
