@@ -4,7 +4,6 @@ const session = require("express-session");
 const app = express();
 const fs = require("fs");
 const path = require("path");
-const ejse = require("ejs-electron");
 const mongoose = require("mongoose");
 const { request } = require("http");
 
@@ -15,6 +14,11 @@ const publicPath = path.join("public");
 
 app.use(express.static(publicPath));
 app.use(express.static("files"));
+
+// Production mode static files
+app.use(express.static("resources/app/public"));
+app.use(express.static("resources/app/files"));
+
 app.set("view engine", "ejs");
 app.set("views", templatePath);
 app.use(express.urlencoded({ extended: false }));
@@ -37,7 +41,7 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect(process.env.DB_URI);
+mongoose.connect("mongodb://0.0.0.0:27017/HRDMD");
 
 const db = mongoose.connection;
 db.on("error", (error) => console.log(error));

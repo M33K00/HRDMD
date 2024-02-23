@@ -58,7 +58,7 @@ router.post("/addacc", upload, async (req, res) => {
       message: error.message,
     };
   }
-  res.redirect("manage_accounts");
+  res.redirect("/manage_accounts");
 });
 
 router.get("/", (req, res) => {
@@ -69,39 +69,60 @@ router.get("/login", (req, res) => {
   http: res.render("login");
 });
 
-router.post("/signup", async (req, res) => {
-  const data = {
-    name: req.body.name,
-    password: req.body.password,
-    hrrole: req.body.hrrole,
-  };
+router.post("/signup", upload, async (req, res) => {
+  try {
+    // Check if required fields are present in the request body
+    if (!req.body.password || !req.body.hrrole) {
+      throw new Error("Password and HR role are required.");
+    }
 
-  await LogInCollection.insertMany([data]);
+    const data = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      hrrole: req.body.hrrole,
+      image: req.file ? req.file.filename : null, // Check if file uploaded, set to null if not
+    };
 
-  res.render("login");
+    // Insert data into the LogInCollection
+    await LogInCollection.insertMany([data]);
+
+    // Set success message in session
+    req.session.message = {
+      type: "SUCCESS",
+      message: "User added successfully",
+    };
+
+    // Redirect to login page
+    res.redirect("login");
+  } catch (error) {
+    // Set error message in session
+    req.session.message = {
+      type: "DANGER",
+      message: error.message,
+    };
+    res.redirect("/login");
+  }
 });
 
 router.post("/login", async (req, res) => {
   try {
-    const check = await LogInCollection.findOne({ name: req.body.name });
+    const check = await LogInCollection.findOne({ name: req.body.email });
 
-    if (check.password === req.body.password && check.hrrole === "ROLE 1") {
-      res.render("role/role1");
-    } else if (
-      check.password === req.body.password &&
-      check.hrrole === "ROLE 2"
-    ) {
-      res.render("role/role2");
-    } else if (
-      check.password === req.body.password &&
-      check.hrrole === "ADMIN"
-    ) {
-      res.render("home");
+    if (check && check.password === req.body.password) {
+      if (check.hrrole === "ROLE 1") {
+        res.render("role/role1");
+      } else if (check.hrrole === "ROLE 2") {
+        res.render("role/role2");
+      } else if (check.hrrole === "ADMIN") {
+        res.render("home");
+      }
     } else {
       res.render("login");
-      console.log("ERROOOOOR BOBO AYAW GUMANA FUCK SHIT ASS BITCH CUNT");
+      console.log("Incorrect username or password.");
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     res.render("login");
   }
 });
@@ -148,7 +169,7 @@ router.get("/edit/:id", async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.redirect("manage_accounts");
+    res.redirect("/manage_accounts");
   }
 });
 
@@ -196,7 +217,7 @@ router.post("/update/:id", upload, async (req, res) => {
     console.error(err);
     res.json({ message: err.message, type: "DANGER" });
   }
-  res.redirect("manage_accounts");
+  res.redirect("/manage_accounts");
 });
 
 // Delete a user
@@ -215,13 +236,13 @@ router.get("/delete/:id", async (req, res) => {
 
     req.session.message = {
       type: "info",
-      message: "User deleted successfully",
+      message: " User deleted successfully",
     };
 
-    res.redirect("manage_accounts");
+    res.redirect("/manage_accounts");
   } catch (err) {
     console.error(err);
-    res.json({ message: err.message, type: "DANGER" });
+    res.json({ message: err.message, type: "danger" });
   }
 });
 

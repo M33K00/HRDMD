@@ -7,11 +7,11 @@
           <img src="/images/logo.png" class="logo-login" />
         </div>
         <header>Human Resources Department</header>
-        <form action="/login" method="post">
-          <input type="text" name="name" placeholder="Name" />
+        <form action="/login" method="POST">
+          <input type="text" name="email" placeholder="Email" />
           <input type="password" name="password" placeholder="Password" />
           <a href="/home">Bypass</a>
-          <input type="submit" class="button" value="Login" />
+          <input type="submit" class="button"/>
         </form>
         <div class="signup">
           <span class="signup">Don't have an account?
@@ -21,12 +21,21 @@
       </div>
       <div class="registration form">
         <header>Signup</header>
-        <h6 class="card-subtitle mb-2 text-muted">
+        <h6>
           Create an account to start. Please note that the ADMIN will review
           your signup first before you can enter
         </h6>
-        <form action="/signup" method="post">
-          <input type="text" name="name" placeholder="Name" required />
+        <form action="/signup" method="POST" enctype="multipart/form-data">
+          <input type="text" name="name" placeholder="Name" required/>
+          <input
+            type="text"
+            name="email"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="Enter email"
+            required
+          />
           <input
             type="password"
             name="password"
@@ -38,8 +47,14 @@
             <select type="text" name="hrrole" class="form-select" id="hrrole">
               <option>ROLE 1</option>
               <option>ROLE 2</option>
+              <option>ROLE 3</option>
             </select>
           </div>
+          <input
+            type="file"
+            name="image"
+            id="formFile"
+          />
           <input type="submit" class="button" />
         </form>
         <div class="signup">
