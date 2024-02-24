@@ -46,7 +46,7 @@ router.post("/addacc", upload, async (req, res) => {
     // Set success message in session
     req.session.message = {
       type: "SUCCESS",
-      message: "User added successfully",
+      message: " User added successfully",
     };
 
     // Redirect to manage_accounts page
@@ -105,6 +105,7 @@ router.post("/signup", upload, async (req, res) => {
   }
 });
 
+// Login User
 router.post("/login", async (req, res) => {
   try {
     const check = await LogInCollection.findOne({ name: req.body.email });
@@ -115,15 +116,16 @@ router.post("/login", async (req, res) => {
       } else if (check.hrrole === "ROLE 2") {
         res.render("role/role2");
       } else if (check.hrrole === "ADMIN") {
-        res.render("home");
+        res.render("startpage");
       }
     } else {
-      res.render("login");
       console.log("Incorrect username or password.");
     }
   } catch (error) {
     console.error(error);
-    res.render("login");
+    res.render("login", {
+      message: { message: "Incorrect username or password.", type: "DANGER" },
+    });
   }
 });
 
@@ -137,8 +139,13 @@ router.get("/manage_accounts", async (req, res) => {
   }
 });
 
+// Route pages
 router.get("/home", (request, response) => {
   response.render("home");
+});
+
+router.get("/startpage", (request, response) => {
+  response.render("startpage");
 });
 
 router.get("/login", (request, response) => {
