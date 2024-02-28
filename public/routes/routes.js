@@ -275,11 +275,23 @@ router.post("/upload", documentUpload.single("file"), (req, res) => {
   res.redirect("home");
 });
 
+router.use(
+  "/files/documents",
+  express.static(path.join(__dirname, "../../files/documents"))
+);
+
+// Route to download files
+router.get("/download/:fileName", (request, response) => {
+  const fileName = request.params.fileName;
+  const filePath = path.join(__dirname, "../../files/documents", fileName);
+  response.download(filePath);
+});
+
 router.get("/delete", (req, res) => {
   const filename = req.query.file;
 
   if (filename) {
-    fs.unlinkSync(`./files/documents/${filename}`);
+    fs.unlinkSync(`/files/documents/${filename}`);
   }
   res.redirect("home");
 });
