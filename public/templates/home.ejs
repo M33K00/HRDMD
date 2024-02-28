@@ -1,21 +1,64 @@
 <%- include('./layouts/header') -%>
 <body>
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
-<div class="page-body">
+  <div class="page-body">
     <div class="page-name">
-          <h1>Admin Dashboard</h1>
-          <button type="button" class="btn btn-primary">
-            <i class="fa-solid fa-plus"></i>
-            ADD DOCUMENT
-          </button>
+      <h1>Document Tracker</h1>
+    </div>
+    <div class="upload-container">
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <div class="form-group" style="display: flex">
+          <input
+            type="file"
+            class="form-control"
+            name="file"
+            accept=".doc, .docx, .pdf"
+            style="width: 300px"
+            required
+          />
+          <button class="btn btn-secondary" type="submit">Upload</button>
         </div>
-        <div class="page-container">
-          <div class="page-item">
-            <img src="../images/strikemapogi.jpg" />
-          </div>
-          <div class="page-item"><img src="../images/strikemapogi.jpg"  /></div>
-          <div class="page-item"><img src="../images/strikemapogi.jpg"  /></div>
-          <div class="page-item"><img src="../images/strikemapogi.jpg"  /></div>
-        </div>
+      </form>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>File Name</th>
+          <th>Thumbnail</th>
+          <th>Download</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% files.forEach(file => {%>
+        <tr>
+          <td><%= file %></td>
+          <td><i class="fa-regular fa-file" style="font-size: 50px;"></i></td>
+          <td>
+            <a href="/upload/<%= file %>" class="btn btn-primary" download
+              >Download</a
+            >
+          </td>
+          <td><a href="#" class="btn btn-danger .delete-btn" data-file="<%= file %>">Delete</a></td>
+        </tr
+        <%})%>
+      </tbody>
+    </table>
+  </div>
 </body>
+<script>
+  const deleteButtons = document.querySelectorAll('.btn-danger');
+  deleteButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      const filename = button.getAttribute('data-file');
+      if (confirm(`Are you sure you want to delete ${filename}?`)) {
+        fetch(`/delete?file=${filename}`) // Corrected the query parameter syntax
+          .then(() => window.location.reload())
+          .catch((error) => console.error(error));
+      }
+    });
+  });
+</script>
+<script src="https://kit.fontawesome.com/64cf43ccc2.js"></script>
 <%- include('./layouts/footer') -%>

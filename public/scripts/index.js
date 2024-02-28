@@ -14,10 +14,12 @@ const publicPath = path.join("public");
 
 app.use(express.static(publicPath));
 app.use(express.static("files"));
+app.use(express.static("files/documents"));
 
 // Production mode static files
 app.use(express.static("resources/app/public"));
 app.use(express.static("resources/app/files"));
+app.use(express.static("resources/app/files/documents"));
 
 app.set("view engine", "ejs");
 app.set("views", templatePath);

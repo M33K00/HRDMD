@@ -4,6 +4,20 @@ const router = express.Router();
 const multer = require("multer");
 const logincollections = require("../models/logincollections");
 const fs = require("fs");
+const path = require("path");
+
+// Multer configuration
+
+const documentStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./files/documents");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname); // Use the original filename without any modifications
+  },
+});
+
+const documentUpload = multer({ storage: documentStorage });
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -141,7 +155,8 @@ router.get("/manage_accounts", async (req, res) => {
 
 // Route pages
 router.get("/home", (request, response) => {
-  response.render("home");
+  const files = fs.readdirSync("./files/documents");
+  response.render("home", { files });
 });
 
 router.get("/startpage", (request, response) => {
@@ -251,6 +266,22 @@ router.get("/delete/:id", async (req, res) => {
     console.error(err);
     res.json({ message: err.message, type: "danger" });
   }
+});
+
+// Document Tracker routes
+
+router.post("/upload", documentUpload.single("file"), (req, res) => {
+  // Redirect to "/home" route after successful upload
+  res.redirect("home");
+});
+
+router.get("/delete", (req, res) => {
+  const filename = req.query.file;
+
+  if (filename) {
+    fs.unlinkSync(`./files/documents/${filename}`);
+  }
+  res.redirect("home");
 });
 
 module.exports = router;
