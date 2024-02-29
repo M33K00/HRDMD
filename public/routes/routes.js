@@ -64,15 +64,16 @@ router.post("/addacc", upload, async (req, res) => {
     };
 
     // Redirect to manage_accounts page
-    res.redirect("manage_accounts");
+    return res.redirect("/manage_accounts");
   } catch (error) {
     // Set error message in session
     req.session.message = {
       type: "DANGER",
       message: error.message,
     };
+    // Redirect to the previous page or an error page
+    return res.redirect("back");
   }
-  res.redirect("/manage_accounts");
 });
 
 router.get("/", (req, res) => {
@@ -182,15 +183,19 @@ router.get("/edit/:id", async (req, res) => {
     let logincollections = await LogInCollection.findById(id);
 
     if (!logincollections) {
+      // If the user account doesn't exist, redirect to manage_accounts page
       return res.redirect("/manage_accounts");
     }
 
+    // Render the edit_users template with the retrieved user data
     res.render("edit_users", {
       title: "Edit Account",
       logincollections: logincollections,
     });
   } catch (err) {
-    console.error(err);
+    // Log and handle errors gracefully
+    console.error("Error editing user account:", err);
+    // Redirect to manage_accounts page in case of an error
     res.redirect("/manage_accounts");
   }
 });
@@ -208,6 +213,7 @@ router.post("/update/:id", upload, async (req, res) => {
         fs.unlinkSync("./files/" + req.body.old_image);
       } catch (err) {
         console.error(err);
+        // If an error occurs during file deletion, it shouldn't affect the update process
       }
     } else {
       new_image = req.body.old_image;
@@ -234,12 +240,13 @@ router.post("/update/:id", upload, async (req, res) => {
       type: "SUCCESS",
       message: "User updated successfully",
     };
-    res.redirect("/manage_accounts");
+    // Redirect after successful update
+    return res.redirect("/manage_accounts");
   } catch (err) {
     console.error(err);
-    res.json({ message: err.message, type: "DANGER" });
+    // Handle errors and provide a response
+    return res.json({ message: err.message, type: "DANGER" });
   }
-  res.redirect("/manage_accounts");
 });
 
 // Delete a user
@@ -291,7 +298,16 @@ router.get("/delete", (req, res) => {
   const filename = req.query.file;
 
   if (filename) {
-    fs.unlinkSync(`/files/documents/${filename}`);
+    const filePath = path.join(__dirname, "../../files/documents/", filename);
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(`Error deleting file ${filename}: ${err}`);
+        // Handle the error appropriately, e.g., send an error response to the client
+        res.status(500).send("Error deleting file");
+        return;
+      }
+      console.log(`File ${filename} deleted successfully`);
+    });
   }
   res.redirect("home");
 });
