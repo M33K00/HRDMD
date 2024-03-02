@@ -18,7 +18,14 @@ const logInSchema = new mongoose.Schema({
   },
   hrrole: {
     type: String,
-    required: true,
+    default: "NOROLE", // Set default value to "NOROLE"
+    validate: {
+      validator: function (value) {
+        // Custom validation function to allow null or non-empty values
+        return value !== "";
+      },
+      message: "hrrole cannot be empty",
+    },
   },
   created: {
     type: Date,

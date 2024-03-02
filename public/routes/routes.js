@@ -50,7 +50,7 @@ router.post("/addacc", upload, async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      hrrole: req.body.hrrole,
+      hrrole: req.body.hrrole || "NOROLE",
       image: req.file.filename,
     };
 

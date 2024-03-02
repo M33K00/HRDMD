@@ -114,3 +114,14 @@ body {
 .signup label:hover {
   text-decoration: underline;
 }
+
+.form-upload {
+  height: 40px;
+  width: 100%;
+  padding: 0 15px;
+  font-size: 17px;
+  margin-bottom: 1.3rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+}

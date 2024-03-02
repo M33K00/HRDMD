@@ -28,6 +28,10 @@ app.use(express.urlencoded({ extended: false }));
 // middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use((err, req, res, next) => {
+  console.error(err.stack); // Log the error stack trace
+  res.status(500).send("Something broke!"); // Respond with a generic error message
+});
 
 app.use(
   session({
