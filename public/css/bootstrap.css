@@ -3868,6 +3868,7 @@ fieldset:disabled .btn {
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 1000;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -12215,17 +12216,17 @@ a.list-group-item-danger.active:hover {
   height: 100px;
 }
 .page-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Create 5 columns */
+  gap: 20px; /* Add gap between cards */
 }
 .page-item {
-  width: calc(25% - 20px); /* Adjust width as needed */
-  height: 250px;
-  margin: 10px; /* Adjust margin as needed */
-  background-color: #f0f0f0; /* Example background color */
-  border: 1px solid #ccc; /* Example border */
-  box-sizing: border-box;
-  text-align: center; /* Center content horizontally */
+  flex: 0 0 calc(20% - 10px); /* Adjust card width and margin */
+  height: 400px;
+  overflow: hidden;
+}
+.card {
+  height: 100%;
 }
 .page-container > div img {
   width: 100%; /* Set image width to 100% of its container */

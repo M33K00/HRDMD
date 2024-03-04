@@ -57,3 +57,26 @@ form.onsubmit = (e) => {
     window.location.href = form.getAttribute("action"); //redirecting user to the specified url which is inside action attribute of form tag
   }
 };
+
+const deleteButtons = document.querySelectorAll(".btn-delete");
+deleteButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    const filename = button.getAttribute("data-file");
+    if (confirm(`Are you sure you want to delete ${filename}?`)) {
+      fetch(`/delete?file=${filename}`) // Corrected the query parameter syntax
+        .then(() => window.location.reload())
+        .catch((error) => console.error(error));
+    }
+  });
+});
+dropdownBtn.addEventListener("click", function (e) {
+  e.stopPropagation();
+  toggleDropdown();
+});
+
+document.documentElement.addEventListener("click", function () {
+  if (dropdownMenu.classList.contains("show")) {
+    toggleDropdown();
+  }
+});

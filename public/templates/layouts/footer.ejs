@@ -8,3 +8,62 @@
     });
   });
 </script>
+<script>
+  const deleteButtons = document.querySelectorAll(".btn-delete");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const filename = button.getAttribute("data-file");
+      if (confirm(`Are you sure you want to delete ${filename}?`)) {
+        fetch(`/delete?file=${filename}`) // Corrected the query parameter syntax
+          .then(() => window.location.reload())
+          .catch((error) => console.error(error));
+      }
+    });
+  });
+</script>
+<script>
+  const dropdownBtn = document.getElementById("btn");
+  const dropdownMenu = document.getElementById("dropdown");
+  const toggleArrow = document.getElementById("arrow");
+
+  const toggleDropdown = function () {
+    dropdownMenu.classList.toggle("show");
+    toggleArrow.classList.toggle("arrow");
+  };
+
+  dropdownBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    toggleDropdown();
+  });
+
+  document.documentElement.addEventListener("click", function () {
+    if (dropdownMenu.classList.contains("show")) {
+      toggleDropdown();
+    }
+  });
+</script>
+<script>
+  // Get the search input element
+  const searchInput = document.getElementById("searchInput");
+
+  // Add event listener to the search input
+  searchInput.addEventListener("input", function () {
+    const searchValue = this.value.toLowerCase(); // Convert input value to lowercase for case-insensitive search
+
+    // Get all cards
+    const cards = document.querySelectorAll(".page-item");
+
+    // Loop through each card
+    cards.forEach((card) => {
+      const cardText = card.textContent.toLowerCase(); // Get card content and convert to lowercase
+
+      // If card content includes the search value, display the card, otherwise hide it
+      if (cardText.includes(searchValue)) {
+        card.style.display = "block"; // Show card
+      } else {
+        card.style.display = "none"; // Hide card
+      }
+    });
+  });
+</script>

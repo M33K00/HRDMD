@@ -13,7 +13,8 @@ const documentStorage = multer.diskStorage({
     cb(null, "./files/documents");
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname); // Use the original filename without any modifications
+    const fileName = file.originalname;
+    cb(null, fileName); // Use the original filename without any modifications
   },
 });
 
@@ -156,8 +157,33 @@ router.get("/manage_accounts", async (req, res) => {
 
 // Route pages
 router.get("/home", (request, response) => {
-  const files = fs.readdirSync("./files/documents");
-  response.render("home", { files });
+  const filesDirectory = "./files/documents";
+
+  try {
+    const fileNames = fs.readdirSync(filesDirectory);
+    const files = fileNames.map((fileName) => {
+      const filePath = path.join(filesDirectory, fileName);
+      const stats = fs.statSync(filePath);
+      // Convert mtime to desired format
+      const mtime = stats.mtime.toLocaleString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return {
+        name: fileName,
+        mtime: mtime,
+      };
+    });
+
+    // Pass the files data to the "/home" route
+    response.render("home", { files });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
 });
 
 router.get("/startpage", (request, response) => {
@@ -311,5 +337,18 @@ router.get("/delete", (req, res) => {
   }
   res.redirect("home");
 });
+
+fs.stat(
+  __dirname,
+  "../../files/documents/CAPSTONE FORM 1&2.pdf",
+  function (err, stats) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    var mtime = stats.mtime;
+    console.log(mtime);
+  }
+);
 
 module.exports = router;
