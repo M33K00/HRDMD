@@ -141,7 +141,8 @@
 
 .close {
   color: #aaa;
-  float: right;
+  text-align: right;
+  margin-right: 10px;
   font-size: 28px;
   font-weight: bold;
 }
@@ -156,4 +157,16 @@
   background-color: #fefefe;
   width: 100%;
   height: 300px;
+}
+.enlargeButton {
+  color: #aaa;
+  text-align: center;
+  float: right;
+  margin-left: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer; /* Add cursor pointer for hover effect */
+}
+#enlargeButton:hover {
+  color: #000; /* Change color on hover */
 }
