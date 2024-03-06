@@ -1,3 +1,6 @@
+<div class="page-footer">
+  <div></div>
+</div>
 <script src="/scripts/jquery.min.js"></script>
 <script src="/scripts/datatables.js"></script>
 <script src="https://kit.fontawesome.com/64cf43ccc2.js"></script>
@@ -15,32 +18,11 @@
       event.preventDefault();
       const filename = button.getAttribute("data-file");
       if (confirm(`Are you sure you want to delete ${filename}?`)) {
-        fetch(`/delete?file=${filename}`) // Corrected the query parameter syntax
+        fetch(`/delete?file=${filename}`)
           .then(() => window.location.reload())
           .catch((error) => console.error(error));
       }
     });
-  });
-</script>
-<script>
-  const dropdownBtn = document.getElementById("btn");
-  const dropdownMenu = document.getElementById("dropdown");
-  const toggleArrow = document.getElementById("arrow");
-
-  const toggleDropdown = function () {
-    dropdownMenu.classList.toggle("show");
-    toggleArrow.classList.toggle("arrow");
-  };
-
-  dropdownBtn.addEventListener("click", function (e) {
-    e.stopPropagation();
-    toggleDropdown();
-  });
-
-  document.documentElement.addEventListener("click", function () {
-    if (dropdownMenu.classList.contains("show")) {
-      toggleDropdown();
-    }
   });
 </script>
 <script>
@@ -66,4 +48,37 @@
       }
     });
   });
+</script>
+<script>
+  document.querySelectorAll(".svg-trigger").forEach(function (svg) {
+    svg.addEventListener("click", function () {
+      var modal = document.getElementById("modal");
+      modal.style.display = "block";
+
+      // Set the source of the iframe to the PDF file
+      var fileName = svg
+        .closest(".page-item")
+        .querySelector(".card-text").textContent;
+      var pdfViewer = document.getElementById("pdfViewer");
+      pdfViewer.src = "../../files/documents/" + fileName;
+    });
+  });
+
+  document.querySelector(".close").addEventListener("click", function () {
+    document.getElementById("modal").style.display = "none";
+  });
+</script>
+
+<script>
+  function toggleEnlargedModal() {
+    const modal = document.getElementById("modal");
+    modal.classList.toggle("enlarged");
+  }
+
+  // Add event listener for the 'Enlarge' button
+  document
+    .getElementById("enlargeButton")
+    .addEventListener("click", function () {
+      toggleEnlargedModal();
+    });
 </script>

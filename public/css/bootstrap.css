@@ -12185,6 +12185,7 @@ a.list-group-item-danger.active:hover {
   margin-top: 80px;
   margin-left: 270px;
   padding: 20px;
+  flex: 1;
 }
 .btn-page-body {
   width: 120px;

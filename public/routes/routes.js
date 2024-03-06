@@ -304,6 +304,19 @@ router.get("/delete/:id", async (req, res) => {
 // Document Tracker routes
 
 router.post("/upload", documentUpload.single("file"), (req, res) => {
+  // Check if a file was uploaded
+  if (!req.file) {
+    console.error("No file uploaded");
+    res.status(400).send("No file uploaded");
+    return;
+  }
+
+  // Get the filename of the uploaded file
+  const filename = req.file.filename;
+
+  // Log the successful upload message
+  console.log(`File ${filename} uploaded successfully`);
+
   // Redirect to "/home" route after successful upload
   res.redirect("home");
 });
@@ -314,6 +327,20 @@ router.use(
 );
 
 // Route to download files
+
+// Function to retrieve the list of files in the documents directory
+function getFileList(callback) {
+  const directoryPath = path.join(__dirname, "../../files/documents");
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      console.error("Error reading directory:", err);
+      callback(err, null);
+      return;
+    }
+    callback(null, files);
+  });
+}
+
 router.get("/download/:fileName", (request, response) => {
   const fileName = request.params.fileName;
   const filePath = path.join(__dirname, "../../files/documents", fileName);
@@ -328,27 +355,26 @@ router.get("/delete", (req, res) => {
     fs.unlink(filePath, (err) => {
       if (err) {
         console.error(`Error deleting file ${filename}: ${err}`);
-        // Handle the error appropriately, e.g., send an error response to the client
         res.status(500).send("Error deleting file");
         return;
       }
       console.log(`File ${filename} deleted successfully`);
-    });
-  }
-  res.redirect("home");
-});
 
-fs.stat(
-  __dirname,
-  "../../files/documents/CAPSTONE FORM 1&2.pdf",
-  function (err, stats) {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    var mtime = stats.mtime;
-    console.log(mtime);
+      // Get updated file list after deletion
+      getFileList((err, files) => {
+        if (err) {
+          // Handle error appropriately
+          res.status(500).send("Error retrieving file list");
+          return;
+        }
+        // Send the updated file list to the client
+        res.json({ files });
+      });
+    });
+  } else {
+    // Handle case where no file name is provided
+    res.status(400).send("No file specified for deletion");
   }
-);
+});
 
 module.exports = router;
