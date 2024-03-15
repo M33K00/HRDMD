@@ -62,7 +62,7 @@
             </svg>
             <% } else if (file.name.endsWith('.docx')) { %>
             <svg
-              class="svg-trigger"
+              class="svg-trigger-docx"
               xmlns="http://www.w3.org/2000/svg"
               class="d-block user-select-none"
               width="100%"
@@ -106,6 +106,15 @@
             <a href="/download/<%= file.name %>" class="card-link"
               >Download File</a
             >
+            <% if (file.name.endsWith('.docx')) { %>
+            <a
+              href="#"
+              class="card-link convert-link"
+              data-filename="<%= file.name %>"
+              >Convert</a
+            >
+            <% } %>
+
             <a
               href="#"
               class="btn-delete .delete-btn"
@@ -124,6 +133,7 @@
     <div class="modal-content">
       <span class="close">&times;</span>
       <iframe
+        type="application/pdf"
         id="pdfViewer"
         src=""
         width="100%"
@@ -135,5 +145,6 @@
       <span id="enlargeButton" class="enlargeButton">Enlarge</span>
     </div>
   </div>
+  <div class="page-footer"></div>
 </body>
 <%- include('./layouts/footer') -%>

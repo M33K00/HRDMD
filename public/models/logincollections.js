@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const logInSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -14,7 +15,7 @@ const logInSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
+    default: "../images/migu.jpg",
   },
   hrrole: {
     type: String,
@@ -31,6 +32,9 @@ const logInSchema = new mongoose.Schema({
     type: Date,
     required: true,
     default: Date.now,
+  },
+  verified: {
+    type: Boolean,
   },
 });
 module.exports = mongoose.model("LogInCollection", logInSchema);

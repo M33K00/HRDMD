@@ -10,6 +10,10 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 
+::-webkit-scrollbar {
+  width: 0px;
+}
+
 @import url(https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap);
 :root,
 [data-bs-theme="light"] {
@@ -12104,6 +12108,7 @@ a.list-group-item-danger.active:hover {
   top: 59px;
   left: 0;
   padding: 20px 30px;
+  z-index: 1;
 }
 .logo {
   display: block;
@@ -12199,41 +12204,6 @@ a.list-group-item-danger.active:hover {
   display: flex;
   justify-content: center;
   padding-bottom: 10px;
-}
-.page-name {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.page-name h1 {
-  margin-right: 20px;
-  font-style: italic;
-}
-.page-name button {
-  margin-left: auto;
-}
-.page-img {
-  width: 100px;
-  height: 100px;
-}
-.page-container {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Create 5 columns */
-  gap: 20px; /* Add gap between cards */
-}
-.page-item {
-  flex: 0 0 calc(20% - 10px); /* Adjust card width and margin */
-  height: 400px;
-  overflow: hidden;
-}
-.card {
-  height: 100%;
-}
-.page-container > div img {
-  width: 100%; /* Set image width to 100% of its container */
-  height: 100%; /* Set image height to 100% of its container */
-  object-fit: cover; /* Ensure the image covers the entire container */
-  border-radius: 5px;
 }
 .rounded-box {
   border-radius: 10px; /* Adjust the value as needed */

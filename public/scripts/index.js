@@ -56,6 +56,9 @@ db.on("open", () => console.log("Connected to the Database"));
 // route prefix
 app.use("", require("../routes/routes"));
 
+const bodyParser = require("express").json;
+app.use(bodyParser());
+
 app.listen(PORT, () => {
   console.log(`Server started at http://localhost:${PORT}`);
 });

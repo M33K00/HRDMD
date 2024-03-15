@@ -1,8 +1,5 @@
-<div class="page-footer">
-  <div></div>
-</div>
-<script src="/scripts/jquery.min.js"></script>
-<script src="/scripts/datatables.js"></script>
+<script src="../../scripts/jquery.min.js"></script>
+<script src="../../scripts/datatables.js"></script>
 <script src="https://kit.fontawesome.com/64cf43ccc2.js"></script>
 <script>
   $(document).ready(function () {
@@ -25,6 +22,8 @@
     });
   });
 </script>
+
+<%# SEARCH SCRIPT %>
 <script>
   // Get the search input element
   const searchInput = document.getElementById("searchInput");
@@ -49,6 +48,8 @@
     });
   });
 </script>
+
+<%# PDF SCRIPT %>
 <script>
   document.querySelectorAll(".svg-trigger").forEach(function (svg) {
     svg.addEventListener("click", function () {
@@ -69,6 +70,7 @@
   });
 </script>
 
+<%# ENLARGE MODAL SCRIPT %>
 <script>
   function toggleEnlargedModal() {
     const modal = document.getElementById("modal");
@@ -81,4 +83,47 @@
     .addEventListener("click", function () {
       toggleEnlargedModal();
     });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const convertLinks = document.querySelectorAll(".convert-link");
+    const pdfViewer = document.getElementById("pdfViewer");
+
+    convertLinks.forEach((link) => {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        const fileName = this.getAttribute("data-filename");
+        fetch(`/convertFromOffice/${fileName}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Conversion failed");
+            }
+            return response.blob();
+          })
+          .then((blob) => {
+            const objectURL = URL.createObjectURL(blob);
+            pdfViewer.src = objectURL;
+            pdfViewer.style.display = "block"; // Show the PDF viewer
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Conversion failed");
+          });
+      });
+    });
+  });
+</script>
+<script>
+  document.querySelectorAll(".svg-trigger-docx").forEach(function (svg) {
+    svg.addEventListener("click", function () {
+      var modal = document.getElementById("modal");
+
+      // Set the source of the iframe to the PDF file
+      var fileName = svg
+        .closest(".page-item")
+        .querySelector(".card-text").textContent;
+      var pdfViewer = document.getElementById("pdfViewer");
+      pdfViewer.src = "../../files/documents/" + fileName;
+    });
+  });
 </script>

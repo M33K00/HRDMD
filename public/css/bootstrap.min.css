@@ -126,7 +126,7 @@
   padding: 0; /* Remove padding */
   border: 1px solid #888;
   width: 60%;
-  height: 700px;
+  height: 80%;
 }
 
 .enlarged .modal-content {
@@ -169,4 +169,86 @@
 }
 #enlargeButton:hover {
   color: #000; /* Change color on hover */
+}
+.page-name {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.page-name h1 {
+  margin-right: 20px;
+  font-style: italic;
+}
+.page-name button {
+  margin-left: auto;
+}
+.page-img {
+  width: 100px;
+  height: 100px;
+}
+.page-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Grid with 5 columns */
+  gap: 20px; /* Gap between grid items */
+  grid-auto-rows: 450px; /* Default height for each row */
+}
+
+.page-item {
+  width: 300px; /* Fixed width for each card */
+  height: 350px; /* Fixed height for each card */
+}
+
+.card {
+  width: 100%; /* Ensure card fills the available space */
+  height: 125%; /* Ensure card fills the available space */
+}
+
+@media screen and (max-width: 768px) {
+  .page-container {
+    grid-template-columns: repeat(2, 1fr); /* Grid with 5 columns */
+  }
+}
+
+.page-container > div img {
+  width: 100%; /* Set image width to 100% of its container */
+  height: 100%; /* Set image height to 100% of its container */
+  object-fit: cover; /* Ensure the image covers the entire container */
+  border-radius: 5px;
+}
+.image-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.image-container .content {
+  position: relative;
+
+  width: 30%;
+}
+
+.image-container img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.image-container h2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 162, 255, 0.5);
+  color: #ffffff;
+  padding: 10px;
+  margin: 0;
+  border-radius: 5px;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align items horizontally */
+  gap: 10px; /* Spacing between card and button */
+  width: 50%;
 }
