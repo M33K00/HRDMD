@@ -416,7 +416,7 @@ router.post("/update/:id", upload, async (req, res) => {
 
     req.session.message = {
       type: "SUCCESS",
-      message: "User updated successfully",
+      message: " User updated successfully",
     };
     // Redirect after successful update
     return res.redirect("/manage_accounts");

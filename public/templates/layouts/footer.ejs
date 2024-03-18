@@ -48,7 +48,6 @@
     });
   });
 </script>
-
 <%# PDF SCRIPT %>
 <script>
   document.querySelectorAll(".svg-trigger").forEach(function (svg) {
@@ -124,6 +123,100 @@
         .querySelector(".card-text").textContent;
       var pdfViewer = document.getElementById("pdfViewer");
       pdfViewer.src = "../../files/documents/" + fileName;
+    });
+  });
+</script>
+<%# FILTER SCRIPT %>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const pageItems = document.querySelectorAll(".page-item");
+
+    filterButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        const extension = this.getAttribute("data-extension");
+        pageItems.forEach(function (item) {
+          const fileExtension = item
+            .querySelector(".card-text")
+            .textContent.split(".")
+            .pop();
+          if (
+            extension === "all" ||
+            (extension === "excel" && fileExtension === "xlsx") ||
+            (extension === "pdf" && fileExtension === "pdf") ||
+            (extension === "docx" && fileExtension === "docx")
+          ) {
+            item.style.display = "block";
+          } else {
+            item.style.display = "none";
+          }
+        });
+      });
+    });
+  });
+  pageItems.forEach(function (item) {
+    const fileExtension = item
+      .querySelector(".card-text")
+      .textContent.split(".")
+      .pop();
+    if (
+      extension === "all" ||
+      (extension === "excel" && fileExtension === "xlsx") ||
+      fileExtension === extension
+    ) {
+      item.style.display = "block";
+    } else {
+      item.style.display = "none";
+    }
+  });
+</script>
+<%# SORT SCRIPT %>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const sortButton = document.querySelector(".sort-btn");
+    const pageItems = document.querySelectorAll(".page-item");
+
+    sortButton.addEventListener("click", function () {
+      const sortedItems = Array.from(pageItems).sort((a, b) => {
+        const dateA = new Date(a.querySelector(".card-footer").textContent);
+        const dateB = new Date(b.querySelector(".card-footer").textContent);
+        return dateB - dateA; // Sort in descending order (most recent first)
+      });
+
+      sortedItems.forEach((item, index) => {
+        item.style.order = index; // Update the order of items based on sorting
+      });
+    });
+  });
+</script>
+<%# SORT SCRIPT ALPHABETICAL %>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleSortButton = document.querySelector(".toggle-sort-btn");
+    const pageItemsContainer = document.querySelector(".page-container");
+    let isAscending = true; // Flag to track sorting order
+
+    toggleSortButton.addEventListener("click", function () {
+      const pageItems = Array.from(
+        pageItemsContainer.querySelectorAll(".page-item")
+      );
+
+      pageItems.sort((a, b) => {
+        const textA = a.querySelector(".card-text").textContent.toLowerCase();
+        const textB = b.querySelector(".card-text").textContent.toLowerCase();
+
+        if (isAscending) {
+          return textA.localeCompare(textB); // Sort alphabetically ascending
+        } else {
+          return textB.localeCompare(textA); // Sort alphabetically descending
+        }
+      });
+
+      pageItems.forEach((item, index) => {
+        item.style.order = index; // Update the order of items based on sorting
+      });
+
+      isAscending = !isAscending; // Toggle sorting order flag
     });
   });
 </script>

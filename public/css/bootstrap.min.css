@@ -173,6 +173,7 @@
 .page-name {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 20px;
 }
 .page-name h1 {
@@ -251,4 +252,32 @@
   align-items: center; /* Align items horizontally */
   gap: 10px; /* Spacing between card and button */
   width: 50%;
+}
+.sortation-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+.btn-group-toggle {
+  margin-left: auto;
+}
+.dt-search {
+  margin-top: 5px;
+  display: flex;
+  height: 30px;
+  margin-bottom: 10px;
+}
+.dt-search .dt-input {
+  flex-grow: 1;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--bs-body-color);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: var(--bs-body-bg);
+  background-clip: padding-box;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
