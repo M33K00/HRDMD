@@ -3,11 +3,24 @@
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
   <div class="page-body">
     <div class="page-name">
-      <h1>Document Tracker</h1>
+      <h1>Recycle Bin</h1>
+      <div class="btn-group btn-group-toggle">
+        <a class="btn btn-secondary toggle-sort-btn" href="/restore"
+          ><button class="btn" id="restoreAllBtn">
+            <i class="fa-solid fa-trash-can-arrow-up"></i></button
+        ></a>
+        <a
+          href="/delete-all"
+          class="btn btn-secondary toggle-sort-btn"
+          id="deleteAllBtn"
+          ><button class="btn">
+            <i class="fa-solid fa-trash-can"></i></button
+        ></a>
+      </div>
     </div>
     <% if (message) { %>
     <div
-      class="alert alert-dismissible alert-success fade show"
+      class="alert alert-dismissible alert-warning fade show"
       role="alert"
       id="autoDismissAlert"
     >
@@ -16,29 +29,7 @@
         class="alert-link"
       ></a>
     </div>
-    <% } %> <%# Upload form %>
-    <div class="upload-container">
-      <form action="/upload" method="post" enctype="multipart/form-data">
-        <div class="form-group" style="display: flex">
-          <input
-            type="file"
-            class="form-control"
-            name="file"
-            accept=".doc, .docx, .pdf, .xlsx"
-            style="width: 300px"
-            required
-          />
-          <button
-            class="btn btn-secondary"
-            type="submit"
-            style="margin-left: 10px"
-          >
-            Upload
-          </button>
-        </div>
-      </form>
-    </div>
-    <%# Search bar %>
+    <% } %> <%# Search bar %>
     <input
       class="form-control me-sm-2"
       type="text"
@@ -119,9 +110,8 @@
     </div>
     <!-- Sort button -->
 
-    <%# File list %>
+    <%# File list %> <% if (files.length > 0) { %> <% files.forEach(file => { %>
     <div class="page-container">
-      <% if (files.length > 0) { %> <% files.forEach(file => { %>
       <div class="page-item">
         <div class="card mb-3">
           <h3 class="card-header"></h3>
@@ -207,26 +197,11 @@
             <a href="/download/<%= file.name %>" class="card-link"
               >Download File</a
             >
-            <% if (file.name.endsWith('.docx')) { %>
             <a
-              href="#"
-              class="card-link convert-link"
-              data-filename="<%= file.name %>"
-              >Convert</a
-            >
-            <% } %>
-
-            <!-- <a
               href="#"
               class="btn-delete .delete-btn"
               style="color: red"
               data-file="<%= file.name %>"
-              >Delete</a
-            > -->
-            <a
-              href="/recyclebin/<%= file.name %>"
-              style="color: red"
-              class="card-link"
               >Delete</a
             >
           </div>

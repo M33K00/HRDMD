@@ -334,6 +334,36 @@ router.get("/home", (request, response) => {
   }
 });
 
+router.get("/archive", (request, response) => {
+  const filesDirectory = "./files/archive";
+
+  try {
+    const fileNames = fs.readdirSync(filesDirectory);
+    const files = fileNames.map((fileName) => {
+      const filePath = path.join(filesDirectory, fileName);
+      const stats = fs.statSync(filePath);
+      // Convert mtime to desired format
+      const mtime = stats.mtime.toLocaleString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return {
+        name: fileName,
+        mtime: mtime,
+      };
+    });
+
+    // Pass the files data to the "/home" route
+    response.render("archive", { files });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
 router.get("/startpage", (request, response) => {
   response.render("startpage");
 });
@@ -469,7 +499,11 @@ router.post("/upload", documentUpload.single("file"), (req, res) => {
   // Log the successful upload message
   console.log(`File ${filename} uploaded successfully`);
 
-  // Redirect to "/home" route after successful upload
+  req.session.message = {
+    type: "info",
+    message: " Upload Successfully",
+  };
+
   res.redirect("home");
 });
 
@@ -527,6 +561,97 @@ router.get("/delete", (req, res) => {
     // Handle case where no file name is provided
     res.status(400).send("No file specified for deletion");
   }
+});
+
+// Recycle Bin
+router.get("/recyclebin/:fileName", (req, res) => {
+  const fileName = req.params.fileName; // Use req.params.fileName for route parameters
+
+  if (!fileName) {
+    return res.status(400).send("No file specified for moving to archive");
+  }
+
+  const sourceFilePath = path.join(
+    __dirname,
+    "../../files/documents/",
+    fileName
+  );
+  const destFolderPath = path.join(__dirname, "../../files/archive/");
+
+  fs.rename(sourceFilePath, path.join(destFolderPath, fileName), (err) => {
+    if (err) {
+      console.error(`Error moving file ${fileName} to archive: ${err}`); // Use fileName here
+      return res.status(500).send("Error moving file to archive");
+    }
+
+    console.log(`File ${fileName} moved to archive successfully`); // Use fileName here
+    res.redirect("/home");
+  });
+});
+
+// Delete all files in Recycle Bin
+router.get("/delete-all", (req, res) => {
+  const folderPath = path.join(__dirname, "../../files/archive");
+
+  fs.readdir(folderPath, (err, files) => {
+    if (err) {
+      console.error(`Error reading folder: ${err}`);
+      return res.status(500).send("Error reading folder");
+    }
+
+    files.forEach((file) => {
+      const filePath = path.join(folderPath, file);
+      fs.unlink(filePath, (unlinkErr) => {
+        if (unlinkErr) {
+          console.error(`Error deleting file ${file}: ${unlinkErr}`);
+          // Continue deleting other files even if one deletion fails
+        } else {
+          console.log(`File ${file} deleted successfully`);
+        }
+      });
+    });
+
+    req.session.message = {
+      type: "info",
+      message: " Files Deleted Successfully",
+    };
+
+    res.redirect("/archive");
+  });
+});
+
+// Restore files
+router.get("/restore", (req, res) => {
+  const sourceFolderPath = path.join(__dirname, "../../files/archive");
+  const destFolderPath = path.join(__dirname, "../../files/documents");
+
+  fs.readdir(sourceFolderPath, (err, files) => {
+    if (err) {
+      console.error(`Error reading source folder: ${err}`);
+      return res.status(500).send("Error reading source folder");
+    }
+
+    files.forEach((file) => {
+      const sourceFilePath = path.join(sourceFolderPath, file);
+      const destFilePath = path.join(destFolderPath, file);
+
+      fs.rename(sourceFilePath, destFilePath, (renameErr) => {
+        if (renameErr) {
+          console.error(`Error moving file ${file} back: ${renameErr}`);
+          // Continue moving other files even if one move fails
+        } else {
+          console.log(`File ${file} moved back successfully`);
+        }
+      });
+    });
+
+    req.session.message = {
+      type: "info",
+      message: " Files Restored Successfully",
+    };
+
+    res.redirect("/archive");
+  });
 });
 
 router.get("/convertFromOffice/:fileName", (req, res) => {

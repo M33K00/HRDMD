@@ -1,6 +1,10 @@
 <script src="../../scripts/jquery.min.js"></script>
 <script src="../../scripts/datatables.js"></script>
 <script src="https://kit.fontawesome.com/64cf43ccc2.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<%# Delete Button %>
 <script>
   $(document).ready(function () {
     $("table").DataTable({
@@ -18,6 +22,27 @@
         fetch(`/delete?file=${filename}`)
           .then(() => window.location.reload())
           .catch((error) => console.error(error));
+      }
+    });
+  });
+</script>
+
+<%# Delete ALL Button %>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Event listener for clicking the "Delete All" button
+    $("#deleteAllBtn").on("click", function (e) {
+      e.preventDefault(); // Prevent the default action (i.e., following the link)
+
+      // Show a confirmation dialog
+      if (
+        confirm(
+          "Eyow u kno whatchu doin cuh?? sure u wanna delete all this shit??"
+        )
+      ) {
+        // If user confirms, redirect to the delete-all route
+        window.location.href = "/delete-all";
       }
     });
   });
@@ -175,12 +200,15 @@
   document.addEventListener("DOMContentLoaded", function () {
     const sortButton = document.querySelector(".sort-btn");
     const pageItems = document.querySelectorAll(".page-item");
+    let ascendingOrder = true; // Default sorting order
 
     sortButton.addEventListener("click", function () {
+      ascendingOrder = !ascendingOrder; // Toggle sorting order on button click
+
       const sortedItems = Array.from(pageItems).sort((a, b) => {
         const dateA = new Date(a.querySelector(".card-footer").textContent);
         const dateB = new Date(b.querySelector(".card-footer").textContent);
-        return dateB - dateA; // Sort in descending order (most recent first)
+        return ascendingOrder ? dateA - dateB : dateB - dateA; // Sort based on order
       });
 
       sortedItems.forEach((item, index) => {
@@ -189,6 +217,7 @@
     });
   });
 </script>
+
 <%# SORT SCRIPT ALPHABETICAL %>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -218,5 +247,12 @@
 
       isAscending = !isAscending; // Toggle sorting order flag
     });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    setTimeout(function () {
+      $("#autoDismissAlert").alert("close");
+    }, 5000);
   });
 </script>
