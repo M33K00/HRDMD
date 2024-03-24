@@ -334,6 +334,7 @@ router.get("/home", (request, response) => {
   }
 });
 
+// Archive Route
 router.get("/archive", (request, response) => {
   const filesDirectory = "./files/archive";
 
@@ -564,8 +565,8 @@ router.get("/delete", (req, res) => {
 });
 
 // Recycle Bin
-router.get("/recyclebin/:fileName", (req, res) => {
-  const fileName = req.params.fileName; // Use req.params.fileName for route parameters
+router.get("/recyclebin", (req, res) => {
+  const fileName = req.query.file;
 
   if (!fileName) {
     return res.status(400).send("No file specified for moving to archive");
@@ -586,6 +587,39 @@ router.get("/recyclebin/:fileName", (req, res) => {
 
     console.log(`File ${fileName} moved to archive successfully`); // Use fileName here
     res.redirect("/home");
+  });
+});
+
+// Rename File
+router.post("/rename", (req, res) => {
+  const { file: oldFileName, newName } = req.body;
+
+  if (!oldFileName || !newName) {
+    return res
+      .status(400)
+      .json({ error: "Both oldFileName and newName are required." });
+  }
+
+  const fileExtension = path.extname(oldFileName);
+  const oldPath = path.join(__dirname, "../../files/documents", oldFileName);
+  const newPath = path.join(
+    __dirname,
+    "../../files/documents",
+    `${newName}${fileExtension}`
+  );
+
+  if (!fs.existsSync(oldPath)) {
+    return res.status(404).json({ error: "File not found." });
+  }
+
+  fs.rename(oldPath, newPath, (err) => {
+    if (err) {
+      console.error("Error renaming file:", err);
+      return res.status(500).json({ error: "Error renaming file." });
+    }
+
+    console.log("\nFile Renamed!\n");
+    res.json({ success: true, message: "File renamed successfully." });
   });
 });
 

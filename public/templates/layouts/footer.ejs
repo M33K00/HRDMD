@@ -48,6 +48,22 @@
   });
 </script>
 
+<%# Archive Button %>
+<script>
+  const ArchiveButtons = document.querySelectorAll(".btn-archive");
+  ArchiveButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const filename = button.getAttribute("data-file");
+      if (confirm(`Are you sure you want to delete ${filename}?`)) {
+        fetch(`/recyclebin?file=${filename}`)
+          .then(() => window.location.reload())
+          .catch((error) => console.error(error));
+      }
+    });
+  });
+</script>
+
 <%# SEARCH SCRIPT %>
 <script>
   // Get the search input element
@@ -254,5 +270,65 @@
     setTimeout(function () {
       $("#autoDismissAlert").alert("close");
     }, 5000);
+  });
+</script>
+<%# RENAME FILE %>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const renameButtons = document.querySelectorAll(".btn-rename");
+    const renameModal = document.getElementById("renameModal");
+    const newFileNameInput = document.getElementById("newFileNameInput");
+    const renameBtn = document.getElementById("renameBtn");
+    const closeBtn = document.getElementById("closerename"); // Update to target the correct close button ID
+
+    let fileName; // Declare fileName variable in the outer scope
+
+    renameButtons.forEach(function (button) {
+      button.addEventListener("click", function (e) {
+        e.preventDefault();
+        fileName = this.dataset.file; // Set the fileName variable
+        newFileNameInput.value = fileName; // Set the input field value to the current file name
+        renameModal.style.display = "block"; // Show the modal
+      });
+    });
+
+    renameBtn.addEventListener("click", function () {
+      const newFileName = newFileNameInput.value.trim(); // Get the new file name from the input field
+
+      if (newFileName !== "") {
+        renameModal.style.display = "none"; // Hide the modal
+        renameFile(fileName, newFileName);
+      } else {
+        alert("Please enter a valid file name.");
+      }
+    });
+
+    closeBtn.addEventListener("click", function () {
+      renameModal.style.display = "none"; // Hide the modal if the close button is clicked
+    });
+
+    function renameFile(oldFileName, newFileName) {
+      console.log("Old Name:", oldFileName);
+      console.log("New Name:", newFileName);
+
+      // Perform the AJAX request to rename the file using newFileName
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/rename");
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          console.log("File renamed successfully.");
+          // Optionally, reload the page or update the file list on success
+          window.location.reload();
+        } else {
+          console.error("Error renaming file:", xhr.status, xhr.responseText);
+          alert("Error renaming file.");
+        }
+      };
+
+      const data = JSON.stringify({ file: oldFileName, newName: newFileName });
+      xhr.send(data);
+    }
   });
 </script>

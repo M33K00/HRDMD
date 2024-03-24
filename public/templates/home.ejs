@@ -204,6 +204,12 @@
             <p class="card-text"><%= file.name %></p>
           </div>
           <div class="card-body">
+            <a
+              href="#"
+              class="card-link btn-rename"
+              data-file="<%= file.name %>"
+              >Rename</a
+            >
             <a href="/download/<%= file.name %>" class="card-link"
               >Download File</a
             >
@@ -215,18 +221,11 @@
               >Convert</a
             >
             <% } %>
-
-            <!-- <a
-              href="#"
-              class="btn-delete .delete-btn"
-              style="color: red"
-              data-file="<%= file.name %>"
-              >Delete</a
-            > -->
             <a
-              href="/recyclebin/<%= file.name %>"
+              href="#"
               style="color: red"
-              class="card-link"
+              class="card-link btn-archive"
+              data-file="<%= file.name %>"
               >Delete</a
             >
           </div>
@@ -240,6 +239,7 @@
       <% } %>
     </div>
   </div>
+  <!-- PDF Modal-->
   <div id="modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -256,6 +256,57 @@
       <span id="enlargeButton" class="enlargeButton">Enlarge</span>
     </div>
   </div>
+  <!-- Rename Modal -->
+  <!-- Rename Modal -->
+  <!--
+  <div id="renameModal" class="modalrename">
+    <div class="modalrename-content">
+      <span class="closerename">&times;</span>
+      <p>Enter the new file name:</p>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Recipient's username"
+          aria-label="Recipient's username"
+          aria-describedby="button-addon2"
+          id="newFileNameInput"
+        />
+        <button class="btn btn-primary" type="button" id="renameBtn">
+          Rename
+        </button>
+      </div>
+    </div>
+  </div>
+  -->
   <div class="page-footer"></div>
 </body>
 <%- include('./layouts/footer') -%>
+<!-- Rename Modal -->
+<div class="modal" id="renameModal">
+  <div class="modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Enter the new file name:</h5>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="newFileNameInput" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="renameBtn">
+          Save changes
+        </button>
+        <button
+          type="button"
+          id="closerename"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
