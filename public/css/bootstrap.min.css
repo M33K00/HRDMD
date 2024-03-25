@@ -187,7 +187,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Grid with 5 columns */
   gap: 20px; /* Gap between grid items */
-  grid-auto-rows: 450px; /* Default height for each row */
+  grid-auto-rows: 300px; /* Default height for each row */
 }
 
 .page-item {
@@ -202,7 +202,6 @@
 
 .card-header-font {
   font-size: small;
-  margin-left: auto;
 }
 
 .no-caret::after {
@@ -211,6 +210,7 @@
 
 .options {
   font-size: small;
+  z-index: 900;
 }
 
 @media screen and (max-width: 768px) {
@@ -292,4 +292,14 @@
 }
 .no-files {
   text-align: center;
+}
+
+.file-card {
+  height: 295px;
+}
+
+.file-date {
+  font-size: small;
+  height: auto;
+  background-color: inherit;
 }

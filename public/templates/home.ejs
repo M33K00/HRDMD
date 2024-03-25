@@ -123,8 +123,53 @@
     <div class="page-container">
       <% if (files.length > 0) { %> <% files.forEach(file => { %>
       <div class="page-item">
-        <div class="card mb-3">
-          <h5 class="card-header card-header-font"><%= file.size %></h5>
+        <div class="card mb-3 file-card">
+          <div
+            class="card-header card-header-font d-flex justify-content-between align-items-center"
+          >
+            <span class="card-text"><%= file.name %></span>
+            <div class="dropdown options">
+              <button
+                class="btn btn-secondary dropdown-toggle no-caret options"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                . . .
+              </button>
+              <div
+                class="dropdown-menu dropdown-menu-right"
+                aria-labelledby="dropdownMenuButton"
+              >
+                <a
+                  href="#"
+                  class="dropdown-item btn-rename"
+                  data-file="<%= file.name %>"
+                  >Rename</a
+                >
+                <a href="/download/<%= file.name %>" class="dropdown-item"
+                  >Download File</a
+                >
+                <% if (file.name.endsWith('.docx')) { %>
+                <a
+                  href="#"
+                  class="dropdown-item convert-link"
+                  data-filename="<%= file.name %>"
+                  >Convert</a
+                >
+                <% } %>
+                <a
+                  href="#"
+                  style="color: red"
+                  class="dropdown-item btn-archive"
+                  data-file="<%= file.name %>"
+                  >Delete</a
+                >
+              </div>
+            </div>
+          </div>
           <a href="#" class="hover-div">
             <!-- SVG element to display different icons based on file extension -->
             <% if (file.name.endsWith('.pdf')) { %>
@@ -200,60 +245,11 @@
             </svg>
             <% } %>
           </a>
-          <div class="card-body">
-            <p class="card-text"><%= file.name %></p>
-          </div>
-          <div class="card-body d-flex justify-content-end">
-            <div class="dropdown">
-              <button
-                class="btn btn-secondary dropdown-toggle no-caret options"
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                . . .
-              </button>
-              <div
-                class="dropdown-menu dropdown-menu-right"
-                aria-labelledby="dropdownMenuButton"
-              >
-                <a
-                  href="#"
-                  class="dropdown-item btn-rename"
-                  data-file="<%= file.name %>"
-                  >Rename</a
-                >
-                <a href="/download/<%= file.name %>" class="dropdown-item"
-                  >Download File</a
-                >
-                <% if (file.name.endsWith('.docx')) { %>
-                <a
-                  href="#"
-                  class="dropdown-item convert-link"
-                  data-filename="<%= file.name %>"
-                  >Convert</a
-                >
-                <% } %>
-                <a
-                  href="#"
-                  style="color: red"
-                  class="dropdown-item btn-archive"
-                  data-file="<%= file.name %>"
-                  >Delete</a
-                >
-              </div>
-            </div>
-          </div>
-
-          <div class="card-footer text-muted"><%= file.mtime %></div>
+          <a class="card-footer file-date"><%= file.mtime %></a>
         </div>
       </div>
-      <% }) %> <% } else { %>
-      <div class="no-files">
-        <h3>No Files Detected</h3>
-      </div>
+      <% }); %> <% } else { %>
+      <p>No files found.</p>
       <% } %>
     </div>
   </div>
@@ -274,29 +270,6 @@
       <span id="enlargeButton" class="enlargeButton">Enlarge</span>
     </div>
   </div>
-  <!-- Rename Modal -->
-  <!-- Rename Modal -->
-  <!--
-  <div id="renameModal" class="modalrename">
-    <div class="modalrename-content">
-      <span class="closerename">&times;</span>
-      <p>Enter the new file name:</p>
-      <div class="input-group mb-3">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Recipient's username"
-          aria-label="Recipient's username"
-          aria-describedby="button-addon2"
-          id="newFileNameInput"
-        />
-        <button class="btn btn-primary" type="button" id="renameBtn">
-          Rename
-        </button>
-      </div>
-    </div>
-  </div>
-  -->
   <div class="page-footer"></div>
 </body>
 <%- include('./layouts/footer') -%>
