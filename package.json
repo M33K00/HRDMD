@@ -48,6 +48,7 @@
     "nodemailer": "^6.9.12",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
+    "tiny-csrf": "^1.1.4",
     "uuid": "^9.0.1"
   },
   "build": {
