@@ -39,6 +39,8 @@ router.get("/home", (request, response) => {
     const files = fileNames.map((fileName) => {
       const filePath = path.join(filesDirectory, fileName);
       const stats = fs.statSync(filePath);
+      const sizeInBytes = stats.size;
+      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
       // Convert mtime to desired format
       const mtime = stats.mtime.toLocaleString("en-US", {
         weekday: "short",
@@ -50,6 +52,7 @@ router.get("/home", (request, response) => {
       });
       return {
         name: fileName,
+        size: sizeInMB + " MB",
         mtime: mtime,
       };
     });
@@ -70,6 +73,8 @@ router.get("/archive", (request, response) => {
     const files = fileNames.map((fileName) => {
       const filePath = path.join(filesDirectory, fileName);
       const stats = fs.statSync(filePath);
+      const sizeInBytes = stats.size;
+      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
       // Convert mtime to desired format
       const mtime = stats.mtime.toLocaleString("en-US", {
         weekday: "short",
@@ -81,6 +86,7 @@ router.get("/archive", (request, response) => {
       });
       return {
         name: fileName,
+        size: sizeInMB + " MB",
         mtime: mtime,
       };
     });
@@ -91,8 +97,6 @@ router.get("/archive", (request, response) => {
     console.error("Error reading directory:", error);
   }
 });
-
-// Document Tracker routes
 
 router.post("/upload", documentUpload.single("file"), (req, res) => {
   // Check if a file was uploaded
