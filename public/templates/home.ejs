@@ -7,7 +7,7 @@
     </div>
     <% if (message) { %>
     <div
-      class="alert alert-dismissible alert-success fade show"
+      class="alert alert-dismissible alert-success fade show auto-dismiss-alert"
       role="alert"
       id="autoDismissAlert"
     >
@@ -125,19 +125,19 @@
       <div class="page-item">
         <div class="card mb-3 file-card">
           <div
-            class="card-header card-header-font d-flex justify-content-between align-items-center"
+            class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
           >
             <span class="card-text"><%= file.name %></span>
             <div class="dropdown options">
               <button
-                class="btn btn-secondary dropdown-toggle no-caret options"
+                class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                . . .
+                <i class="fa-solid fa-caret-down"></i>
               </button>
               <div
                 class="dropdown-menu dropdown-menu-right"
@@ -145,16 +145,21 @@
               >
                 <a
                   href="#"
+                  style="color: black"
                   class="dropdown-item btn-rename"
                   data-file="<%= file.name %>"
                   >Rename</a
                 >
-                <a href="/download/<%= file.name %>" class="dropdown-item"
+                <a
+                  href="/download/<%= file.name %>"
+                  style="color: black"
+                  class="dropdown-item"
                   >Download File</a
                 >
                 <% if (file.name.endsWith('.docx')) { %>
                 <a
                   href="#"
+                  style="color: black"
                   class="dropdown-item convert-link"
                   data-filename="<%= file.name %>"
                   >Convert</a
@@ -173,79 +178,31 @@
           <a href="#" class="hover-div">
             <!-- SVG element to display different icons based on file extension -->
             <% if (file.name.endsWith('.pdf')) { %>
-            <svg
-              class="svg-trigger"
-              xmlns="http://www.w3.org/2000/svg"
-              class="d-block user-select-none"
-              width="100%"
-              height="200"
-              aria-label="PDF File"
-              focusable="false"
-              role="img"
-              preserveAspectRatio="xMidYMid slice"
-              viewBox="0 0 318 180"
-              style="font-size: 1.125rem; text-anchor: middle"
-            >
-              <rect width="100%" height="100%" fill="#8B0000"></rect>
-              <text x="50%" y="50%" fill="#dee2e6" dy=".3em">PDF</text>
-            </svg>
+            <div class="file-preview" style="background-color: #680404">
+              PDF
+            </div>
             <% } else if (file.name.endsWith('.docx')) { %>
-            <svg
-              class="svg-trigger-docx"
-              xmlns="http://www.w3.org/2000/svg"
-              class="d-block user-select-none"
-              width="100%"
-              height="200"
-              aria-label="DOCX File"
-              focusable="false"
-              role="img"
-              preserveAspectRatio="xMidYMid slice"
-              viewBox="0 0 318 180"
-              style="font-size: 1.125rem; text-anchor: middle"
-            >
-              <rect width="100%" height="100%" fill="#007bff"></rect>
-              <text x="50%" y="50%" fill="#dee2e6" dy=".3em">DOCX</text>
-            </svg>
+            <div class="file-preview" style="background-color: #00326b">
+              DOCX
+            </div>
             <% } else if (file.name.endsWith('.xlsx')) { %>
-            <svg
-              class="svg-trigger-docx"
-              xmlns="http://www.w3.org/2000/svg"
-              class="d-block user-select-none"
-              width="100%"
-              height="200"
-              aria-label="EXCEL File"
-              focusable="false"
-              role="img"
-              preserveAspectRatio="xMidYMid slice"
-              viewBox="0 0 318 180"
-              style="font-size: 1.125rem; text-anchor: middle"
+            <div
+              class="file-preview"
+              style="
+                background-image: url('../images/gigachad.png');
+                background-size: cover;
+              "
             >
-              <rect width="100%" height="100%" fill="#1e9004"></rect>
-              <text x="50%" y="50%" fill="#dee2e6" dy=".3em">EXCEL</text>
-            </svg>
+              EXCEL
+            </div>
             <% } else { %>
             <!-- Default icon for other file types -->
-            <svg
-              class="svg-trigger"
-              xmlns="http://www.w3.org/2000/svg"
-              class="d-block user-select-none"
-              width="100%"
-              height="200"
-              aria-label="Placeholder: Image cap"
-              focusable="false"
-              role="img"
-              preserveAspectRatio="xMidYMid slice"
-              viewBox="0 0 318 180"
-              style="font-size: 1.125rem; text-anchor: middle"
-            >
-              <rect width="100%" height="100%" fill="#868e96"></rect>
-              <text x="50%" y="50%" fill="#dee2e6" dy=".3em">
-                <%= file.name.endsWith('.pdf') ? 'PDF' : 'DOCX' %>
-              </text>
-            </svg>
+            <div class="file-preview" style="background-color: lightskyblue">
+              UNKNOWN
+            </div>
             <% } %>
           </a>
-          <a class="card-footer file-date"><%= file.mtime %></a>
+          <a class="card-footer card-options file-date"><%= file.mtime %></a>
         </div>
       </div>
       <% }); %> <% } else { %>

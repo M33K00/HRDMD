@@ -142,7 +142,7 @@ router.get("/delete", (req, res) => {
   const filename = req.query.file;
 
   if (filename) {
-    const filePath = path.join(__dirname, "../../files/documents/", filename);
+    const filePath = path.join(__dirname, "../../files/archive/", filename);
     fs.unlink(filePath, (err) => {
       if (err) {
         console.error(`Error deleting file ${filename}: ${err}`);

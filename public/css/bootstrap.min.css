@@ -1,6 +1,10 @@
 .hover-div {
   transition: filter 0.3s ease, opacity 0.3s ease;
   filter: brightness(100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
 }
 
 .hover-div:hover {
@@ -186,18 +190,26 @@
 .page-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Grid with 5 columns */
-  gap: 20px; /* Gap between grid items */
+  gap: 5px; /* Gap between grid items */
   grid-auto-rows: 300px; /* Default height for each row */
 }
 
 .page-item {
   width: 300px; /* Fixed width for each card */
   height: 350px; /* Fixed height for each card */
+  background-color: transparent;
 }
 
 .card {
   width: 100%; /* Ensure card fills the available space */
   height: 125%; /* Ensure card fills the available space */
+}
+
+.card-header-options {
+  background-color: transparent;
+  height: 50px;
+  width: auto;
+  padding-top: 15px;
 }
 
 .card-header-font {
@@ -262,6 +274,11 @@
   gap: 10px; /* Spacing between card and button */
   width: 50%;
 }
+
+.card-options {
+  border: none;
+}
+
 .sortation-container {
   display: flex;
   margin-bottom: 10px;
@@ -295,11 +312,48 @@
 }
 
 .file-card {
-  height: 295px;
+  height: 280px;
+  display: inline-block;
+  border-radius: 10px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
 }
 
 .file-date {
   font-size: small;
   height: auto;
   background-color: inherit;
+}
+
+.file-preview {
+  margin: 5px;
+  width: 91%;
+  height: 90%;
+  background-color: #4d4d4d; /* Fill color for the div */
+  border-radius: 5px; /* Border radius for rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.125rem;
+  color: #dee2e6;
+}
+
+.bg-nobg {
+  background-color: transparent;
+  border: transparent;
+}
+.filter-btn {
+  font-size: small;
+}
+.svg-trigger {
+  padding: 10px;
+}
+
+.auto-dismiss-alert {
+  transition: height 0.5s ease, opacity 0.5s ease; /* Add smooth transition effect */
+}
+
+.auto-dismiss-alert.hide {
+  height: 0; /* Set height to zero when hidden */
+  padding: 0; /* Remove padding when hidden */
+  opacity: 0; /* Set opacity to zero when hidden */
 }

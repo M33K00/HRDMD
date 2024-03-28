@@ -18,7 +18,7 @@
     button.addEventListener("click", (event) => {
       event.preventDefault();
       const filename = button.getAttribute("data-file");
-      if (confirm(`Are you sure you want to delete ${filename}?`)) {
+      if (confirm(`Are you sure you want to permanently delete ${filename}?`)) {
         fetch(`/delete?file=${filename}`)
           .then(() => window.location.reload())
           .catch((error) => console.error(error));
@@ -91,7 +91,7 @@
 </script>
 <%# PDF SCRIPT %>
 <script>
-  document.querySelectorAll(".svg-trigger").forEach(function (svg) {
+  document.querySelectorAll(".file-preview").forEach(function (svg) {
     svg.addEventListener("click", function () {
       var modal = document.getElementById("modal");
       modal.style.display = "block";
@@ -265,13 +265,6 @@
     });
   });
 </script>
-<script>
-  $(document).ready(function () {
-    setTimeout(function () {
-      $("#autoDismissAlert").alert("close");
-    }, 5000);
-  });
-</script>
 <%# RENAME FILE %>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -331,4 +324,17 @@
       xhr.send(data);
     }
   });
+</script>
+<script>
+  // Check if the auto-dismiss alert element exists
+  const autoDismissAlert = document.getElementById("autoDismissAlert");
+  if (autoDismissAlert) {
+    // Automatically dismiss the alert after 5 seconds
+    setTimeout(() => {
+      autoDismissAlert.classList.add("hide"); // Add hide class to the alert
+      setTimeout(() => {
+        autoDismissAlert.remove(); // Remove the alert element from the DOM
+      }, 500); // Wait for transition to complete before removing
+    }, 5000); // 5000 milliseconds = 5 seconds
+  }
 </script>
