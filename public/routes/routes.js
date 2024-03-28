@@ -4,42 +4,12 @@ const multer = require("multer");
 const logincollections = require("../models/logincollections");
 const fs = require("fs");
 const path = require("path");
-const docxConverter = require("docx-pdf");
-const bcrypt = require("bcrypt");
+const authController = require("../controllers/authController");
 
 // Models
 const LogInCollection = require("../models/logincollections");
-const UserVerification = require("../models/UserVerification");
-
-// Email Handler
-const nodemailer = require("nodemailer");
-
-// Unique String
-const { v4: uuidv4 } = require("uuid");
-
-// env variable
-require("dotenv").config();
-
-// NodeMailer
-let transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.AUTH_EMAIL,
-    pass: process.env.AUTH_PASSWORD,
-  },
-});
-
-// Testing
-transporter.verify((error, success) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log("Server lit af, ready for email");
-  }
-});
 
 // Multer configuration
-
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./files/images");
@@ -53,8 +23,18 @@ var upload = multer({
   storage: storage,
 }).single("image");
 
-// Insert an account into the database route
+// Login Page Routes
+router.get("/login", authController.login_get);
 
+router.get("/signup", authController.signup_get);
+
+router.post("/login", authController.login_post);
+
+router.post("/signup", authController.signup_post);
+
+router.get("/logout", authController.logout_get);
+
+// Insert an account into the database route
 router.post("/addacc", upload, async (req, res) => {
   try {
     const data = {
@@ -84,202 +64,6 @@ router.post("/addacc", upload, async (req, res) => {
     };
     // Redirect to the previous page or an error page
     return res.redirect("/manage_accounts");
-  }
-});
-
-// Signup route
-router.post("/signup", multer().single("image"), async (req, res) => {
-  try {
-    const { name, email, password, hrrole } = req.body;
-
-    // Validate input data
-    if (!name || !email || !password || !hrrole) {
-      return res.status(400).json({
-        status: "FAILED",
-        message: "All fields are required.",
-        type: "DANGER",
-      });
-    } else if (!/^[a-zA-Z0-9]+$/.test(name)) {
-      return res.status(400).json({
-        status: "FAILED",
-        message: "Name can only contain letters and numbers.",
-        type: "DANGER",
-      });
-    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      return res.status(400).json({
-        status: "FAILED",
-        message: "Invalid email address.",
-        type: "DANGER",
-      });
-    } else if (password.length < 8) {
-      return res.status(400).json({
-        status: "FAILED",
-        message: "Password must be at least 8 characters long.",
-        type: "DANGER",
-      });
-    }
-
-    const existingUser = await LogInCollection.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({
-        status: "FAILED",
-        message: "Email already exists.",
-        type: "DANGER",
-      });
-    }
-
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    const newUser = new LogInCollection({
-      name,
-      email,
-      password: hashedPassword,
-      hrrole,
-      verified: false,
-    });
-
-    const savedUser = await newUser.save();
-    if (!savedUser) {
-      throw new Error("Failed to save user data.");
-    }
-
-    // Send verification email
-    await sendVerificationEmail(savedUser, res);
-
-    res.redirect("/login");
-  } catch (error) {
-    console.error("Error occurred:", error);
-    res.status(500).json({
-      status: "FAILED",
-      message: "An error occurred during user creation.",
-      type: "DANGER",
-    });
-  }
-});
-
-// Send Verification Email
-const sendVerificationEmail = async (user, res) => {
-  try {
-    const { _id, email } = user;
-    const currentUrl = "http://localhost:5000";
-    const uniqueString = uuidv4() + _id;
-
-    const mailOptions = {
-      from: process.env.AUTH_EMAIL,
-      to: email,
-      subject: "Email Verification",
-      html: `<p>Please click the below link to verify your email</p><p>This link <b>expires in 6 hours</b>.</p><p> Press <a href=${currentUrl}/user/verify/${_id}/${uniqueString}>here</a> to continue</p>`,
-    };
-
-    const saltRounds = 10;
-    const hashUniqueString = await bcrypt.hash(uniqueString, saltRounds);
-
-    const newUserVerification = new UserVerification({
-      userId: _id,
-      uniqueString: hashUniqueString,
-      createdAt: Date.now(),
-      expiresAt: Date.now() + 21600000, // 6 hours expiration time
-    });
-
-    await newUserVerification.save();
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent, Check Email for verification link");
-  } catch (error) {
-    console.log("Couldn't send verification email ", error);
-    res.status(500).json({
-      status: "FAILED",
-      message: "Couldn't send verification email.",
-      type: "DANGER",
-    });
-  }
-};
-
-// Verify Email
-router.get("/user/verify/:userId/:uniqueString", async (req, res) => {
-  try {
-    const { userId, uniqueString } = req.params;
-
-    const verificationRecord = await UserVerification.findOne({ userId });
-    if (!verificationRecord) {
-      throw new Error("Account not found. Please try again.");
-    }
-
-    const { expiresAt, uniqueString: hashedUniqueString } = verificationRecord;
-
-    if (expiresAt < Date.now()) {
-      // Link has expired
-      await UserVerification.deleteOne({ userId });
-      await LogInCollection.deleteOne({ _id: userId });
-      throw new Error("Link has expired. Please try again.");
-    }
-
-    // Compare hashed uniqueString
-    const result = await bcrypt.compare(uniqueString, hashedUniqueString);
-    if (result) {
-      // Unique string matches
-      await LogInCollection.updateOne({ _id: userId }, { verified: true });
-      await UserVerification.deleteOne({ userId });
-      res.sendFile(path.join(__dirname, "../templates/verified.html"));
-    } else {
-      // Invalid verification details
-      throw new Error("Invalid verification details. Check your inbox.");
-    }
-  } catch (error) {
-    console.error("Error occurred during email verification:", error.message);
-    const message = error.message || "Something went wrong. Please try again.";
-    res.redirect(`/user/verified/error=true&message=${message}`);
-  }
-});
-
-// Verified page route
-router.get("/verified", (req, res) => {
-  res.sendFile(path.join(__dirname, "../templates/verified.html"));
-});
-
-// Login
-router.post("/login", async (req, res) => {
-  // const { email, password, _csrf } = req.body;
-  const { email, password } = req.body;
-  // console.log("CSRF Token Received:", _csrf);
-  // console.log("Expected CSRF Token:", req.csrfToken());
-
-  try {
-    // Validate CSRF token
-    //if (_csrf !== req.csrfToken()) {
-    //  return res.status(403).json({ error: "Invalid CSRF token" });
-    //}
-
-    if (!email || !password) {
-      console.log("Please enter email and password");
-      return res.status(400).json({ error: "Please enter email and password" });
-    }
-
-    const user = await LogInCollection.findOne({ email }); // Find user by email
-
-    if (!user) {
-      console.log("User not found");
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    if (!user.verified) {
-      console.log("User is not verified");
-      return res.redirect("/login");
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password); // Compare hashed password
-
-    if (isPasswordValid) {
-      console.log("Login Successful");
-      return res.redirect("/startpage"); // Redirect to start page on successful login
-    } else {
-      console.log("Invalid Password");
-      return res.status(401).json({ error: "Invalid Password" });
-    }
-  } catch (err) {
-    console.log("Error occurred while logging in:");
-    console.log(err);
-    return res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -364,7 +148,7 @@ router.get("/delete/:id", async (req, res) => {
 
     if (result && result.image !== "") {
       try {
-        fs.unlinkSync("./files/images" + result.image);
+        fs.unlinkSync("./files/images/" + result.image);
       } catch (err) {
         console.error(err);
       }
@@ -384,8 +168,6 @@ router.get("/delete/:id", async (req, res) => {
 
 // Get Pages
 router.get("/", (req, res) => {
-  // const csrfToken = req.csrfToken();
-  // res.render("login", { csrfToken });
   res.render("login");
 });
 
@@ -398,7 +180,7 @@ router.get("/manage_accounts", async (req, res) => {
   }
 });
 
-router.get("/role/role1", (request, response) => {
+router.get("/role1", (request, response) => {
   response.render("role1");
 });
 

@@ -1,0 +1,38 @@
+<script>
+  const form = document.querySelector("form");
+  const emailError = document.querySelector(".email-error");
+  const passwordError = document.querySelector(".password-error");
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    // reset errors
+    emailError.textContent = "";
+    passwordError.textContent = "";
+
+    // get values
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      const result = await fetch("/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await result.json();
+      console.log(data); // Log the response data for debugging
+
+      if (data.errors) {
+        emailError.textContent = data.errors.email;
+        passwordError.textContent = data.errors.password;
+      }
+
+      if (data.redirect) {
+        window.location.href = data.redirect; // Redirect based on the received URL
+      }
+    } catch (err) {
+      console.log("Error:", err); // Log any errors for debugging
+    }
+  });
+</script>

@@ -1,17 +1,23 @@
 const mongoose = require("mongoose");
+const { isEmail } = require("validator");
+const bcrypt = require("bcrypt");
 
 const logInSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Please add a name"],
   },
   email: {
     type: String,
-    required: true,
+    required: [true, "Please add an email"],
+    unique: true,
+    lowercase: true,
+    validate: [isEmail, "Please enter a valid email"],
   },
   password: {
     type: String,
-    required: true,
+    required: [true, "Please add a password"],
+    minlength: [8, "Password must be at least 8 characters"],
   },
   image: {
     type: String,
@@ -37,4 +43,33 @@ const logInSchema = new mongoose.Schema({
     type: Boolean,
   },
 });
+
+// Fire a function before doc is saved to db
+logInSchema.pre("save", async function (next) {
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+// Static method to login user
+logInSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (!user) {
+    throw new Error("Email doesn't exist");
+  }
+
+  const auth = await bcrypt.compare(password, user.password);
+  if (!auth) {
+    throw new Error("Incorrect password");
+  }
+
+  if (!user.hrrole || user.hrrole === "NOROLE") {
+    if (user.hrrole !== "ADMIN") {
+      throw new Error("Your account has no assigned roles yet");
+    }
+  }
+
+  return user;
+};
+
 module.exports = mongoose.model("LogInCollection", logInSchema);

@@ -7,6 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const { checkUser } = require("../middleware/authMiddleware.js");
 
 const PORT = process.env.PORT || 4000;
 const templatePath = path.join(__dirname, "../templates");
@@ -26,8 +27,9 @@ app.use(express.static("resources/app/files/documents"));
 app.set("view engine", "ejs");
 app.set("views", templatePath);
 
-// Middleware for parsing JSON request bodies
+// Middleware
 app.use(express.json());
+app.use(cookieParser());
 
 // CSRF middleware
 app.use(express.urlencoded({ extended: false }));
@@ -55,13 +57,14 @@ app.use((req, res, next) => {
 });
 
 // Route prefix
+app.get("*", checkUser);
 app.use("", require("../routes/routes"));
 app.use("", require("../routes/document_routes.js"));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack); // Log the error stack trace
-  res.status(500).send("Something broke!"); // Respond with a generic error message
+  res.status(500).send("Holy shit man, bombaclot"); // Respond with a generic error message
 });
 
 mongoose.connect("mongodb://0.0.0.0:27017/HRDMD");

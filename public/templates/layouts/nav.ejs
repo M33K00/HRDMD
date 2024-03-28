@@ -14,15 +14,16 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav ms-auto">
+        <% if (user) { %>
         <li class="nav-item">
           <a class="nav-link active" href="#"
-            >HR
+            >Welcome, <%= user.name %>
             <span class="visually-hidden">(current)</span>
-          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/">Sign Out</a>
+          <a class="nav-link" href="/logout">Log Out</a>
         </li>
+        <% } %>
       </ul>
     </div>
   </div>

@@ -1,61 +1,23 @@
 <%- include('./layouts/login') -%>
   <body>
     <div class="container">
-      <input type="checkbox" id="check" />
       <div class="login form">    
         <div class="logo-container">
           <img src="/images/logo.png" class="logo-login" />
         </div>
         <header>Human Resources Department</header>
-        <form action="/login" method="POST">
+        <form>
           <input type="text" name="email" placeholder="Email" required />
+          <div class="email-error"></div>
           <input type="password" name="password" placeholder="Password" required />
-          <a href="startpage">Bypass</a>
+          <div class="password-error"></div>
           <input type="submit" class="button"/>
         </form>
         <div class="signup">
-          <span class="signup">Don't have an account?
-            <label for="check">Signup</label>
-          </span>
-        </div>
-      </div>
-      <div class="registration form">
-        <header>Signup</header>
-        <h6>
-          Create an account to start. Please note that the ADMIN will review
-          your signup first before you can enter
-        </h6>
-        <form action="/signup" method="POST" enctype="multipart/form-data">
-          <input type="text" name="name" placeholder="Name" required/>
-          <input
-            type="text"
-            name="email"
-            class="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
-          <div class="form-group" style="display: none;">
-            <label for="hrrole" class="form-label mt-4">HR Role</label>
-            <select type="text" name="hrrole" class="form-select" id="hrrole">
-              <option>NO ROLE</option>
-            </select>
-          </div>
-          <input type="submit" class="button" />
-        </form>
-        <div class="signup">
-          <span class="signup">Already have an account?
-            <label for="check">Login</label>
-          </span>
+            <a href="signup">Signup</a>
         </div>
       </div>
     </div>
   </body>
 </html>
+<%- include('./layouts/loginfooter') %>

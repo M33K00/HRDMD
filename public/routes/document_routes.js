@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const docxConverter = require("docx-pdf");
 const logincollections = require("../models/logincollections");
-// const { checkLoggedIn } = require("../middleware/authMiddleware");
+const { requireAuth } = require("../middleware/authMiddleware");
 
 const documentStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -19,15 +19,7 @@ const documentStorage = multer.diskStorage({
 
 const documentUpload = multer({ storage: documentStorage });
 
-// router.get("/startpage", checkLoggedIn, (req, res) => {
-//   if (res.locals.currentUser) {
-//     res.render("startpage", { logincollections: res.locals.currentUser });
-//   } else {
-//     res.redirect("/login");
-//   }
-// });
-
-router.get("/startpage", (req, res) => {
+router.get("/startpage", requireAuth, (req, res) => {
   res.render("startpage");
 });
 

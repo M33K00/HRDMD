@@ -39,6 +39,7 @@
     "express-validator": "^7.0.1",
     "graceful-fs": "^4.2.11",
     "handlebars": "^4.7.8",
+    "jsonwebtoken": "^9.0.2",
     "libreoffice-convert": "^1.5.1",
     "moment": "^2.30.1",
     "mongoose": "^8.1.2",
@@ -49,7 +50,8 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "tiny-csrf": "^1.1.4",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "validator": "^13.11.0"
   },
   "build": {
     "appId": "com.MicroTech.InventoryTracker"
