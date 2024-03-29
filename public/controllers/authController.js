@@ -1,5 +1,6 @@
 require("dotenv").config();
 const LogInCollection = require("../models/logincollections");
+const userdocuments = require("../models/userdocuments");
 const jwt = require("jsonwebtoken");
 
 // Handle errors
@@ -89,6 +90,15 @@ module.exports.signup_post = async (req, res) => {
       email,
       password,
     });
+    // Insert data into "userdocuments" collection
+    const userData = {
+      userId: logincollection._id,
+      name,
+      email,
+      // Add other data as needed
+    };
+    await userdocuments.insertOne(userData);
+
     const token = createToken(logincollection._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(200).json({ logincollection: logincollection._id });

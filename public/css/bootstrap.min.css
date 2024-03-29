@@ -316,6 +316,7 @@
   display: inline-block;
   border-radius: 10px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid #5a5a5a; /* Border style with 2px width and black color */
 }
 
 .file-date {
@@ -335,6 +336,29 @@
   align-items: center;
   font-size: 1.125rem;
   color: #dee2e6;
+  border: 1px solid #5a5a5a; /* Border style with 2px width and black color */
+}
+
+.account-card {
+  height: 350px;
+  display: inline-block;
+  border-color: #5a5a5a;
+  border-width: 1px;
+  border-radius: 10px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+.imageacc-preview {
+  width: 91%;
+  height: 90%;
+  background-color: #5a5a5a; /* Fill color for the div */
+  border-radius: 5px; /* Border radius for rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.125rem;
+  color: #dee2e6;
+  border: 1px solid #5a5a5a; /* Border style with 2px width and black color */
 }
 
 .bg-nobg {
@@ -356,4 +380,8 @@
   height: 0; /* Set height to zero when hidden */
   padding: 0; /* Remove padding when hidden */
   opacity: 0; /* Set opacity to zero when hidden */
+}
+.card-text-name {
+  font-weight: bold;
+  font-size: large;
 }

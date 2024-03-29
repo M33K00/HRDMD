@@ -4,7 +4,8 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const docxConverter = require("docx-pdf");
-const logincollections = require("../models/logincollections");
+const LogInCollection = require("../models/logincollections");
+const UserDocuments = require("../models/userdocuments");
 const { requireAuth } = require("../middleware/authMiddleware");
 
 const documentStorage = multer.diskStorage({
@@ -312,6 +313,15 @@ router.get("/convertFromOffice/:fileName", (req, res) => {
     const iframeHtml = `<iframe src="${pdfSrc}" width="100%" height="100%" frameborder="0"></iframe>`;
     res.send(iframeHtml);
   });
+});
+
+router.get("/employeedocument", async (req, res) => {
+  try {
+    const logincollection = await LogInCollection.find();
+    res.render("employeedocument", { logincollection });
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 module.exports = router;

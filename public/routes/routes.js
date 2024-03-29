@@ -166,8 +166,20 @@ router.get("/delete/:id", async (req, res) => {
   }
 });
 
+// Middleware function to check for JWT cookie
+const checkJWT = (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    // JWT cookie is present, redirect to /startpage
+    res.redirect("/startpage");
+  } else {
+    // JWT cookie not present, proceed to next middleware/route handler
+    next();
+  }
+};
+
 // Get Pages
-router.get("/", (req, res) => {
+router.get("/", checkJWT, (req, res) => {
   res.render("login");
 });
 

@@ -1,0 +1,79 @@
+<%- include('./layouts/header') -%>
+<body>
+  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
+  <div class="page-body">
+    <div class="page-name">
+      <h1>Employee Documents Tracker</h1>
+    </div>
+    <% if (message) { %>
+    <div
+      class="alert alert-dismissible alert-success fade show auto-dismiss-alert"
+      role="alert"
+      id="autoDismissAlert"
+    >
+      <strong>Attention!</strong><%= message.message %><a
+        href="#"
+        class="alert-link"
+      ></a>
+    </div>
+    <% } %> <%# Search bar %>
+    <input
+      class="form-control me-sm-2"
+      type="text"
+      id="searchInput"
+      placeholder="Search"
+      style="margin-bottom: 20px"
+    />
+    <div class="page-container">
+      <% if (logincollection.length > 0) { %> <% logincollection.forEach(row =>
+      { %>
+      <div class="page-item">
+        <div class="card mb-3 account-card">
+          <div
+            class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
+          >
+            <span class="card-text-name"><%= row.name %></span>
+            <div class="dropdown options">
+              <button
+                class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-caret-down"></i>
+              </button>
+              <div
+                class="dropdown-menu dropdown-menu-right"
+                aria-labelledby="dropdownMenuButton"
+              >
+                <a
+                  href="#"
+                  style="color: red"
+                  class="dropdown-item btn-archive"
+                  data-file="<%= row.name %>"
+                  >Delete</a
+                >
+              </div>
+            </div>
+          </div>
+          <a href="#" class="hover-div">
+            <div
+              class="imageacc-preview"
+              style="
+                background-image: url('../<%= row.image %>');
+                background-size: cover;
+              "
+            ></div>
+          </a>
+          <a class="card-footer card-options file-date"><%= row.email %></a>
+        </div>
+      </div>
+      <% }); %> <% } else { %>
+      <p>No files found.</p>
+      <% } %>
+    </div>
+  </div>
+</body>
+<%- include('./layouts/footer') -%>
