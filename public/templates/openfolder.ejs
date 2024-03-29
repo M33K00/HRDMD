@@ -3,7 +3,8 @@
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
   <div class="page-body">
     <div class="page-name">
-      <h1>Document Tracker (SHARED)</h1>
+      <h1><%= user.name %>'s Folder</h1>
+      <h5><%= user.email %></h5>
     </div>
     <% if (message) { %>
     <div
@@ -18,7 +19,11 @@
     </div>
     <% } %> <%# Upload form %>
     <div class="upload-container">
-      <form action="/upload" method="post" enctype="multipart/form-data">
+      <form
+        action="/uploaddocument"
+        method="post"
+        enctype="multipart/form-data"
+      >
         <div class="form-group" style="display: flex">
           <input
             type="file"
@@ -36,6 +41,7 @@
             Upload
           </button>
         </div>
+        <input type="hidden" name="name" value="<%= user.name %>" />
       </form>
     </div>
     <%# Search bar %>
@@ -168,8 +174,9 @@
                 <a
                   href="#"
                   style="color: red"
-                  class="dropdown-item btn-archive"
+                  class="dropdown-item delete-file"
                   data-file="<%= file.name %>"
+                  data-username="<%= user.name %>"
                   >Delete</a
                 >
               </div>
@@ -230,6 +237,36 @@
   <div class="page-footer"></div>
 </body>
 <%- include('./layouts/footer') -%>
+<script>
+  $(document).ready(function () {
+    // Handle click event for delete-file anchors
+    $(".delete-file").click(function (e) {
+      e.preventDefault(); // Prevent the default action of the anchor tag
+
+      // Get the filename from the data-file attribute
+      const filename = $(this).data("file");
+      const username = $(this).data("username"); // Get the username from the data-username attribute
+
+      // Send an AJAX request to delete the file
+      $.ajax({
+        url: `/deletefile/${filename}`, // Your delete file route
+        type: "POST", // Use POST method for file deletion
+        data: { username }, // Send the username as data
+        success: function (response) {
+          // Handle successful deletion
+          console.log(response); // Log the response from the server
+          window.location.reload();
+        },
+        error: function (xhr, status, error) {
+          // Handle error
+          console.error("Error deleting file:", error);
+          // Optionally, show an error message to the user
+        },
+      });
+    });
+  });
+</script>
+
 <!-- Rename Modal -->
 <div class="modal" id="renameModal">
   <div class="modal-dialog-centered" role="document">

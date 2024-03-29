@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 
 const userDocuSchema = new mongoose.Schema({
-  userID: {
-    type: String,
-  },
   name: {
     type: String,
     required: true,
@@ -14,9 +11,9 @@ const userDocuSchema = new mongoose.Schema({
     unique: true,
   },
   fileName: {
-    type: String,
+    type: [String],
     required: false,
-    default: "",
+    default: [],
   },
 });
 
