@@ -42,14 +42,6 @@ app.use(
   })
 );
 
-app.use(
-  csurf(
-    "123456789iamasecret987654321look", // secret -- must be 32 bits or chars in length
-    ["/addacc", "/update", "/edit", "/login"], // URLS we want to exclude from CSRF protection
-    ["POST"] // the request methods we want CSRF protection for
-  )
-);
-
 app.use((req, res, next) => {
   res.locals.message = req.session.message;
   delete req.session.message;
@@ -60,6 +52,8 @@ app.use((req, res, next) => {
 app.get("*", checkUser);
 app.use("", require("../routes/routes"));
 app.use("", require("../routes/document_routes.js"));
+app.use("", require("../routes/role1document_routes.js"));
+app.use("", require("../routes/role1routes.js"));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

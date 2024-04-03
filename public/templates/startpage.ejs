@@ -1,10 +1,10 @@
 <%- include('./layouts/header') -%>
 <body class="startbody">
-  <%- include('./layouts/nav') -%>
+
   <div class="start-container">
     <div class="row">
       <div class="col-md-4 hover-div">
-        <a href="home">
+        <a href="/document_tracker/<%= encodeURIComponent(user.hrrole) %>">
         <div class="card border-primary mb-3 shadow">
           <h3 class="card-header">Document Tracker</h3>
           <div class="card-body">
@@ -74,12 +74,12 @@
         </div>
       </div>
       <div class="col-md-4 hover-div">
-        <a href="manage_accounts">
+        <a href="/manage_account/<%= encodeURIComponent(user.hrrole) %>/<%= encodeURIComponent(user.name) %>">
         <div class="card border-primary mb-3 shadow">
-          <h3 class="card-header">Manage Accounts</h3>
+          <h3 class="card-header">Manage Account</h3>
           <div class="card-body">
             <h6 class="card-subtitle text-muted">
-              Manage accounts and verify users
+              Manage accounts and edit users
             </h6>
           </div>
           <svg

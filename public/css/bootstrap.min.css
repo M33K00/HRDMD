@@ -266,7 +266,16 @@
   margin: 0;
   border-radius: 5px;
 }
-
+.page-body {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+  background-color: #fff;
+  margin-top: 80px;
+  margin-left: 270px;
+  padding: 20px;
+  flex: 1;
+}
 .card-container {
   display: flex;
   flex-direction: column;
@@ -383,5 +392,36 @@
 }
 .card-text-name {
   font-weight: bold;
-  font-size: large;
+  font-size: 20px;
+}
+.login-body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Sidebar CSS */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px; /* Change to position sidebar on the right */
+  width: 300px;
+  height: 100%;
+  border-left: 1px solid #158cba;
+  background-color: #ffffff;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  transition: right 0.3s ease; /* Adjust transition for right positioning */
+  z-index: 9999;
+  padding-top: 60px;
+}
+.profile-image img {
+  object-fit: cover;
+  display: block;
+  margin: auto;
+  height: 200px;
+  width: 200px;
+  border: 2px solid #158cba;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
 }

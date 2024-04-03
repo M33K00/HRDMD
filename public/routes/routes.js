@@ -183,6 +183,57 @@ router.get("/", checkJWT, (req, res) => {
   res.render("login");
 });
 
+router.get("/document_tracker/:hrrole", async (req, res) => {
+  try {
+    const hrrole = req.params.hrrole;
+
+    console.log("hrrole:", hrrole);
+
+    // Check if hrrole is not provided or invalid
+    if (!hrrole || !["ADMIN", "ROLE 1", "ROLE 2"].includes(hrrole)) {
+      return res.status(400).send("Invalid hrrole");
+    }
+
+    // Based on the hrrole, render the appropriate template
+    if (hrrole === "ADMIN") {
+      res.redirect("/home");
+    } else if (hrrole === "ROLE 1") {
+      res.redirect("/role1");
+    } else if (hrrole === "ROLE 2") {
+      res.redirect("/role2");
+    }
+  } catch (err) {
+    console.log("Error loading pages: ", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.get("/manage_account/:hrrole/:name", async (req, res) => {
+  try {
+    const hrrole = req.params.hrrole;
+    const name = req.params.name;
+
+    console.log("hrrole:", hrrole, "name:", name);
+
+    // Check if hrrole is not provided or invalid
+    if (!hrrole || !["ADMIN", "ROLE 1", "ROLE 2"].includes(hrrole)) {
+      return res.status(400).send("Invalid hrrole");
+    }
+
+    // Based on the hrrole, render the appropriate template
+    if (hrrole === "ADMIN") {
+      res.redirect("/manage_accounts");
+    } else if (hrrole === "ROLE 1") {
+      res.redirect(`/editacc/${encodeURIComponent(name)}`);
+    } else if (hrrole === "ROLE 2") {
+      res.redirect("/role2");
+    }
+  } catch (err) {
+    console.log("Error loading pages: ", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/manage_accounts", async (req, res) => {
   try {
     const logincollections = await LogInCollection.find();
@@ -190,10 +241,6 @@ router.get("/manage_accounts", async (req, res) => {
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }
-});
-
-router.get("/role1", (request, response) => {
-  response.render("role1");
 });
 
 router.get("/addacc", (req, res) => {

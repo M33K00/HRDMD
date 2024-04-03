@@ -1,30 +1,40 @@
 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/startpage">Human Resources Department</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarColor01"
-      aria-controls="navbarColor01"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <a class="navbar-brand" id="sidebarCollapse">Human Resources Department</a>
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav ms-auto">
         <% if (user) { %>
         <li class="nav-item">
-          <a class="nav-link active" href="#"
-            >Welcome, <%= user.name %>
+          <a class="nav-link nav-name active" href="#">
+            <%= user.email %>
             <span class="visually-hidden">(current)</span>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/logout">Log Out</a>
+          <a href="#" id="toggleSidebar" class="nav-link">
+            <img class="nav-img" src="<%= user.image %>" />
+          </a>
         </li>
         <% } %>
       </ul>
     </div>
   </div>
 </nav>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-body">
+    <div class="sidebar-image">
+      <div class="profile-image"><img src="<%= user.image %>" /></div>
+      <a class="username"><%= user.name %></a>
+    </div>
+    <div class="sidebar-menu">
+      <ul>
+        <li><a href="#">Link 1</a></li>
+        <li><a href="#">201 File</a></li>
+        <li><a href="/logout">Log Out</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="overlay"></div>

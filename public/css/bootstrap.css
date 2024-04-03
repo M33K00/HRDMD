@@ -12117,7 +12117,7 @@ a.list-group-item-danger.active:hover {
 .logo-img {
   width: 150px;
   margin-left: 15px;
-  margin-top: 10px;
+  margin-top: 70px;
   border-radius: 50%;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
 }
@@ -12184,34 +12184,4 @@ a.list-group-item-danger.active:hover {
   .side-nav {
     width: 110px;
   }
-}
-.page-body {
-  height: 100vh;
-  background-color: #fff;
-  margin-top: 80px;
-  margin-left: 270px;
-  padding: 20px;
-  flex: 1;
-}
-.btn-page-body {
-  width: 120px;
-  height: 40px;
-  margin: 0 10px;
-}
-.btn-page-add {
-  margin-left: auto;
-}
-.button-row {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 10px;
-}
-.rounded-box {
-  border-radius: 10px; /* Adjust the value as needed */
-  border: 2px solid #ccc; /* Example border style */
-  padding: 20px; /* Example padding */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
-}
-.btn-text {
-  color: white;
 }

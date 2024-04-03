@@ -5,9 +5,27 @@
     </a>
     <ul class="nav-links">
       <li>
-        <a href="/home"
+        <a href="/role1"
           ><i class="fa-solid fa-house"></i>
           <p>Home</p></a
+        >
+      </li>
+      <li>
+        <a href="#"
+          ><i class="fa-solid fa-trash"></i>
+          <p>Recycle Bin</p></a
+        >
+      </li>
+      <li>
+        <a href="/personalfolder/<%= encodeURIComponent(user.name) %>">
+          <i class="fa-solid fa-bell"></i>
+          <p>Personal Folder</p></a
+        >
+      </li>
+      <li>
+        <a href="/editacc/<%= encodeURIComponent(user.name) %>">
+          <i class="fa-solid fa-user"></i>
+          <p>Account Settings</p></a
         >
       </li>
       <li>

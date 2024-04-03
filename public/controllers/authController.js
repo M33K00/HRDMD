@@ -68,11 +68,6 @@ module.exports.login_post = async (req, res) => {
 
     // Check user role and send redirect URL if needed
     let redirectUrl = "/startpage"; // Default redirect URL
-    if (logincollection.hrrole === "ROLE 1") {
-      redirectUrl = "/role1";
-    } else if (logincollection.hrrole === "ROLE 2") {
-      redirectUrl = "/role2";
-    }
 
     res.status(200).json({ redirect: redirectUrl }); // Send redirect URL in response
   } catch (err) {
