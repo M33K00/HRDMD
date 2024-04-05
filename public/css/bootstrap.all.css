@@ -1,3 +1,15 @@
+.page-body {
+  position: relative;
+  overflow: visible;
+  height: 100vh;
+  background-color: #fff;
+  margin-top: 80px;
+  margin-left: 270px;
+  margin-bottom: 100px;
+  padding: 20px;
+  flex: 1;
+}
+
 .sidebar.active {
   right: 0; /* Change to position sidebar on the right */
 }
@@ -67,4 +79,54 @@
 .nav-link.nav-name {
   display: flex;
   align-items: center;
+}
+.folder-title {
+  color: #1f1f1f;
+  font-size: 20px;
+}
+
+.rolefolder-container {
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px; /* Gap between grid items */
+  grid-auto-rows: 50px; /* Default height for each row */
+}
+.rolefolder-container a {
+  text-decoration: inherit;
+}
+.rolefolder-item {
+  color: #1f1f1f;
+  display: flex;
+  align-items: center; /* Center vertically */
+  width: 250px;
+  height: 50px;
+  background-color: #f2f2f2;
+  border: 1px solid #313131;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease; /* Smooth transition effect */
+}
+
+.rolefolder-item:hover {
+  background-color: #c9c9c9; /* Change background color on hover */
+}
+
+.rolefolder-item i {
+  font-size: 25px;
+  margin-left: 10px;
+  margin-right: 10px; /* Space between icon and text */
+}
+
+.rolefolder-item p {
+  margin: 0; /* Remove default margin for <p> */
+}
+
+.rolefolder-item span {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.item-active {
+  background-color: #c9c9c9; /* Change background color on hover */
 }

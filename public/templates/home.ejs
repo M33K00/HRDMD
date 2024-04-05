@@ -3,7 +3,7 @@
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
   <div class="page-body">
     <div class="page-name">
-      <h1>Document Tracker (SHARED)</h1>
+      <h2>Document Tracker</h2>
     </div>
     <% if (message) { %>
     <div
@@ -38,6 +38,7 @@
         </div>
       </form>
     </div>
+
     <%# Search bar %>
     <input
       class="form-control me-sm-2"
@@ -46,7 +47,44 @@
       placeholder="Search"
       style="margin-bottom: 20px"
     />
+    <%# Folder Buttons %>
+    <h5 class="folder-title">Folders</h5>
+    <div class="rolefolder-container">
+      <a href="#"
+        ><div class="rolefolder-item item-active">
+          <i class="fa-regular fa-folder"></i>
+          <p>Shared Folder</p>
+        </div></a
+      >
+      <a href="#"
+        ><div class="rolefolder-item">
+          <i class="fa-regular fa-folder"></i>
+          <p>Consigliere</p>
+          <span class="badge rounded-pill bg-danger">1</span>
+        </div></a
+      >
+      <a href="#"
+        ><div class="rolefolder-item">
+          <i class="fa-regular fa-folder"></i>
+          <p>Underboss</p>
+        </div></a
+      >
+      <a href="#"
+        ><div class="rolefolder-item">
+          <i class="fa-regular fa-folder"></i>
+          <p>Caporegime</p>
+        </div></a
+      >
+      <a href="#"
+        ><div class="rolefolder-item">
+          <i class="fa-regular fa-folder"></i>
+          <p>Soldiers</p>
+          <span class="badge rounded-pill bg-danger">5</span>
+        </div></a
+      >
+    </div>
     <%# Filter %>
+    <h5 class="folder-title">Files</h5>
     <div class="sortation-container">
       <div
         class="btn-group filter-radio"
@@ -117,8 +155,6 @@
         </button>
       </div>
     </div>
-    <!-- Sort button -->
-
     <%# File list %>
     <div class="page-container">
       <% if (files.length > 0) { %> <% files.forEach(file => { %>
@@ -221,7 +257,6 @@
       <span id="enlargeButton" class="enlargeButton">Enlarge</span>
     </div>
   </div>
-  <div class="page-footer"></div>
 </body>
 <%- include('./layouts/footer') -%>
 <!-- Rename Modal -->

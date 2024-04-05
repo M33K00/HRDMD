@@ -1,14 +1,26 @@
-<%- include('./layouts/header') -%>
+<%- include('./layouts/role1layout') -%>
 <body>
-  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
+  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenavR1') %>
   <div class="page-body">
     <div class="page-name">
-      <h1><%= employee.name %>'s Folder</h1>
-      <h5><%= employee.email %></h5>
+      <h1>Recycle Bin</h1>
+      <div class="btn-group btn-group-toggle">
+        <a class="btn btn-secondary toggle-sort-btn" href="/restore"
+          ><button class="btn" id="restoreAllBtn">
+            <i class="fa-solid fa-trash-can-arrow-up"></i></button
+        ></a>
+        <a
+          href="/delete-all"
+          class="btn btn-secondary toggle-sort-btn"
+          id="deleteAllBtn"
+          ><button class="btn">
+            <i class="fa-solid fa-trash-can"></i></button
+        ></a>
+      </div>
     </div>
     <% if (message) { %>
     <div
-      class="alert alert-dismissible alert-success fade show auto-dismiss-alert"
+      class="alert alert-dismissible alert-warning fade show"
       role="alert"
       id="autoDismissAlert"
     >
@@ -17,34 +29,7 @@
         class="alert-link"
       ></a>
     </div>
-    <% } %> <%# Upload form %>
-    <div class="upload-container">
-      <form
-        action="/uploaddocument"
-        method="post"
-        enctype="multipart/form-data"
-      >
-        <div class="form-group" style="display: flex">
-          <input
-            type="file"
-            class="form-control"
-            name="file"
-            accept=".doc, .docx, .pdf, .xlsx"
-            style="width: 300px"
-            required
-          />
-          <button
-            class="btn btn-secondary"
-            type="submit"
-            style="margin-left: 10px"
-          >
-            Upload
-          </button>
-        </div>
-        <input type="hidden" name="name" value="<%= user.name %>" />
-      </form>
-    </div>
-    <%# Search bar %>
+    <% } %> <%# Search bar %>
     <input
       class="form-control me-sm-2"
       type="text"
@@ -125,9 +110,8 @@
     </div>
     <!-- Sort button -->
 
-    <%# File list %>
+    <%# File list %> <% if (files.length > 0) { %> <% files.forEach(file => { %>
     <div class="page-container">
-      <% if (files.length > 0) { %> <% files.forEach(file => { %>
       <div class="page-item">
         <div class="card mb-3 file-card">
           <div
@@ -151,33 +135,10 @@
               >
                 <a
                   href="#"
-                  style="color: black"
-                  class="dropdown-item btn-rename"
-                  data-file="<%= file.name %>"
-                  >Rename</a
-                >
-                <a
-                  href="/download/<%= file.name %>"
-                  style="color: black"
-                  class="dropdown-item"
-                  >Download File</a
-                >
-                <% if (file.name.endsWith('.docx')) { %>
-                <a
-                  href="#"
-                  style="color: black"
-                  class="dropdown-item convert-link"
-                  data-filename="<%= file.name %>"
-                  >Convert</a
-                >
-                <% } %>
-                <a
-                  href="#"
                   style="color: red"
-                  class="dropdown-item delete-file"
+                  class="dropdown-item btn-delete"
                   data-file="<%= file.name %>"
-                  data-username="<%= user.name %>"
-                  >Delete</a
+                  >Permanently Delete</a
                 >
               </div>
             </div>
@@ -193,13 +154,7 @@
               DOCX
             </div>
             <% } else if (file.name.endsWith('.xlsx')) { %>
-            <div
-              class="file-preview"
-              style="
-                background-image: url('../images/gigachad.png');
-                background-size: cover;
-              "
-            >
+            <div class="file-preview" style="background-color: darkgreen">
               EXCEL
             </div>
             <% } else { %>
@@ -211,13 +166,15 @@
           </a>
           <a class="card-footer card-options file-date"><%= file.mtime %></a>
         </div>
+        </div>  
       </div>
-      <% }); %> <% } else { %>
-      <p>No files found.</p>
+      <% }) %> <% } else { %>
+      <div class="no-files">
+        <h3>No Files Detected</h3>
+      </div>
       <% } %>
     </div>
   </div>
-  <!-- PDF Modal-->
   <div id="modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -237,61 +194,3 @@
   <div class="page-footer"></div>
 </body>
 <%- include('./layouts/footer') -%>
-<script>
-  $(document).ready(function () {
-    // Handle click event for delete-file anchors
-    $(".delete-file").click(function (e) {
-      e.preventDefault(); // Prevent the default action of the anchor tag
-
-      // Get the filename from the data-file attribute
-      const filename = $(this).data("file");
-      const username = $(this).data("username"); // Get the username from the data-username attribute
-
-      // Send an AJAX request to delete the file
-      $.ajax({
-        url: `/deletefile/${filename}`, // Your delete file route
-        type: "POST", // Use POST method for file deletion
-        data: { username }, // Send the username as data
-        success: function (response) {
-          // Handle successful deletion
-          console.log(response); // Log the response from the server
-          window.location.reload();
-        },
-        error: function (xhr, status, error) {
-          // Handle error
-          console.error("Error deleting file:", error);
-          // Optionally, show an error message to the user
-        },
-      });
-    });
-  });
-</script>
-
-<!-- Rename Modal -->
-<div class="modal" id="renameModal">
-  <div class="modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Enter the new file name:</h5>
-      </div>
-      <div class="modal-body">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" id="newFileNameInput" />
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="renameBtn">
-          Save changes
-        </button>
-        <button
-          type="button"
-          id="closerename"
-          class="btn btn-secondary"
-          data-bs-dismiss="modal"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>

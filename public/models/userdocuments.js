@@ -15,6 +15,11 @@ const userDocuSchema = new mongoose.Schema({
     required: false,
     default: [],
   },
+  recycleBin: {
+    type: [String],
+    required: false,
+    default: [],
+  },
 });
 
 // Custom method to insert one document into UserDocuments collection

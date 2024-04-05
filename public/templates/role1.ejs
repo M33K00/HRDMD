@@ -1,11 +1,9 @@
 <%- include('./layouts/role1layout') -%>
 <body>
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenavR1') %>
-</head>
-<body>
   <div class="page-body">
     <div class="page-name">
-      <h1>Document Tracker (SHARED)</h1>
+      <h2>Document Tracker</h2>
     </div>
     <% if (message) { %>
     <div
@@ -40,6 +38,7 @@
         </div>
       </form>
     </div>
+
     <%# Search bar %>
     <input
       class="form-control me-sm-2"
@@ -48,7 +47,31 @@
       placeholder="Search"
       style="margin-bottom: 20px"
     />
+    <%# Folder Buttons %>
+    <h5 class="folder-title">Folders</h5>
+    <div class="role1folder-container">
+      <a href="#"
+        ><div class="role1folder-item item-active">
+          <i class="fa-regular fa-folder"></i>
+          <p>Shared Folder</p>
+        </div></a
+      >
+      <a href="#"
+        ><div class="role1folder-item">
+          <i class="fa-regular fa-folder"></i>
+          <p>Caporegime</p>
+        </div></a
+      >
+      <a href="#"
+        ><div class="role1folder-item">
+          <i class="fa-regular fa-folder"></i>
+          <p>Soldiers</p>
+          <span class="badge rounded-pill bg-danger">5</span>
+        </div></a
+      >
+    </div>
     <%# Filter %>
+    <h5 class="folder-title">Files</h5>
     <div class="sortation-container">
       <div
         class="btn-group filter-radio"
@@ -119,8 +142,6 @@
         </button>
       </div>
     </div>
-    <!-- Sort button -->
-
     <%# File list %>
     <div class="page-container">
       <% if (files.length > 0) { %> <% files.forEach(file => { %>
@@ -145,13 +166,6 @@
                 class="dropdown-menu dropdown-menu-right"
                 aria-labelledby="dropdownMenuButton"
               >
-                <a
-                  href="#"
-                  style="color: black"
-                  class="dropdown-item btn-rename"
-                  data-file="<%= file.name %>"
-                  >Rename</a
-                >
                 <a
                   href="/download/<%= file.name %>"
                   style="color: black"
@@ -207,7 +221,6 @@
       <span id="enlargeButton" class="enlargeButton">Enlarge</span>
     </div>
   </div>
-  <div class="page-footer"></div>
 </body>
 <%- include('./layouts/footer') -%>
 <!-- Rename Modal -->

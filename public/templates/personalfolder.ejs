@@ -12,7 +12,7 @@
       role="alert"
       id="autoDismissAlert"
     >
-      <strong>Attention!</strong><%= message.message %><a
+      <strong>Attention! </strong><%= message.message %><a
         href="#"
         class="alert-link"
       ></a>
@@ -167,6 +167,14 @@
                   >Convert</a
                 >
                 <% } %>
+                <a
+                  href="#"
+                  style="color: rgb(0, 0, 0)"
+                  class="dropdown-item submit-file"
+                  data-file="<%= file.name %>"
+                  data-username="<%= user.name %>"
+                  >Submit for Approval</a
+                >
                 <a
                   href="#"
                   style="color: red"

@@ -70,15 +70,15 @@ router.get("/personalfolder/:name", async (req, res) => {
     const name = req.params.name;
 
     // Find user by name to get the "fileName" field
-    const user = await UserDocuments.findOne({ name });
+    const employee = await UserDocuments.findOne({ name });
 
-    if (!user) {
+    if (!employee) {
       return res.redirect("/employeedocument");
     }
 
     const employeefiles = "./files/employeedocument";
     // Retrieve file names from the user's "fileName" field
-    const fileNames = user.fileName; // Corrected field name
+    const fileNames = employee.fileName; // Corrected field name
 
     const files = fileNames.map((fileName) => {
       const filePath = path.join(employeefiles, fileName);
@@ -102,7 +102,51 @@ router.get("/personalfolder/:name", async (req, res) => {
     });
 
     // Pass the files data to the "/openfolder" route
-    res.render("personalfolder", { user, files });
+    res.render("personalfolder", { employee, files });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Open Recycle Bin/Archive
+router.get("/archive_user/:name", async (req, res) => {
+  try {
+    const name = req.params.name;
+
+    // Find user by name to get the "fileName" field
+    const user = await UserDocuments.findOne({ name });
+
+    if (!user) {
+      return res.redirect("/role1_archive");
+    }
+
+    const employee_archive = "./files/employee_archive";
+    const fileNames = user.recycleBin;
+
+    const files = fileNames.map((fileName) => {
+      const filePath = path.join(employee_archive, fileName);
+      const stats = fs.statSync(filePath);
+      const sizeInBytes = stats.size;
+      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+      // Convert mtime to desired format
+      const mtime = stats.mtime.toLocaleString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return {
+        name: fileName,
+        size: sizeInMB + " MB",
+        mtime: mtime,
+      };
+    });
+
+    // Pass the files data to the "/openfolder" route
+    res.render("role1_archive", { files });
   } catch (error) {
     console.error("Error reading directory:", error);
     res.status(500).send("Internal Server Error");

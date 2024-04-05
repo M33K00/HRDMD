@@ -341,15 +341,15 @@ router.get("/openfolder/:name", async (req, res) => {
     const name = req.params.name;
 
     // Find user by name to get the "fileName" field
-    const user = await UserDocuments.findOne({ name });
+    const employee = await UserDocuments.findOne({ name });
 
-    if (!user) {
+    if (!employee) {
       return res.redirect("/employeedocument");
     }
 
     const employeefiles = "./files/employeedocument";
     // Retrieve file names from the user's "fileName" field
-    const fileNames = user.fileName; // Corrected field name
+    const fileNames = employee.fileName; // Corrected field name
 
     const files = fileNames.map((fileName) => {
       const filePath = path.join(employeefiles, fileName);
@@ -373,7 +373,7 @@ router.get("/openfolder/:name", async (req, res) => {
     });
 
     // Pass the files data to the "/openfolder" route
-    res.render("openfolder", { user, files });
+    res.render("openfolder", { employee, files });
   } catch (error) {
     console.error("Error reading directory:", error);
     res.status(500).send("Internal Server Error");
