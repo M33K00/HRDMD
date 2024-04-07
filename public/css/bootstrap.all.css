@@ -1,3 +1,74 @@
+.hover-div {
+  transition: filter 0.3s ease, opacity 0.3s ease;
+  filter: brightness(100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+}
+
+.hover-div:hover {
+  filter: brightness(50%);
+}
+
+.hover-div a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.hover-div-sp {
+  transition: filter 0.3s ease, opacity 0.3s ease;
+  filter: brightness(100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 280px;
+}
+
+.hover-div-sp:hover {
+  filter: brightness(50%);
+}
+
+.hover-div-sp a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.svg-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.startbody {
+  position: relative;
+  overflow: auto; /* Enable scrolling */
+}
+
+.start-container {
+  position: relative;
+  min-height: 100vh;
+  background-image: url("../images/lp.png"); /* Set the background image */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.startbg-2 img,
+.startbg-3 img {
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* Fill the container while maintaining aspect ratio */
+}
+
 .page-body {
   position: relative;
   overflow: visible;

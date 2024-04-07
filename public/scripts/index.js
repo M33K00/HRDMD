@@ -1,5 +1,4 @@
 require("dotenv").config();
-const csurf = require("tiny-csrf");
 const express = require("express");
 const session = require("express-session");
 const app = express();
@@ -11,7 +10,6 @@ const { checkUser } = require("../middleware/authMiddleware.js");
 
 const PORT = process.env.PORT || 4000;
 const templatePath = path.join(__dirname, "../templates");
-const layoutPath = path.join(__dirname, "../templates/layouts");
 const publicPath = path.join("public");
 
 app.use(express.static(publicPath));

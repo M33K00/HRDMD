@@ -1,44 +1,3 @@
-.hover-div {
-  transition: filter 0.3s ease, opacity 0.3s ease;
-  filter: brightness(100%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70%;
-}
-
-.hover-div:hover {
-  filter: brightness(50%);
-}
-
-.hover-div a {
-  text-decoration: none;
-  color: inherit;
-}
-.start-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 30px;
-}
-.svg-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-.shadow {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.startbody {
-  background-image: url("../images/cityhall.png");
-  background-size: cover;
-  background-position: center;
-}
-
 @import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900);
 
 * {
@@ -187,6 +146,8 @@
   height: 100px;
 }
 .page-container {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Grid with 5 columns */
   gap: 5px; /* Gap between grid items */
@@ -413,4 +374,8 @@
   border: 2px solid #158cba;
   border-radius: 5px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+}
+.startpage-icon {
+  font-size: 100px;
+  color: #158cba;
 }

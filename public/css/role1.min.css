@@ -43,3 +43,7 @@
 .item-active {
   background-color: #c9c9c9; /* Change background color on hover */
 }
+.startpage-icon {
+  font-size: 100px;
+  color: #c6471b;
+}
