@@ -1,6 +1,6 @@
-<%- include('./layouts/header') -%>
+<%- include('../layouts/role1layout') -%>
 <body>
-  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
+  <%- include('../layouts/nav') -%> <%- include('../layouts/sidenavR1') %>
   <div class="page-body">
     <div class="page-name">
       <h2>Document Tracker</h2>
@@ -49,37 +49,15 @@
     />
     <%# Folder Buttons %>
     <h5 class="folder-title">Folders</h5>
-    <div class="rolefolder-container">
-      <a href="#"
-        ><div class="rolefolder-item item-active">
+    <div class="role1folder-container">
+      <a href="/role1"
+        ><div class="role1folder-item">
           <i class="fa-regular fa-folder"></i>
           <p>Shared Folder</p>
         </div></a
       >
-      <a href="/role4_documents"
-        ><div class="rolefolder-item">
-          <i class="fa-regular fa-folder"></i>
-          <p>Consigliere</p>
-          <% if (role4directory_length > 0) { %>
-          <span class="badge rounded-pill bg-danger"
-            ><%= role4directory_length %></span
-          >
-          <% } %>
-        </div></a
-      >
-      <a href="/role3_documents"
-        ><div class="rolefolder-item">
-          <i class="fa-regular fa-folder"></i>
-          <p>Underboss</p>
-          <% if (role3directory_length > 0) { %>
-          <span class="badge rounded-pill bg-danger"
-            ><%= role3directory_length %></span
-          >
-          <% } %>
-        </div></a
-      >
-      <a href="/role2_documents"
-        ><div class="rolefolder-item">
+      <a href="/role2_docu"
+        ><div class="role1folder-item">
           <i class="fa-regular fa-folder"></i>
           <p>Caporegime</p>
           <% if (role2directory_length > 0) { %>
@@ -89,8 +67,8 @@
           <% } %>
         </div></a
       >
-      <a href="/role1_documents"
-        ><div class="rolefolder-item">
+      <a href="/role1_docu"
+        ><div class="role1folder-item item-active">
           <i class="fa-regular fa-folder"></i>
           <p>Soldiers</p>
           <% if (role1directory_length > 0) { %>
@@ -198,39 +176,16 @@
                 aria-labelledby="dropdownMenuButton"
               >
                 <a
-                  href="#"
-                  style="color: black"
-                  class="dropdown-item btn-rename"
-                  data-file="<%= file.name %>"
-                  >Rename</a
-                >
-                <a
                   href="/download/<%= file.name %>"
                   style="color: black"
                   class="dropdown-item"
                   >Download File</a
                 >
-                <% if (file.name.endsWith('.docx')) { %>
-                <a
-                  href="#"
-                  style="color: black"
-                  class="dropdown-item convert-link"
-                  data-filename="<%= file.name %>"
-                  >Convert</a
-                >
-                <% } %>
-                <a
-                  href="#"
-                  style="color: red"
-                  class="dropdown-item btn-archive"
-                  data-file="<%= file.name %>"
-                  >Delete</a
-                >
               </div>
             </div>
           </div>
           <a href="#" class="hover-div">
-            <!-- DIV to display different icons based on file extension -->
+            <!-- SVG element to display different icons based on file extension -->
             <% if (file.name.endsWith('.pdf')) { %>
             <div class="file-preview" style="background-color: #680404">
               PDF
@@ -254,7 +209,7 @@
         </div>
       </div>
       <% }); %> <% } else { %>
-      <p>No files found.</p>
+      <p>No documents needs approval</p>
       <% } %>
     </div>
   </div>
@@ -276,7 +231,7 @@
     </div>
   </div>
 </body>
-<%- include('./layouts/footer') -%>
+<%- include('../layouts/footer') -%>
 <!-- Rename Modal -->
 <div class="modal" id="renameModal">
   <div class="modal-dialog-centered" role="document">

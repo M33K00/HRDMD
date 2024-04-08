@@ -84,6 +84,22 @@
   });
 </script>
 
+<%# Delete role file Button %>
+<script>
+  const DeleteRF = document.querySelectorAll(".btn-deleterf");
+  DeleteRF.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const filename = button.getAttribute("data-file");
+      if (confirm(`RF Are you sure you want to delete ${filename}?`)) {
+        fetch(`/delete_rolefile?file=${filename}`)
+          .then(() => window.location.reload())
+          .catch((error) => console.error(error));
+      }
+    });
+  });
+</script>
+
 <%# SEARCH SCRIPT %>
 <script>
   // Get the search input element

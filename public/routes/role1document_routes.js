@@ -33,6 +33,8 @@ const employeeUpload = multer({ storage: employeeStorage });
 
 router.get("/role1", (request, response) => {
   const filesDirectory = "./files/documents";
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
 
   try {
     const fileNames = fs.readdirSync(filesDirectory);
@@ -58,7 +60,90 @@ router.get("/role1", (request, response) => {
     });
 
     // Pass the files data to the "/home" route
-    response.render("role1", { files });
+    response.render("role/role1_temps/role1", {
+      files,
+      role1directory_length,
+      role2directory_length,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
+// Role1 Documents
+router.get("/role1_docu", (req, res) => {
+  const role1directory = "./files/role1";
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
+
+  try {
+    const fileNames = fs.readdirSync(role1directory);
+    const files = fileNames.map((fileName) => {
+      const filePath = path.join(role1directory, fileName);
+      const stats = fs.statSync(filePath);
+      const sizeInBytes = stats.size;
+      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+      // Convert mtime to desired format
+      const mtime = stats.mtime.toLocaleString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return {
+        name: fileName,
+        size: sizeInMB + " MB",
+        mtime: mtime,
+      };
+    });
+
+    // Pass the files data to the "/role1_documents" route
+    res.render("role/role1_docu", {
+      files,
+      role1directory_length,
+      role2directory_length,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
+router.get("/role2_docu", (req, res) => {
+  const role2directory = "./files/role2";
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
+
+  try {
+    const fileNames = fs.readdirSync(role2directory);
+    const files = fileNames.map((fileName) => {
+      const filePath = path.join(role2directory, fileName);
+      const stats = fs.statSync(filePath);
+      const sizeInBytes = stats.size;
+      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+      // Convert mtime to desired format
+      const mtime = stats.mtime.toLocaleString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return {
+        name: fileName,
+        size: sizeInMB + " MB",
+        mtime: mtime,
+      };
+    });
+
+    // Pass the files data to the "/role1_documents" route
+    res.render("role/role2_docu", {
+      files,
+      role1directory_length,
+      role2directory_length,
+    });
   } catch (error) {
     console.error("Error reading directory:", error);
   }
@@ -146,7 +231,7 @@ router.get("/archive_user/:name", async (req, res) => {
     });
 
     // Pass the files data to the "/openfolder" route
-    res.render("role1_archive", { files });
+    res.render("role/role1_temps/role1_archive", { files });
   } catch (error) {
     console.error("Error reading directory:", error);
     res.status(500).send("Internal Server Error");

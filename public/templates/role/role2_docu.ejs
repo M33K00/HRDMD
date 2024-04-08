@@ -1,6 +1,6 @@
-<%- include('./layouts/role1layout') -%>
+<%- include('../layouts/role1layout') -%>
 <body>
-  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenavR1') %>
+  <%- include('../layouts/nav') -%> <%- include('../layouts/sidenavR1') %>
   <div class="page-body">
     <div class="page-name">
       <h2>Document Tracker</h2>
@@ -50,23 +50,32 @@
     <%# Folder Buttons %>
     <h5 class="folder-title">Folders</h5>
     <div class="role1folder-container">
-      <a href="#"
-        ><div class="role1folder-item item-active">
+      <a href="/role1"
+        ><div class="role1folder-item">
           <i class="fa-regular fa-folder"></i>
           <p>Shared Folder</p>
         </div></a
       >
-      <a href="#"
-        ><div class="role1folder-item">
+      <a href="/role2_docu"
+        ><div class="role1folder-item item-active">
           <i class="fa-regular fa-folder"></i>
           <p>Caporegime</p>
+          <% if (role2directory_length > 0) { %>
+          <span class="badge rounded-pill bg-danger"
+            ><%= role2directory_length %></span
+          >
+          <% } %>
         </div></a
       >
-      <a href="#"
+      <a href="/role1_docu"
         ><div class="role1folder-item">
           <i class="fa-regular fa-folder"></i>
           <p>Soldiers</p>
-          <span class="badge rounded-pill bg-danger">5</span>
+          <% if (role1directory_length > 0) { %>
+          <span class="badge rounded-pill bg-danger"
+            ><%= role1directory_length %></span
+          >
+          <% } %>
         </div></a
       >
     </div>
@@ -200,7 +209,7 @@
         </div>
       </div>
       <% }); %> <% } else { %>
-      <p>No files found.</p>
+      <p>No documents needs approval</p>
       <% } %>
     </div>
   </div>
@@ -222,7 +231,7 @@
     </div>
   </div>
 </body>
-<%- include('./layouts/footer') -%>
+<%- include('../layouts/footer') -%>
 <!-- Rename Modal -->
 <div class="modal" id="renameModal">
   <div class="modal-dialog-centered" role="document">

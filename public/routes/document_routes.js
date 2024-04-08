@@ -37,6 +37,10 @@ router.get("/startpage", requireAuth, (req, res) => {
 
 router.get("/home", (request, response) => {
   const filesDirectory = "./files/documents";
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
+  const role3directory_length = fs.readdirSync("./files/role3").length;
+  const role4directory_length = fs.readdirSync("./files/role4").length;
 
   try {
     const fileNames = fs.readdirSync(filesDirectory);
@@ -62,7 +66,185 @@ router.get("/home", (request, response) => {
     });
 
     // Pass the files data to the "/home" route
-    response.render("home", { files });
+    response.render("home", {
+      files,
+      role1directory_length,
+      role2directory_length,
+      role3directory_length,
+      role4directory_length,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
+router.get("/role1_documents", (req, res) => {
+  const role1directory = "./files/role1";
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
+  const role3directory_length = fs.readdirSync("./files/role3").length;
+  const role4directory_length = fs.readdirSync("./files/role4").length;
+
+  try {
+    const fileNames = fs.readdirSync(role1directory);
+    const files = fileNames.map((fileName) => {
+      const filePath = path.join(role1directory, fileName);
+      const stats = fs.statSync(filePath);
+      const sizeInBytes = stats.size;
+      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+      // Convert mtime to desired format
+      const mtime = stats.mtime.toLocaleString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return {
+        name: fileName,
+        size: sizeInMB + " MB",
+        mtime: mtime,
+      };
+    });
+
+    // Pass the files data to the "/role1_documents" route
+    res.render("/role1_documents", {
+      files,
+      role1directory_length,
+      role2directory_length,
+      role3directory_length,
+      role4directory_length,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
+router.get("/role2_documents", (req, res) => {
+  const role2directory = "./files/role2";
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
+  const role3directory_length = fs.readdirSync("./files/role3").length;
+  const role4directory_length = fs.readdirSync("./files/role4").length;
+
+  try {
+    const fileNames = fs.readdirSync(role2directory);
+    const files = fileNames.map((fileName) => {
+      const filePath = path.join(role2directory, fileName);
+      const stats = fs.statSync(filePath);
+      const sizeInBytes = stats.size;
+      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+      // Convert mtime to desired format
+      const mtime = stats.mtime.toLocaleString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return {
+        name: fileName,
+        size: sizeInMB + " MB",
+        mtime: mtime,
+      };
+    });
+
+    // Pass the files data to the "/role1_documents" route
+    res.render("role2_documents", {
+      files,
+      role1directory_length,
+      role2directory_length,
+      role3directory_length,
+      role4directory_length,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
+router.get("/role3_documents", (req, res) => {
+  const role3directory = "./files/role3";
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
+  const role3directory_length = fs.readdirSync("./files/role3").length;
+  const role4directory_length = fs.readdirSync("./files/role4").length;
+
+  try {
+    const fileNames = fs.readdirSync(role3directory);
+    const files = fileNames.map((fileName) => {
+      const filePath = path.join(role3directory, fileName);
+      const stats = fs.statSync(filePath);
+      const sizeInBytes = stats.size;
+      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+      // Convert mtime to desired format
+      const mtime = stats.mtime.toLocaleString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return {
+        name: fileName,
+        size: sizeInMB + " MB",
+        mtime: mtime,
+      };
+    });
+
+    // Pass the files data to the "/role1_documents" route
+    res.render("role3_documents", {
+      files,
+      role1directory_length,
+      role2directory_length,
+      role3directory_length,
+      role4directory_length,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
+router.get("/role4_documents", (req, res) => {
+  const role4directory = "./files/role4";
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
+  const role3directory_length = fs.readdirSync("./files/role3").length;
+  const role4directory_length = fs.readdirSync("./files/role4").length;
+
+  try {
+    const fileNames = fs.readdirSync(role4directory);
+    const files = fileNames.map((fileName) => {
+      const filePath = path.join(role4directory, fileName);
+      const stats = fs.statSync(filePath);
+      const sizeInBytes = stats.size;
+      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+      // Convert mtime to desired format
+      const mtime = stats.mtime.toLocaleString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return {
+        name: fileName,
+        size: sizeInMB + " MB",
+        mtime: mtime,
+      };
+    });
+
+    // Pass the files data to the "/role1_documents" route
+    res.render("role4_documents", {
+      files,
+      role1directory_length,
+      role2directory_length,
+      role3directory_length,
+      role4directory_length,
+    });
   } catch (error) {
     console.error("Error reading directory:", error);
   }
@@ -129,6 +311,26 @@ router.use(
   express.static(path.join(__dirname, "../../files/documents"))
 );
 
+router.use(
+  "/files/role4",
+  express.static(path.join(__dirname, "../../files/role4"))
+);
+
+router.use(
+  "/files/role3",
+  express.static(path.join(__dirname, "../../files/role3"))
+);
+
+router.use(
+  "/files/role2",
+  express.static(path.join(__dirname, "../../files/role2"))
+);
+
+router.use(
+  "/files/role1",
+  express.static(path.join(__dirname, "../../files/role1"))
+);
+
 // Route to download files
 
 // Function to retrieve the list of files in the documents directory
@@ -163,6 +365,73 @@ router.get("/delete", (req, res) => {
       }
       console.log(`File ${filename} deleted successfully`);
 
+      // Get updated file list after deletion
+      getFileList((err, files) => {
+        if (err) {
+          // Handle error appropriately
+          res.status(500).send("Error retrieving file list");
+          return;
+        }
+        // Send the updated file list to the client
+        res.json({ files });
+      });
+    });
+  } else {
+    // Handle case where no file name is provided
+    res.status(400).send("No file specified for deletion");
+  }
+});
+
+router.get("/delete_rolefile", (req, res) => {
+  const filename = req.query.file;
+
+  if (filename) {
+    // Array to store the paths of folders to check
+    const foldersToCheck = ["role1", "role2", "role3", "role4"];
+    let fileDeleted = false;
+
+    // Function to recursively check and delete file from each folder
+    const deleteFileFromFolders = (folders, callback) => {
+      if (folders.length === 0) {
+        // If no more folders to check, invoke the callback
+        callback();
+        return;
+      }
+
+      const currentFolder = folders.shift(); // Get and remove the first folder from the array
+      const filePath = path.join(
+        __dirname,
+        `../../files/${currentFolder}/`,
+        filename
+      );
+
+      fs.unlink(filePath, (err) => {
+        if (!err) {
+          console.log(`File ${filename} deleted from ${currentFolder}`);
+          fileDeleted = true; // Set flag indicating file was deleted
+          // Continue checking remaining folders
+          deleteFileFromFolders(folders, callback);
+
+          req.session.message = {
+            type: "info",
+            message: " File Deleted Successfully",
+          };
+        } else {
+          // File not found in current folder, check next folder
+          deleteFileFromFolders(folders, callback);
+        }
+      });
+    };
+
+    // Call the recursive function to delete file from folders
+    deleteFileFromFolders([...foldersToCheck], () => {
+      if (!fileDeleted) {
+        console.error(`File ${filename} not found in any folder`);
+        res.status(404).send("File not found");
+        return;
+      }
+
+      // File deleted successfully from at least one folder
       // Get updated file list after deletion
       getFileList((err, files) => {
         if (err) {

@@ -1,6 +1,8 @@
-<%- include('./layouts/header') -%>
-<body>
-  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
+<% if (user.hrrole === 'ADMIN') { %>
+  <%- include('../layouts/header') -%>
+<% } else { %>
+  <%- include('../layouts/role1layout') -%>
+<% } %>
   <div class="page-body">
     <div class="page-name">
       <h2>Document Tracker</h2>
@@ -50,8 +52,8 @@
     <%# Folder Buttons %>
     <h5 class="folder-title">Folders</h5>
     <div class="rolefolder-container">
-      <a href="#"
-        ><div class="rolefolder-item item-active">
+      <a href="home"
+        ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
           <p>Shared Folder</p>
         </div></a
@@ -90,7 +92,7 @@
         </div></a
       >
       <a href="/role1_documents"
-        ><div class="rolefolder-item">
+        ><div class="rolefolder-item item-active">
           <i class="fa-regular fa-folder"></i>
           <p>Soldiers</p>
           <% if (role1directory_length > 0) { %>
@@ -230,7 +232,7 @@
             </div>
           </div>
           <a href="#" class="hover-div">
-            <!-- DIV to display different icons based on file extension -->
+            <!-- SVG element to display different icons based on file extension -->
             <% if (file.name.endsWith('.pdf')) { %>
             <div class="file-preview" style="background-color: #680404">
               PDF
@@ -254,7 +256,7 @@
         </div>
       </div>
       <% }); %> <% } else { %>
-      <p>No files found.</p>
+      <p>No documents that needs approval</p>
       <% } %>
     </div>
   </div>
@@ -276,7 +278,7 @@
     </div>
   </div>
 </body>
-<%- include('./layouts/footer') -%>
+<%- include('../layouts/footer') -%>
 <!-- Rename Modal -->
 <div class="modal" id="renameModal">
   <div class="modal-dialog-centered" role="document">

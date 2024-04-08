@@ -199,5 +199,63 @@
 }
 
 .item-active {
-  background-color: #c9c9c9; /* Change background color on hover */
+  background-color: #f2f2f2; /* Change background color on hover */
+  border: 3px solid #ffffff;
+  color: #525252;
+}
+
+.file-preview-role4 {
+  margin: 5px;
+  width: 91%;
+  height: 90%;
+  background-color: #4d4d4d; /* Fill color for the div */
+  border-radius: 5px; /* Border radius for rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.125rem;
+  color: #dee2e6;
+  border: 1px solid #5a5a5a; /* Border style with 2px width and black color */
+}
+
+.file-preview-role3 {
+  margin: 5px;
+  width: 91%;
+  height: 90%;
+  background-color: #4d4d4d; /* Fill color for the div */
+  border-radius: 5px; /* Border radius for rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.125rem;
+  color: #dee2e6;
+  border: 1px solid #5a5a5a; /* Border style with 2px width and black color */
+}
+
+.file-preview-role2 {
+  margin: 5px;
+  width: 91%;
+  height: 90%;
+  background-color: #4d4d4d; /* Fill color for the div */
+  border-radius: 5px; /* Border radius for rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.125rem;
+  color: #dee2e6;
+  border: 1px solid #5a5a5a; /* Border style with 2px width and black color */
+}
+
+.file-preview-role1 {
+  margin: 5px;
+  width: 91%;
+  height: 90%;
+  background-color: #4d4d4d; /* Fill color for the div */
+  border-radius: 5px; /* Border radius for rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.125rem;
+  color: #dee2e6;
+  border: 1px solid #5a5a5a; /* Border style with 2px width and black color */
 }

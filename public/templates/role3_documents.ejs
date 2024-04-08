@@ -50,8 +50,8 @@
     <%# Folder Buttons %>
     <h5 class="folder-title">Folders</h5>
     <div class="rolefolder-container">
-      <a href="#"
-        ><div class="rolefolder-item item-active">
+      <a href="/home"
+        ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
           <p>Shared Folder</p>
         </div></a
@@ -68,7 +68,7 @@
         </div></a
       >
       <a href="/role3_documents"
-        ><div class="rolefolder-item">
+        ><div class="rolefolder-item item-active">
           <i class="fa-regular fa-folder"></i>
           <p>Underboss</p>
           <% if (role3directory_length > 0) { %>
@@ -222,7 +222,7 @@
                 <a
                   href="#"
                   style="color: red"
-                  class="dropdown-item btn-archive"
+                  class="dropdown-item btn-deleterf"
                   data-file="<%= file.name %>"
                   >Delete</a
                 >
@@ -230,9 +230,9 @@
             </div>
           </div>
           <a href="#" class="hover-div">
-            <!-- DIV to display different icons based on file extension -->
+            <!-- SVG element to display different icons based on file extension -->
             <% if (file.name.endsWith('.pdf')) { %>
-            <div class="file-preview" style="background-color: #680404">
+            <div class="file-preview-role4" style="background-color: #680404">
               PDF
             </div>
             <% } else if (file.name.endsWith('.docx')) { %>
@@ -254,7 +254,7 @@
         </div>
       </div>
       <% }); %> <% } else { %>
-      <p>No files found.</p>
+      <p>No documents that needs approval</p>
       <% } %>
     </div>
   </div>
@@ -276,6 +276,25 @@
     </div>
   </div>
 </body>
+<script>
+  document.querySelectorAll(".file-preview-role4").forEach(function (svg) {
+    svg.addEventListener("click", function () {
+      var modal = document.getElementById("modal");
+      modal.style.display = "block";
+
+      // Set the source of the iframe to the PDF file
+      var fileName = svg
+        .closest(".page-item")
+        .querySelector(".card-text").textContent;
+      var pdfViewer = document.getElementById("pdfViewer");
+      pdfViewer.src = "../../files/role4/" + fileName;
+    });
+  });
+
+  document.querySelector(".close").addEventListener("click", function () {
+    document.getElementById("modal").style.display = "none";
+  });
+</script>
 <%- include('./layouts/footer') -%>
 <!-- Rename Modal -->
 <div class="modal" id="renameModal">
