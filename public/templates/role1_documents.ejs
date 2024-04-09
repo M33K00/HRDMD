@@ -1,8 +1,6 @@
-<% if (user.hrrole === 'ADMIN') { %>
-  <%- include('../layouts/header') -%>
-<% } else { %>
-  <%- include('../layouts/role1layout') -%>
-<% } %>
+<%- include('./layouts/header') -%>
+<body>
+  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
   <div class="page-body">
     <div class="page-name">
       <h2>Document Tracker</h2>
@@ -55,13 +53,13 @@
       <a href="home"
         ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
-          <p>Shared Folder</p>
+          <p>All Files</p>
         </div></a
       >
       <a href="/role4_documents"
         ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
-          <p>Consigliere</p>
+          <p>Director Files</p>
           <% if (role4directory_length > 0) { %>
           <span class="badge rounded-pill bg-danger"
             ><%= role4directory_length %></span
@@ -72,7 +70,7 @@
       <a href="/role3_documents"
         ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
-          <p>Underboss</p>
+          <p>Manager Files</p>
           <% if (role3directory_length > 0) { %>
           <span class="badge rounded-pill bg-danger"
             ><%= role3directory_length %></span
@@ -83,7 +81,7 @@
       <a href="/role2_documents"
         ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
-          <p>Caporegime</p>
+          <p>Individual Contributor</p>
           <% if (role2directory_length > 0) { %>
           <span class="badge rounded-pill bg-danger"
             ><%= role2directory_length %></span
@@ -94,7 +92,7 @@
       <a href="/role1_documents"
         ><div class="rolefolder-item item-active">
           <i class="fa-regular fa-folder"></i>
-          <p>Soldiers</p>
+          <p>Entry Level</p>
           <% if (role1directory_length > 0) { %>
           <span class="badge rounded-pill bg-danger"
             ><%= role1directory_length %></span
@@ -278,7 +276,7 @@
     </div>
   </div>
 </body>
-<%- include('../layouts/footer') -%>
+<%- include('./layouts/footer') -%>
 <!-- Rename Modal -->
 <div class="modal" id="renameModal">
   <div class="modal-dialog-centered" role="document">

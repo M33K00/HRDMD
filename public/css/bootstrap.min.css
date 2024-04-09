@@ -1,5 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900);
-
 * {
   margin: 0;
   padding: 0;
@@ -10,6 +9,96 @@
   --color: #166e67;
   --gap: 0.5rem;
   --radius: 5px;
+}
+
+.logo {
+  display: block;
+  margin-bottom: 80px;
+}
+.logo-img {
+  width: 150px;
+  margin-left: 15px;
+  margin-top: 70px;
+  border-radius: 50%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.side-nav {
+  width: 250px;
+  height: 100%;
+  background: #158cba;
+  position: fixed;
+  top: 59px;
+  left: 0;
+  padding: 20px 30px;
+  z-index: 1;
+}
+.nav-links {
+  list-style: none;
+  position: relative;
+  padding-left: 0px;
+}
+.nav-links li {
+  padding: 10px 0;
+  height: 70px;
+}
+.nav-links li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+}
+.nav-links li a i {
+  font-size: 20px;
+  margin-right: 20px;
+}
+.nav-links li a p {
+  margin-bottom: 0px;
+}
+.active-button {
+  background: white;
+  width: 100%;
+  height: 47px;
+  position: absolute;
+  left: 0;
+  top: 2.6%;
+  z-index: -1;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.4);
+  display: none;
+  transition: top 0.5s;
+}
+.nav-links li:hover a {
+  color: #0d5470;
+  transition: 0.3s;
+}
+.nav-links li:hover ~ .active-button {
+  display: block;
+}
+.nav-links li:nth-child(1):hover ~ .active-button {
+  top: 2.6%;
+}
+.nav-links li:nth-child(2):hover ~ .active-button {
+  top: 19.6%;
+}
+.nav-links li:nth-child(3):hover ~ .active-button {
+  top: 35.8%;
+}
+.nav-links li:nth-child(4):hover ~ .active-button {
+  top: 52.4%;
+}
+.nav-links li:nth-child(5):hover ~ .active-button {
+  top: 69%;
+}
+.nav-links li:nth-child(6):hover ~ .active-button {
+  top: 85.6%;
+}
+
+@media only screen and (max-width: 600px) {
+  .side-nav {
+    width: 110px;
+  }
 }
 
 .bx {
@@ -152,6 +241,15 @@
   grid-template-columns: repeat(4, 1fr); /* Grid with 5 columns */
   gap: 5px; /* Gap between grid items */
   grid-auto-rows: 300px; /* Default height for each row */
+}
+
+.page-container-acc {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Grid with 5 columns */
+  gap: 5px; /* Gap between grid items */
+  grid-auto-rows: 370px; /* Default height for each row */
 }
 
 .page-item {

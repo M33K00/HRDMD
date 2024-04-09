@@ -374,3 +374,37 @@
     }, 5000); // 5000 milliseconds = 5 seconds
   }
 </script>
+
+<%# Search Table %>
+<script>
+  function searchTable() {
+    const input = document.getElementById("accInput");
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById("table");
+    const tbody = table.getElementsByTagName("tbody")[0];
+    const rows = tbody.getElementsByTagName("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const cells = row.getElementsByTagName("td");
+      let found = false;
+
+      for (let j = 0; j < cells.length; j++) {
+        const cell = cells[j];
+        if (cell) {
+          const textValue = cell.textContent || cell.innerText;
+          if (textValue.toLowerCase().indexOf(filter) > -1) {
+            found = true;
+            break;
+          }
+        }
+      }
+
+      if (found) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    }
+  }
+</script>
