@@ -8,16 +8,6 @@ const LogInCollection = require("../models/logincollections");
 const UserDocuments = require("../models/userdocuments");
 const { requireAuth } = require("../middleware/authMiddleware");
 
-const documentStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./files/documents");
-  },
-  filename: (req, file, cb) => {
-    const fileName = file.originalname;
-    cb(null, fileName); // Use the original filename without any modifications
-  },
-});
-
 const employeeStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./files/employeedocument");
@@ -28,7 +18,6 @@ const employeeStorage = multer.diskStorage({
   },
 });
 
-const documentUpload = multer({ storage: documentStorage });
 const employeeUpload = multer({ storage: employeeStorage });
 
 router.get("/startpage", requireAuth, (req, res) => {
@@ -41,7 +30,7 @@ router.get("/home", (request, response) => {
   const role3directory_length = fs.readdirSync("./files/role3").length;
   const role4directory_length = fs.readdirSync("./files/role4").length;
   const roleDirectories = [
-    { name: "HR File", path: "./files/role1" },
+    { name: "Entry Level", path: "./files/role1" },
     { name: "Individual Contributors", path: "./files/role2" },
     { name: "HR Manager", path: "./files/role3" },
     { name: "HR Director", path: "./files/role4" },
@@ -63,10 +52,12 @@ router.get("/home", (request, response) => {
           hour: "numeric",
           minute: "numeric",
         });
+        const timestamp = stats.mtime.getTime();
         return {
           name: fileName,
           size: sizeInMB + " MB",
           mtime: mtime,
+          timestamp: timestamp,
           folder: directory.name,
         };
       });
@@ -78,13 +69,103 @@ router.get("/home", (request, response) => {
       return allFiles.concat(roleFiles);
     }, []);
 
-    // Pass the files data to the "/statusboard" route
+    const currentDate = new Date();
+
+    const groupTimestamps = [
+      new Date(
+        currentDate.getFullYear(), // This Year
+        currentDate.getMonth(), // This Month
+        1 // Day 1
+      ).getTime(),
+      new Date(
+        currentDate.getFullYear(), // This Year
+        currentDate.getMonth() - 1, // Last Month
+        1 // Day 1
+      ).getTime(),
+      new Date(
+        currentDate.getFullYear(), // This Year
+        currentDate.getMonth() - 2, // Last 2 Months
+        1 // Day 1
+      ).getTime(),
+      new Date(
+        currentDate.getFullYear(), // This Year
+        currentDate.getMonth() - 3, // Last 3 Months
+        1 // Day 1
+      ).getTime(),
+    ];
+
+    // Each groupTimestamp represents the earlier boundary of a group
+    // eg.
+    //   This Month (groupName 0) is from day 1 of this month (groupTimestamp 0) until present
+    //   Last Month (groupName 1) is from day 1 of last month (groupTimestamp 1) until day 1 of this month (groupTimestamp 0)
+    //   ...
+
+    // Present
+    //  |
+    //  | Group 0 (This Month)
+    //  |
+    // groupTimestap 0 (Day 1 of this month)
+    //  |
+    //  | Group 1 (Last Month)
+    //  |
+    // groupTimestap 1 (Day 1 of last month)
+    // ...
+
+    // Put files into groups
+
+    const groupFiles = [];
+
+    for (var gago in groupTimestamps) {
+      groupFiles.push([]);
+    }
+
+    const lastGroup = [];
+
+    groupFiles.push(lastGroup);
+
+    for (var file of allRoleFiles) {
+      const fileTimestamp = file.timestamp;
+
+      // Hacky way to use some()
+      // some() will terminate once true is returned by the iteration function,
+      // and return true itself if it does
+
+      groupFound = groupTimestamps.some(function (groupTimestamp, i) {
+        if (fileTimestamp >= groupTimestamps[i]) {
+          // If a file is newer than a group timestamp,
+          // add that to the corresponding group
+          groupFiles[i].push(file);
+          // And return true to terminate the some() loop and make `groupFound` true as well
+          return true;
+        }
+        // If file is older, return false or whatever the fuck to check the next timestamp
+        return false;
+      });
+
+      if (!groupFound) {
+        // If a file didn't belong to a group,
+        // add it to the last group "Older Than Your Mom"
+        lastGroup.push(file);
+      }
+    }
+
+    filesThisMonth = groupFiles[0];
+    filesLastMonth = groupFiles[1];
+    filesLastTwoMonths = groupFiles[2];
+    filesLastThreeMonths = groupFiles[3];
+    filesOlderThanThreeMonths = groupFiles[4];
+
     response.render("home", {
       allRoleFiles,
       role1directory_length,
       role2directory_length,
       role3directory_length,
       role4directory_length,
+      filesOlderThanThreeMonths,
+      filesLastThreeMonths,
+      filesLastTwoMonths,
+      filesLastMonth,
+      filesThisMonth,
     });
   } catch (error) {
     console.error("Error reading directory:", error);
@@ -266,7 +347,7 @@ router.get("/role4_documents", (req, res) => {
 // Status Board Route
 router.get("/statusboard", (request, response) => {
   const roleDirectories = [
-    { name: "HR File", path: "./files/role1" },
+    { name: "Entry Level", path: "./files/role1" },
     { name: "Individual Contributors", path: "./files/role2" },
     { name: "HR Manager", path: "./files/role3" },
     { name: "HR Director", path: "./files/role4" },
@@ -344,28 +425,6 @@ router.get("/archive", (request, response) => {
   } catch (error) {
     console.error("Error reading directory:", error);
   }
-});
-
-router.post("/upload", documentUpload.single("file"), (req, res) => {
-  // Check if a file was uploaded
-  if (!req.file) {
-    console.error("No file uploaded");
-    res.status(400).send("No file uploaded");
-    return;
-  }
-
-  // Get the filename of the uploaded file
-  const filename = req.file.filename;
-
-  // Log the successful upload message
-  console.log(`File ${filename} uploaded successfully`);
-
-  req.session.message = {
-    type: "info",
-    message: " Upload Successfully",
-  };
-
-  res.redirect("home");
 });
 
 router.use(

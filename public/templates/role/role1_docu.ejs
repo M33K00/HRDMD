@@ -18,7 +18,7 @@
     </div>
     <% } %> <%# Upload form %>
     <div class="upload-container">
-      <form action="/upload" method="post" enctype="multipart/form-data">
+      <form action="/role1upload" method="post" enctype="multipart/form-data">
         <div class="form-group" style="display: flex">
           <input
             type="file"
@@ -53,13 +53,13 @@
       <a href="/role1"
         ><div class="role1folder-item">
           <i class="fa-regular fa-folder"></i>
-          <p>Shared Folder</p>
+          <p>All Files</p>
         </div></a
       >
       <a href="/role2_docu"
         ><div class="role1folder-item">
           <i class="fa-regular fa-folder"></i>
-          <p>Caporegime</p>
+          <p>Individual Contributor</p>
           <% if (role2directory_length > 0) { %>
           <span class="badge rounded-pill bg-danger"
             ><%= role2directory_length %></span
@@ -70,7 +70,7 @@
       <a href="/role1_docu"
         ><div class="role1folder-item item-active">
           <i class="fa-regular fa-folder"></i>
-          <p>Soldiers</p>
+          <p>Entry-level</p>
           <% if (role1directory_length > 0) { %>
           <span class="badge rounded-pill bg-danger"
             ><%= role1directory_length %></span
@@ -187,7 +187,7 @@
           <a href="#" class="hover-div">
             <!-- SVG element to display different icons based on file extension -->
             <% if (file.name.endsWith('.pdf')) { %>
-            <div class="file-preview" style="background-color: #680404">
+            <div class="file-preview r1" style="background-color: #680404">
               PDF
             </div>
             <% } else if (file.name.endsWith('.docx')) { %>
@@ -232,6 +232,25 @@
   </div>
 </body>
 <%- include('../layouts/footer') -%>
+<script>
+  document.querySelectorAll(".r1").forEach(function (svg) {
+    svg.addEventListener("click", function () {
+      var modal = document.getElementById("modal");
+      modal.style.display = "block";
+
+      // Set the source of the iframe to the PDF file
+      var fileName = svg
+        .closest(".page-item")
+        .querySelector(".card-text").textContent;
+      var pdfViewer = document.getElementById("pdfViewer");
+      pdfViewer.src = "../../files/role1/" + fileName;
+    });
+  });
+
+  document.querySelector(".close").addEventListener("click", function () {
+    document.getElementById("modal").style.display = "none";
+  });
+</script>
 <!-- Rename Modal -->
 <div class="modal" id="renameModal">
   <div class="modal-dialog-centered" role="document">

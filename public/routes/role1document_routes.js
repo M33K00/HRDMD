@@ -32,36 +32,49 @@ const documentUpload = multer({ storage: documentStorage });
 const employeeUpload = multer({ storage: employeeStorage });
 
 router.get("/role1", (request, response) => {
-  const filesDirectory = "./files/documents";
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
+  const role3directory_length = fs.readdirSync("./files/role3").length;
+  const role4directory_length = fs.readdirSync("./files/role4").length;
+  const roleDirectories = [
+    { name: "Entry Level", path: "./files/role1" },
+    { name: "Individual Contributors", path: "./files/role2" },
+  ];
 
   try {
-    const fileNames = fs.readdirSync(filesDirectory);
-    const files = fileNames.map((fileName) => {
-      const filePath = path.join(filesDirectory, fileName);
-      const stats = fs.statSync(filePath);
-      const sizeInBytes = stats.size;
-      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
-      // Convert mtime to desired format
-      const mtime = stats.mtime.toLocaleString("en-US", {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-        hour: "numeric",
-        minute: "numeric",
+    function getFilesInfo(directory) {
+      const fileNames = fs.readdirSync(directory.path); // Use directory.path to get the directory path
+      const filesInfo = fileNames.map((fileName) => {
+        const filePath = path.join(directory.path, fileName); // Use directory.path here too
+        const stats = fs.statSync(filePath);
+        const sizeInBytes = stats.size;
+        const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+        // Convert mtime to desired format
+        const mtime = stats.mtime.toLocaleString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "2-digit",
+          hour: "numeric",
+          minute: "numeric",
+        });
+        return {
+          name: fileName,
+          size: sizeInMB + " MB",
+          mtime: mtime,
+          folder: directory.name,
+        };
       });
-      return {
-        name: fileName,
-        size: sizeInMB + " MB",
-        mtime: mtime,
-      };
-    });
+      return filesInfo;
+    }
 
-    // Pass the files data to the "/home" route
+    const allRoleFiles = roleDirectories.reduce((allFiles, directory) => {
+      const roleFiles = getFilesInfo(directory);
+      return allFiles.concat(roleFiles);
+    }, []);
+
+    // Pass the files data to the "/statusboard" route
     response.render("role/role1_temps/role1", {
-      files,
+      allRoleFiles,
       role1directory_length,
       role2directory_length,
     });

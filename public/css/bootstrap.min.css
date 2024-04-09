@@ -240,7 +240,6 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Grid with 5 columns */
   gap: 5px; /* Gap between grid items */
-  grid-auto-rows: 300px; /* Default height for each row */
 }
 
 .page-container-acc {
@@ -254,7 +253,7 @@
 
 .page-item {
   width: 300px; /* Fixed width for each card */
-  height: 350px; /* Fixed height for each card */
+  height: 300px; /* Fixed height for each card */
   background-color: transparent;
 }
 
@@ -369,6 +368,7 @@
 }
 
 .file-card {
+  background-color: #f2f2f2;
   height: 280px;
   display: inline-block;
   border-radius: 10px;

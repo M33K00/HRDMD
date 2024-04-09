@@ -50,6 +50,7 @@ app.use((req, res, next) => {
 app.get("*", checkUser);
 app.use("", require("../routes/routes"));
 app.use("", require("../routes/document_routes.js"));
+app.use("", require("../routes/upload_routes.js"));
 app.use("", require("../routes/role1document_routes.js"));
 app.use("", require("../routes/role1routes.js"));
 

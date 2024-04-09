@@ -234,8 +234,8 @@
       <p>No files found.</p>
       <% } %>
     </div>
+    <%# Sortation %>
   </div>
-  <!-- PDF Modal-->
   <div id="modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -250,6 +250,483 @@
         scrollbar="0"
       ></iframe>
       <span id="enlargeButton" class="enlargeButton">Enlarge</span>
+    </div>
+  </div>
+  <div class="page-body2">
+    <div class="sort-title">
+      <h5
+        class="collapse-title"
+        data-toggle="collapse"
+        data-target="#collapseThisMonth"
+      >
+        This Month <i class="fa-solid fa-caret-down"></i>
+      </h5>
+    </div>
+    <div class="collapse" id="collapseThisMonth">
+      <div class="page-container">
+        <% if (filesThisMonth.length > 0) { %> <% filesThisMonth.forEach(file =>
+        { %>
+        <div class="page-item">
+          <div class="card mb-3 file-card">
+            <div
+              class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
+            >
+              <span class="card-text"><%= file.name %></span>
+              <div class="dropdown options">
+                <button
+                  class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fa-solid fa-caret-down"></i>
+                </button>
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <a
+                    href="#"
+                    style="color: black"
+                    class="dropdown-item btn-rename"
+                    data-file="<%= file.name %>"
+                    >Rename</a
+                  >
+                  <a
+                    href="/download/<%= file.name %>"
+                    style="color: black"
+                    class="dropdown-item"
+                    >Download File</a
+                  >
+                  <% if (file.name.endsWith('.docx')) { %>
+                  <a
+                    href="#"
+                    style="color: black"
+                    class="dropdown-item convert-link"
+                    data-filename="<%= file.name %>"
+                    >Convert</a
+                  >
+                  <% } %>
+                  <a
+                    href="#"
+                    style="color: red"
+                    class="dropdown-item btn-archive"
+                    data-file="<%= file.name %>"
+                    >Delete</a
+                  >
+                </div>
+              </div>
+            </div>
+            <a href="#" class="hover-div">
+              <!-- DIV to display different icons based on file extension -->
+              <% if (file.name.endsWith('.pdf')) { %>
+              <div class="file-preview" style="background-color: #680404">
+                PDF
+              </div>
+              <% } else if (file.name.endsWith('.docx')) { %>
+              <div class="file-preview" style="background-color: #00326b">
+                DOCX
+              </div>
+              <% } else if (file.name.endsWith('.xlsx')) { %>
+              <div class="file-preview" style="background-color: #006b12">
+                EXCEL
+              </div>
+              <% } else { %>
+              <!-- Default icon for other file types -->
+              <div class="file-preview" style="background-color: lightskyblue">
+                UNKNOWN
+              </div>
+              <% } %>
+            </a>
+            <a class="card-footer card-options file-date"><%= file.mtime %></a>
+          </div>
+        </div>
+        <% }); %> <% } else { %>
+        <p class="no-files">No files found.</p>
+        <% } %>
+      </div>
+    </div>
+    <div class="sort-title">
+      <h5
+        class="collapse-title"
+        data-toggle="collapse"
+        data-target="#collapseLastMonth"
+      >
+        Last Month <i class="fa-solid fa-caret-down"></i>
+      </h5>
+    </div>
+    <div class="collapse" id="collapseLastMonth">
+      <div class="page-container">
+        <% if (filesLastMonth.length > 0) { %> <% filesLastMonth.forEach(file =>
+        { %>
+        <div class="page-item">
+          <div class="card mb-3 file-card">
+            <div
+              class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
+            >
+              <span class="card-text"><%= file.name %></span>
+              <div class="dropdown options">
+                <button
+                  class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fa-solid fa-caret-down"></i>
+                </button>
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <a
+                    href="#"
+                    style="color: black"
+                    class="dropdown-item btn-rename"
+                    data-file="<%= file.name %>"
+                    >Rename</a
+                  >
+                  <a
+                    href="/download/<%= file.name %>"
+                    style="color: black"
+                    class="dropdown-item"
+                    >Download File</a
+                  >
+                  <% if (file.name.endsWith('.docx')) { %>
+                  <a
+                    href="#"
+                    style="color: black"
+                    class="dropdown-item convert-link"
+                    data-filename="<%= file.name %>"
+                    >Convert</a
+                  >
+                  <% } %>
+                  <a
+                    href="#"
+                    style="color: red"
+                    class="dropdown-item btn-archive"
+                    data-file="<%= file.name %>"
+                    >Delete</a
+                  >
+                </div>
+              </div>
+            </div>
+            <a href="#" class="hover-div">
+              <!-- DIV to display different icons based on file extension -->
+              <% if (file.name.endsWith('.pdf')) { %>
+              <div class="file-preview" style="background-color: #680404">
+                PDF
+              </div>
+              <% } else if (file.name.endsWith('.docx')) { %>
+              <div class="file-preview" style="background-color: #00326b">
+                DOCX
+              </div>
+              <% } else if (file.name.endsWith('.xlsx')) { %>
+              <div class="file-preview" style="background-color: #006b12">
+                EXCEL
+              </div>
+              <% } else { %>
+              <!-- Default icon for other file types -->
+              <div class="file-preview" style="background-color: lightskyblue">
+                UNKNOWN
+              </div>
+              <% } %>
+            </a>
+            <a class="card-footer card-options file-date"><%= file.mtime %></a>
+          </div>
+        </div>
+        <% }); %> <% } else { %>
+        <p class="no-files">No files received last month.</p>
+        <% } %>
+      </div>
+    </div>
+    <div class="sort-title">
+      <h5
+        class="collapse-title"
+        data-toggle="collapse"
+        data-target="#collapseTwoMonth"
+      >
+        Last 2 Months <i class="fa-solid fa-caret-down"></i>
+      </h5>
+    </div>
+    <div class="collapse" id="collapseTwoMonth">
+      <div class="page-container">
+        <% if (filesLastTwoMonths.length > 0) { %> <%
+        filesLastTwoMonths.forEach(file => { %>
+        <div class="page-item">
+          <div class="card mb-3 file-card">
+            <div
+              class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
+            >
+              <span class="card-text"><%= file.name %></span>
+              <div class="dropdown options">
+                <button
+                  class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fa-solid fa-caret-down"></i>
+                </button>
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <a
+                    href="#"
+                    style="color: black"
+                    class="dropdown-item btn-rename"
+                    data-file="<%= file.name %>"
+                    >Rename</a
+                  >
+                  <a
+                    href="/download/<%= file.name %>"
+                    style="color: black"
+                    class="dropdown-item"
+                    >Download File</a
+                  >
+                  <% if (file.name.endsWith('.docx')) { %>
+                  <a
+                    href="#"
+                    style="color: black"
+                    class="dropdown-item convert-link"
+                    data-filename="<%= file.name %>"
+                    >Convert</a
+                  >
+                  <% } %>
+                  <a
+                    href="#"
+                    style="color: red"
+                    class="dropdown-item btn-archive"
+                    data-file="<%= file.name %>"
+                    >Delete</a
+                  >
+                </div>
+              </div>
+            </div>
+            <a href="#" class="hover-div">
+              <!-- DIV to display different icons based on file extension -->
+              <% if (file.name.endsWith('.pdf')) { %>
+              <div class="file-preview" style="background-color: #680404">
+                PDF
+              </div>
+              <% } else if (file.name.endsWith('.docx')) { %>
+              <div class="file-preview" style="background-color: #00326b">
+                DOCX
+              </div>
+              <% } else if (file.name.endsWith('.xlsx')) { %>
+              <div class="file-preview" style="background-color: #006b12">
+                EXCEL
+              </div>
+              <% } else { %>
+              <!-- Default icon for other file types -->
+              <div class="file-preview" style="background-color: lightskyblue">
+                UNKNOWN
+              </div>
+              <% } %>
+            </a>
+            <a class="card-footer card-options file-date"><%= file.mtime %></a>
+          </div>
+        </div>
+        <% }); %> <% } else { %>
+        <p class="no-files">No files received this past 2 months.</p>
+        <% } %>
+      </div>
+    </div>
+    <div class="sort-title">
+      <h5
+        class="collapse-title"
+        data-toggle="collapse"
+        data-target="#collapseThreeMonth"
+      >
+        Last 3 Months <i class="fa-solid fa-caret-down"></i>
+      </h5>
+    </div>
+    <div class="collapse" id="collapseThreeMonth">
+      <div class="page-container">
+        <% if (filesLastThreeMonths.length > 0) { %> <%
+        filesLastThreeMonths.forEach(file => { %>
+        <div class="page-item">
+          <div class="card mb-3 file-card">
+            <div
+              class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
+            >
+              <span class="card-text"><%= file.name %></span>
+              <div class="dropdown options">
+                <button
+                  class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fa-solid fa-caret-down"></i>
+                </button>
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <a
+                    href="#"
+                    style="color: black"
+                    class="dropdown-item btn-rename"
+                    data-file="<%= file.name %>"
+                    >Rename</a
+                  >
+                  <a
+                    href="/download/<%= file.name %>"
+                    style="color: black"
+                    class="dropdown-item"
+                    >Download File</a
+                  >
+                  <% if (file.name.endsWith('.docx')) { %>
+                  <a
+                    href="#"
+                    style="color: black"
+                    class="dropdown-item convert-link"
+                    data-filename="<%= file.name %>"
+                    >Convert</a
+                  >
+                  <% } %>
+                  <a
+                    href="#"
+                    style="color: red"
+                    class="dropdown-item btn-archive"
+                    data-file="<%= file.name %>"
+                    >Delete</a
+                  >
+                </div>
+              </div>
+            </div>
+            <a href="#" class="hover-div">
+              <!-- DIV to display different icons based on file extension -->
+              <% if (file.name.endsWith('.pdf')) { %>
+              <div class="file-preview" style="background-color: #680404">
+                PDF
+              </div>
+              <% } else if (file.name.endsWith('.docx')) { %>
+              <div class="file-preview" style="background-color: #00326b">
+                DOCX
+              </div>
+              <% } else if (file.name.endsWith('.xlsx')) { %>
+              <div class="file-preview" style="background-color: #006b12">
+                EXCEL
+              </div>
+              <% } else { %>
+              <!-- Default icon for other file types -->
+              <div class="file-preview" style="background-color: lightskyblue">
+                UNKNOWN
+              </div>
+              <% } %>
+            </a>
+            <a class="card-footer card-options file-date"><%= file.mtime %></a>
+          </div>
+        </div>
+        <% }); %> <% } else { %>
+        <p class="no-files">No files received this past 3 months.</p>
+        <% } %>
+      </div>
+    </div>
+    <div class="sort-title">
+      <h5
+        class="collapse-title"
+        data-toggle="collapse"
+        data-target="#collapseOlderThanThreeMonths"
+      >
+        Older than 3 Months <i class="fa-solid fa-caret-down"></i>
+      </h5>
+    </div>
+    <div class="collapse" id="collapseOlderThanThreeMonths">
+      <div class="page-container">
+        <% if (filesOlderThanThreeMonths.length > 0) { %> <%
+        filesOlderThanThreeMonths.forEach(file => { %>
+        <div class="page-item">
+          <div class="card mb-3 file-card">
+            <div
+              class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
+            >
+              <span class="card-text"><%= file.name %></span>
+              <div class="dropdown options">
+                <button
+                  class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fa-solid fa-caret-down"></i>
+                </button>
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <a
+                    href="#"
+                    style="color: black"
+                    class="dropdown-item btn-rename"
+                    data-file="<%= file.name %>"
+                    >Rename</a
+                  >
+                  <a
+                    href="/download/<%= file.name %>"
+                    style="color: black"
+                    class="dropdown-item"
+                    >Download File</a
+                  >
+                  <% if (file.name.endsWith('.docx')) { %>
+                  <a
+                    href="#"
+                    style="color: black"
+                    class="dropdown-item convert-link"
+                    data-filename="<%= file.name %>"
+                    >Convert</a
+                  >
+                  <% } %>
+                  <a
+                    href="#"
+                    style="color: red"
+                    class="dropdown-item btn-archive"
+                    data-file="<%= file.name %>"
+                    >Delete</a
+                  >
+                </div>
+              </div>
+            </div>
+            <a href="#" class="hover-div">
+              <!-- DIV to display different icons based on file extension -->
+              <% if (file.name.endsWith('.pdf')) { %>
+              <div class="file-preview" style="background-color: #680404">
+                PDF
+              </div>
+              <% } else if (file.name.endsWith('.docx')) { %>
+              <div class="file-preview" style="background-color: #00326b">
+                DOCX
+              </div>
+              <% } else if (file.name.endsWith('.xlsx')) { %>
+              <div class="file-preview" style="background-color: #006b12">
+                EXCEL
+              </div>
+              <% } else { %>
+              <!-- Default icon for other file types -->
+              <div class="file-preview" style="background-color: lightskyblue">
+                UNKNOWN
+              </div>
+              <% } %>
+            </a>
+            <a class="card-footer card-options file-date"><%= file.mtime %></a>
+          </div>
+        </div>
+        <% }); %> <% } else { %>
+        <p class="no-files">No files received this past 3 months.</p>
+        <% } %>
+      </div>
     </div>
   </div>
 </body>

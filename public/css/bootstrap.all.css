@@ -72,9 +72,19 @@
 .page-body {
   position: relative;
   overflow: visible;
-  height: 100vh;
+  height: fit-content;
   background-color: #fff;
   margin-top: 80px;
+  margin-left: 270px;
+  padding: 20px;
+  flex: 1;
+}
+
+.page-body2 {
+  position: relative;
+  overflow: visible;
+  height: fit-content;
+  background-color: #fff;
   margin-left: 270px;
   margin-bottom: 100px;
   padding: 20px;
@@ -284,4 +294,21 @@
   margin-right: 10px;
   width: 50px;
   height: 15px;
+}
+.sort-title {
+  margin-top: 10px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #313131;
+}
+.sort-title h5 {
+  font-weight: 500;
+}
+.sort-title a {
+  text-decoration: inherit;
+  color: inherit;
+}
+.no-files {
+  font-weight: 500;
+  margin-right: auto;
+  margin-left: 10px;
 }

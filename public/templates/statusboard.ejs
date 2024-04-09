@@ -8,16 +8,16 @@
     <%# Legend %>
     <div class="legend-container">
       <div class="legend-item">
-        <span class="badge bg-danger">  </span><a> HR Director</a>
+        <span class="badge bg-danger">  </span><a> Entry Level</a>
       </div>
       <div class="legend-item">
         <span class="badge bg-warning">  </span><a> Individual Contributors</a>
       </div>
       <div class="legend-item">
-        <span class="badge bg-success">  </span><a> HR Director</a>
+        <span class="badge bg-success">  </span><a> HR Manager</a>
       </div>
       <div class="legend-item">
-        <span class="badge bg-primary">  </span><a> HR Manager</a>
+        <span class="badge bg-primary">  </span><a> HR Director</a>
       </div>
     </div>
     <%# Search bar %>
@@ -59,13 +59,13 @@
                     <td><%= row.mtime %></td>
                     <td><%= row.name %></td>
                     <td><%= row.folder %></td>
-                    <td><% if (row.folder === "HR Manager") { %>
+                    <td><% if (row.folder === "HR Director") { %>
                         <span class="badge bg-primary table-span">
-                        <% } else if (row.folder === "HR Director") { %>
+                        <% } else if (row.folder === "HR Manager") { %>
                         <span class="badge bg-success table-span"> 
                         <% } else if (row.folder === "Individual Contributors") { %>
                         <span class="badge bg-warning table-span"> 
-                        <% } else if (row.folder === "HR Director") { %>
+                        <% } else if (row.folder === "Entry Level") { %>
                         <span class="badge bg-danger table-span"> 
                     <% } %></span></td>
                   </tr>

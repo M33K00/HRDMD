@@ -16,30 +16,7 @@
         class="alert-link"
       ></a>
     </div>
-    <% } %> <%# Upload form %>
-    <div class="upload-container">
-      <form action="/upload" method="post" enctype="multipart/form-data">
-        <div class="form-group" style="display: flex">
-          <input
-            type="file"
-            class="form-control"
-            name="file"
-            accept=".doc, .docx, .pdf, .xlsx"
-            style="width: 300px"
-            required
-          />
-          <button
-            class="btn btn-secondary"
-            type="submit"
-            style="margin-left: 10px"
-          >
-            Upload
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <%# Search bar %>
+    <% } %> <%# Search bar %>
     <input
       class="form-control me-sm-2"
       type="text"
@@ -53,13 +30,13 @@
       <a href="#"
         ><div class="role1folder-item item-active">
           <i class="fa-regular fa-folder"></i>
-          <p>Shared Folder</p>
+          <p>All Files</p>
         </div></a
       >
       <a href="/role2_docu"
         ><div class="role1folder-item">
           <i class="fa-regular fa-folder"></i>
-          <p>Manager Files</p>
+          <p>Individual Contributor</p>
           <% if (role2directory_length > 0) { %>
           <span class="badge rounded-pill bg-danger"
             ><%= role2directory_length %></span
@@ -153,7 +130,7 @@
     </div>
     <%# File list %>
     <div class="page-container">
-      <% if (files.length > 0) { %> <% files.forEach(file => { %>
+      <% if (allRoleFiles.length > 0) { %> <% allRoleFiles.forEach(file => { %>
       <div class="page-item">
         <div class="card mb-3 file-card">
           <div
