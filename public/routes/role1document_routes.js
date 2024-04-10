@@ -301,4 +301,51 @@ router.post("/uploadPerso", employeeUpload.single("file"), async (req, res) => {
   }
 });
 
+// Status Board Route
+router.get("/statusboard-r1", (request, response) => {
+  const roleDirectories = [
+    { name: "Entry Level", path: "./files/role1" },
+    { name: "Individual Contributors", path: "./files/role2" },
+  ];
+
+  try {
+    function getFilesInfo(directory) {
+      const fileNames = fs.readdirSync(directory.path); // Use directory.path to get the directory path
+      const filesInfo = fileNames.map((fileName) => {
+        const filePath = path.join(directory.path, fileName); // Use directory.path here too
+        const stats = fs.statSync(filePath);
+        const sizeInBytes = stats.size;
+        const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+        // Convert mtime to desired format
+        const mtime = stats.mtime.toLocaleString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "2-digit",
+          hour: "numeric",
+          minute: "numeric",
+        });
+        return {
+          name: fileName,
+          size: sizeInMB + " MB",
+          mtime: mtime,
+          folder: directory.name,
+        };
+      });
+      return filesInfo;
+    }
+
+    const allRoleFiles = roleDirectories.reduce((allFiles, directory) => {
+      const roleFiles = getFilesInfo(directory);
+      return allFiles.concat(roleFiles);
+    }, []);
+
+    // Pass the files data to the "/statusboard" route
+    response.render("role/role1_temps/statusboard-r1", {
+      allRoleFiles,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
 module.exports = router;

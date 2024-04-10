@@ -6,32 +6,32 @@
     <ul class="nav-links">
       <li>
         <a href="/role1"
-          ><i class="fa-solid fa-house"></i>
+          ><i class="fa-solid fa-folder"></i>
           <p style="font-size: 14px">Document Tracker</p></a
+        >
+      </li>
+      <li>
+        <a href="/statusboard-r1"
+          ><i class="fa-solid fa-bars-progress"></i>
+          <p style="font-size: 14px">Status Board</p></a
         >
       </li>
       <li>
         <a href="/personalfolder/<%= encodeURIComponent(user.name) %>">
           <i class="fa-solid fa-bell"></i>
-          <p>Personal Folder</p></a
-        >
-      </li>
-      <li>
-        <a href="/editacc/<%= encodeURIComponent(user.name) %>">
-          <i class="fa-solid fa-user"></i>
-          <p>Account Settings</p></a
+          <p style="font-size: 14px">Personal Folder</p></a
         >
       </li>
       <li>
         <a href="#"
           ><i class="fa-solid fa-fingerprint"></i>
-          <p>HRIS</p></a
+          <p style="font-size: 14px">HRIS</p></a
         >
       </li>
       <li>
         <a href="/archive_user/<%= encodeURIComponent(user.name) %>"
           ><i class="fa-solid fa-trash"></i>
-          <p>Archive</p></a
+          <p style="font-size: 14px">Archive</p></a
         >
       </li>
       <div class="active-button"></div>

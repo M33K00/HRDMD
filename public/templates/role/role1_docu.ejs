@@ -151,7 +151,11 @@
         </button>
       </div>
     </div>
-    <%# File list %>
+    <% if (files.length > 0) { %>
+    <p class="text-muted text-center mt-3 mb-4">
+      These files are currently waiting for approval
+    </p>
+    <% } %> <%# File list %>
     <div class="page-container">
       <% if (files.length > 0) { %> <% files.forEach(file => { %>
       <div class="page-item">

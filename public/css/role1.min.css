@@ -67,19 +67,16 @@
   top: 2.6%;
 }
 .nav-links li:nth-child(2):hover ~ .active-button {
-  top: 19.6%;
+  top: 22.6%;
 }
 .nav-links li:nth-child(3):hover ~ .active-button {
-  top: 35.8%;
+  top: 42.6%;
 }
 .nav-links li:nth-child(4):hover ~ .active-button {
-  top: 52.4%;
+  top: 62.6%;
 }
 .nav-links li:nth-child(5):hover ~ .active-button {
-  top: 69%;
-}
-.nav-links li:nth-child(6):hover ~ .active-button {
-  top: 85.6%;
+  top: 82.6%;
 }
 
 @media only screen and (max-width: 600px) {
@@ -136,4 +133,11 @@
 .startpage-icon {
   font-size: 100px;
   color: #c6471b;
+}
+.legend-container-r1 {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px; /* Gap between grid items */
+  grid-auto-rows: 40px; /* Default height for each row */
 }
