@@ -110,8 +110,9 @@
     </div>
     <!-- Sort button -->
 
-    <%# File list %> <% if (files.length > 0) { %> <% files.forEach(file => { %>
-    <div class="page-container">
+    <%# File list %>
+    <div class="page-container mt-3">
+      <% if (files.length > 0) { %> <% files.forEach(file => { %>
       <div class="page-item">
         <div class="card mb-3 file-card">
           <div
@@ -134,11 +135,17 @@
                 aria-labelledby="dropdownMenuButton"
               >
                 <a
-                  href="#"
+                  href="/download/<%= file.name %>"
+                  style="color: black"
+                  class="dropdown-item"
+                  >Download File</a
+                >
+                <a
+                  href=""
                   style="color: red"
                   class="dropdown-item btn-delete"
                   data-file="<%= file.name %>"
-                  >Permanently Delete</a
+                  >Permanently delete</a
                 >
               </div>
             </div>
@@ -154,7 +161,7 @@
               DOCX
             </div>
             <% } else if (file.name.endsWith('.xlsx')) { %>
-            <div class="file-preview" style="background-color: darkgreen">
+            <div class="file-preview" style="background-color: #006b12">
               EXCEL
             </div>
             <% } else { %>
@@ -166,12 +173,9 @@
           </a>
           <a class="card-footer card-options file-date"><%= file.mtime %></a>
         </div>
-        </div>  
       </div>
-      <% }) %> <% } else { %>
-      <div class="no-files">
-        <h3>No Files Detected</h3>
-      </div>
+      <% }); %> <% } else { %>
+      <p>No files archived.</p>
       <% } %>
     </div>
   </div>

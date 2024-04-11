@@ -6,25 +6,15 @@ const path = require("path");
 const docxConverter = require("docx-pdf");
 const LogInCollection = require("../models/logincollections");
 const UserDocuments = require("../models/userdocuments");
+const rejectedDocuments = require("../models/rejecteddocuments");
 const { requireAuth } = require("../middleware/authMiddleware");
-
-const employeeStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./files/employeedocument");
-  },
-  filename: (req, file, cb) => {
-    const fileName = file.originalname;
-    cb(null, fileName); // Use the original filename without any modifications
-  },
-});
-
-const employeeUpload = multer({ storage: employeeStorage });
 
 router.get("/startpage", requireAuth, (req, res) => {
   res.render("startpage");
 });
 
 router.get("/home", (request, response) => {
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
   const role3directory_length = fs.readdirSync("./files/role3").length;
@@ -157,6 +147,7 @@ router.get("/home", (request, response) => {
 
     response.render("home", {
       allRoleFiles,
+      rejecteddirectory_length,
       role1directory_length,
       role2directory_length,
       role3directory_length,
@@ -347,6 +338,7 @@ router.get("/role4_documents", (req, res) => {
 // Status Board Route
 router.get("/statusboard", (request, response) => {
   const roleDirectories = [
+    { name: "Rejected", path: "./files/rejected" },
     { name: "Entry Level", path: "./files/role1" },
     { name: "Individual Contributors", path: "./files/role2" },
     { name: "HR Manager", path: "./files/role3" },
@@ -570,28 +562,45 @@ router.get("/delete_rolefile", (req, res) => {
   }
 });
 
-// Recycle Bin
-router.get("/recyclebin", (req, res) => {
+router.get("/recyclebin", async (req, res) => {
   const fileName = req.query.file;
+  const hrrole = req.query.hrrole;
+  const name = req.query.name;
+
+  console.log(fileName, hrrole, name);
 
   if (!fileName) {
     return res.status(400).send("No file specified for moving to archive");
   }
+  if (!hrrole) {
+    return res.status(400).send("No role specified for moving to archive");
+  }
 
-  const sourceFilePath = path.join(
-    __dirname,
-    "../../files/documents/",
-    fileName
-  );
+  sourceFilePath = path.join(__dirname, "../../files/rejected/", fileName);
+
+  if (!fs.existsSync(sourceFilePath)) {
+    console.error("File not found at:", sourceFilePath);
+    return res.status(404).send("File not found");
+  }
+
+  const user = await rejectedDocuments.findOneAndDelete({ fileName, name });
+
+  if (!user) {
+    console.error("User not found");
+    return res.status(404).send("User not found");
+  }
+
+  console.log("User found and deleted:", user);
+
   const destFolderPath = path.join(__dirname, "../../files/archive/");
 
   fs.rename(sourceFilePath, path.join(destFolderPath, fileName), (err) => {
     if (err) {
-      console.error(`Error moving file ${fileName} to archive: ${err}`); // Use fileName here
+      console.error(`Error moving file ${fileName} to archive: ${err}`);
       return res.status(500).send("Error moving file to archive");
     }
 
-    console.log(`File ${fileName} moved to archive successfully`); // Use fileName here
+    console.log(`File ${fileName} moved to archive successfully`);
     res.redirect("/home");
   });
 });
@@ -769,60 +778,6 @@ router.get("/openfolder/:name", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-router.post(
-  "/uploaddocument",
-  employeeUpload.single("file"),
-  async (req, res) => {
-    try {
-      // Check if a file was uploaded
-      if (!req.file) {
-        console.error("No file uploaded");
-        res.status(400).send("No file uploaded");
-        return;
-      }
-
-      // Get the filename of the uploaded file
-      const filename = req.file.filename;
-
-      // Extract the name parameter from the form data
-      const { name } = req.body;
-
-      console.log("Uploaded filename:", filename); // Log uploaded filename
-      console.log("User name from form data:", name); // Log user name from form data
-
-      // Update the user document with the new file name
-      const user = await UserDocuments.findOne({ name });
-
-      if (!user) {
-        console.error("User not found");
-        res.status(404).send("User not found");
-        return;
-      }
-
-      console.log("User found:", user); // Log user document found in the database
-
-      // Add the new file name to the fileName array
-      user.fileName.push(filename);
-      await user.save();
-
-      // Log the successful upload message
-      console.log(
-        `File ${filename} uploaded successfully and added to user's files`
-      );
-
-      req.session.message = {
-        type: "info",
-        message: "Upload Successfully",
-      };
-
-      res.redirect(`/openfolder/${name}`);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      res.status(500).send("Internal Server Error");
-    }
-  }
-);
 
 router.post("/deletefile/:filename", async (req, res) => {
   try {

@@ -1,6 +1,7 @@
 <script src="../../scripts/jquery.min.js"></script>
 <script src="../../scripts/datatables.js"></script>
 <script src="https://kit.fontawesome.com/64cf43ccc2.js"></script>
+<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
@@ -24,8 +25,6 @@
     });
   });
 </script>
-
-<%# Delete Button %>
 <script>
   $(document).ready(function () {
     $("table").DataTable({
@@ -33,6 +32,7 @@
     });
   });
 </script>
+<%# Delete Button %>
 <script>
   const deleteButtons = document.querySelectorAll(".btn-delete");
   deleteButtons.forEach((button) => {
@@ -75,9 +75,36 @@
     button.addEventListener("click", (event) => {
       event.preventDefault();
       const filename = button.getAttribute("data-file");
+      const hrrole = button.getAttribute("data-hrrole");
+      const username = button.getAttribute("data-username");
       if (confirm(`Are you sure you want to delete ${filename}?`)) {
-        fetch(`/recyclebin?file=${filename}`)
+        fetch(`/recyclebin?file=${filename}&hrrole=${hrrole}&name=${username}`)
           .then(() => window.location.reload())
+          .catch((error) => console.error(error));
+      }
+    });
+  });
+</script>
+
+<%# Reject Button %>
+<script>
+  const RejectButtons = document.querySelectorAll(".btn-reject");
+  RejectButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const filename = button.getAttribute("data-file");
+      const href = button.getAttribute("href");
+      if (confirm(`Are you sure you want to reject ${filename}?`)) {
+        fetch(`${href}`)
+          .then((response) => {
+            if (response.ok) {
+              const message = response.url.split("message=")[1]; // Extract message from URL
+              alert("Document Rejected Successfully"); // Display the message (you can use a better UI than alert)
+              window.location.reload(); // Reload the page
+            } else {
+              throw new Error("Error rejecting file");
+            }
+          })
           .catch((error) => console.error(error));
       }
     });

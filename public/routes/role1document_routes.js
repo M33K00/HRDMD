@@ -3,8 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const docxConverter = require("docx-pdf");
-const LogInCollection = require("../models/logincollections");
+const rejectedDocuments = require("../models/rejecteddocuments");
 const UserDocuments = require("../models/userdocuments");
 const { requireAuth } = require("../middleware/authMiddleware");
 
@@ -36,6 +35,7 @@ router.get("/role1", (request, response) => {
   const role2directory_length = fs.readdirSync("./files/role2").length;
   const role3directory_length = fs.readdirSync("./files/role3").length;
   const role4directory_length = fs.readdirSync("./files/role4").length;
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const roleDirectories = [
     { name: "Entry Level", path: "./files/role1" },
     { name: "Individual Contributors", path: "./files/role2" },
@@ -77,6 +77,27 @@ router.get("/role1", (request, response) => {
       allRoleFiles,
       role1directory_length,
       role2directory_length,
+      rejecteddirectory_length,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
+// Rejected Documents
+router.get("/rejected_docu", async (req, res) => {
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
+
+  try {
+    const rejectedDocs = await rejectedDocuments.find();
+    // Pass the files data to the "/role1_documents" route
+    res.render("role/rejected_docu", {
+      rejectedDocuments: rejectedDocs,
+      role1directory_length,
+      rejecteddirectory_length,
+      role2directory_length,
     });
   } catch (error) {
     console.error("Error reading directory:", error);
@@ -86,6 +107,7 @@ router.get("/role1", (request, response) => {
 // Role1 Documents
 router.get("/role1_docu", (req, res) => {
   const role1directory = "./files/role1";
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
 
@@ -115,6 +137,7 @@ router.get("/role1_docu", (req, res) => {
     // Pass the files data to the "/role1_documents" route
     res.render("role/role1_docu", {
       files,
+      rejecteddirectory_length,
       role1directory_length,
       role2directory_length,
     });
@@ -125,6 +148,7 @@ router.get("/role1_docu", (req, res) => {
 
 router.get("/role2_docu", (req, res) => {
   const role2directory = "./files/role2";
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
 
@@ -154,6 +178,7 @@ router.get("/role2_docu", (req, res) => {
     // Pass the files data to the "/role1_documents" route
     res.render("role/role2_docu", {
       files,
+      rejecteddirectory_length,
       role1directory_length,
       role2directory_length,
     });

@@ -1,6 +1,6 @@
-<%- include('../../layouts/role1layout') -%>
+<%- include('../layouts/role1layout') -%>
 <body>
-  <%- include('../../layouts/nav') -%> <%- include('../../layouts/sidenavR1') %>
+  <%- include('../layouts/nav') -%> <%- include('../layouts/sidenavR1') %>
   <div class="page-body">
     <div class="page-name">
       <h2>Document Tracker</h2>
@@ -27,8 +27,8 @@
     <%# Folder Buttons %>
     <h5 class="folder-title">Folders</h5>
     <div class="role1folder-container">
-      <a href="#"
-        ><div class="role1folder-item item-active">
+      <a href="/role1"
+        ><div class="role1folder-item">
           <i class="fa-regular fa-folder"></i>
           <p>All Files</p>
         </div></a
@@ -56,7 +56,7 @@
         </div></a
       >
       <a href="/rejected_docu"
-        ><div class="role1folder-item">
+        ><div class="role1folder-item item-active">
           <box-icon type="solid" name="x-square"></box-icon>
           <p>Rejected Documents</p>
           <% if (rejecteddirectory_length > 0) { %>
@@ -129,6 +129,7 @@
           >EXCEL</label
         >
       </div>
+
       <div class="btn-group btn-group-toggle">
         <button class="btn btn-secondary toggle-sort-btn">
           <i class="fa-solid fa-arrow-up-a-z"></i>
@@ -138,18 +139,18 @@
         </button>
       </div>
     </div>
-    <p class="text-muted text-center mt-3 mb-4">
-      This list does not contain rejected files
-    </p>
-    <%# File list %>
+    <% if (rejectedDocuments.length > 0) { %>
+    <p class="text-danger text-center mt-3 mb-4">These files rejected</p>
+    <% } %> <%# File list %>
     <div class="page-container">
-      <% if (allRoleFiles.length > 0) { %> <% allRoleFiles.forEach(file => { %>
+      <% if (rejectedDocuments.length > 0) { %> <%
+      rejectedDocuments.forEach(file => { %>
       <div class="page-item">
         <div class="card mb-3 file-card">
           <div
             class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
           >
-            <span class="card-text"><%= file.name %></span>
+            <span class="card-text"><%= file.fileName %></span>
             <div class="dropdown options">
               <button
                 class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
@@ -166,25 +167,28 @@
                 aria-labelledby="dropdownMenuButton"
               >
                 <a
-                  href="/download/<%= file.name %>"
-                  style="color: black"
-                  class="dropdown-item"
-                  >Download File</a
+                  href="#"
+                  style="color: red"
+                  class="dropdown-item btn-archive"
+                  data-username="<%= file.name %>"
+                  data-file="<%= file.fileName %>"
+                  data-hrrole="<%= file.hrrole %>"
+                  >Move to Archive</a
                 >
               </div>
             </div>
           </div>
           <a href="#" class="hover-div">
             <!-- SVG element to display different icons based on file extension -->
-            <% if (file.name.endsWith('.pdf')) { %>
-            <div class="file-preview" style="background-color: #680404">
+            <% if (file.fileName.endsWith('.pdf')) { %>
+            <div class="file-preview r1" style="background-color: #680404">
               PDF
             </div>
-            <% } else if (file.name.endsWith('.docx')) { %>
+            <% } else if (file.fileName.endsWith('.docx')) { %>
             <div class="file-preview" style="background-color: #00326b">
               DOCX
             </div>
-            <% } else if (file.name.endsWith('.xlsx')) { %>
+            <% } else if (file.fileName.endsWith('.xlsx')) { %>
             <div class="file-preview" style="background-color: #006b12">
               EXCEL
             </div>
@@ -195,11 +199,13 @@
             </div>
             <% } %>
           </a>
-          <a class="card-footer card-options file-date"><%= file.mtime %></a>
+          <a class="text-danger card-footer card-options file-date"
+            >Rejected By: <%= file.name %> - <%= file.hrrole %></a
+          >
         </div>
       </div>
       <% }); %> <% } else { %>
-      <p>No files found.</p>
+      <p>No documents needs approval</p>
       <% } %>
     </div>
   </div>
@@ -221,7 +227,26 @@
     </div>
   </div>
 </body>
-<%- include('../../layouts/footer') -%>
+<%- include('../layouts/footer') -%>
+<script>
+  document.querySelectorAll(".r1").forEach(function (svg) {
+    svg.addEventListener("click", function () {
+      var modal = document.getElementById("modal");
+      modal.style.display = "block";
+
+      // Set the source of the iframe to the PDF file
+      var fileName = svg
+        .closest(".page-item")
+        .querySelector(".card-text").textContent;
+      var pdfViewer = document.getElementById("pdfViewer");
+      pdfViewer.src = "../../files/role1/" + fileName;
+    });
+  });
+
+  document.querySelector(".close").addEventListener("click", function () {
+    document.getElementById("modal").style.display = "none";
+  });
+</script>
 <!-- Rename Modal -->
 <div class="modal" id="renameModal">
   <div class="modal-dialog-centered" role="document">

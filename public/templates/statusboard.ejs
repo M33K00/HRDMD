@@ -8,6 +8,9 @@
     <%# Legend %>
     <div class="legend-container">
       <div class="legend-item">
+        <span class="badge bg-dark">  </span><a>Rejected</a>
+      </div>
+      <div class="legend-item">
         <span class="badge bg-danger">  </span><a> Entry Level</a>
       </div>
       <div class="legend-item">
@@ -67,6 +70,8 @@
                         <span class="badge bg-warning table-span"> 
                         <% } else if (row.folder === "Entry Level") { %>
                         <span class="badge bg-danger table-span"> 
+                        <% } else if (row.folder === "Rejected") { %>
+                        <span class="badge bg-dark table-span"> 
                     <% } %></span></td>
                   </tr>
                 <% }) %>

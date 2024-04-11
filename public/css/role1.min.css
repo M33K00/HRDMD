@@ -88,7 +88,7 @@
 .role1folder-container {
   margin-bottom: 20px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 3px; /* Gap between grid items */
   grid-auto-rows: 50px; /* Default height for each row */
 }
@@ -99,13 +99,19 @@
   color: #1f1f1f;
   display: flex;
   align-items: center; /* Center vertically */
-  width: 410px;
+  width: 310px;
   height: 50px;
   background-color: #f2f2f2;
   border: 1px solid #313131;
   border-radius: 5px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease; /* Smooth transition effect */
+}
+
+.role1folder-item box-icon {
+  font-size: 25px;
+  margin-left: 5px;
+  margin-right: 5px; /* Space between icon and text */
 }
 
 .role1folder-item:hover {
