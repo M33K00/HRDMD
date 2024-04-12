@@ -447,20 +447,41 @@
   height: 100%;
 }
 
-/* Sidebar CSS */
+.startpage-icon {
+  font-size: 100px;
+  color: #158cba;
+}
 
+/* Sidebar CSS */
 .sidebar {
   position: fixed;
   top: 0;
   right: -300px; /* Change to position sidebar on the right */
   width: 300px;
   height: 100%;
-  border-left: 1px solid #158cba;
-  background-color: #ffffff;
+  border-left: 3px solid #117095;
+  background-color: #158cba;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
   transition: right 0.3s ease; /* Adjust transition for right positioning */
   z-index: 9999;
   padding-top: 60px;
+}
+.sidebar-image {
+  align-items: center;
+  color: white;
+  border-top-width: 10px;
+  padding-top: 20px;
+  background-color: #0d5470;
+  border: 3px solid #117095;
+  border-radius: 5px;
+}
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+.user-role {
+  color: white;
+  font-weight: 600;
 }
 .profile-image img {
   object-fit: cover;
@@ -472,7 +493,44 @@
   border-radius: 5px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
 }
-.startpage-icon {
-  font-size: 100px;
-  color: #158cba;
+.sidebar-buttons {
+  color: white;
+  height: fit-content;
+}
+
+.sidebar-buttons li a {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background-color: #158cba;
+  border: 2px solid #117095;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  list-style-type: none;
+  gap: 3px;
+  transition: background-color 0.3s ease, border-color 0.3s, color 0.3s ease;
+}
+
+.sidebar-buttons li a:hover {
+  background-color: rgba(0, 0, 0, 0.2); /* Change background color on hover */
+}
+
+.sidebar-buttons .logout-button a:hover {
+  background-color: rgba(
+    255,
+    0,
+    0,
+    0.5
+  ); /* Red background color on hover for logout button */
+  color: white; /* White font color on hover for logout button */
+}
+
+.sidebar-buttons li a i {
+  margin-right: 5px; /* Adjust the spacing between icon and text */
+}
+
+.sidebar-buttons .logout-button a i {
+  margin-left: 5px; /* Adjust the spacing between icon and text for logout button */
 }

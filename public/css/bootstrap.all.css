@@ -90,7 +90,9 @@
   padding: 20px;
   flex: 1;
 }
-
+.startpage-icon {
+  font-size: 100px;
+}
 .sidebar.active {
   right: 0; /* Change to position sidebar on the right */
 }
@@ -100,11 +102,10 @@
   padding: 0;
 }
 .sidebar li {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .sidebar a {
-  color: #000000;
-  text-decoration: none;
+  text-decoration: inherit;
 }
 .navbar-brand {
   cursor: pointer;
@@ -123,17 +124,19 @@
   display: block; /* Show overlay when sidebar is active */
 }
 
+/* Sidebar CSS */
 .sidebar-body {
   height: 100%;
   padding: 15px;
   display: flex;
+  align-items: center;
   flex-direction: column; /* Stack child elements vertically */
 }
 
 .sidebar-image {
   text-align: center; /* Center the content horizontally */
-  height: 270px;
-  width: 270px;
+  height: 290px;
+  width: 100%;
   position: relative; /* Position for absolute children */
 }
 .username {
@@ -141,10 +144,16 @@
   margin-top: 10px; /* Adjust the spacing between the image and the name */
   color: #fff; /* Optional: Change the text color */
 }
-
 .sidebar-menu {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: block;
+  width: 80%;
   margin-top: auto; /* Push menu to bottom of sidebar */
 }
+
+/* Navbar CSS */
 .nav-item {
   display: flex;
   align-items: center;
@@ -317,4 +326,12 @@
   font-weight: 500;
   margin-right: auto;
   margin-left: 10px;
+}
+.sidebar-image {
+  color: white;
+}
+.user-details {
+  margin-top: 10px; /* Adjust as needed */
+  display: flex;
+  flex-direction: column;
 }

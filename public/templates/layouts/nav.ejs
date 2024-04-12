@@ -26,18 +26,29 @@
   <div class="sidebar-body">
     <div class="sidebar-image">
       <div class="profile-image"><img src="../<%= user.image %>" /></div>
-      <a class="username"><%= user.name %></a>
+      <div class="user-details">
+        <a><%= user.name %></a>
+        <a class="user-role"><%= user.hrrole %></a>
+      </div>
     </div>
     <div class="sidebar-menu">
-      <ul>
-        <li>
-          <a href="/editacc/<%= encodeURIComponent(user.name) %>"
-            >Account Settings</a
-          >
-        </li>
-        <li><a href="#">HR File</a></li>
-        <li><a href="/logout">Log Out</a></li>
-      </ul>
+      <div class="sidebar-buttons">
+        <ul>
+          <li>
+            <a href="/editacc/<%= encodeURIComponent(user.name) %>"
+              ><i class="fa-solid fa-gear"></i>Account Settings</a
+            >
+          </li>
+          <li>
+            <a href="#"><i class="fa-regular fa-file"></i>HR File</a>
+          </li>
+          <li class="logout-button">
+            <a href="/logout"
+              ><i class="fa-solid fa-arrow-right-from-bracket"></i>Log Out</a
+            >
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
