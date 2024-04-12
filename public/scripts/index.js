@@ -57,7 +57,16 @@ app.use("", require("../routes/role1routes.js"));
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack); // Log the error stack trace
-  res.status(500).send("Holy shit man, bombaclot"); // Respond with a generic error message
+  res.contentType("image/png");
+
+  fs.readFile("./public/images/kys.png", (err, data) => {
+    if (err) {
+      console.error("pati image ayaw mag load bubu", err);
+      res.status(404).send("Kasalanan to ni Strike");
+    } else {
+      res.send(data);
+    }
+  });
 });
 
 mongoose.connect("mongodb://0.0.0.0:27017/HRDMD");

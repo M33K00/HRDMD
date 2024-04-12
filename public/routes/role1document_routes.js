@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const rejectedDocuments = require("../models/rejecteddocuments");
 const UserDocuments = require("../models/userdocuments");
-const { requireAuth } = require("../middleware/authMiddleware");
+const { checkRole } = require("../middleware/authMiddleware");
 
 const documentStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -33,8 +33,6 @@ const employeeUpload = multer({ storage: employeeStorage });
 router.get("/role1", (request, response) => {
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
-  const role3directory_length = fs.readdirSync("./files/role3").length;
-  const role4directory_length = fs.readdirSync("./files/role4").length;
   const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const roleDirectories = [
     { name: "Entry Level", path: "./files/role1" },

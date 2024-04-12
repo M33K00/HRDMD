@@ -7,7 +7,7 @@
     </div>
     <div class="rounded-box">
       <form
-        action="/update/<%= logincollections.id %>"
+        action="/update-user/<%= logincollections.id %>"
         method="POST"
         enctype="multipart/form-data"
       >
@@ -66,13 +66,18 @@
               name="password"
               class="form-control"
               id="exampleInputPassword1"
-              placeholder="Password"
+              placeholder="Leave blank to keep the same"
               autocomplete="off"
-              value="<%= logincollections.password  %>"
               required
             />
+            <input
+              type="hidden"
+              name="old_password"
+              autocomplete="off"
+              value="<%= logincollections.password  %>"
+            />
           </div>
-          <div class="form-group">
+          <div class="form-group mb-3">
             <label for="formFile" class="form-label mt-4">Account Image</label>
             <input
               class="form-control"
@@ -92,28 +97,12 @@
               value="<%= logincollections.image  %>"
             />
           </div>
-          <div class="form-group" style="margin-bottom: 10px">
-            <label for="exampleSelect1" class="form-label mt-4">HR Role</label>
-            <select
-              type="text"
-              name="hrrole"
-              class="form-select"
-              value="<%= logincollections.hrrole  %>"
-              id="hrrole"
-            >
-              <option>ROLE 1</option>
-              <option>ROLE 2</option>
-              <option>ROLE 3</option>
-            </select>
-          </div>
         </fieldset>
-        <input type="submit" value="Update User" class="btn btn-success btn" />
-        <a
-          href="/manage_accounts"
-          class="btn btn-secondary"
-          style="margin-left: 10px"
-          >CANCEL</a
-        >
+        <input
+          type="submit"
+          value="Update Account"
+          class="btn btn-success btn"
+        />
       </form>
     </div>
   </div>

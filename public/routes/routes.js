@@ -5,6 +5,7 @@ const logincollections = require("../models/logincollections");
 const fs = require("fs");
 const path = require("path");
 const authController = require("../controllers/authController");
+const bcrypt = require("bcrypt");
 
 // Models
 const LogInCollection = require("../models/logincollections");
@@ -69,6 +70,7 @@ router.post("/addacc", upload, async (req, res) => {
 
 // Edit a user
 router.get("/edit/:id", async (req, res) => {
+  const salt = await bcrypt.genSalt();
   try {
     let id = req.params.id;
     let logincollections = await LogInCollection.findById(id);
@@ -101,7 +103,7 @@ router.post("/update/:id", upload, async (req, res) => {
       new_image = req.file.filename;
       try {
         // Delete old image if a new image is uploaded
-        fs.unlinkSync("./files/images" + req.body.old_image);
+        fs.unlinkSync("./files/images/" + req.body.old_image);
       } catch (err) {
         console.error(err);
         // If an error occurs during file deletion, it shouldn't affect the update process
@@ -110,13 +112,77 @@ router.post("/update/:id", upload, async (req, res) => {
       new_image = req.body.old_image;
     }
 
-    // Update user information in the database
+    // Generate a salt
+    // Check if the new password is empty
+    let hashedPassword = req.body.old_password;
+    if (req.body.password) {
+      // Generate a salt and hash the new password
+      const salt = await bcrypt.genSalt();
+      hashedPassword = await bcrypt.hash(req.body.password, salt);
+    }
+
+    // Update user information in the database, using the hashed password
     const result = await LogInCollection.findByIdAndUpdate(
       id,
       {
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword, // Use the hashed password here
+        hrrole: req.body.hrrole,
+        image: new_image,
+      },
+      { new: true } // Return the modified document after update
+    );
+
+    if (!result) {
+      return res.json({ message: "User not found", type: "DANGER" });
+    }
+
+    req.session.message = {
+      type: "SUCCESS",
+      message: " User updated successfully",
+    };
+    // Redirect after successful update
+    return res.redirect("/manage_accounts");
+  } catch (err) {
+    console.error(err);
+    // Handle errors and provide a response
+    return res.json({ message: err.message, type: "DANGER" });
+  }
+});
+
+// Update account for users
+router.post("/update-user/:id", upload, async (req, res) => {
+  try {
+    let id = req.params.id;
+    let new_image = "";
+
+    if (req.file) {
+      new_image = req.file.filename;
+      try {
+        // Delete old image if a new image is uploaded
+        fs.unlinkSync("./files/images/" + req.body.old_image);
+      } catch (err) {
+        console.error(err);
+        // If an error occurs during file deletion, it shouldn't affect the update process
+      }
+    } else {
+      new_image = req.body.old_image;
+    }
+
+    // Generate a salt
+    const salt = await bcrypt.genSalt();
+
+    // Hash the new password using the generated salt
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+    // Update user information in the database, using the hashed password
+    const result = await LogInCollection.findByIdAndUpdate(
+      id,
+      {
+        name: req.body.name,
+        email: req.body.email,
+        password: hashedPassword, // Use the hashed password here
         hrrole: req.body.hrrole,
         image: new_image,
       },

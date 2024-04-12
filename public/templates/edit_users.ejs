@@ -63,10 +63,14 @@
             name="password"
             class="form-control"
             id="exampleInputPassword1"
-            placeholder="Password"
+            placeholder="Leave blank to keep old password"
+            autocomplete="off"
+          />
+          <input
+            type="hidden"
+            name="old_password"
             autocomplete="off"
             value="<%= logincollections.password  %>"
-            required
           />
         </div>
         <div class="form-group">
@@ -90,12 +94,11 @@
             type="text"
             name="hrrole"
             class="form-select"
-            value="<%= logincollections.hrrole  %>"
             id="hrrole"
           >
-            <option>ROLE 1</option>
-            <option>ROLE 2</option>
-            <option>ROLE 3</option>
+          <option value="ROLE 1" <% if (logincollections.hrrole === 'ROLE 1') { %> selected <% } %>>ROLE 1</option>
+          <option value="ROLE 2" <% if (logincollections.hrrole === 'ROLE 2') { %> selected <% } %>>ROLE 2</option>
+          <option value="ROLE 3" <% if (logincollections.hrrole === 'ROLE 3') { %> selected <% } %>>ROLE 3</option>
           </select>
         </div>
       </fieldset>

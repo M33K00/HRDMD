@@ -8,12 +8,13 @@ const LogInCollection = require("../models/logincollections");
 const UserDocuments = require("../models/userdocuments");
 const rejectedDocuments = require("../models/rejecteddocuments");
 const { requireAuth } = require("../middleware/authMiddleware");
+const { checkRole } = require("../middleware/authMiddleware.js");
 
 router.get("/startpage", requireAuth, (req, res) => {
   res.render("startpage");
 });
 
-router.get("/home", (request, response) => {
+router.get("/home", checkRole, (request, response) => {
   const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
