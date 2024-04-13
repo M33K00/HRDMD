@@ -420,6 +420,30 @@ router.get("/archive", (request, response) => {
   }
 });
 
+// Rejected Documents
+router.get("/rejected_documents", async (req, res) => {
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
+  const role3directory_length = fs.readdirSync("./files/role3").length;
+  const role4directory_length = fs.readdirSync("./files/role4").length;
+
+  try {
+    const rejectedDocs = await rejectedDocuments.find();
+    // Pass the files data to the "/role1_documents" route
+    res.render("/rejected_docu", {
+      rejectedDocuments: rejectedDocs,
+      role1directory_length,
+      rejecteddirectory_length,
+      role2directory_length,
+      role3directory_length,
+      role4directory_length,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
 router.use(
   "/files/documents",
   express.static(path.join(__dirname, "../../files/documents"))

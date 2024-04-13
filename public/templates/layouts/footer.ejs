@@ -154,17 +154,51 @@
 </script>
 <%# PDF SCRIPT %>
 <script>
-  document.querySelectorAll(".file-preview").forEach(function (svg) {
-    svg.addEventListener("click", function () {
+  function determineRoleFolder(roleElement) {
+    if (!roleElement) {
+      console.error("Role element not found.");
+      return null;
+    }
+
+    const role = roleElement.textContent.trim();
+
+    switch (role) {
+      case "Entry Level":
+        return "role1";
+      case "Individual Contributors":
+        return "role2";
+      case "HR Manager":
+        return "role3";
+      case "HR Director":
+        return "role4";
+      default:
+        console.error("Unknown role:", role);
+        return "role1"; // Default role folder
+    }
+  }
+
+  document.querySelectorAll(".file-preview").forEach(function (previewElement) {
+    previewElement.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent default link behavior
+
       var modal = document.getElementById("modal");
       modal.style.display = "block";
 
-      // Set the source of the iframe to the PDF file
-      var fileName = svg
+      var roleElement = previewElement
         .closest(".page-item")
-        .querySelector(".card-text").textContent;
-      var pdfViewer = document.getElementById("pdfViewer");
-      pdfViewer.src = "../../files/documents/" + fileName;
+        .querySelector(".file-hr-role");
+      var roleFolder = determineRoleFolder(roleElement);
+
+      if (roleFolder) {
+        var fileName = previewElement
+          .closest(".page-item")
+          .querySelector(".card-text")
+          .textContent.trim();
+        var pdfViewer = document.getElementById("pdfViewer");
+        pdfViewer.src = "../../files/" + roleFolder + "/" + fileName;
+      } else {
+        console.error("Role folder not determined.");
+      }
     });
   });
 

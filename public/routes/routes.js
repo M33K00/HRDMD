@@ -197,8 +197,6 @@ router.post("/update-user/:id", upload, async (req, res) => {
       type: "SUCCESS",
       message: " User updated successfully",
     };
-    // Redirect after successful update
-    return res.redirect("/manage_accounts");
   } catch (err) {
     console.error(err);
     // Handle errors and provide a response
