@@ -55,6 +55,7 @@ app.use("", require("../routes/role1document_routes.js"));
 app.use("", require("../routes/role1routes.js"));
 
 // Error handling middleware
+// Do not take seriously lul
 app.use((err, req, res, next) => {
   console.error(err.stack); // Log the error stack trace
   res.contentType("image/png");
