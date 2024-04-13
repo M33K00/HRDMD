@@ -313,6 +313,8 @@ router.get("/addacc", (req, res) => {
   res.render("addacc");
 });
 
+// HRIS Routes
+
 router.get("/hris", (req, res) => {
   res.render("hris");
 });
