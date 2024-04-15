@@ -252,7 +252,7 @@
 
 .page-item {
   width: 300px; /* Fixed width for each card */
-  height: 300px; /* Fixed height for each card */
+  height: 250px; /* Fixed height for each card */
   background-color: transparent;
 }
 
@@ -263,9 +263,16 @@
 
 .card-header-options {
   background-color: transparent;
-  height: 50px;
+  padding-top: 20px;
+  height: 35px;
   width: auto;
-  padding-top: 15px;
+}
+
+.card-documents-options {
+  background-color: transparent;
+  padding-bottom: 20px;
+  height: 35px;
+  width: auto;
 }
 
 .card-header-font {
@@ -368,7 +375,7 @@
 
 .file-card {
   background-color: #f2f2f2;
-  height: 280px;
+  height: 240px;
   display: inline-block;
   border-radius: 10px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
@@ -377,7 +384,7 @@
 
 .file-date {
   font-size: small;
-  height: auto;
+  height: 20px;
   background-color: inherit;
 }
 

@@ -77,7 +77,7 @@
           <% } %>
         </div></a
       >
-      <a href="#"
+      <a href="/rejected_documents"
         ><div class="rolefolder-item">
           <box-icon type="solid" name="x-square"></box-icon>
           <p>Rejected Files</p>
@@ -202,7 +202,6 @@
               class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
             >
               <span class="card-text"><%= file.name %></span>
-              <a class="file-hr-role" style="display: none;"><%= file.folder %></a>
               <div class="dropdown options">
                 <button
                   class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
@@ -270,9 +269,21 @@
                 UNKNOWN
               </div>
               <% } %>
+              <div class="extra-info file-hr-role">
+                <% if (file.folder === "HR Director") { %>
+                        <span class="badge bg-primary">
+                        <% } else if (file.folder === "HR Manager") { %>
+                        <span class="badge bg-success"> 
+                        <% } else if (file.folder === "Individual Contributors") { %>
+                        <span class="badge bg-warning"> 
+                        <% } else if (file.folder === "Entry Level") { %>
+                        <span class="badge bg-danger"> 
+                        <% } else if (file.folder === "Rejected") { %>
+                        <span class="badge bg-dark"> 
+                    <% } %> </span><%= file.folder %>
+              </div>
             </a>
-            <a class="card-footer card-options file-date"><%= file.mtime %></a>
-            
+            <div><a class="card-footer card-options file-date"><%= file.mtime %></a></div>    
           </div>
         </div>
         <% }); %> <% } else { %>
@@ -303,7 +314,6 @@
               class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
             >
               <span class="card-text"><%= file.name %></span>
-              <a class="file-hr-role" style="display: none;"><%= file.folder %></a>
               <div class="dropdown options">
                 <button
                   class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
@@ -371,6 +381,19 @@
                 UNKNOWN
               </div>
               <% } %>
+              <div class="extra-info file-hr-role">
+                <% if (file.folder === "HR Director") { %>
+                        <span class="badge bg-primary">
+                        <% } else if (file.folder === "HR Manager") { %>
+                        <span class="badge bg-success"> 
+                        <% } else if (file.folder === "Individual Contributors") { %>
+                        <span class="badge bg-warning"> 
+                        <% } else if (file.folder === "Entry Level") { %>
+                        <span class="badge bg-danger"> 
+                        <% } else if (file.folder === "Rejected") { %>
+                        <span class="badge bg-dark"> 
+                    <% } %> </span><%= file.folder %>
+              </div>
             </a>
             <a class="card-footer card-options file-date"><%= file.mtime %></a>
           </div>
@@ -403,7 +426,6 @@
               class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
             >
               <span class="card-text"><%= file.name %></span>
-              <a class="file-hr-role" style="display: none;"><%= file.folder %></a>
               <div class="dropdown options">
                 <button
                   class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
@@ -471,6 +493,19 @@
                 UNKNOWN
               </div>
               <% } %>
+              <div class="extra-info file-hr-role">
+                <% if (file.folder === "HR Director") { %>
+                        <span class="badge bg-primary">
+                        <% } else if (file.folder === "HR Manager") { %>
+                        <span class="badge bg-success"> 
+                        <% } else if (file.folder === "Individual Contributors") { %>
+                        <span class="badge bg-warning"> 
+                        <% } else if (file.folder === "Entry Level") { %>
+                        <span class="badge bg-danger"> 
+                        <% } else if (file.folder === "Rejected") { %>
+                        <span class="badge bg-dark"> 
+                    <% } %> </span><%= file.folder %>
+              </div>
             </a>
             <a class="card-footer card-options file-date"><%= file.mtime %></a>
           </div>
@@ -503,7 +538,6 @@
               class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
             >
               <span class="card-text"><%= file.name %></span>
-              <a class="file-hr-role" style="display: none;"><%= file.folder %></a>
               <div class="dropdown options">
                 <button
                   class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
@@ -571,6 +605,19 @@
                 UNKNOWN
               </div>
               <% } %>
+              <div class="extra-info file-hr-role">
+                <% if (file.folder === "HR Director") { %>
+                        <span class="badge bg-primary">
+                        <% } else if (file.folder === "HR Manager") { %>
+                        <span class="badge bg-success"> 
+                        <% } else if (file.folder === "Individual Contributors") { %>
+                        <span class="badge bg-warning"> 
+                        <% } else if (file.folder === "Entry Level") { %>
+                        <span class="badge bg-danger"> 
+                        <% } else if (file.folder === "Rejected") { %>
+                        <span class="badge bg-dark"> 
+                    <% } %> </span><%= file.folder %>
+              </div>
             </a>
             <a class="card-footer card-options file-date"><%= file.mtime %></a>
           </div>
@@ -603,7 +650,6 @@
               class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
             >
               <span class="card-text"><%= file.name %></span>
-              <a class="file-hr-role" style="display: none;"><%= file.folder %></a>
               <div class="dropdown options">
                 <button
                   class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
@@ -671,6 +717,19 @@
                 UNKNOWN
               </div>
               <% } %>
+              <div class="extra-info file-hr-role">
+                <% if (file.folder === "HR Director") { %>
+                        <span class="badge bg-primary">
+                        <% } else if (file.folder === "HR Manager") { %>
+                        <span class="badge bg-success"> 
+                        <% } else if (file.folder === "Individual Contributors") { %>
+                        <span class="badge bg-warning"> 
+                        <% } else if (file.folder === "Entry Level") { %>
+                        <span class="badge bg-danger"> 
+                        <% } else if (file.folder === "Rejected") { %>
+                        <span class="badge bg-dark"> 
+                    <% } %> </span><%= file.folder %>
+              </div>
             </a>
             <a class="card-footer card-options file-date"><%= file.mtime %></a>
           </div>

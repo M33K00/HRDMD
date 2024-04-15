@@ -335,3 +335,17 @@
   display: flex;
   flex-direction: column;
 }
+.extra-info {
+  position: absolute;
+  font-size: 12px;
+  bottom: 15;
+  left: 20;
+  background-color: rgb(255, 255, 255);
+  color: black;
+  padding: 5px; /* Adjust padding as needed */
+  padding-right: 10px;
+}
+.extra-info span {
+  height: 10px;
+  margin-right: 5px;
+}

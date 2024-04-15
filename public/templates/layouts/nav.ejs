@@ -28,7 +28,13 @@
       <div class="profile-image"><img src="../<%= user.image %>" /></div>
       <div class="user-details">
         <a><%= user.name %></a>
-        <a class="user-role"><%= user.hrrole %></a>
+        <a class="user-role"
+          ><% if (user.hrrole === "ROLE 1") { %> Entry-level <% } else if
+          (user.hrrole === "ROLE 2") { %> Individual Contributors <% } else if
+          (user.hrrole === "ROLE 3") { %> HR Manager <% } else if (user.hrrole
+          === "ROLE 4") { %> HR Director <% } else if (user.hrrole === "ADMIN")
+          { %> ADMIN <% } %></a
+        >
       </div>
     </div>
     <div class="sidebar-menu">

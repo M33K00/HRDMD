@@ -175,6 +175,7 @@
             class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
           >
             <span class="card-text"><%= file.name %></span>
+            <a class="file-hr-role" style="display: none"><%= file.folder %></a>
             <div class="dropdown options">
               <button
                 class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
@@ -247,25 +248,6 @@
   </div>
 </body>
 <%- include('../layouts/footer') -%>
-<script>
-  document.querySelectorAll(".r2").forEach(function (svg) {
-    svg.addEventListener("click", function () {
-      var modal = document.getElementById("modal");
-      modal.style.display = "block";
-
-      // Set the source of the iframe to the PDF file
-      var fileName = svg
-        .closest(".page-item")
-        .querySelector(".card-text").textContent;
-      var pdfViewer = document.getElementById("pdfViewer");
-      pdfViewer.src = "../../files/role2/" + fileName;
-    });
-  });
-
-  document.querySelector(".close").addEventListener("click", function () {
-    document.getElementById("modal").style.display = "none";
-  });
-</script>
 <!-- Rename Modal -->
 <div class="modal" id="renameModal">
   <div class="modal-dialog-centered" role="document">

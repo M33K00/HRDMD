@@ -164,8 +164,33 @@ router.get("/home", checkRole, (request, response) => {
   }
 });
 
+// Rejected Documents
+router.get("/rejected_documents", async (req, res) => {
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
+  const role1directory_length = fs.readdirSync("./files/role1").length;
+  const role2directory_length = fs.readdirSync("./files/role2").length;
+  const role3directory_length = fs.readdirSync("./files/role3").length;
+  const role4directory_length = fs.readdirSync("./files/role4").length;
+
+  try {
+    const rejectedDocs = await rejectedDocuments.find();
+    // Pass the files data to the "/role1_documents" route
+    res.render("rejected_documents", {
+      rejectedDocuments: rejectedDocs,
+      role1directory_length,
+      rejecteddirectory_length,
+      role2directory_length,
+      role3directory_length,
+      role4directory_length,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+  }
+});
+
 router.get("/role1_documents", (req, res) => {
   const role1directory = "./files/role1";
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
   const role3directory_length = fs.readdirSync("./files/role3").length;
@@ -191,12 +216,14 @@ router.get("/role1_documents", (req, res) => {
         name: fileName,
         size: sizeInMB + " MB",
         mtime: mtime,
+        folder: role1directory.name,
       };
     });
 
     // Pass the files data to the "/role1_documents" route
     res.render("role1_documents", {
       files,
+      rejecteddirectory_length,
       role1directory_length,
       role2directory_length,
       role3directory_length,
@@ -209,6 +236,7 @@ router.get("/role1_documents", (req, res) => {
 
 router.get("/role2_documents", (req, res) => {
   const role2directory = "./files/role2";
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
   const role3directory_length = fs.readdirSync("./files/role3").length;
@@ -240,6 +268,7 @@ router.get("/role2_documents", (req, res) => {
     // Pass the files data to the "/role1_documents" route
     res.render("role2_documents", {
       files,
+      rejecteddirectory_length,
       role1directory_length,
       role2directory_length,
       role3directory_length,
@@ -252,6 +281,7 @@ router.get("/role2_documents", (req, res) => {
 
 router.get("/role3_documents", (req, res) => {
   const role3directory = "./files/role3";
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
   const role3directory_length = fs.readdirSync("./files/role3").length;
@@ -283,6 +313,7 @@ router.get("/role3_documents", (req, res) => {
     // Pass the files data to the "/role1_documents" route
     res.render("role3_documents", {
       files,
+      rejecteddirectory_length,
       role1directory_length,
       role2directory_length,
       role3directory_length,
@@ -295,6 +326,7 @@ router.get("/role3_documents", (req, res) => {
 
 router.get("/role4_documents", (req, res) => {
   const role4directory = "./files/role4";
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
   const role3directory_length = fs.readdirSync("./files/role3").length;
@@ -326,6 +358,7 @@ router.get("/role4_documents", (req, res) => {
     // Pass the files data to the "/role1_documents" route
     res.render("role4_documents", {
       files,
+      rejecteddirectory_length,
       role1directory_length,
       role2directory_length,
       role3directory_length,

@@ -1,26 +1,28 @@
 <%- include('./layouts/header') -%>
 <body>
-  <%- include('./layouts/nav') -%>
-  <div class="image-container">
-    <div class="content">
-      <img src="../images/strikemapogi.jpg" />
-      <h2>Kala mo may HRIS na?</h2>
-    </div>
-    <div class="card-container">
-      <div class="card border-danger mb-3" style="max-width: 20rem">
-        <div class="card-header" style="text-align: center">
-          <marquee behavior="scroll" direction="left"
-            >&#x26A0;&#xFE0F; WARNING &#x26A0;&#xFE0F;</marquee
-          >
-        </div>
-        <div class="card-body">
-          <h4 class="card-title">Alis dito tanga</h4>
-          <p class="card-text">Wala pa nga HRIS</p>
-        </div>
+  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
+  <div class="page-body">
+    <div class="image-container">
+      <div class="content">
+        <img src="../images/strikemapogi.jpg" />
+        <h2>Kala mo may HRIS na?</h2>
       </div>
-      <a href="startpage" class="btn-text" style="text-decoration: inherit"
-        ><button type="button" class="btn btn-danger">Cope 😭😭😭</button></a
-      >
+      <div class="card-container">
+        <div class="card border-danger mb-3" style="max-width: 20rem">
+          <div class="card-header" style="text-align: center">
+            <marquee behavior="scroll" direction="left"
+              >&#x26A0;&#xFE0F; WARNING &#x26A0;&#xFE0F;</marquee
+            >
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">Alis dito tanga</h4>
+            <p class="card-text">Wala pa nga HRIS, katamad simulan e</p>
+          </div>
+        </div>
+        <a href="startpage" class="btn-text" style="text-decoration: inherit"
+          ><button type="button" class="btn btn-danger">Cope 😭😭😭</button></a
+        >
+      </div>
     </div>
   </div>
 </body>

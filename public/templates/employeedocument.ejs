@@ -29,8 +29,20 @@
       { %>
       <div class="page-item">
         <div class="card mb-3 account-card">
+          <a
+            href="/openfolder/<%= encodeURIComponent(row.name) %>"
+            class="hover-div"
+          >
+            <div
+              class="imageacc-preview"
+              style="
+                background-image: url('../<%= row.image %>');
+                background-size: cover;
+              "
+            ></div>
+          </a>
           <div
-            class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
+            class="card-header card-documents-options card-header-font d-flex justify-content-between align-items-center"
           >
             <span class="card-text-name"><%= row.name %></span>
             <div class="dropdown options">
@@ -51,26 +63,24 @@
                 <a
                   href="#"
                   style="color: rgb(0, 0, 0)"
-                  class="dropdown-item btn-archive"
+                  class="dropdown-item"
                   data-file="<%= row.name %>"
                   >Manage</a
                 >
               </div>
             </div>
           </div>
-          <a
-            href="/openfolder/<%= encodeURIComponent(row.name) %>"
-            class="hover-div"
+          <div
+            class="card-footer card-options file-date"
+            style="font-weight: 600"
           >
-            <div
-              class="imageacc-preview"
-              style="
-                background-image: url('../<%= row.image %>');
-                background-size: cover;
-              "
-            ></div>
-          </a>
-          <a class="card-footer card-options file-date"><%= row.email %></a>
+            <% if (row.hrrole === "ROLE 1") { %> Entry-level <% } else if
+            (row.hrrole === "ROLE 2") { %> Individual Contributors <% } else if
+            (row.hrrole === "ROLE 3") { %> HR Manager <% } else if (row.hrrole
+            === "ROLE 4") { %> HR Director <% } else if (row.hrrole === "ADMIN")
+            { %> ADMIN <% } %>
+          </div>
+          <div class="card-footer card-options file-date"><%= row.email %></div>
         </div>
       </div>
       <% }); %> <% } else { %>

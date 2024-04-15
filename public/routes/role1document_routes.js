@@ -31,9 +31,9 @@ const documentUpload = multer({ storage: documentStorage });
 const employeeUpload = multer({ storage: employeeStorage });
 
 router.get("/role1", (request, response) => {
+  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
-  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const roleDirectories = [
     { name: "Entry Level", path: "./files/role1" },
     { name: "Individual Contributors", path: "./files/role2" },
@@ -55,10 +55,12 @@ router.get("/role1", (request, response) => {
           hour: "numeric",
           minute: "numeric",
         });
+        const timestamp = stats.mtime.getTime();
         return {
           name: fileName,
           size: sizeInMB + " MB",
           mtime: mtime,
+          timestamp: timestamp,
           folder: directory.name,
         };
       });
@@ -70,12 +72,102 @@ router.get("/role1", (request, response) => {
       return allFiles.concat(roleFiles);
     }, []);
 
-    // Pass the files data to the "/statusboard" route
+    const currentDate = new Date();
+
+    const groupTimestamps = [
+      new Date(
+        currentDate.getFullYear(), // This Year
+        currentDate.getMonth(), // This Month
+        1 // Day 1
+      ).getTime(),
+      new Date(
+        currentDate.getFullYear(), // This Year
+        currentDate.getMonth() - 1, // Last Month
+        1 // Day 1
+      ).getTime(),
+      new Date(
+        currentDate.getFullYear(), // This Year
+        currentDate.getMonth() - 2, // Last 2 Months
+        1 // Day 1
+      ).getTime(),
+      new Date(
+        currentDate.getFullYear(), // This Year
+        currentDate.getMonth() - 3, // Last 3 Months
+        1 // Day 1
+      ).getTime(),
+    ];
+
+    // Each groupTimestamp represents the earlier boundary of a group
+    // eg.
+    //   This Month (groupName 0) is from day 1 of this month (groupTimestamp 0) until present
+    //   Last Month (groupName 1) is from day 1 of last month (groupTimestamp 1) until day 1 of this month (groupTimestamp 0)
+    //   ...
+
+    // Present
+    //  |
+    //  | Group 0 (This Month)
+    //  |
+    // groupTimestap 0 (Day 1 of this month)
+    //  |
+    //  | Group 1 (Last Month)
+    //  |
+    // groupTimestap 1 (Day 1 of last month)
+    // ...
+
+    // Put files into groups
+
+    const groupFiles = [];
+
+    for (var gago in groupTimestamps) {
+      groupFiles.push([]);
+    }
+
+    const lastGroup = [];
+
+    groupFiles.push(lastGroup);
+
+    for (var file of allRoleFiles) {
+      const fileTimestamp = file.timestamp;
+
+      // Hacky way to use some()
+      // some() will terminate once true is returned by the iteration function,
+      // and return true itself if it does
+
+      groupFound = groupTimestamps.some(function (groupTimestamp, i) {
+        if (fileTimestamp >= groupTimestamps[i]) {
+          // If a file is newer than a group timestamp,
+          // add that to the corresponding group
+          groupFiles[i].push(file);
+          // And return true to terminate the some() loop and make `groupFound` true as well
+          return true;
+        }
+        // If file is older, return false or whatever the fuck to check the next timestamp
+        return false;
+      });
+
+      if (!groupFound) {
+        // If a file didn't belong to a group,
+        // add it to the last group "Older Than Your Mom"
+        lastGroup.push(file);
+      }
+    }
+
+    filesThisMonth = groupFiles[0];
+    filesLastMonth = groupFiles[1];
+    filesLastTwoMonths = groupFiles[2];
+    filesLastThreeMonths = groupFiles[3];
+    filesOlderThanThreeMonths = groupFiles[4];
+
     response.render("role/role1_temps/role1", {
       allRoleFiles,
+      rejecteddirectory_length,
       role1directory_length,
       role2directory_length,
-      rejecteddirectory_length,
+      filesOlderThanThreeMonths,
+      filesLastThreeMonths,
+      filesLastTwoMonths,
+      filesLastMonth,
+      filesThisMonth,
     });
   } catch (error) {
     console.error("Error reading directory:", error);
@@ -129,6 +221,7 @@ router.get("/role1_docu", (req, res) => {
         name: fileName,
         size: sizeInMB + " MB",
         mtime: mtime,
+        folder: "Entry Level",
       };
     });
 
@@ -170,6 +263,7 @@ router.get("/role2_docu", (req, res) => {
         name: fileName,
         size: sizeInMB + " MB",
         mtime: mtime,
+        folder: "Individual Contributors",
       };
     });
 

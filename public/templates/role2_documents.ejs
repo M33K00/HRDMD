@@ -100,6 +100,17 @@
           <% } %>
         </div></a
       >
+      <a href="/rejected_documents"
+        ><div class="rolefolder-item">
+          <box-icon type="solid" name="x-square"></box-icon>
+          <p>Rejected Files</p>
+          <% if (rejecteddirectory_length > 0) { %>
+          <span class="badge rounded-pill bg-danger"
+            ><%= rejecteddirectory_length %></span
+          >
+          <% } %>
+        </div></a
+      >
     </div>
     <%# Filter %>
     <h5 class="folder-title">Files</h5>
