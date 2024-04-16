@@ -101,7 +101,6 @@ body {
   font-size: 1.2rem;
   font-weight: 500;
   letter-spacing: 1px;
-  margin-top: 1.7rem;
   cursor: pointer;
   transition: 0.4s;
 }
@@ -150,5 +149,20 @@ video {
   /* Additional styles for customization */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   transition: transform 0.5s ease; /* Smooth transition for zoom effect */
-  filter: brightness(90%);
+  filter: brightness(70%);
+}
+.email-error,
+.password-error {
+  color: red;
+  font-style: italic;
+  margin-left: 5px;
+}
+
+.bottom-left-div {
+  position: absolute;
+  bottom: -35px;
+  left: 10px;
+}
+.bottom-left-div img {
+  width: 30%;
 }

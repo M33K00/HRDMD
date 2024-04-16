@@ -5,22 +5,23 @@
     <div class="page-name">
       <h2>Status Board</h2>
     </div>
+    <p class="text-muted mb-4 ">Track the approval status of documents submitted in the system</p>
     <%# Legend %>
     <div class="legend-container">
       <div class="legend-item">
-        <span class="badge bg-dark">  </span><a>Rejected</a>
+        <span class="badge bg-danger">  </span><a>Rejected</a>
       </div>
       <div class="legend-item">
-        <span class="badge bg-danger">  </span><a> Entry Level</a>
+        <span class="badge bg-warning">  </span><a> Entry Level</a>
       </div>
       <div class="legend-item">
-        <span class="badge bg-warning">  </span><a> Individual Contributors</a>
+        <span class="badge bg-success">  </span><a> Individual Contributors</a>
       </div>
       <div class="legend-item">
-        <span class="badge bg-success">  </span><a> HR Manager</a>
+        <span class="badge bg-primary">  </span><a> HR Manager</a>
       </div>
       <div class="legend-item">
-        <span class="badge bg-primary">  </span><a> HR Director</a>
+        <span class="badge bg-info">  </span><a> HR Director</a>
       </div>
     </div>
     <%# Search bar %>
@@ -61,17 +62,19 @@
                   <tr>
                     <td><%= row.mtime %></td>
                     <td><%= row.name %></td>
-                    <td><%= row.folder %></td>
+                    <td <% if (row.folder === "Rejected") { %>
+                      style="color: brown; font-weight: 700"
+                    <% } %>><%= row.folder %></td>
                     <td><% if (row.folder === "HR Director") { %>
-                        <span class="badge bg-primary table-span">
+                        <span class="badge bg-info table-span">
                         <% } else if (row.folder === "HR Manager") { %>
-                        <span class="badge bg-success table-span"> 
+                        <span class="badge bg-primary table-span"> 
                         <% } else if (row.folder === "Individual Contributors") { %>
-                        <span class="badge bg-warning table-span"> 
+                        <span class="badge bg-success table-span"> 
                         <% } else if (row.folder === "Entry Level") { %>
-                        <span class="badge bg-danger table-span"> 
+                        <span class="badge bg-warning table-span"> 
                         <% } else if (row.folder === "Rejected") { %>
-                        <span class="badge bg-dark table-span"> 
+                        <span class="badge bg-danger table-span"> 
                     <% } %></span></td>
                   </tr>
                 <% }) %>

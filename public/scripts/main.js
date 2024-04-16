@@ -12,6 +12,8 @@ function createWindow() {
   const win = new BrowserWindow({
     //titleBarStyle: "hidden",
     //titleBarOverlay: true,
+    maxHeight: 900,
+    maxWidth: 1600,
     width: 1600,
     height: 900,
     center: true,

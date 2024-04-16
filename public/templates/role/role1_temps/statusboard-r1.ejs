@@ -54,9 +54,9 @@
                     <td><%= row.name %></td>
                     <td><%= row.folder %></td>
                     <td><% if (row.folder === "Individual Contributors") { %>
-                        <span class="badge bg-warning table-span"> 
+                        <span class="badge bg-success table-span"> 
                         <% } else if (row.folder === "Entry Level") { %>
-                        <span class="badge bg-danger table-span"> 
+                        <span class="badge bg-warning table-span"> 
                     <% } %></span></td>
                   </tr>
                 <% }) %>
