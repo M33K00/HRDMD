@@ -1,0 +1,58 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/nav') -%> <%- include('../layouts/sidenavhris') %>
+  <div class="page-body">
+    <div class="page-name">
+      <h1>All Employees</h1>
+    </div>
+    <p class="text-muted mb-4">Manage the employees registered in the system</p>
+    <input
+      class="form-control me-sm-2"
+      type="text"
+      id="accInput"
+      placeholder="Search"
+      style="margin-bottom: 20px"
+      oninput="searchTable()"
+    />
+    <div class="hris-container">
+      <table id="table" class="table table-hover">
+        <thead>
+          <tr class="table-dark">
+            <th style="width: 150px">Name</th>
+            <th style="width: 200px">Email</th>
+            <th style="width: 150px">Contact No.</th>
+            <th style="width: 150px">HR Role</th>
+            <th style="width: 50px; padding-left: 110px">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Kita Ikuyou</td>
+            <td>kitaikuyou@yahoo.com</td>
+            <td>1-800-123-4567</td>
+            <td>HR Director</td>
+            <td class="action-buttons">
+              <a href="#" class="icon-square"
+                ><i class="fa-solid fa-eye"></i
+              ></a>
+              <a href="#" class="icon-square">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </a>
+              <a href="#" class="icon-square"
+                ><i class="fa-solid fa-trash"></i
+              ></a>
+              <a href="#" class="icon-square"
+                ><i class="fa-solid fa-plus"></i
+              ></a>
+              <a href="#" class="icon-square"
+                ><i class="fa-solid fa-list"></i
+              ></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+<%- include('../layouts/footer') %>

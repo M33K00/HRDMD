@@ -315,4 +315,16 @@ router.get("/hris", (req, res) => {
   res.render("hris");
 });
 
+router.get("/add_employees", (req, res) => {
+  res.render("HRIS/add_employees");
+});
+
+router.get("/view_employees", (req, res) => {
+  res.render("HRIS/view_employees");
+});
+
+router.get("/leave_applications", (req, res) => {
+  res.render("HRIS/leave_applications");
+});
+
 module.exports = router;

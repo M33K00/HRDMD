@@ -1,0 +1,151 @@
+.nav-links-hris {
+  list-style: none;
+  position: relative;
+  padding-left: 0px;
+}
+.nav-links-hris li {
+  padding: 10px 0;
+  height: 50px;
+}
+.nav-links-hris li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+}
+.nav-links-hris li a i {
+  font-size: 20px;
+  margin-right: 20px;
+}
+.nav-links-hris li a p {
+  margin-bottom: 0px;
+}
+.active-button {
+  background: white;
+  width: 100%;
+  height: 47px;
+  position: absolute;
+  left: 0;
+  top: 2.6%;
+  z-index: -1;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.4);
+  display: none;
+  transition: top 0.5s;
+}
+.nav-links-hris li:hover a {
+  color: #0d5470;
+  transition: 0.3s;
+}
+.nav-links-hris li:hover ~ .active-button {
+  display: block;
+}
+.nav-links-hris li:nth-child(1):hover ~ .active-button {
+  top: 2.6%;
+}
+.nav-links-hris li:nth-child(2):hover ~ .active-button {
+  top: 16.9%;
+}
+.nav-links-hris li:nth-child(3):hover ~ .active-button {
+  top: 31.2%;
+}
+.nav-links-hris li:nth-child(4):hover ~ .active-button {
+  top: 45.5%;
+}
+.nav-links-hris li:nth-child(5):hover ~ .active-button {
+  top: 59.8%;
+}
+.nav-links-hris li:nth-child(6):hover ~ .active-button {
+  top: 74.1%;
+}
+.nav-links-hris li:nth-child(7):hover ~ .active-button {
+  top: 88.4%;
+}
+
+@media only screen and (max-width: 600px) {
+  .side-nav {
+    width: 110px;
+  }
+}
+
+.dropdown-employee {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out; /* Add a transition for smooth appearance */
+}
+
+.dropdown:hover .dropdown-employee {
+  display: block;
+  background-color: aliceblue;
+  position: absolute;
+  width: 190px;
+  right: 0;
+  border-radius: 6px;
+  font-size: 14px;
+  opacity: 1; /* Show the dropdown with opacity */
+  transition-delay: 0.3s; /* Add a delay before the transition starts */
+}
+
+.dropdown-option:hover a {
+  background-color: #8a8a8a;
+  color: white;
+}
+
+.hris-container {
+  min-height: 100vh;
+}
+
+.hris-title {
+  color: white;
+  background-color: #414141;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.action-buttons {
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+}
+
+.icon-square {
+  text-decoration: none;
+  display: flex;
+  justify-content: center; /* Center icon horizontally */
+  align-items: center; /* Center icon vertically */
+  width: 30px; /* Adjust size as needed */
+  height: 30px; /* Adjust size as needed */
+  border: 1px solid rgb(187, 187, 187); /* Optional: add border for square effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 5px; /* Optional: add spacing between squares */
+}
+
+.action-buttons-leave {
+  display: flex;
+}
+
+.icon-square-leave {
+  text-decoration: none;
+  display: flex;
+  justify-content: center; /* Center icon horizontally */
+  align-items: center; /* Center icon vertically */
+  width: 30px; /* Adjust size as needed */
+  height: 30px; /* Adjust size as needed */
+  border: 1px solid rgb(187, 187, 187); /* Optional: add border for square effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 5px; /* Optional: add spacing between squares */
+}
+
+.fa-solid {
+  font-size: 16px; /* Adjust icon size as needed */
+}
+
+.add-employee {
+  margin-left: 25px;
+  margin-right: 25px;
+}

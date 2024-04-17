@@ -1,0 +1,117 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/nav') -%> <%- include('../layouts/sidenavhris') %>
+  <div class="page-body">
+    <div class="page-name">
+      <h1>Add Employee</h1>
+    </div>
+    <div class="add-employee">
+      <p class="lead text-muted text-center">
+        This will also add an account for the application
+      </p>
+      <form action="#" method="POST" enctype="multipart/form-data">
+        <fieldset>
+          <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label"
+              >Email</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="text"
+                readonly=""
+                class="form-control-plaintext"
+                id="staticEmail"
+                value="email@example.com"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="InputName" class="form-label mt-4">Name</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              aria-describedby="emailHelp"
+              placeholder="Enter name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="birthday" class="form-label mt-4">Birthday</label>
+            <input
+              type="date"
+              id="birthday"
+              name="birthday"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="InputName" class="form-label mt-4">Contact No.</label>
+            <input
+              type="tel"
+              name="contactno"
+              class="form-control"
+              aria-describedby="emailHelp"
+              placeholder="(+64)"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1" class="form-label mt-4"
+              >Email address</label
+            >
+            <input
+              type="text"
+              name="email"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+              required
+            />
+            <small id="emailHelp" class="form-text text-muted"
+              >We'll never share your email with anyone else.</small
+            >
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1" class="form-label mt-4"
+              >Password</label
+            >
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              id="exampleInputPassword1"
+              placeholder="Password"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <div class="form-group" style="margin-bottom: 10px">
+            <label for="exampleSelect1" class="form-label mt-4">HR Role</label>
+            <select
+              type="text"
+              name="hrrole"
+              class="form-select"
+              id="exampleSelect1"
+            >
+              <option></option>
+              <option>ROLE 1</option>
+              <option>ROLE 2</option>
+              <option>ROLE 3</option>
+            </select>
+          </div>
+        </fieldset>
+        <input type="submit" class="btn btn-primary btn" />
+        <a
+          href="manage_accounts"
+          class="btn btn-secondary"
+          style="margin-left: 10px"
+          >CANCEL</a
+        >
+      </form>
+    </div>
+  </div>
+</body>
+<%- include('../layouts/footer') %>

@@ -1,0 +1,53 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/nav') -%> <%- include('../layouts/sidenavhris') %>
+  <div class="page-body">
+    <div class="page-name">
+      <h1>Leave Applications</h1>
+    </div>
+    <p class="text-muted mb-4">Manage the employees leave applications</p>
+    <input
+      class="form-control me-sm-2"
+      type="text"
+      id="accInput"
+      placeholder="Search"
+      style="margin-bottom: 20px"
+      oninput="searchTable()"
+    />
+    <div class="hris-container">
+      <table id="table" class="table table-hover">
+        <thead>
+          <tr class="table-dark">
+            <th style="width: 150px">Applicant's Name</th>
+            <th style="width: 200px">Title</th>
+            <th style="width: 100px">Type</th>
+            <th style="width: 100px">Applied Date</th>
+            <th style="width: 100px">Period (Date)</th>
+            <th style="width: 100px">Status</th>
+            <th style="width: 80px">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Kita Ikuyou</td>
+            <td>Urgent meeting</td>
+            <td>Leave</td>
+            <td>April 17, 2024</td>
+            <td>3</td>
+            <td>Approved</td>
+            <td class="action-buttons-leave">
+              <a href="#" class="icon-square-leave"
+                ><i class="fa-solid fa-check text-success"></i
+              ></a>
+              <a href="#" class="icon-square-leave">
+                <i class="fa-solid fa-circle-xmark text-danger"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+<%- include('../layouts/footer') %>
