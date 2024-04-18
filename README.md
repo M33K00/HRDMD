@@ -4,6 +4,14 @@
 
 An app specifically made for HR Departments with built-in HRMS and Document Tracker
 
+## Installation
+
+- Install MongoDB first
+
+- Install dependencies with ```npm install```
+
+- Run with ```npm start```
+
 ### Folder Structure
 
 Please create the following folder structure in the root of the app for it to work properly
@@ -33,13 +41,6 @@ This folder contains various subfolders to organize different types of files.
 - `role3/`: Files related to Role 3.
 - `role4/`: Files related to Role 4.
 
-## Installation
-
-Install MongoDB first
-
-Install dependencies with ```npm install```
-
-Run with ```npm start```
 
 ## Status and stuff
 
