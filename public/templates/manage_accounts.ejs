@@ -1,79 +1,81 @@
 <%- include('./layouts/header') -%>
 <body>
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
-  <div class="page-body">
+  <div class="page-body2">
     <div class="page-name">
-      <h1>Manage Accounts</h1>
+      <h1>Application Accounts Management</h1>
       <div>
         <a href="addacc" class="btn-text" style="text-decoration: inherit;">
           <button type="button" class="btn btn-primary">
             <i class="fa-solid fa-plus"></i>
-            ADD USER
+            ADD ACCOUNT
           </button>
         </a>
       </div>
     </div>
-    <p class="text-muted mb-4 ">Manage the accounts registered in the system</p>
+    <p class="page-description text-muted ">This page manages the accounts registered on this app. If you want to manage HR accounts, please head to HRIS Section</p>
+    <p class="page-description text-muted ">Accounts made in this page will also create an account in HRIS</p>      <div class="col-lg-12">
+      <% if (message) { %>
+        <div
+          class="alert alert-dismissible alert-<%= message.type %> fade show"
+          role="alert"
+          id="autoDismissAlert"
+        >
+        <strong>Attention!</strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+          ></a>
+      </div>
+      <% } %>        
+    </div> <%# Search bar %>
     <input
       class="form-control me-sm-2"
       type="text"
-      id="accInput"
+      id="searchInput"
       placeholder="Search"
       style="margin-bottom: 20px"
-      oninput="searchTable()"
     />
-    <div class="my-4">
-      <div class="col-lg-12">
-        <% if (message) { %>
-          <div
-            class="alert alert-dismissible alert-warning fade show"
-            role="alert"
-            id="autoDismissAlert"
-          >
-          <strong>Attention!</strong><%= message.message %><a
-            href="#"
-            class="alert-link"
-            ></a>
+    <h4 class="folder-title mb-3 mt-3">All Accounts</h4>
+    <div class="page-container-acc">
+      <% if (logincollections.length > 0) { %> <% logincollections.forEach(row =>
+        { %>
+        <div class="page-item">
+          <div class="card mb-3 account-card">
+            <a
+              href="/view/<%= row._id %>"
+              class="hover-div-acc"
+            >
+              <div
+                class="imageacc-preview"
+                style="
+                  background-image: url('../<%= row.image %>');
+                  background-size: cover;
+                "
+              ></div>
+            </a>
+            <div
+              class="card-header card-documents-options card-header-font d-flex justify-content-between align-items-center"
+            >
+              <span class="card-text-name"><%= row.name %></span>
+            </div>
+            <div
+              class="card-footer card-options file-date"
+              style="font-weight: 600"
+            >
+              <% if (row.hrrole === "ROLE 1") { %> Entry-level <% } else if
+              (row.hrrole === "ROLE 2") { %> Individual Contributors <% } else if
+              (row.hrrole === "ROLE 3") { %> HR Manager <% } else if (row.hrrole
+              === "ROLE 4") { %> HR Director <% } else if (row.hrrole === "ADMIN")
+              { %> ADMIN <% } %>
+            </div>
+            <div class="card-footer card-options account-footer" style="font-weight: 600"><%= row.department %></div>
+            <div class="card-footer card-options account-footer"><%= row.email %></div>
+          </div>
         </div>
-        <% } %>        
-      </div>
-          <% if (logincollections != '') { %>
-            <table id="table" class="table table-hover table-striped text-center">
-              <thead>
-                <tr class="table-primary">
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>HR Role</th>
-                  <th>Action</th>
-                </tr>
-                </tr>
-                </tr>
-              </thead>
-              <tbody>
-                <% logincollections.forEach((row, index) => { %>
-                  <tr>
-                    <td><img src="<%= row.image %>" width="50" class="img-thumbnail"></td>
-                    <td><%= row.name %></td>
-                    <td><%= row.email %></td>
-                    <td><% if (row.hrrole === "ROLE 1") { %> Entry-level <% } else if
-                      (row.hrrole === "ROLE 2") { %> Individual Contributors <% } else if
-                      (row.hrrole === "ROLE 3") { %> HR Manager <% } else if (row.hrrole
-                      === "ROLE 4") { %> HR Director <% } else if (row.hrrole === "ADMIN")
-                      { %> ADMIN <% } %></td>
-                    <td>
-                      <a href="/edit/<%= row._id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1 my-2"></i></a>
-                      <a href="/delete/<%= row._id %>" class="text-danger"><i class="fas fa-trash fa-lg mx-1 my-2"></i></a>
-                    </td>
-                  </tr>
-                <% }) %>
-              </tbody>
-            </table>
-          <% } else { %>
-            <h1 class="text-center text-secondary mt-5">No Users found in database</h1>
-            <% } %>
-        </div>
-      </div>
+        <% }); %> <% } else { %>
+        <p>No files found.</p>
+        <% } %>
     </div>
   </div>
+</body>
 <%- include('./layouts/footer') -%>

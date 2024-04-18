@@ -1,0 +1,23 @@
+<%- include('./layouts/header') -%> <%- include('./layouts/nav') -%>
+<%-include('./layouts/sidenav') -%>
+<div class="page-body">
+  <div class="page-name">
+    <h1>View Account (<%= logincollections.name %>)</h1>
+    <div class="account-options">
+        <a href="/edit/<%= logincollections._id %>" class="btn btn-primary">Edit Account</a>
+        <a href="/manage_accounts" class="btn btn-secondary">Go Back</a>
+      </div>
+  </div>
+  <div class="account-basic1">
+    <div class="account-image"><img src="../<%= logincollections.image %>"></div>
+    <div class="account-info mt-3">
+      <p><b>Name:</b> <%= logincollections.name %></p>
+      <p><b>Email:</b> <%= logincollections.email %></p>
+      <p><b>Contact:</b> <%= logincollections.contact %></p>
+      <p><b>Birthday:</b> <%= logincollections.birthday.toISOString().split('T')[0] %></p>
+      <p><b>Department:</b> <%= logincollections.department %></p>
+      <p><b>HR Role:</b> <%= logincollections.hrrole %></p>
+    </div>
+  </div>
+</div>
+<%- include('./layouts/footer') -%>

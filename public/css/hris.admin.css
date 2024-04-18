@@ -92,10 +92,6 @@
   color: white;
 }
 
-.hris-container {
-  min-height: 100vh;
-}
-
 .hris-title {
   color: white;
   background-color: #414141;
@@ -108,6 +104,40 @@
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
+.hris-container {
+  min-height: fit-content;
+  margin-bottom: 20px;
+}
+
+.hris-container-status {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px; /* Gap between grid items */
+}
+
+.container-div {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  height: 300px;
+}
+
+.employee-count {
+  background-color: #3b8d2d;
+  height: 100%;
+  width: 100%;
+  color: white;
+}
+
+.pending-count {
+  background-color: #863434;
+  height: 100%;
+  width: 100%;
+  color: white;
+}
+
 .action-buttons {
   display: flex;
   justify-content: flex-end; /* Align items to the right */

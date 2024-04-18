@@ -80,19 +80,16 @@
   top: 2.6%;
 }
 .nav-links li:nth-child(2):hover ~ .active-button {
-  top: 19.6%;
+  top: 22.6%;
 }
 .nav-links li:nth-child(3):hover ~ .active-button {
-  top: 35.8%;
+  top: 42.6%;
 }
 .nav-links li:nth-child(4):hover ~ .active-button {
-  top: 52.4%;
+  top: 62.6%;
 }
 .nav-links li:nth-child(5):hover ~ .active-button {
-  top: 69%;
-}
-.nav-links li:nth-child(6):hover ~ .active-button {
-  top: 85.6%;
+  top: 82.6%;
 }
 
 @media only screen and (max-width: 600px) {
@@ -246,19 +243,21 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Grid with 5 columns */
-  gap: 5px; /* Gap between grid items */
-  grid-auto-rows: 370px; /* Default height for each row */
+  gap: 10px; /* Gap between grid items */
+  grid-auto-rows: 405px; /* Default height for each row */
 }
 
-.page-item {
-  width: 300px; /* Fixed width for each card */
-  height: 250px; /* Fixed height for each card */
-  background-color: transparent;
+.account-card {
+  height: 400px;
+  display: inline-block;
+  border-color: #5a5a5a;
+  border-width: 1px;
+  border-radius: 10px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
 }
 
 .card {
   width: 100%; /* Ensure card fills the available space */
-  height: 125%; /* Ensure card fills the available space */
 }
 
 .card-header-options {
@@ -269,10 +268,8 @@
 }
 
 .card-documents-options {
+  display: flex;
   background-color: transparent;
-  padding-bottom: 20px;
-  height: 35px;
-  width: auto;
 }
 
 .card-header-font {
@@ -341,6 +338,13 @@
   border: none;
 }
 
+.account-footer {
+  width: 100%;
+  margin-bottom: -10px;
+  background-color: inherit;
+  font-size: 14px;
+}
+
 .sortation-container {
   display: flex;
   margin-bottom: 10px;
@@ -393,28 +397,6 @@
   width: 91%;
   height: 90%;
   background-color: #4d4d4d; /* Fill color for the div */
-  border-radius: 5px; /* Border radius for rounded corners */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.125rem;
-  color: #dee2e6;
-  border: 1px solid #5a5a5a; /* Border style with 2px width and black color */
-}
-
-.account-card {
-  height: 350px;
-  display: inline-block;
-  border-color: #5a5a5a;
-  border-width: 1px;
-  border-radius: 10px;
-  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
-}
-
-.imageacc-preview {
-  width: 91%;
-  height: 90%;
-  background-color: #5a5a5a; /* Fill color for the div */
   border-radius: 5px; /* Border radius for rounded corners */
   display: flex;
   justify-content: center;
@@ -540,4 +522,74 @@
 
 .sidebar-buttons .logout-button a i {
   margin-left: 5px; /* Adjust the spacing between icon and text for logout button */
+}
+
+.imageacc-preview {
+  width: 90%;
+  height: 90%;
+  background-color: #5a5a5a; /* Fill color for the div */
+  border-radius: 5px; /* Border radius for rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.125rem;
+  color: #dee2e6;
+  border: 1px solid #5a5a5a; /* Border style with 2px width and black color */
+}
+
+.hover-div-acc {
+  position: relative;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+  filter: brightness(100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 240px;
+}
+.hover-div-acc:hover {
+  filter: brightness(50%);
+}
+
+.account-basic1 {
+  border: #686868 solid 2px;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr; /* Grid with 2 columns */
+  gap: 5px; /* Gap between grid items */
+}
+
+.account-image {
+  padding: 10px;
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  width: 300px; /* Set width to 100% of the column */
+  height: 300px;
+  
+}
+
+.account-image img {
+  max-width: 100%; /* Ensure the image doesn't overflow its container */
+  max-height: 100%; /* Ensure the image doesn't overflow its container */
+  border-radius: 5px;
+  border: #686868 solid 3px;
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 20px;
+}
+.account-options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.account-options a {
+  margin-right: 10px;
 }

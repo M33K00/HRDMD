@@ -24,6 +24,16 @@
           />
         </div>
         <div class="form-group">
+          <label for="InputName" class="form-label mt-4">Birthday</label>
+          <input
+            type="date"
+            name="birthday"
+            class="form-control"
+            value="<%= logincollections.birthday  %>"
+            required
+          />
+        </div>
+        <div class="form-group">
           <label for="exampleInputEmail1" class="form-label mt-4"
             >Email address</label
           >
@@ -32,7 +42,6 @@
             name="email"
             class="form-control"
             id="exampleInputEmail1"
-            aria-describedby="emailHelp"
             placeholder="Enter email"
             value="<%= logincollections.email  %>"
             required
@@ -40,6 +49,18 @@
           <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
           >
+        </div>
+        <div class="form-group">
+          <label for="InputName" class="form-label mt-4">Contact Number</label>
+          <input
+            type="text"
+            name="contact"
+            class="form-control"
+            placeholder="(+639) 123 456 7890"
+            value="<%= logincollections.contact  %>"
+            maxlength="12"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1" class="form-label mt-4"
@@ -75,8 +96,21 @@
             value="<%= logincollections.image  %>"
           />
         </div>
+        <div class="form-group">
+          <label for="exampleSelect1" class="form-label mt-4">Department</label>
+          <select
+            type="text"
+            name="department"
+            class="form-select"
+            id="department"
+          >
+          <option value="Department 1" <% if (logincollections.department === 'Department 1') { %> selected <% } %>>Department 1</option>
+          <option value="Department 2" <% if (logincollections.hrrole === 'Department 2') { %> selected <% } %>>Department 2</option>
+          <option value="HR Department" <% if (logincollections.hrrole === 'HR Department') { %> selected <% } %>>HR Department</option>
+          </select>
+        </div>
         <div class="form-group" style="margin-bottom: 10px">
-          <label for="exampleSelect1" class="form-label mt-4">HR Role</label>
+          <label for="exampleSelect1" class="form-label mt-2">HR Role</label>
           <select
             type="text"
             name="hrrole"

@@ -38,11 +38,24 @@ router.get("/logout", authController.logout_get);
 // Insert an account into the database route
 router.post("/addacc", upload, async (req, res) => {
   try {
+
+    let hashedPassword = req.body.password;
+    if (req.body.password) {
+      // Generate a salt and hash the new password
+      const salt = await bcrypt.genSalt();
+      hashedPassword = await bcrypt.hash(req.body.password, salt);
+    }
+
+    const parsedBirthday = new Date(req.body.birthday);
+
     const data = {
       name: req.body.name,
+      birthday: parsedBirthday,
+      contact: req.body.contact,
       email: req.body.email,
-      password: req.body.password,
-      hrrole: req.body.hrrole || "NOROLE",
+      password: hashedPassword, // Use the hashed password here
+      department: req.body.department,
+      hrrole: req.body.hrrole,
       image: req.file.filename,
     };
 
@@ -51,7 +64,7 @@ router.post("/addacc", upload, async (req, res) => {
 
     // Set success message in session
     req.session.message = {
-      type: "SUCCESS",
+      type: "success",
       message: " User added successfully",
     };
 
@@ -60,7 +73,7 @@ router.post("/addacc", upload, async (req, res) => {
   } catch (error) {
     // Set error message in session
     req.session.message = {
-      type: "DANGER",
+      type: "danger",
       message: error.message,
     };
     // Redirect to the previous page or an error page
@@ -69,8 +82,31 @@ router.post("/addacc", upload, async (req, res) => {
 });
 
 // Edit a user
+router.get("/view/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+    let logincollections = await LogInCollection.findById(id);
+
+    if (!logincollections) {
+      // If the user account doesn't exist, redirect to manage_accounts page
+      return res.redirect("/manage_accounts");
+    }
+
+    // Render the edit_users template with the retrieved user data
+    res.render("view_account", {
+      title: "View Account",
+      logincollections: logincollections,
+    });
+  } catch (err) {
+    // Log and handle errors gracefully
+    console.error("Error editing user account:", err);
+    // Redirect to manage_accounts page in case of an error
+    res.redirect("/manage_accounts");
+  }
+});
+
+// Edit a user
 router.get("/edit/:id", async (req, res) => {
-  const salt = await bcrypt.genSalt();
   try {
     let id = req.params.id;
     let logincollections = await LogInCollection.findById(id);
@@ -112,7 +148,6 @@ router.post("/update/:id", upload, async (req, res) => {
       new_image = req.body.old_image;
     }
 
-    // Generate a salt
     // Check if the new password is empty
     let hashedPassword = req.body.old_password;
     if (req.body.password) {
@@ -121,13 +156,21 @@ router.post("/update/:id", upload, async (req, res) => {
       hashedPassword = await bcrypt.hash(req.body.password, salt);
     }
 
-    // Update user information in the database, using the hashed password
+    // Update the user
+
+    const birthday = req.body.birthday;
+
+    const datePartOnly = birthday.split("T")[0];
+    const parsedBirthday = new Date(datePartOnly);
     const result = await LogInCollection.findByIdAndUpdate(
       id,
       {
         name: req.body.name,
+        birthday: parsedBirthday,
+        contact: req.body.contact,
         email: req.body.email,
         password: hashedPassword, // Use the hashed password here
+        department: req.body.department,
         hrrole: req.body.hrrole,
         image: new_image,
       },
@@ -219,11 +262,13 @@ router.get("/delete/:id", async (req, res) => {
     }
 
     req.session.message = {
-      type: "info",
+      type: "danger",
       message: " User deleted successfully",
     };
 
-    res.redirect("/manage_accounts");
+    const refererUrl = req.headers.referer
+
+    res.redirect(refererUrl);
   } catch (err) {
     console.error(err);
     res.json({ message: err.message, type: "danger" });
@@ -319,8 +364,13 @@ router.get("/add_employees", (req, res) => {
   res.render("HRIS/add_employees");
 });
 
-router.get("/view_employees", (req, res) => {
-  res.render("HRIS/view_employees");
+router.get("/view_employees", async (req, res) => {
+  try {
+    const logincollections = await LogInCollection.find();
+    res.render("HRIS/view_employees", { logincollections });
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.get("/leave_applications", (req, res) => {

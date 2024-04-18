@@ -85,8 +85,9 @@
   overflow: visible;
   height: fit-content;
   background-color: #fff;
-  margin-left: 250px;
-  margin-bottom: 100px;
+  margin-top: 80px;
+  margin-left: 260px;
+  margin-right: 10px;
   padding: 20px;
   flex: 1;
 }
@@ -348,4 +349,7 @@
 .extra-info span {
   height: 10px;
   margin-right: 5px;
+}
+.card-start {
+  height: 330px;
 }

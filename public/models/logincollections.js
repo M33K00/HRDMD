@@ -14,6 +14,16 @@ const logInSchema = new mongoose.Schema({
     lowercase: true,
     validate: [isEmail, "Please enter a valid email"],
   },
+  contact: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  birthday: {
+    type: Date,
+    required: false,
+    default: Date.now,
+  },
   password: {
     type: String,
     required: [true, "Please add a password"],
@@ -22,6 +32,17 @@ const logInSchema = new mongoose.Schema({
   image: {
     type: String,
     default: "../images/migu.jpg",
+  },
+  department: {
+    type: String,
+    default: "NODEP",
+    validate: {
+      validator: function (value) {
+        // Custom validation function to allow null or non-empty values
+        return value !== "";
+      },
+      message: "department cannot be empty",
+    },
   },
   hrrole: {
     type: String,
