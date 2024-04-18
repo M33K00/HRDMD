@@ -9,7 +9,7 @@
       <p class="lead text-muted text-center">
         This will also add an account for the application
       </p>
-      <form action="#" method="POST" enctype="multipart/form-data">
+      <form action="/addacc" method="POST" enctype="multipart/form-data">
         <fieldset>
           <div class="form-group row">
             <label for="staticEmail" class="col-sm-2 col-form-label"
@@ -50,10 +50,11 @@
             <label for="InputName" class="form-label mt-4">Contact No.</label>
             <input
               type="tel"
-              name="contactno"
+              name="contact"
               class="form-control"
               aria-describedby="emailHelp"
               placeholder="(+64)"
+              maxlength="12"
               required
             />
           </div>
@@ -88,6 +89,23 @@
               required
             />
           </div>
+          <div class="form-group">
+            <label for="formFile" class="form-label mt-4">Account Image</label>
+            <input class="form-control" type="file" name="image" id="formFile" />
+          </div>
+          <div class="form-group">
+            <label for="exampleSelect1" class="form-label mt-4">Department</label>
+            <select
+              type="text"
+              name="department"
+              class="form-select"
+              id="department"
+            >
+            <option value="Department 1">Department 1</option>
+            <option value="Department 2">Department 2</option>
+            <option value="HR Department">HR Department</option>
+            </select>
+          </div>
           <div class="form-group" style="margin-bottom: 10px">
             <label for="exampleSelect1" class="form-label mt-4">HR Role</label>
             <select
@@ -105,7 +123,7 @@
         </fieldset>
         <input type="submit" class="btn btn-primary btn" />
         <a
-          href="manage_accounts"
+          href="view_employees"
           class="btn btn-secondary"
           style="margin-left: 10px"
           >CANCEL</a

@@ -19,5 +19,9 @@
       <p><b>HR Role:</b> <%= logincollections.hrrole %></p>
     </div>
   </div>
+  <div class="account-delete">
+    <a href="/delete/<%= logincollections._id %>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete employee <%= logincollections.name %>?')"
+      >DELETE ACCOUNT</a>
+  </div>
 </div>
 <%- include('./layouts/footer') -%>

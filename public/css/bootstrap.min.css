@@ -590,6 +590,15 @@
   align-items: center;
   justify-content: center;
 }
+
+.account-delete {
+  margin-top: 20px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+
 .account-options a {
   margin-right: 10px;
 }

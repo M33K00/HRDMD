@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 
 // Models
 const LogInCollection = require("../models/logincollections");
+const LeaveApplications = require("../models/leaveapplications");
 
 // Multer configuration
 var storage = multer.diskStorage({
@@ -81,7 +82,7 @@ router.post("/addacc", upload, async (req, res) => {
   }
 });
 
-// Edit a user
+// View a user
 router.get("/view/:id", async (req, res) => {
   try {
     let id = req.params.id;
@@ -352,9 +353,7 @@ router.get("/manage_accounts", async (req, res) => {
   }
 });
 
-router.get("/addacc", (req, res) => {
-  res.render("addacc");
-});
+// HRIS Routes
 
 router.get("/hris", (req, res) => {
   res.render("hris");
@@ -373,8 +372,14 @@ router.get("/view_employees", async (req, res) => {
   }
 });
 
-router.get("/leave_applications", (req, res) => {
-  res.render("HRIS/leave_applications");
+router.get("/leave_applications", async (req, res) => {
+  try {
+    const leaveapplications = await LeaveApplications.find();
+    res.render("HRIS/leave_applications", { leaveapplications });
+  } catch (err) {
+    console.log("Error loading pages: ", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 module.exports = router;
