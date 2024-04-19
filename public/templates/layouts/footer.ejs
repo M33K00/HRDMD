@@ -436,9 +436,56 @@
   }
 </script>
 
-<%# Search Table %>
+<%# Search Tables %>
 <script>
-  function searchTable() {
+  function searchTables() {
+    const input = document.getElementById("accInput");
+    const filter = input.value.toLowerCase();
+
+    // Get the active tab content
+    const activeTabContent = document.querySelector('.tab-pane.fade.active.show');
+
+    // Search in the table within the active tab content
+    searchTable(activeTabContent, filter);
+  }
+
+  function searchTable(activeTabContent, filter) {
+    // Get the table within the active tab content
+    const table = activeTabContent.querySelector('table');
+    if (!table) return; // Exit if no table found in the active tab content
+
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return; // Exit if no tbody found in the table
+
+    const rows = tbody.getElementsByTagName("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const cells = row.getElementsByTagName("td");
+      let found = false;
+
+      for (let j = 0; j < cells.length; j++) {
+        const cell = cells[j];
+        if (cell) {
+          const textValue = cell.textContent || cell.innerText;
+          if (textValue.toLowerCase().indexOf(filter) > -1) {
+            found = true;
+            break;
+          }
+        }
+      }
+
+      if (found) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    }
+  }
+</script>
+
+<script>
+  function searchFunc() {
     const input = document.getElementById("accInput");
     const filter = input.value.toLowerCase();
     const table = document.getElementById("table");

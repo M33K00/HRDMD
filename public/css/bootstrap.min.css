@@ -235,7 +235,7 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Grid with 5 columns */
-  gap: 5px; /* Gap between grid items */
+  gap: 15px; /* Gap between grid items */
 }
 
 .page-container-acc {
@@ -243,7 +243,7 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Grid with 5 columns */
-  gap: 10px; /* Gap between grid items */
+  gap: 20px; /* Gap between grid items */
   grid-auto-rows: 405px; /* Default height for each row */
 }
 

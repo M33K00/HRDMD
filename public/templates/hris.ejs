@@ -9,16 +9,20 @@
     </div>
     <div class="hris-container-status">
       <div class="container-div">
-        <div class="employee-count">
-          <p>Employee Count</p>
-          <p>42069</p>
-        </div>
+        <a class="clickable-link" href="/view_employees">
+          <div class="employee-count">
+            <p class="display-label">Employee Count</p>
+            <p class="display-count"><%= employeecount %></p>
+          </div>
+        </a>
       </div>
       <div class="container-div">
-        <div class="pending-count">
-          <p>Pending Leave</p>
-          <p>Lahat sila gusto mag leave putang ina</p>
-        </div>
+        <a class="clickable-link" href="/leave_applications">
+          <div class="pending-count">
+            <p class="display-label">Pending Leave</p>
+            <p class="display-count"><%= pendingleave %></p>
+          </div>
+        </a>
       </div>
     </div>
   </div>

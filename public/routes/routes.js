@@ -355,8 +355,14 @@ router.get("/manage_accounts", async (req, res) => {
 
 // HRIS Routes
 
-router.get("/hris", (req, res) => {
-  res.render("hris");
+router.get("/hris", async (req, res) => {
+  try {
+    const employeecount = await LogInCollection.countDocuments();
+    const pendingleave = await LeaveApplications.countDocuments({ Status: "Pending" });
+    res.render("hris", { employeecount, pendingleave });
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.get("/add_employees", (req, res) => {

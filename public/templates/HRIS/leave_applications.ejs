@@ -12,46 +12,199 @@
       id="accInput"
       placeholder="Search"
       style="margin-bottom: 20px"
-      oninput="searchTable()"
+      oninput="searchTables()"
     />
     <div class="hris-container">
-      <% if (leaveapplications != '') { %>
-      <table id="table" class="table table-hover">
-        <thead>
-          <tr class="table-dark">
-            <th style="width: 150px">Applicant's Name</th>
-            <th style="width: 200px">Title</th>
-            <th style="width: 100px">Type</th>
-            <th style="width: 100px">Applied Date</th>
-            <th style="width: 100px">Period (Date)</th>
-            <th style="width: 100px">Status</th>
-            <th style="width: 80px">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% leaveapplications.forEach((row, index) => { %>
-          <tr>
-            <td><%= row.name %></td>
-            <td><%= row.Title %></td>
-            <td><%= row.Type %></td>
-            <td><%= row.AppliedDate.toISOString().split('T')[0] %></td>
-            <td><%= row.Period %></td>
-            <td><%= row.Status %></td>
-            <td class="action-buttons-leave">
-              <a href="#" class="icon-square-leave"
-                ><i class="fa-solid fa-check text-success"></i
-              ></a>
-              <a href="#" class="icon-square-leave">
-                <i class="fa-solid fa-circle-xmark text-danger"></i>
-              </a>
-            </td>
-          </tr>
-          <% }) %>
-        </tbody>
-      </table>
-      <% } else { %>
-        <h2 class="text-center text-secondary mt-5">No leave applications</h2>
-        <% } %>
+      <% const pendingApplications = leaveapplications.filter(row => row.Status === 'Pending'); %>
+      <% const approvedApplications = leaveapplications.filter(row => row.Status === 'Approved'); %>
+      <% const declinedApplications = leaveapplications.filter(row => row.Status === 'Declined'); %>
+      <% const totalApplications = leaveapplications.length; %>
+      <% const approvedCount = approvedApplications.length; %>
+      <% const pendingCount = pendingApplications.length; %>
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a class="nav-link active" data-bs-toggle="tab" href="#all-applications" aria-selected="true" role="tab" tabindex="-1">All Applications (<%= totalApplications %>)</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" data-bs-toggle="tab" href="#pending" aria-selected="false" role="tab">Pending (<%= pendingCount %>)</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" data-bs-toggle="tab" href="#approved" aria-selected="false" role="tab" tabindex="-1">Approved (<%= approvedCount %>)</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" data-bs-toggle="tab" href="#declined" aria-selected="false" role="tab" tabindex="-1">Declined (<%= approvedCount %>)</a>
+          </li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+          <div class="tab-pane fade active show mb-4" id="all-applications" role="tabpanel">
+            <% if (leaveapplications != '') { %>
+            <div class="table-responsive mt-3">
+              <table id="table" class="table table-hover">
+                <thead>
+                  <tr class="table-dark">
+                    <th style="width: 150px">Applicant's Name</th>
+                    <th style="width: 200px">Title</th>
+                    <th style="width: 100px">Type</th>
+                    <th style="width: 100px">Applied Date</th>
+                    <th style="width: 100px">Period (Date)</th>
+                    <th style="width: 100px">Status</th>
+                    <th style="width: 80px">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% leaveapplications.forEach((row, index) => { %>
+                  <tr>
+                    <td><%= row.name %></td>
+                    <td><%= row.Title %></td>
+                    <td><%= row.Type %></td>
+                    <td><%= row.AppliedDate.toISOString().split('T')[0] %></td>
+                    <td><%= row.Period %></td>
+                    <td><%= row.Status %></td>
+                    <td class="action-buttons-leave">
+                      <a href="#" class="icon-square-leave"
+                        ><i class="fa-solid fa-check text-success" onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"></i
+                      ></a>
+                      <a href="#" class="icon-square-leave" onclick="return confirm('Are you sure you want to decline this application by <%= row.name %>?');">
+                        <i class="fa-solid fa-circle-xmark text-danger"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+              <% } else { %>
+                <h2 class="text-center text-secondary mt-5">No leave applications</h2>
+                <% } %>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="pending" role="tabpanel">
+            <div class="tab-pane fade show mb-4" id="all-applications" role="tabpanel">
+              <% if (pendingApplications.length > 0) { %>
+                <div class="table-responsive mt-3">
+                  <table id="table" class="table table-hover">
+                    <thead>
+                      <tr class="table-dark">
+                        <th style="width: 150px">Applicant's Name</th>
+                        <th style="width: 200px">Title</th>
+                        <th style="width: 100px">Type</th>
+                        <th style="width: 100px">Applied Date</th>
+                        <th style="width: 100px">Period (Date)</th>
+                        <th style="width: 100px">Status</th>
+                        <th style="width: 80px">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% pendingApplications.forEach((row, index) => { %>
+                        <tr>
+                          <td><%= row.name %></td>
+                          <td><%= row.Title %></td>
+                          <td><%= row.Type %></td>
+                          <td><%= row.AppliedDate.toISOString().split('T')[0] %></td>
+                          <td><%= row.Period %></td>
+                          <td><%= row.Status %></td>
+                          <td class="action-buttons-leave">
+                            <a href="#" class="icon-square-leave"
+                              ><i class="fa-solid fa-check text-success" onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"></i
+                            ></a>
+                            <a href="#" class="icon-square-leave" onclick="return confirm('Are you sure you want to decline this application by <%= row.name %>?');">
+                              <i class="fa-solid fa-circle-xmark text-danger"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              <% } else { %>
+                <h2 class="text-center text-secondary mt-5">No pending applications</h2>
+              <% } %>
+            </div>            
+          </div>
+          <div class="tab-pane fade" id="approved" role="tabpanel">
+            <div class="tab-pane fade show mb-4" id="all-applications" role="tabpanel">
+              <% if (approvedApplications.length > 0) { %>
+                <div class="table-responsive mt-3">
+                  <table id="table" class="table table-hover">
+                    <thead>
+                      <tr class="table-dark">
+                        <th style="width: 150px">Applicant's Name</th>
+                        <th style="width: 200px">Title</th>
+                        <th style="width: 100px">Type</th>
+                        <th style="width: 100px">Applied Date</th>
+                        <th style="width: 100px">Period (Date)</th>
+                        <th style="width: 100px">Status</th>
+                        <th style="width: 80px">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% approvedApplications.filter(row => row.Status === 'Approved').forEach((row, index) => { %>
+                        <tr>
+                          <td><%= row.name %></td>
+                          <td><%= row.Title %></td>
+                          <td><%= row.Type %></td>
+                          <td><%= row.AppliedDate.toISOString().split('T')[0] %></td>
+                          <td><%= row.Period %></td>
+                          <td><%= row.Status %></td><td class="action-buttons-leave">
+                            <a href="#" class="icon-square-leave"
+                              ><i class="fa-solid fa-check text-success" onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"></i
+                            ></a>
+                            <a href="#" class="icon-square-leave" onclick="return confirm('Are you sure you want to decline this application by <%= row.name %>?');">
+                              <i class="fa-solid fa-circle-xmark text-danger"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              <% } else { %>
+                <h2 class="text-center text-secondary mt-5">No approved leave applications</h2>
+              <% } %>
+            </div>            
+          </div>
+          <div class="tab-pane fade" id="declined" role="tabpanel">
+            <div class="tab-pane fade show mb-4" id="all-applications" role="tabpanel">
+              <% if (declinedApplications.length > 0) { %>
+                <div class="table-responsive mt-3">
+                  <table id="table" class="table table-hover">
+                    <thead>
+                      <tr class="table-dark">
+                        <th style="width: 150px">Applicant's Name</th>
+                        <th style="width: 200px">Title</th>
+                        <th style="width: 100px">Type</th>
+                        <th style="width: 100px">Applied Date</th>
+                        <th style="width: 100px">Period (Date)</th>
+                        <th style="width: 100px">Status</th>
+                        <th style="width: 80px">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% declinedApplications.filter(row => row.Status === 'Approved').forEach((row, index) => { %>
+                        <tr>
+                          <td><%= row.name %></td>
+                          <td><%= row.Title %></td>
+                          <td><%= row.Type %></td>
+                          <td><%= row.AppliedDate.toISOString().split('T')[0] %></td>
+                          <td><%= row.Period %></td>
+                          <td><%= row.Status %></td><td class="action-buttons-leave">
+                            <a href="#" class="icon-square-leave"
+                              ><i class="fa-solid fa-check text-success" onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"></i
+                            ></a>
+                            <a href="#" class="icon-square-leave" onclick="return confirm('Are you sure you want to decline this application by <%= row.name %>?');">
+                              <i class="fa-solid fa-circle-xmark text-danger"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+              <% } else { %>
+                <h2 class="text-center text-secondary mt-5">No declined leave applications</h2>
+              <% } %>
+            </div>            
+          </div>
+        </div>
     </div>
   </div>
 </body>
