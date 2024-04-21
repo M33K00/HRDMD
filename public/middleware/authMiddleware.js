@@ -56,4 +56,19 @@ const checkRole = (req, res, next) => {
   }
 };
 
-module.exports = { requireAuth, checkUser, checkRole };
+const checkRoleHR = (req, res, next) => {
+  const user = res.locals.user;
+  if (user.hrrole === "ROLE 1") {
+    return res.redirect("/role1");
+  } else if (user.hrrole === "ROLE 2") {
+    return res.redirect("/role2");
+  } else if (user.hrrole === "ROLE 3") {
+    return res.redirect("/role3");
+  } else if (user.hrrole === "ROLE 4") {
+    return res.redirect("/role4");
+  } else {
+    next();
+  }
+}
+
+module.exports = { requireAuth, checkUser, checkRole, checkRoleHR };

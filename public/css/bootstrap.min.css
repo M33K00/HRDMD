@@ -27,6 +27,7 @@
   width: 250px;
   height: 100%;
   background: #158cba;
+  border-right: 5px solid #137ea7;
   position: fixed;
   top: 59px;
   left: 0;
@@ -80,16 +81,13 @@
   top: 2.6%;
 }
 .nav-links li:nth-child(2):hover ~ .active-button {
-  top: 22.6%;
+  top: 27.6%;
 }
 .nav-links li:nth-child(3):hover ~ .active-button {
-  top: 42.6%;
+  top: 52.6%;
 }
 .nav-links li:nth-child(4):hover ~ .active-button {
-  top: 62.6%;
-}
-.nav-links li:nth-child(5):hover ~ .active-button {
-  top: 82.6%;
+  top: 77.6%;
 }
 
 @media only screen and (max-width: 600px) {
@@ -601,4 +599,112 @@
 
 .account-options a {
   margin-right: 10px;
+}
+
+.nav-change {
+  display: flex;
+  font-size: 30px;
+  border: 2px solid #137ea7;
+  border-radius: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: background-color, color, width 1.3s ease;
+}
+
+.nav-change i {
+  color: white;
+  transition: color, 0.3s ease;
+}
+
+.nav-change:hover i {
+  color: #137ea7; /* Change the color of the icon when hovering */
+}
+
+.nav-change::after {
+  content: "HRIS";
+  display: none;
+  position: absolute;
+  top: 49%;
+  left: 93%;
+  transform: translateY(-50%);
+  padding: 5px 10px;
+  color: #137ea7;
+  font-weight: 700;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: opacity 0.3s ease, transform 1.3s ease;
+}
+
+.nav-change:hover {
+  width: 100px;
+  background-color: #ffffff;
+  border: 2px solid #f1f1f1;
+  box-shadow: 0 0px 25px rgba(255, 255, 255, 0.6);
+  color: #137ea7;
+}
+
+.nav-change:hover i {
+  color: #137ea7;
+}
+
+.nav-change:hover::after {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+/* NAV HRIS */
+
+.nav-change-hris {
+  display: flex;
+  font-size: 30px;
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  border: 2px solid #137ea7;
+  border-radius: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.nav-change-hris i {
+  margin-left: 2px;
+  font-size: 25px;
+  color: white;
+}
+
+.nav-change-hris:hover i {
+  color: #137ea7; /* Change the color of the icon when hovering */
+}
+
+.nav-change-hris::after {
+  content: "Document Tracker";
+  display: none;
+  position: absolute;
+  top: 49%;
+  left: 90%;
+  transform: translateY(-50%);
+  padding: 5px 10px;
+  color: #137ea7;
+  font-weight: 700;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: nowrap;
+}
+
+.nav-change-hris:hover {
+  width: 200px;
+  background-color: #ffffff;
+  border: 2px solid #f1f1f1;
+  box-shadow: 0 0px 25px rgba(255, 255, 255, 0.6);
+  color: #137ea7;
+}
+
+.nav-change-hris:hover i {
+  color: #137ea7;
+}
+
+.nav-change-hris:hover::after {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%);
 }

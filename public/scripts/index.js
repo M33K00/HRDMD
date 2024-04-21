@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const app = express();
@@ -8,7 +7,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const { checkUser } = require("../middleware/authMiddleware.js");
 
-const PORT = process.env.PORT || 4000;
+const PORT =  3939;
 const templatePath = path.join(__dirname, "../templates");
 const publicPath = path.join("public");
 

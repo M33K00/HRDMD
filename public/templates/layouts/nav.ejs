@@ -1,15 +1,14 @@
-<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark" style="padding-top: 0px; padding-bottom: 0px;">
   <div class="container-fluid">
     <a class="navbar-brand" id="sidebarCollapse">Human Resources Department</a>
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav ms-auto">
-        <% if (user) { %>
         <li class="nav-item">
-          <a class="nav-link nav-name active" href="#">
-            <%= user.email %>
-            <span class="visually-hidden">(current)</span>
+          <a href="/hris" class="nav-link nav-change">
+            <i class="fa-solid fa-fingerprint"></i>
           </a>
         </li>
+        <% if (user) { %>
         <li class="nav-item">
           <a href="#" id="toggleSidebar" class="nav-link">
             <img class="nav-img" src="../<%= user.image %>" />

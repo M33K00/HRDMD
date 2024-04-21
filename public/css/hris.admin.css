@@ -45,16 +45,13 @@
   top: 2.6%;
 }
 .nav-links-hris li:nth-child(2):hover ~ .active-button {
-  top: 22.6%;
+  top: 27.6%;
 }
 .nav-links-hris li:nth-child(3):hover ~ .active-button {
-  top: 42.6%;
+  top: 52.6%;
 }
 .nav-links-hris li:nth-child(4):hover ~ .active-button {
-  top: 62.6%;
-}
-.nav-links-hris li:nth-child(5):hover ~ .active-button {
-  top: 82.6%;
+  top: 77.6%;
 }
 
 @media only screen and (max-width: 600px) {
@@ -203,3 +200,4 @@
   font-weight: 600;
   font-size: 100px;
 }
+

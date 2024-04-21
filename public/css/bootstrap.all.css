@@ -160,10 +160,18 @@
   align-items: center;
 }
 .nav-img {
-  height: 40px;
-  border: 1px solid #313131;
-  border-radius: 5px;
+  height: 50px;
+  border: 2px solid #818181;
+  border-radius: 50px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: border 0.3s ease, box-shadow 0.3s ease;
 }
+
+.nav-img:hover {
+  border: 2px solid #e2e2e2;
+  box-shadow: 0 0px 25px rgba(255, 255, 255, 0.5);
+}
+
 .nav-name {
   margin-left: 10px;
 }
@@ -353,3 +361,30 @@
 .card-start {
   height: 330px;
 }
+.lower-button {
+  text-decoration: none;
+  position: absolute;
+  top: 84%;
+  left: 15;
+  right: 0;
+  height: 60px;
+  border-bottom: 3px solid #137ea7;
+  border: 2px solid #137ea7;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: white;
+  transition: background-color, color, 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.lower-button:hover {
+  background-color: #ffffff;
+  color: #137ea7;
+  border-bottom: 3px solid #e2e2e2;
+  border: 2px solid #e2e2e2;
+  box-shadow: 0 10px 15px rgba(255, 255, 255, 0.3);
+}
+
+

@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const authController = require("../controllers/authController");
 const bcrypt = require("bcrypt");
+const { checkRoleHR } = require("../middleware/authMiddleware.js");
 
 // Models
 const LogInCollection = require("../models/logincollections");
@@ -355,7 +356,7 @@ router.get("/manage_accounts", async (req, res) => {
 
 // HRIS Routes
 
-router.get("/hris", async (req, res) => {
+router.get("/hris", checkRoleHR, async (req, res) => {
   try {
     const employeecount = await LogInCollection.countDocuments();
     const pendingleave = await LeaveApplications.countDocuments({ Status: "Pending" });

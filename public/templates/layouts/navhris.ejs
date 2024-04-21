@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark" style="padding-top: 0px; padding-bottom: 0px;">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sidebarCollapse">Human Resources Department</a>
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a href="/home" class="nav-link nav-name active nav-change-hris">
+                <i class="fa-solid fa-folder"></i>
+            </a>
+          </li>
+          <% if (user) { %>
+          <li class="nav-item">
+            <a href="#" id="toggleSidebar" class="nav-link">
+              <img class="nav-img" src="../<%= user.image %>" />
+            </a>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-body">
+      <div class="sidebar-image">
+        <div class="profile-image"><img src="../<%= user.image %>" /></div>
+        <div class="user-details">
+          <a><%= user.name %></a>
+          <a class="user-role"
+            ><% if (user.hrrole === "ROLE 1") { %> Entry-level <% } else if
+            (user.hrrole === "ROLE 2") { %> Individual Contributors <% } else if
+            (user.hrrole === "ROLE 3") { %> HR Manager <% } else if (user.hrrole
+            === "ROLE 4") { %> HR Director <% } else if (user.hrrole === "ADMIN")
+            { %> ADMIN <% } %></a
+          >
+        </div>
+      </div>
+      <div class="sidebar-menu">
+        <div class="sidebar-buttons">
+          <ul>
+            <li>
+              <a href="/editacc/<%= encodeURIComponent(user.name) %>"
+                ><i class="fa-solid fa-gear"></i>Account Settings</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="fa-regular fa-file"></i>HR File</a>
+            </li>
+            <li class="logout-button">
+              <a href="/logout"
+                ><i class="fa-solid fa-arrow-right-from-bracket"></i>Log Out</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" id="overlay"></div>
+  

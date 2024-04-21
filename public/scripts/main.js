@@ -1,7 +1,7 @@
 const { app, BrowserWindow } = require("electron");
 const Index = require("./index");
 const path = require("path");
-const PORT = process.env.PORT || 4000;
+const PORT = 3939;
 const {
   setupTitlebar,
   attachTitlebarToWindow,
