@@ -1,0 +1,31 @@
+<%- include('../layouts/user_hris/hris_user_header') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%-
+  include('../layouts/user_hris/sidenavhris_user') %>
+  <div class="page-body">
+    <div class="hris-container">
+      <div class="hris-header">
+        <div class="hris-title">Human Resources Information System</div>
+      </div>
+    </div>
+    <div class="hris-container-status">
+      <div class="container-div">
+        <a class="clickable-link" href="/view_employees">
+          <div class="employee-count">
+            <p class="display-label"></p>
+            <p class="display-count"></p>
+          </div>
+        </a>
+      </div>
+      <div class="container-div">
+        <a class="clickable-link" href="/leave_applications">
+          <div class="pending-count">
+            <p class="display-label"></p>
+            <p class="display-count"></p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+<%- include('../layouts/footer') %>

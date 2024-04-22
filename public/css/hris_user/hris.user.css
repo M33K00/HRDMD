@@ -1,0 +1,470 @@
+.nav-links-hris {
+  list-style: none;
+  position: relative;
+  padding-left: 0px;
+}
+.nav-links-hris li {
+  padding: 10px 0;
+  height: 50px;
+}
+.nav-links-hris li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+}
+.nav-links-hris li a i {
+  font-size: 20px;
+  margin-right: 20px;
+}
+.nav-links-hris li a p {
+  margin-bottom: 0px;
+}
+.active-button {
+  background: white;
+  width: 100%;
+  height: 47px;
+  position: absolute;
+  left: 0;
+  top: 2.6%;
+  z-index: -1;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.4);
+  display: none;
+  transition: top 0.5s;
+}
+.nav-links-hris li:hover a {
+  color: #0d5470;
+  transition: 0.3s;
+}
+.nav-links-hris li:hover ~ .active-button {
+  display: block;
+}
+.nav-links-hris li:nth-child(1):hover ~ .active-button {
+  top: 2.6%;
+}
+.nav-links-hris li:nth-child(2):hover ~ .active-button {
+  top: 27.6%;
+}
+.nav-links-hris li:nth-child(3):hover ~ .active-button {
+  top: 52.6%;
+}
+.nav-links-hris li:nth-child(4):hover ~ .active-button {
+  top: 77.6%;
+}
+
+@media only screen and (max-width: 600px) {
+  .side-nav {
+    width: 110px;
+  }
+}
+
+.dropdown-employee {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out; /* Add a transition for smooth appearance */
+}
+
+.dropdown:hover .dropdown-employee {
+  display: block;
+  background-color: aliceblue;
+  position: absolute;
+  width: 190px;
+  right: 0;
+  border-radius: 6px;
+  font-size: 14px;
+  opacity: 1; /* Show the dropdown with opacity */
+  transition-delay: 0.3s; /* Add a delay before the transition starts */
+}
+
+.dropdown-option:hover a {
+  background-color: #8a8a8a;
+  color: white;
+}
+
+.hris-title {
+  color: white;
+  background-color: #414141;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.hris-container {
+  min-height: fit-content;
+  margin-bottom: 20px;
+}
+
+.hris-container-status {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px; /* Gap between grid items */
+}
+
+.container-div {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  height: 300px;
+  transition: filter 0.1s ease; /* Smooth transition effect */
+}
+
+.container-div:hover {
+  filter: brightness(70%);
+  transition-delay: 0.1s;
+}
+
+.employee-count {
+  display: flex;
+  background-color: #3b8d2d;
+  height: 100%;
+  width: 100%;
+  color: white;
+}
+
+.pending-count {
+  display: flex;
+  background-color: #863434;
+  height: 100%;
+  width: 100%;
+  color: white;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+}
+
+.icon-square {
+  text-decoration: none;
+  display: flex;
+  justify-content: center; /* Center icon horizontally */
+  align-items: center; /* Center icon vertically */
+  width: 30px; /* Adjust size as needed */
+  height: 30px; /* Adjust size as needed */
+  border: 1px solid rgb(187, 187, 187); /* Optional: add border for square effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 5px; /* Optional: add spacing between squares */
+}
+
+.action-buttons-leave {
+  display: flex;
+}
+
+.icon-square-leave {
+  text-decoration: none;
+  display: flex;
+  justify-content: center; /* Center icon horizontally */
+  align-items: center; /* Center icon vertically */
+  width: 30px; /* Adjust size as needed */
+  height: 30px; /* Adjust size as needed */
+  border: 1px solid rgb(187, 187, 187); /* Optional: add border for square effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 5px; /* Optional: add spacing between squares */
+}
+
+.fa-solid {
+  font-size: 16px; /* Adjust icon size as needed */
+}
+
+.add-employee {
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.clickable-link {
+  cursor: pointer;
+  text-decoration: none;
+  height: 100%;
+  width: 100%;
+}
+
+.display-label {
+  margin: 10px;
+  font-weight: 300;
+  font-size: 40px;
+}
+
+.display-count {
+  margin: 10px;
+  margin-top: auto;
+  margin-left: auto; /* Pushes the element to the far left */
+  margin-right: 50px;
+  font-weight: 600;
+  font-size: 100px;
+}
+
+.nav-links-hris {
+  list-style: none;
+  position: relative;
+  padding-left: 0px;
+}
+.nav-links-hris li {
+  padding: 10px 0;
+  height: 50px;
+}
+.nav-links-hris li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+}
+.nav-links-hris li a i {
+  font-size: 20px;
+  margin-right: 20px;
+}
+.nav-links-hris li a p {
+  margin-bottom: 0px;
+}
+.active-button {
+  background: white;
+  width: 100%;
+  height: 47px;
+  position: absolute;
+  left: 0;
+  top: 2.6%;
+  z-index: -1;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.4);
+  display: none;
+  transition: top 0.5s;
+}
+.nav-links-hris li:hover a {
+  color: #0d5470;
+  transition: 0.3s;
+}
+.nav-links-hris li:hover ~ .active-button {
+  display: block;
+}
+.nav-links-hris li:nth-child(1):hover ~ .active-button {
+  top: 2.6%;
+}
+.nav-links-hris li:nth-child(2):hover ~ .active-button {
+  top: 27.6%;
+}
+.nav-links-hris li:nth-child(3):hover ~ .active-button {
+  top: 52.6%;
+}
+.nav-links-hris li:nth-child(4):hover ~ .active-button {
+  top: 77.6%;
+}
+
+@media only screen and (max-width: 600px) {
+  .side-nav {
+    width: 110px;
+  }
+}
+
+.dropdown-employee {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out; /* Add a transition for smooth appearance */
+}
+
+.dropdown:hover .dropdown-employee {
+  display: block;
+  background-color: aliceblue;
+  position: absolute;
+  width: 190px;
+  right: 0;
+  border-radius: 6px;
+  font-size: 14px;
+  opacity: 1; /* Show the dropdown with opacity */
+  transition-delay: 0.3s; /* Add a delay before the transition starts */
+}
+
+.dropdown-option:hover a {
+  background-color: #8a8a8a;
+  color: white;
+}
+
+.hris-title {
+  color: white;
+  background-color: #414141;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.hris-container {
+  min-height: fit-content;
+  margin-bottom: 20px;
+}
+
+.hris-container-status {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px; /* Gap between grid items */
+}
+
+.container-div {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  height: 300px;
+  transition: filter 0.1s ease; /* Smooth transition effect */
+}
+
+.container-div:hover {
+  filter: brightness(70%);
+  transition-delay: 0.1s;
+}
+
+.employee-count {
+  display: flex;
+  background-color: #3b8d2d;
+  height: 100%;
+  width: 100%;
+  color: white;
+}
+
+.pending-count {
+  display: flex;
+  background-color: #863434;
+  height: 100%;
+  width: 100%;
+  color: white;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+}
+
+.icon-square {
+  text-decoration: none;
+  display: flex;
+  justify-content: center; /* Center icon horizontally */
+  align-items: center; /* Center icon vertically */
+  width: 30px; /* Adjust size as needed */
+  height: 30px; /* Adjust size as needed */
+  border: 1px solid rgb(187, 187, 187); /* Optional: add border for square effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 5px; /* Optional: add spacing between squares */
+}
+
+.action-buttons-leave {
+  display: flex;
+}
+
+.icon-square-leave {
+  text-decoration: none;
+  display: flex;
+  justify-content: center; /* Center icon horizontally */
+  align-items: center; /* Center icon vertically */
+  width: 30px; /* Adjust size as needed */
+  height: 30px; /* Adjust size as needed */
+  border: 1px solid rgb(187, 187, 187); /* Optional: add border for square effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 5px; /* Optional: add spacing between squares */
+}
+
+.fa-solid {
+  font-size: 16px; /* Adjust icon size as needed */
+}
+
+.add-employee {
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.clickable-link {
+  cursor: pointer;
+  text-decoration: none;
+  height: 100%;
+  width: 100%;
+}
+
+.display-label {
+  margin: 10px;
+  font-weight: 300;
+  font-size: 40px;
+}
+
+.display-count {
+  margin: 10px;
+  margin-top: auto;
+  margin-left: auto; /* Pushes the element to the far left */
+  margin-right: 50px;
+  font-weight: 600;
+  font-size: 100px;
+}
+
+.page-name {
+  margin-left: 10px;
+}
+
+.app-form {
+  border: #d1d1d1 1px solid;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-form-container {
+  margin: 10px;
+  width: 98%;
+  display: flex;
+  flex-wrap: wrap; /* Allow flex items to wrap into multiple rows */
+}
+
+.app-field {
+  width: calc(50% - 10px); /* Set width for each field, accounting for gap */
+  margin: 5px; /* Add margin to create space between fields */
+}
+
+.app-field label {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px;
+}
+
+.leave_reason {
+  margin: 15px;
+}
+
+.popup-container {
+  display: none;
+  position: absolute;
+  top: 300;
+  right: 50;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.popup-container.active {
+  display: block;
+}
+
+.popup-content {
+  padding: 10px;
+}
+
+.popup-content h3 {
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: bold;
+}
+

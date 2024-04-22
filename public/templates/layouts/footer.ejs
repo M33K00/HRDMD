@@ -516,3 +516,28 @@
     }
   }
 </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+  const popupContainer = document.getElementById('popupContainer');
+  const popupHeader = document.getElementById('popupHeader');
+  const popupReason = document.getElementById('popupReason');
+  const popupRows = document.querySelectorAll('.popup-row');
+
+  popupRows.forEach(row => {
+    row.addEventListener('mouseenter', function () {
+      const headerText = 'Leave Reason:';
+      const reason = this.getAttribute('data-reason');
+
+      popupHeader.textContent = headerText;
+      popupReason.textContent = reason;
+      popupContainer.classList.add('active');
+    });
+
+    row.addEventListener('mouseleave', function () {
+      popupHeader.textContent = ''; // Clear header
+      popupReason.textContent = ''; // Clear reason text
+      popupContainer.classList.remove('active');
+    });
+  });
+});
+</script>

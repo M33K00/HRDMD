@@ -9,7 +9,6 @@ const LeaveApplicationsSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Please add an email"],
-    unique: true,
     lowercase: true,
     validate: [isEmail, "Please enter a valid email"],
   },
@@ -22,10 +21,17 @@ const LeaveApplicationsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  reason: {
+    type: String,
+    required: true,
+  },
   AppliedDate: {
     type: Date,
+    default: null,
+  },
+  StartDate: {
+    type: Date,
     required: true,
-    default: Date.now,
   },
   Period: {
     type: Number,
@@ -34,7 +40,8 @@ const LeaveApplicationsSchema = new mongoose.Schema({
   Status: {
     type: String,
     required: true,
-  }
+    default: "Pending",
+  },
 });
 
 const LeaveApplication = mongoose.model(

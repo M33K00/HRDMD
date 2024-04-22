@@ -1,0 +1,48 @@
+<div class="header">
+  <div class="side-nav">
+    <a href="startpage" class="logo">
+      <img src="../images/logo.png" class="logo-img" />
+    </a>
+    <ul class="nav-links-hris">
+      <li>
+        <a href="/hris"
+          ><i class="fa-solid fa-fingerprint"></i>
+          <p style="font-size: 14px">HRIS Home</p></a
+        >
+      </li>
+      <li>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa-solid fa-envelope"></i>
+            <p style="font-size: 13px">Leave Application</p>
+          </a>
+          <ul class="nav-links-hris dropdown-employee">
+            <li class="dropdown-option">
+              <a href="/view_leave/<%= user.email %>"
+                ><i class="fa-solid fa-eye"></i>View Leave</a
+              >
+            </li>
+            <li class="dropdown-option mb-2">
+              <a href="/apply_leave"
+                ><i class="fa-solid fa-plus"></i>Apply Leave</a
+              >
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a href="/dtr_user"
+          ><i class="fa-solid fa-clock"></i>
+          <p style="font-size: 13px">Daily Time Record</p></a
+        >
+      </li>
+      <li>
+        <a href="/view_profile/<%= user._id %>"
+          ><i class="fa-solid fa-user"></i>
+          <p style="font-size: 13px">View Profile</p></a
+        >
+      </li>
+      <div class="active-button"></div>
+    </ul>
+  </div>
+</div>

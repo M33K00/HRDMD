@@ -53,11 +53,17 @@
                 </thead>
                 <tbody>
                   <% leaveapplications.forEach((row, index) => { %>
-                  <tr>
+                    <tr class="popup-row" data-reason="<%= row.reason %>">
                     <td><%= row.name %></td>
                     <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
-                    <td><%= row.AppliedDate.toISOString().split('T')[0] %></td>
+                    <td>
+                      <% if (row.AppliedDate === null) { %>
+                        N/A
+                      <% } else { %>
+                        <%= row.AppliedDate.toISOString().split('T')[0] %>
+                      <% } %>
+                    </td>
                     <td><%= row.Period %></td>
                     <td><%= row.Status %></td>
                     <td class="action-buttons-leave">
@@ -95,11 +101,17 @@
                     </thead>
                     <tbody>
                       <% pendingApplications.forEach((row, index) => { %>
-                        <tr>
+                        <tr class="popup-row" data-reason="<%= row.reason %>">
                           <td><%= row.name %></td>
                           <td><%= row.Title %></td>
                           <td><%= row.Type %></td>
-                          <td><%= row.AppliedDate.toISOString().split('T')[0] %></td>
+                          <td>
+                            <% if (row.AppliedDate === null) { %>
+                              N/A
+                            <% } else { %>
+                              <%= row.AppliedDate.toISOString().split('T')[0] %>
+                            <% } %>
+                          </td>
                           <td><%= row.Period %></td>
                           <td><%= row.Status %></td>
                           <td class="action-buttons-leave">
@@ -138,11 +150,17 @@
                     </thead>
                     <tbody>
                       <% approvedApplications.filter(row => row.Status === 'Approved').forEach((row, index) => { %>
-                        <tr>
+                        <tr class="popup-row" data-reason="<%= row.reason %>">
                           <td><%= row.name %></td>
                           <td><%= row.Title %></td>
                           <td><%= row.Type %></td>
-                          <td><%= row.AppliedDate.toISOString().split('T')[0] %></td>
+                          <td>
+                            <% if (row.AppliedDate === null) { %>
+                              N/A
+                            <% } else { %>
+                              <%= row.AppliedDate.toISOString().split('T')[0] %>
+                            <% } %>
+                          </td>
                           <td><%= row.Period %></td>
                           <td><%= row.Status %></td><td class="action-buttons-leave">
                             <a href="#" class="icon-square-leave"
@@ -180,11 +198,17 @@
                     </thead>
                     <tbody>
                       <% declinedApplications.filter(row => row.Status === 'Approved').forEach((row, index) => { %>
-                        <tr>
+                        <tr class="popup-row" data-reason="<%= row.reason %>">
                           <td><%= row.name %></td>
                           <td><%= row.Title %></td>
                           <td><%= row.Type %></td>
-                          <td><%= row.AppliedDate.toISOString().split('T')[0] %></td>
+                          <td>
+                            <% if (row.AppliedDate === null) { %>
+                              N/A
+                            <% } else { %>
+                              <%= row.AppliedDate.toISOString().split('T')[0] %>
+                            <% } %>
+                          </td>
                           <td><%= row.Period %></td>
                           <td><%= row.Status %></td><td class="action-buttons-leave">
                             <a href="#" class="icon-square-leave"
@@ -203,6 +227,12 @@
                 <h2 class="text-center text-secondary mt-5">No declined leave applications</h2>
               <% } %>
             </div>            
+          </div>
+          <div id="popupContainer" class="popup-container">
+            <div class="popup-content">
+              <h3 id="popupHeader"></h3>
+              <p id="popupReason"></p>
+            </div>
           </div>
         </div>
     </div>

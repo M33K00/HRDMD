@@ -52,6 +52,7 @@ app.use("", require("../routes/document_routes.js"));
 app.use("", require("../routes/upload_routes.js"));
 app.use("", require("../routes/role1document_routes.js"));
 app.use("", require("../routes/role1routes.js"));
+app.use("", require("../routes/hris_user_routes.js"));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

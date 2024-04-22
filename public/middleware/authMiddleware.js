@@ -59,13 +59,13 @@ const checkRole = (req, res, next) => {
 const checkRoleHR = (req, res, next) => {
   const user = res.locals.user;
   if (user.hrrole === "ROLE 1") {
-    return res.redirect("/role1");
+    res.redirect("/hris_user");
   } else if (user.hrrole === "ROLE 2") {
-    return res.redirect("/role2");
+    res.redirect("/role2");
   } else if (user.hrrole === "ROLE 3") {
-    return res.redirect("/role3");
+     res.redirect("/role3");
   } else if (user.hrrole === "ROLE 4") {
-    return res.redirect("/role4");
+    res.redirect("/role4");
   } else {
     next();
   }

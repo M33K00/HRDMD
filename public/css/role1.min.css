@@ -76,7 +76,6 @@
   top: 77.6%;
 }
 
-
 @media only screen and (max-width: 600px) {
   .side-nav {
     width: 110px;
@@ -334,4 +333,8 @@
   display: block;
   opacity: 1;
   transform: translate(-50%, -50%);
+}
+
+.app-form {
+  display: flex;
 }
