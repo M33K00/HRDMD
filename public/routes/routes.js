@@ -389,4 +389,55 @@ router.get("/leave_applications", async (req, res) => {
   }
 });
 
+router.get("/approve-leave/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const leaveapplications = await LeaveApplications.findById(id);
+    if (!leaveapplications) {
+      // If the user account doesn't exist, redirect to manage_accounts page
+      return res.redirect("/view_employees");
+    }
+
+    leaveapplications.Status = "Approved";
+    leaveapplications.AppliedDate = new Date();
+    await leaveapplications.save();
+
+    req.session.message = {
+      type: "success",
+      message: "Leave application approved successfully",
+    }
+
+    res.redirect("/leave_applications");
+  } catch (err) {
+    console.log("Error approving leave: ", err);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+router.get("/decline-leave/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const leaveapplications = await LeaveApplications.findById(id);
+    if (!leaveapplications) {
+      // If the user account doesn't exist, redirect to manage_accounts page
+      return res.redirect("/view_employees");
+    }
+
+    leaveapplications.Status = "Declined";
+    leaveapplications.AppliedDate = new Date();
+    await leaveapplications.save();
+
+    req.session.message = {
+      type: "warning",
+      message: "Leave application declined successfully",
+    }
+
+    res.redirect("/leave_applications");
+
+    } catch (err) {
+    console.log("Error declining leave: ", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

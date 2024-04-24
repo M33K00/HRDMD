@@ -517,27 +517,45 @@
   }
 </script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
   const popupContainer = document.getElementById('popupContainer');
   const popupHeader = document.getElementById('popupHeader');
   const popupReason = document.getElementById('popupReason');
   const popupRows = document.querySelectorAll('.popup-row');
+  let popupTimeout; // Variable to hold the timeout ID
 
   popupRows.forEach(row => {
-    row.addEventListener('mouseenter', function () {
-      const headerText = 'Leave Reason:';
-      const reason = this.getAttribute('data-reason');
+    row.addEventListener('mouseover', function (event) {
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
 
-      popupHeader.textContent = headerText;
-      popupReason.textContent = reason;
-      popupContainer.classList.add('active');
+      popupHeader.textContent = 'Leave Reason:';
+      popupReason.textContent = this.getAttribute('data-reason');
+
+      // Clear previous timeout if any
+      clearTimeout(popupTimeout);
+
+      // Set a new timeout to show the popup after a delay (e.g., 500 milliseconds)
+      popupTimeout = setTimeout(() => {
+        popupContainer.style.display = 'block';
+        popupContainer.style.top = mouseY + 'px';
+        popupContainer.style.left = mouseX + 'px';
+      }, 500); // Adjust the delay time as needed
     });
 
     row.addEventListener('mouseleave', function () {
-      popupHeader.textContent = ''; // Clear header
-      popupReason.textContent = ''; // Clear reason text
-      popupContainer.classList.remove('active');
+      // Clear the timeout when leaving the row to prevent the delayed popup from appearing
+      clearTimeout(popupTimeout);
+
+      popupContainer.style.display = 'none';
     });
+  });
+
+  // Add event listener to hide popup when clicking outside
+  document.addEventListener('click', function (event) {
+    if (!popupContainer.contains(event.target) && !popupRows.includes(event.target)) {
+      popupContainer.style.display = 'none';
+    }
   });
 });
 </script>

@@ -308,11 +308,23 @@
   gap: 3px; /* Gap between grid items */
   grid-auto-rows: 40px; /* Default height for each row */
 }
+
+.legend-container-leave {
+  display: grid;
+  justify-content: center; /* Center the grid horizontally */
+  align-items: center; /* Center the grid vertically */
+  margin: 10px;
+  grid-template-columns: repeat(3, 200px);
+  gap: 3px; /* Gap between grid items */
+  grid-auto-rows: 40px; /* Default height for each row */
+}
+
 .legend-item {
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 500;
+  width: 200px;
 }
 .legend-item span {
   margin-right: 10px;
@@ -437,3 +449,24 @@
 .account-options a {
   margin-right: 10px;
 }
+
+.popup-container {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content {
+  padding: 10px;
+}
+
+.popup-content h3 {
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
