@@ -5,6 +5,11 @@
 <% } %>
 <body class="startbody">
   <div class="start-container">
+    <div class="startbar">
+      <p class="startbar-title">City Hall of Bacoor :D</p>
+      <a href="#" id="toggleSidebar" class="nav-link right-content">
+      <img class="nav-img" src="../<%= user.image %>" />
+    </a></div>
     <div class="row">
       <div class="col-md-4 hover-div-sp" >
         <a href="/document_tracker/<%= encodeURIComponent(user.hrrole) %>">
@@ -76,7 +81,7 @@
       </div>
       <div class="col-md-4 hover-div-sp">
         <a href="/manage_account/<%= encodeURIComponent(user.hrrole) %>/<%= encodeURIComponent(user.name) %>">
-        <div class="card border-primary mb-3 shadow startpage-font">
+        <div class="card-start card border-primary mb-3 shadow startpage-font">
           <h3 class="card-header">Manage Account</h3>
           <div class="card-body">
             <% if (user.hrrole === 'ADMIN') { %>
@@ -123,6 +128,66 @@
     <img src="../images/lp3.png" alt="background" />
   </div>
 </body>
-<script src="../../scripts/jquery.min.js"></script>
-<script src="../../scripts/datatables.js"></script>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-body">
+    <div class="sidebar-image">
+      <div class="profile-image"><img src="../<%= user.image %>" /></div>
+      <div class="user-details">
+        <a><%= user.name %></a>
+        <a class="user-role"
+          ><% if (user.hrrole === "ROLE 1") { %> Entry-level <% } else if
+          (user.hrrole === "ROLE 2") { %> Individual Contributors <% } else if
+          (user.hrrole === "ROLE 3") { %> HR Manager <% } else if (user.hrrole
+          === "ROLE 4") { %> HR Director <% } else if (user.hrrole === "ADMIN")
+          { %> ADMIN <% } %></a
+        >
+      </div>
+    </div>
+    <div class="sidebar-menu">
+      <div class="sidebar-buttons">
+        <ul>
+          <li>
+            <% if (user.hrrole === "ADMIN") { %>
+              <a href="/view/<%= user._id %>"
+              ><i class="fa-solid fa-gear"></i>Account Settings</a
+            >
+            <% } else { %>
+              <a href="/editacc/<%= encodeURIComponent(user.name) %>"
+              ><i class="fa-solid fa-gear"></i>Account Settings</a
+            >
+            <% } %>
+          </li>
+          <li>
+            <a href="#"><i class="fa-regular fa-file"></i>HR File</a>
+          </li>
+          <li class="logout-button">
+            <a href="/logout"
+              ><i class="fa-solid fa-arrow-right-from-bracket"></i>Log Out</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="overlay"></div>
 <script src="https://kit.fontawesome.com/64cf43ccc2.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleSidebar = document.getElementById("toggleSidebar");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    toggleSidebar.addEventListener("click", function (e) {
+      e.preventDefault();
+      sidebar.classList.toggle("active");
+      overlay.classList.toggle("active");
+    });
+
+    overlay.addEventListener("click", function () {
+      sidebar.classList.remove("active");
+      overlay.classList.remove("active");
+    });
+  });
+</script>

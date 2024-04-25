@@ -4,24 +4,53 @@
   <div class="page-name">
     <h1>View Account (<%= logincollections.name %>)</h1>
     <div class="account-options">
-        <a href="/edit/<%= logincollections._id %>" class="btn btn-primary">Edit Account</a>
-        <a href="/manage_accounts" class="btn btn-secondary">Go Back</a>
-      </div>
+      <a href="/edit/<%= logincollections._id %>" class="btn btn-primary"
+        >Edit Account</a
+      >
+      <a href="/manage_accounts" class="btn btn-secondary">Go Back</a>
+    </div>
   </div>
   <div class="account-basic1">
-    <div class="account-image"><img src="../<%= logincollections.image %>"></div>
+    <div class="account-image">
+      <img src="../<%= logincollections.image %>" />
+    </div>
     <div class="account-info mt-3">
       <p><b>Name:</b> <%= logincollections.name %></p>
       <p><b>Email:</b> <%= logincollections.email %></p>
       <p><b>Contact:</b> <%= logincollections.contact %></p>
-      <p><b>Birthday:</b> <%= logincollections.birthday.toISOString().split('T')[0] %></p>
+      <p>
+        <b>Birthday:</b> <%=
+        logincollections.birthday.toISOString().split('T')[0] %>
+      </p>
       <p><b>Department:</b> <%= logincollections.department %></p>
       <p><b>HR Role:</b> <%= logincollections.hrrole %></p>
     </div>
   </div>
   <div class="account-delete">
-    <a href="/delete/<%= logincollections._id %>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete employee <%= logincollections.name %>?')"
-      >DELETE ACCOUNT</a>
+    <a
+      href="/delete/<%= logincollections._id %>"
+      class="btn btn-danger"
+      onclick="return confirm('Are you sure you want to delete employee <%= logincollections.name %>?')"
+      >DELETE ACCOUNT</a
+    >
   </div>
+  <div class="account-container mt-4">
+    <div class="account-item">
+      <div class="account-content">
+        <p>Documents Approved</p>
+      </div>
+      <div class="account-count">
+        <p>420</p>
+      </div>
+    </div>
+    <div class="account-item" style="background-color: rgb(112, 28, 28)">
+      <div class="account-content">
+        <p>Documents Rejected</p>
+      </div>
+      <div class="account-count">
+        <p><%= rejectedDocuments.length %></p>
+      </div>
+    </div>
+  </div>
+  <%- include('./layouts/footer') -%>
 </div>
-<%- include('./layouts/footer') -%>

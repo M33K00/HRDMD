@@ -1,4 +1,8 @@
-<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark" style="padding-top: 0px; padding-bottom: 0px;">
+<nav
+  class="navbar navbar-expand-lg bg-primary"
+  data-bs-theme="dark"
+  style="padding-top: 0px; padding-bottom: 0px"
+>
   <div class="container-fluid">
     <a class="navbar-brand" id="sidebarCollapse">Human Resources Department</a>
     <div class="collapse navbar-collapse" id="navbarColor01">
@@ -40,9 +44,15 @@
       <div class="sidebar-buttons">
         <ul>
           <li>
+            <% if (user.hrrole === "ADMIN") { %>
+            <a href="/view/<%= user._id %>"
+              ><i class="fa-solid fa-gear"></i>Account Settings</a
+            >
+            <% } else { %>
             <a href="/editacc/<%= encodeURIComponent(user.name) %>"
               ><i class="fa-solid fa-gear"></i>Account Settings</a
             >
+            <% } %>
           </li>
           <li>
             <a href="#"><i class="fa-regular fa-file"></i>HR File</a>

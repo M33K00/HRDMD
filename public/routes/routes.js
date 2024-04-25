@@ -7,6 +7,7 @@ const path = require("path");
 const authController = require("../controllers/authController");
 const bcrypt = require("bcrypt");
 const { checkRoleHR } = require("../middleware/authMiddleware.js");
+const RejectedDocument = require("../models/rejecteddocuments");
 
 // Models
 const LogInCollection = require("../models/logincollections");
@@ -40,7 +41,6 @@ router.get("/logout", authController.logout_get);
 // Insert an account into the database route
 router.post("/addacc", upload, async (req, res) => {
   try {
-
     let hashedPassword = req.body.password;
     if (req.body.password) {
       // Generate a salt and hash the new password
@@ -87,6 +87,8 @@ router.post("/addacc", upload, async (req, res) => {
 router.get("/view/:id", async (req, res) => {
   try {
     let id = req.params.id;
+
+    // Fetch user's login information
     let logincollections = await LogInCollection.findById(id);
 
     if (!logincollections) {
@@ -94,14 +96,21 @@ router.get("/view/:id", async (req, res) => {
       return res.redirect("/manage_accounts");
     }
 
-    // Render the edit_users template with the retrieved user data
+    let name = logincollections.name;
+    // Fetch rejected documents associated with the user's name
+    let rejectedDocuments = await RejectedDocument.find({
+      name: name,
+    });
+
+    // Render the view_account template with the retrieved data
     res.render("view_account", {
       title: "View Account",
       logincollections: logincollections,
+      rejectedDocuments: rejectedDocuments,
     });
   } catch (err) {
     // Log and handle errors gracefully
-    console.error("Error editing user account:", err);
+    console.error("Error fetching user data:", err);
     // Redirect to manage_accounts page in case of an error
     res.redirect("/manage_accounts");
   }
@@ -268,7 +277,7 @@ router.get("/delete/:id", async (req, res) => {
       message: " User deleted successfully",
     };
 
-    const refererUrl = req.headers.referer
+    const refererUrl = req.headers.referer;
 
     res.redirect(refererUrl);
   } catch (err) {
@@ -359,7 +368,9 @@ router.get("/manage_accounts", async (req, res) => {
 router.get("/hris", checkRoleHR, async (req, res) => {
   try {
     const employeecount = await LogInCollection.countDocuments();
-    const pendingleave = await LeaveApplications.countDocuments({ Status: "Pending" });
+    const pendingleave = await LeaveApplications.countDocuments({
+      Status: "Pending",
+    });
     res.render("hris", { employeecount, pendingleave });
   } catch (error) {
     res.status(500).send("Internal Server Error");
@@ -405,14 +416,14 @@ router.get("/approve-leave/:id", async (req, res) => {
     req.session.message = {
       type: "success",
       message: "Leave application approved successfully",
-    }
+    };
 
     res.redirect("/leave_applications");
   } catch (err) {
     console.log("Error approving leave: ", err);
     res.status(500).send("Internal Server Error");
   }
-})
+});
 
 router.get("/decline-leave/:id", async (req, res) => {
   try {
@@ -430,11 +441,10 @@ router.get("/decline-leave/:id", async (req, res) => {
     req.session.message = {
       type: "warning",
       message: "Leave application declined successfully",
-    }
+    };
 
     res.redirect("/leave_applications");
-
-    } catch (err) {
+  } catch (err) {
     console.log("Error declining leave: ", err);
     res.status(500).send("Internal Server Error");
   }
