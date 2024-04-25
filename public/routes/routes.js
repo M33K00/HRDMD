@@ -102,7 +102,7 @@ router.get("/view/:id", async (req, res) => {
       name: name,
     });
 
-    // Render the view_account template with the retrieved data
+    // Render the view_account template with the retrieved add
     res.render("view_account", {
       title: "View Account",
       logincollections: logincollections,
@@ -449,5 +449,9 @@ router.get("/decline-leave/:id", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+router.get("/addacc", (req, res) => {
+  res.render("addacc");
+})
 
 module.exports = router;

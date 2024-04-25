@@ -43,8 +43,10 @@
             <option>Annual Leave</option>
             <option>Sick Leave</option>
             <option>Casual Leave</option>
-            <option>Emergency Leave</option>
+            <option>Personal Leave</option>
             <option>Maternity Leave</option>
+            <option>Vacation Leave</option>
+            <option>Others</option>
           </select>
         </div>
         <div class="app-field">
@@ -69,7 +71,18 @@
         </div>
       </div>
       <div class="leave_reason" style="font-weight: 600">
-        <label for="reason" class="form-label mt-4">Reason for Leave</label>
+        <label for="designation" class="form-label mt-4">Designation</label>
+        <textarea
+          class="form-control"
+          maxlength="100"
+          id="designation"
+          rows=""
+          name="designation"
+          required
+        ></textarea>
+      </div>
+      <div class="leave_reason" style="font-weight: 600">
+        <label for="reason" class="form-label">Reason for Leave</label>
         <textarea
           class="form-control"
           maxlength="100"

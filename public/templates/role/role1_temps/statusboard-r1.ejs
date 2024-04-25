@@ -7,13 +7,16 @@
     </div>
     <%# Legend %>
     <div class="legend-container-r1">
-      <div class="legend-item">
-        <span class="badge bg-danger">  </span><a> Entry Level</a>
+      <div class="legend-item-r1">
+        <span class="badge bg-danger">  </span><a>Rejected</a>
       </div>
-      <div class="legend-item">
-        <span class="badge bg-warning">  </span><a> Individual Contributors</a>
+      <div class="legend-item-r1">
+        <span class="badge bg-warning">  </span><a> Entry Level</a>
       </div>
-    </div>
+      <div class="legend-item-r1">
+        <span class="badge bg-success">  </span><a> Individual Contributors</a>
+        </div>
+      </div>
     <%# Search bar %>
     <input
       class="form-control me-sm-2"
@@ -21,7 +24,7 @@
       id="accInput"
       placeholder="Search"
       style="margin-bottom: 20px"
-      oninput="searchTable()"
+      oninput="searchFunc()"
     />
     <div class="my-4">
       <div class="col-lg-12">
@@ -54,10 +57,12 @@
                     <td><%= row.name %></td>
                     <td><%= row.folder %></td>
                     <td><% if (row.folder === "Individual Contributors") { %>
-                        <span class="badge bg-success table-span"> 
+                      <span class="badge bg-success table-span"> 
                         <% } else if (row.folder === "Entry Level") { %>
-                        <span class="badge bg-warning table-span"> 
-                    <% } %></span></td>
+                          <span class="badge bg-warning table-span"> 
+                          <% } else if (row.folder === "Rejected") { %>
+                            <span class="badge bg-danger table-span"> 
+                        <% } %></span></td>
                   </tr>
                 <% }) %>
               </tbody>

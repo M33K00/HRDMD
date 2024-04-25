@@ -421,6 +421,7 @@ router.post("/uploadPerso", employeeUpload.single("file"), async (req, res) => {
 // Status Board Route
 router.get("/statusboard-r1", (request, response) => {
   const roleDirectories = [
+    { name: "Rejected", path: "./files/rejected" },
     { name: "Entry Level", path: "./files/role1" },
     { name: "Individual Contributors", path: "./files/role2" },
   ];

@@ -6,7 +6,33 @@
     <div class="page-name">
       <h1>Leave Applications</h1>
     </div>
-    <p class="text-muted mb-4">Manage employee leave applications</p>
+    <p class="text-muted mb-4">Check your leave applications</p>
+    <%# Legend %>
+    <div class="legend-container-leave">
+      <div class="legend-item">
+        <span class="badge bg-danger"> </span><a>Declined</a>
+      </div>
+      <div class="legend-item">
+        <span class="badge bg-warning"> </span><a>Pending</a>
+      </div>
+      <div class="legend-item">
+        <span class="badge bg-success"> </span><a>Approved</a>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <% if (message) { %>
+      <div
+        class="alert alert-dismissible alert-<%= message.type %> fade show"
+        role="alert"
+        id="autoDismissAlert"
+      >
+        <strong>Attention!</strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
+    </div>
     <input
       class="form-control me-sm-2"
       type="text"
@@ -101,7 +127,9 @@
                       <% } %>
                     </td>
                     <td><%= row.Period %></td>
-                    <td><%= row.Status %></td>
+                    <td
+                    style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
+                  ><%= row.Status %></td>
                   </tr>
                 <% }) %>
               </tbody>
@@ -146,7 +174,9 @@
                       <% } %>
                     </td>
                     <td><%= row.Period %></td>
-                    <td><%= row.Status %></td>
+                    <td
+                    style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
+                  ><%= row.Status %></td>
                   </tr>
                   <% }) %>
                 </tbody>                
@@ -193,7 +223,9 @@
                       <% } %>
                     </td>
                     <td><%= row.Period %></td>
-                    <td><%= row.Status %></td>
+                    <td
+                    style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
+                  ><%= row.Status %></td>
                   </tr>
                   <% }) %>
                 </tbody>
@@ -240,7 +272,9 @@
                       <% } %>
                     </td>
                     <td><%= row.Period %></td>
-                    <td><%= row.Status %></td>
+                    <td
+                    style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
+                  ><%= row.Status %></td>
                   </tr>
                   <% }) %>
                 </tbody>

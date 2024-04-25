@@ -5,23 +5,24 @@
   <div class="page-body">
     <div class="hris-container">
       <div class="hris-header">
-        <div class="hris-title">Human Resources Information System</div>
+        <div class="hris-title"></div>
+        <h1>Human Resources Information System</h1>
       </div>
     </div>
     <div class="hris-container-status">
       <div class="container-div">
         <a class="clickable-link" href="/view_employees">
           <div class="employee-count">
-            <p class="display-label"></p>
-            <p class="display-count"></p>
+            <p class="display-label">Total Hours Worked:</p>
+            <p class="display-count">69</p>
           </div>
         </a>
       </div>
       <div class="container-div">
-        <a class="clickable-link" href="/leave_applications">
+        <a class="clickable-link" href="/view_leave/<%= user.email %>">
           <div class="pending-count">
-            <p class="display-label"></p>
-            <p class="display-count"></p>
+            <p class="display-label">Pending Leave:</p>
+            <p class="display-count">1</p>
           </div>
         </a>
       </div>
