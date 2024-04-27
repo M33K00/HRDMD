@@ -1,0 +1,89 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
+  <div class="page-body">
+    <div class="page-name">
+      <h1><%= logincollections.name %></h1>
+      <div class="account-options">
+        <a href="/view_employees" class="btn btn-secondary">Go Back</a>
+      </div>
+    </div>
+    <h4>HRIS Profile Information:</h4>
+    <div class="account-basic1">
+      <div class="account-image">
+        <img src="../<%= logincollections.image %>" />
+      </div>
+      <div class="account-info mt-3">
+        <p><b>Name:</b> <%= logincollections.name %></p>
+        <p><b>Email:</b> <%= logincollections.email %></p>
+        <p><b>Contact:</b> <%= logincollections.contact %></p>
+        <p>
+          <b>Birthday:</b> <%=
+          logincollections.birthday.toISOString().split('T')[0] %>
+        </p>
+        <p><b>Department:</b> <%= logincollections.department %></p>
+        <p><b>HR Role:</b> <%= logincollections.hrrole %></p>
+      </div>
+    </div>
+  </div>
+  <div class="emp-files">
+    <div class="page-name cont-divider">
+      <h3 class="mt-4">Employee Files:</h3>
+    </div>
+    <p class="text-muted">These are the files submitted by the employee</p>
+    <%# Search bar %>
+    <input
+      class="form-control me-sm-2"
+      type="text"
+      id="accInput"
+      placeholder="Search"
+      style="margin-bottom: 20px"
+      oninput="searchFunc()"
+    />
+    <table id="table" class="table table-hover table-striped">
+        <thead>
+            <tr class="table-primary">
+              <th style="width: 150px">Type</th>
+              <th style="width: 500px">File Name</th>
+              <th style="width: 50px;">Actions</th>
+          </thead>
+          <tbody>
+            <td style="font-weight: 600;">Bio-Data</td>
+            <td>kanade.exe</td>
+            <td class="action-buttons-data">
+                  <a href="#" class="icon-square">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
+                  <a href="#" class="icon-square text-danger" onclick="return confirm('Are you sure you want to delete?')"
+                    ><i class="fa-solid fa-trash"></i
+                  ></a>
+            </td>
+          </tbody>
+          <tbody>
+            <td style="font-weight: 600;">Medical Record</td>
+            <td>JDAM_launchCodes.txt</td>
+            <td class="action-buttons-data">
+                  <a href="#" class="icon-square">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
+                  <a href="#" class="icon-square text-danger" onclick="return confirm('Are you sure you want to delete?')"
+                    ><i class="fa-solid fa-trash"></i
+                  ></a>
+            </td>
+          </tbody>
+          <tbody>
+            <td style="font-weight: 600;">Certificates</td>
+            <td class="text-danger" style="font-weight: 600;">NO CERTIFICATES SUBMITTED</td>
+            <td class="action-buttons-data">
+                  <a href="#" class="icon-square">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
+                  <a href="#" class="icon-square text-danger" onclick="return confirm('Are you sure you want to delete?')"
+                    ><i class="fa-solid fa-trash"></i
+                  ></a>
+            </td>
+          </tbody>
+    </table>
+  </div>
+  <%- include('../layouts/footer') %>
+</body>

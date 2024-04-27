@@ -5,8 +5,19 @@ const multer = require("multer");
 const LogInCollection = require("../models/logincollections");
 const LeaveApplications = require("../models/leaveapplications");
 
-router.get("/hris_user", async (req, res) => {
-  res.render("HRISUSER/hris_user");
+router.get("/hris_user/:email", async (req, res) => {
+  try {
+    const userEmail = req.params.email; // Retrieve email from URL parameter
+    const leaveapplications = await LeaveApplications.find({
+      email: userEmail,
+    });
+    res.render("HRISUSER/hris_user", { leaveapplications });
+  } catch (err) {
+    // Log and handle errors gracefully
+    console.error("Error viewing leave applications:", err);
+    // Redirect to manage_accounts page in case of an error
+    res.redirect("/startpage");
+  }
 });
 
 router.get("/apply_leave", async (req, res) => {

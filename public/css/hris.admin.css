@@ -170,6 +170,10 @@
   justify-content: flex-end; /* Align items to the right */
 }
 
+.action-buttons-data {
+  display: flex;
+}
+
 .icon-square {
   text-decoration: none;
   display: flex;
@@ -230,3 +234,17 @@
   font-size: 100px;
 }
 
+.emp-files {
+  position: relative;
+  overflow: visible;
+  height: fit-content;
+  background-color: #fff;
+  margin-left: 260px;
+  margin-right: 10px;
+  padding: 20px;
+  flex: 1;
+}
+
+.cont-divider {
+  border-top: #818181 1px solid;
+}

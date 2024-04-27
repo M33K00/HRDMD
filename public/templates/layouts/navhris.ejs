@@ -55,7 +55,7 @@
             <% } %>
           </li>
           <li>
-            <a href="#"><i class="fa-regular fa-file"></i>HR File</a>
+            <a href="<%= user.hrrole === 'ADMIN' ? '/view_emp_data/' + user._id : '#' %>"><i class="fa-regular fa-file"></i>HR File</a>
           </li>
           <li class="logout-button">
             <a href="/logout"

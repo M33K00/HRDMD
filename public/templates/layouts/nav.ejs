@@ -8,7 +8,10 @@
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a href="/hris" class="nav-link nav-change">
+          <a href="<% if (user.hrrole === 'ADMIN') { %>
+           /hris <% } else { %>
+            /hris_user/<%= user.email %>
+          <% } %>" class="nav-link nav-change">
             <i class="fa-solid fa-fingerprint"></i>
           </a>
         </li>
@@ -55,7 +58,7 @@
             <% } %>
           </li>
           <li>
-            <a href="#"><i class="fa-regular fa-file"></i>HR File</a>
+            <a href="<%= user.hrrole === 'ADMIN' ? '/view_emp_data/' + user._id : '#' %>"><i class="fa-regular fa-file"></i>HR File</a>
           </li>
           <li class="logout-button">
             <a href="/logout"

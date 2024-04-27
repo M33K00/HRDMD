@@ -4,8 +4,9 @@
   <div class="page-body">
     <div class="page-name">
       <h1>All Employees</h1>
+      
     </div>
-    <p class="text-muted mb-4">Manage the employees registered in the system</p>
+    <p class="text-muted mb-4">Manage the employees registered in the system. View their information and 201 Files.</p>
     <div class="col-lg-12">
       <% if (message) { %>
         <div
@@ -50,7 +51,7 @@
             <td><%= row.department %></td>
             <td><%= row.hrrole %></td>
             <td class="action-buttons">
-              <a href="#" class="icon-square"
+              <a href="/view_emp_data/<%= row._id %>" class="icon-square"
                 ><i class="fa-solid fa-eye"></i
               ></a>
               <a href="#" class="icon-square">

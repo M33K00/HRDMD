@@ -450,6 +450,29 @@ router.get("/decline-leave/:id", async (req, res) => {
   }
 });
 
+router.get("/view_emp_data/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+    let logincollections = await LogInCollection.findById(id);
+
+    if (!logincollections) {
+      // If the user account doesn't exist, redirect to manage_accounts page
+      return res.redirect("/hris");
+    }
+
+    // Render the edit_users template with the retrieved user data
+    res.render("HRIS/view_emp_data", {
+      title: "View Account",
+      logincollections: logincollections,
+    });
+  } catch (err) {
+    // Log and handle errors gracefully
+    console.error("Error:", err);
+    // Redirect to manage_accounts page in case of an error
+    res.redirect("/hris");
+  }
+});
+
 router.get("/addacc", (req, res) => {
   res.render("addacc");
 })

@@ -46,7 +46,10 @@
         </div>
       </div>
       <div class="col-md-4 hover-div-sp">
-        <a href="/hris">
+        <a href="<% if (user.hrrole === 'ADMIN') { %>
+          /hris <% } else { %>
+           /hris_user/<%= user.email %>
+         <% } %>">
         <div class="card-start card border-primary mb-3 shadow startpage-font">
           <h3 class="card-header">HR Information System</h3>
           <div class="card-body">
