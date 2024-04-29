@@ -1,0 +1,72 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
+  <%- include('../layouts/footer') %>
+
+  <div class="page-body">
+    <div class="page-name">
+      <h1>Daily Time Record</h1>
+      <h3><%= getCurrentDateInWords() %></h3>
+    </div>
+    <p class="page-description text-muted">
+      View employee's daily time record here
+    </p>
+    <input
+      class="form-control me-sm-2"
+      type="text"
+      id="accInput"
+      placeholder="Search"
+      style="margin-bottom: 20px"
+      oninput="searchFunc()"
+    />
+    <table id="table" class="table table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Absents</th>
+          <th>Clock-In</th>
+          <th>Clock-Out</th>
+          <th>Status</th>
+          <th>Action</th>
+          <!-- Add other relevant columns -->
+        </tr>
+      </thead>
+      <tbody>
+        <% mergedData.forEach(employee => { %> <%
+        employee.attendanceData.forEach(attendance => { %>
+        <tr>
+          <td><%= employee.name %></td>
+          <td><%= employee.department %></td>
+          <td><%= attendance.daysAbsent.length %></td>
+          <td><% if (attendance.timeIn === null) { %> 00:00 <% } %></td>
+          <td><% if (attendance.timeOut === null) { %> 00:00 <% } %></td>
+          <td style="font-weight: 600">
+            <% if (attendance.status === 'OUT') { %>
+            <span class="red-dot"></span>
+            <% } else if (attendance.status === 'IN') { %>
+            <span class="green-dot"></span>
+            <% } %> <%= attendance.status %>
+          </td>
+          <td class="action-buttons">
+            <a href="/view-dtr/<%= employee._id %>" class="icon-square"
+              ><i class="fa-solid fa-eye"></i
+            ></a>
+            <a href="#" class="icon-square">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+          </td>
+        </tr>
+        <% }); %> <% }); %>
+      </tbody>
+    </table>
+  </div>
+  <% function getCurrentDateInWords() { const months = ['January', 'February',
+  'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+  'November', 'December']; const days = ['Sunday', 'Monday', 'Tuesday',
+  'Wednesday', 'Thursday', 'Friday', 'Saturday']; const currentDate = new
+  Date(); const dayOfWeek = days[currentDate.getDay()]; const month =
+  months[currentDate.getMonth()]; const dayOfMonth = currentDate.getDate();
+  const year = currentDate.getFullYear(); return `${dayOfWeek}, ${month}
+  ${dayOfMonth}, ${year}`; } %>
+</body>

@@ -8,6 +8,7 @@ const authController = require("../controllers/authController");
 const bcrypt = require("bcrypt");
 const { checkRoleHR } = require("../middleware/authMiddleware.js");
 const RejectedDocument = require("../models/rejecteddocuments");
+const Attendance = require("../models/attendance");
 
 // Models
 const LogInCollection = require("../models/logincollections");
@@ -61,8 +62,15 @@ router.post("/addacc", upload, async (req, res) => {
       image: req.file.filename,
     };
 
+    const adata = {
+      name: req.body.name,
+      email: req.body.email,
+    };
+
     // Insert data into the LogInCollection
     await LogInCollection.insertMany([data]);
+
+    await Attendance.insertMany([adata]);
 
     // Set success message in session
     req.session.message = {
@@ -473,8 +481,66 @@ router.get("/view_emp_data/:id", async (req, res) => {
   }
 });
 
+router.get("/dtr", async (req, res) => {
+  try {
+    const mergedData = await LogInCollection.aggregate([
+      {
+        $lookup: {
+          from: "attendances",
+          localField: "email", // Common field in logincollections
+          foreignField: "email", // Common field in attendance
+          as: "attendanceData",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1, // Include the 'name' field from logincollections
+          email: 1, // Include the 'email' field from logincollections
+          department: 1, // Include the 'department' field from logincollections
+          image: 1, // Include the 'image' field from logincollections
+          attendanceData: 1, // Include all fields from the 'attendanceData' array
+        },
+      },
+    ]);
+
+    res.render("HRIS/dtr", { mergedData });
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.get("/view-dtr/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+
+    // Fetch user's login information
+    let logincollections = await LogInCollection.findById(id);
+
+    if (!logincollections) {
+      // If the user account doesn't exist, redirect to manage_accounts page
+      return res.redirect("/dtr");
+    }
+
+    let email = logincollections.email;
+    // Fetch rejected documents associated with the user's name
+    let attendance = await Attendance.findOne({
+      email: email,
+    });
+
+    res.render("HRIS/view-dtr", {
+      title: "View Account",
+      logincollections: logincollections,
+      attendance: attendance,
+    });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/addacc", (req, res) => {
   res.render("addacc");
-})
+});
 
 module.exports = router;

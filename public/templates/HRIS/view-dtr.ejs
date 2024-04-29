@@ -1,0 +1,67 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
+  <%- include('../layouts/footer') %>
+  <div class="page-body">
+    <div class="page-name">
+      <h1>Attendance Record:</h1>
+      <a href="/dtr" class="btn btn-secondary">Go Back</a>
+    </div>
+    <div class="account-at">
+      <div class="account-img">
+        <img src="../<%= logincollections.image %>" />
+      </div>
+      <div class="account-in mt-3">
+        <p><b>Name:</b> <%= logincollections.name %></p>
+        <p><b>Email:</b> <%= logincollections.email %></p>
+        <p><b>Contact:</b> <%= logincollections.contact %></p>
+        <p><b>Department:</b> <%= logincollections.department %></p>
+      </div>
+      <div class="account-stat mt-3">
+        <div class="account-stat-item">
+          <p>
+            <b>Status:</b> <% if (attendance.status === 'IN') { %>
+            <span class="green-dot"></span>
+            <% } else if (attendance.status === 'OUT') { %>
+            <span class="red-dot"></span>
+            <% } %><%= attendance.status %>
+          </p>
+        </div>
+        <div class="account-stat-item">
+            <p><b>Days Present:</b> <%= attendance.daysPresent.length %></p></p>
+            <p><b>Days Absent:</b> <%= attendance.daysAbsent.length %></p>
+            <p><b>Days On Leave:</b> <%= attendance.daysOnLeave.length %></p>
+      </div>
+    </div>
+  </div>
+  <div class="mt-4">
+    <div class="account-column-2">
+        <h3>Daily Time Record:</h3>
+        <div class="button-container">
+            <a href="#" class="btn btn-danger">Mark as Absent</a>
+            <a href="#" class="btn btn-warning">Mark as on Leave</a>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" data-bs-toggle="tab" href="#home" aria-selected="true" role="tab">Hours Worked</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" data-bs-toggle="tab" href="#profile" aria-selected="false" tabindex="-1" role="tab">Days on Absent</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" data-bs-toggle="tab" href="#profile" aria-selected="false" tabindex="-1" role="tab">Days on Leave</a>
+          </li>
+      </ul>
+      <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade show active" id="home" role="tabpanel">
+          <p class="mt-3">Iniisip ko kung bakit ganito ang langit, nilayo ako sa'yo. Hindi ko matanggap, mahirap magpanggap na ako'y hindi bigo</p>
+        <div class="tab-pane fade" id="dropdown1">
+          <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
+        </div>
+        <div class="tab-pane fade" id="dropdown2">
+          <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
+        </div>
+      </div>
+  </div>
+</body>
