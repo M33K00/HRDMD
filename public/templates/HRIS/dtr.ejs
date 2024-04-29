@@ -2,7 +2,6 @@
 <body>
   <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
   <%- include('../layouts/footer') %>
-
   <div class="page-body">
     <div class="page-name">
       <h1>Daily Time Record</h1>
@@ -11,6 +10,28 @@
     <p class="page-description text-muted">
       View employee's daily time record here
     </p>
+    <div class="dtr-container">
+      <% let inCount = 0; %> <% mergedData.forEach(employee => { %> <%
+      employee.attendanceData.forEach(attendance => { %> <% if
+      (attendance.status === 'IN') { inCount += 1; } %> <% }); %> <% }); %>
+      <div id="bgTime" class="dtr-div div-time">
+        <div class="div-title title-time">
+          <p>Current Time:</p>
+        </div>
+        <div class="div-count title-time">
+          <div class="mb-3" id="currentTime"></div>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-title">
+          <p>Employees Currently Clocked In:</p>
+        </div>
+        <div class="div-count">
+          <p><span class="green-dot status-count"></span><%= inCount %></p>
+        </div>
+      </div>
+    </div>
+    <div class="border mb-3 mt-3"></div>
     <input
       class="form-control me-sm-2"
       type="text"

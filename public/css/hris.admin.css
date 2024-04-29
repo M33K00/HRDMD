@@ -330,3 +330,55 @@
 .account-column-2 a {
   margin-left: auto;
 }
+
+.dtr-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.dtr-div {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: #686868 solid 2px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  height: 100px;
+  align-items: center;
+}
+
+.div-title {
+  display: flex;
+  position: absolute;
+  bottom: 18px; /* Adjust as needed */
+  left: 15px; /* Adjust as needed */
+  font-size: 20px;
+  font-weight: 600;
+  color: #686868;
+}
+
+.title-time {
+  color: aliceblue;
+  text-shadow: #000000 1px 0 10px;
+}
+
+.div-count {
+  display: flex;
+  position: absolute;
+  bottom: -20px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.status-count {
+  margin-right: 10px;
+  margin-bottom: 5px;
+  width: 25px;
+  height: 25px;
+}
