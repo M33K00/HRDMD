@@ -87,7 +87,7 @@
   color: white;
 }
 
-.hris-header{
+.hris-header {
   justify-content: space-between;
   margin: 20px;
   margin-top: 0px;
@@ -418,4 +418,174 @@
   margin: 15px;
 }
 
+.cont-divider {
+  border-top: #818181 1px solid;
+}
 
+.red-dot {
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.green-dot {
+  width: 15px;
+  height: 15px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+}
+
+.account-at {
+  border: #686868 solid 2px;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 200px 550px 1fr; /* Grid with 3 columns */
+  gap: 5px; /* Gap between grid items */
+}
+
+.account-img {
+  padding: 10px;
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  width: 200px; /* Set width to 100% of the column */
+  height: 100%;
+}
+
+.account-img img {
+  max-width: 100%; /* Ensure the image doesn't overflow its container */
+  max-height: 100%; /* Ensure the image doesn't overflow its container */
+  border-radius: 5px;
+  border: #686868 solid 3px;
+}
+
+.account-in {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 20px;
+  width: fit-content;
+}
+
+.account-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 20px;
+  width: fit-content;
+}
+
+.account-column-2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.account-column-2 h3 {
+  align-items: center;
+  justify-content: center;
+}
+
+.button-container {
+  align-items: center;
+  justify-content: center;
+}
+
+.button-container a {
+  font-size: small;
+}
+
+.account-column-2 a {
+  margin-left: auto;
+}
+
+.dtr-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.dtr-div {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: #686868 solid 2px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  height: 100px;
+  align-items: center;
+}
+
+.div-title {
+  display: flex;
+  position: absolute;
+  bottom: 18px; /* Adjust as needed */
+  left: 15px; /* Adjust as needed */
+  font-size: 20px;
+  font-weight: 600;
+  color: #686868;
+}
+
+.title-time {
+  color: aliceblue;
+  text-shadow: #000000 1px 0 10px;
+}
+
+.div-count {
+  display: flex;
+  position: absolute;
+  bottom: -20px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.status-count {
+  margin-right: 10px;
+  margin-bottom: 5px;
+  width: 25px;
+  height: 25px;
+}
+
+.dtr-view-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.dtr-view-div {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: #acacac solid 2px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  height: 100px;
+  align-items: center;
+}
+
+.div-view-count {
+  display: flex;
+  position: absolute;
+  bottom: 18px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  font-size: 40px;
+  font-weight: 600;
+}

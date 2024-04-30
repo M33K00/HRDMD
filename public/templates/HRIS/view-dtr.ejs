@@ -40,27 +40,64 @@
         <div class="button-container">
             <a href="#" class="btn btn-danger">Mark as Absent</a>
             <a href="#" class="btn btn-warning">Mark as on Leave</a>
+            <a href="#" class="btn btn-secondary">Calculate Hours</a>
         </div>
     </div>
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item" role="presentation">
-          <a class="nav-link active" data-bs-toggle="tab" href="#home" aria-selected="true" role="tab">Hours Worked</a>
+          <a class="nav-link active" data-bs-toggle="tab" href="#hw" aria-selected="true" role="tab">Hours Worked</a>
         </li>
         <li class="nav-item" role="presentation">
-          <a class="nav-link" data-bs-toggle="tab" href="#profile" aria-selected="false" tabindex="-1" role="tab">Days on Absent</a>
+          <a class="nav-link" data-bs-toggle="tab" href="#da" aria-selected="false" tabindex="-1" role="tab">Days Absent</a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link" data-bs-toggle="tab" href="#profile" aria-selected="false" tabindex="-1" role="tab">Days on Leave</a>
+            <a class="nav-link" data-bs-toggle="tab" href="#dol" aria-selected="false" tabindex="-1" role="tab">Days on Leave</a>
           </li>
       </ul>
       <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade show active" id="home" role="tabpanel">
-          <p class="mt-3">Iniisip ko kung bakit ganito ang langit, nilayo ako sa'yo. Hindi ko matanggap, mahirap magpanggap na ako'y hindi bigo</p>
-        <div class="tab-pane fade" id="dropdown1">
-          <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
+        <div class="tab-pane fade show active" id="hw" role="tabpanel">
+          <h4 class="mt-4">Record Before Cutoff:</h4>
+          <p class="text-muted">This is the total hours worked before the cutoff (15 Days).</p>
+          <div class="dtr-view-container">
+            <div class="dtr-view-div">
+              <div class="div-title">
+                <p class="dtr-view-title">Total Today:</p>
+              </div>
+              <div class="div-view-count">N/A</div>
+            </div>
+            <div class="dtr-view-div">
+              <div class="div-title">
+                <p class="dtr-view-title">Total Hours Worked:</p>
+              </div>
+              <div class="div-view-count">8 Hours</div>
+            </div>
+          </div>
+          <h4 class="mt-4">Days Present:</h4>
+          <p class="text-muted">This table shows the days present.</p>
+          <table id="table" class="table table-hover table-striped table-bordered table-responsive text-center">
+            <thead>
+              <tr class="table-dark">
+                <th>Date</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Hours Worked</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>April 30, 2024</td>
+                <td>09:30 AM</td>
+                <td>6:30 PM</td>
+                <td>8 Hours</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="tab-pane fade" id="dropdown2">
-          <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
+        <div class="tab-pane fade" id="da" role="tabpanel">
+          <%= attendance.daysAbsent %>
+        </div>
+        <div class="tab-pane fade" id="dol" role="tabpanel">
+          <h4 class="mt-4">Leave History:</h4>
         </div>
       </div>
   </div>

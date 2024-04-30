@@ -1,0 +1,102 @@
+<%- include('../layouts/user_hris/hris_user_header') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%-
+  include('../layouts/user_hris/sidenavhris_user') %>
+  <%- include('../layouts/footer') %>
+    <div class="page-body">
+        <div class="page-name">
+          <h1>Attendance Record:</h1>
+        </div>
+        <div class="account-at">
+          <div class="account-img">
+            <img src="../<%= logincollections.image %>" />
+          </div>
+          <div class="account-in mt-3">
+            <p><b>Name:</b> <%= logincollections.name %></p>
+            <p><b>Email:</b> <%= logincollections.email %></p>
+            <p><b>Contact:</b> <%= logincollections.contact %></p>
+            <p><b>Department:</b> <%= logincollections.department %></p>
+          </div>
+          <div class="account-stat mt-3">
+            <div class="account-stat-item">
+              <p>
+                <b>Status:</b> <% if (attendance.status === 'IN') { %>
+                <span class="green-dot"></span>
+                <% } else if (attendance.status === 'OUT') { %>
+                <span class="red-dot"></span>
+                <% } %><%= attendance.status %>
+              </p>
+            </div>
+            <div class="account-stat-item">
+                <p><b>Days Present:</b> <%= attendance.daysPresent.length %></p></p>
+                <p><b>Days Absent:</b> <%= attendance.daysAbsent.length %></p>
+                <p><b>Days On Leave:</b> <%= attendance.daysOnLeave.length %></p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <div class="account-column-2">
+            <h3>Daily Time Record:</h3>
+            <div class="button-container">
+                <a href="#" class="btn btn-secondary">Calculate Hours</a>
+            </div>
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" data-bs-toggle="tab" href="#hw" aria-selected="true" role="tab">Hours Worked</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" data-bs-toggle="tab" href="#da" aria-selected="false" tabindex="-1" role="tab">Days Absent</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-bs-toggle="tab" href="#dol" aria-selected="false" tabindex="-1" role="tab">Days on Leave</a>
+              </li>
+          </ul>
+          <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade show active" id="hw" role="tabpanel">
+              <h4 class="mt-4">Record Before Cutoff:</h4>
+              <p class="text-muted">This is the total hours worked before the cutoff (15 Days).</p>
+              <div class="dtr-view-container">
+                <div class="dtr-view-div">
+                  <div class="div-title">
+                    <p class="dtr-view-title">Total Today:</p>
+                  </div>
+                  <div class="div-view-count">N/A</div>
+                </div>
+                <div class="dtr-view-div">
+                  <div class="div-title">
+                    <p class="dtr-view-title">Total Hours Worked:</p>
+                  </div>
+                  <div class="div-view-count">8 Hours</div>
+                </div>
+              </div>
+              <h4 class="mt-4">Days Present:</h4>
+              <p class="text-muted">This table shows the days present.</p>
+              <table id="table" class="table table-hover table-striped table-bordered table-responsive text-center">
+                <thead>
+                  <tr class="table-dark">
+                    <th>Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Hours Worked</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>April 30, 2024</td>
+                    <td>09:30 AM</td>
+                    <td>6:30 PM</td>
+                    <td>8 Hours</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane fade" id="da" role="tabpanel">
+              <%= attendance.daysAbsent %>
+            </div>
+            <div class="tab-pane fade" id="dol" role="tabpanel">
+              <h4 class="mt-4">Leave History:</h4>
+            </div>
+          </div>
+      </div>
+</body>

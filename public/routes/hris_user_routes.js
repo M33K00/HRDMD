@@ -4,6 +4,7 @@ const multer = require("multer");
 // Models
 const LogInCollection = require("../models/logincollections");
 const LeaveApplications = require("../models/leaveapplications");
+const Attendance = require("../models/attendance");
 
 router.get("/hris_user/:email", async (req, res) => {
   try {
@@ -98,8 +99,33 @@ router.get("/HRFiles", async (req, res) => {
   res.render("HRISUSER/HRFiles");
 });
 
-router.get("/dtr_user", async (req, res) => {
-  res.render("HRISUSER/dtr_user");
+router.get("/dtr_user/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+
+    // Fetch user's login information
+    let logincollections = await LogInCollection.findById(id);
+
+    if (!logincollections) {
+      // If the user account doesn't exist, redirect to manage_accounts page
+      return res.redirect("/dtr");
+    }
+
+    let email = logincollections.email;
+    // Fetch rejected documents associated with the user's name
+    let attendance = await Attendance.findOne({
+      email: email,
+    });
+
+    res.render("HRISUSER/dtr_user", {
+      title: "View Account",
+      logincollections: logincollections,
+      attendance: attendance,
+    });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 module.exports = router;

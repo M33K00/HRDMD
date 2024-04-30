@@ -327,6 +327,10 @@
   justify-content: center;
 }
 
+.button-container a {
+  font-size: small;
+}
+
 .account-column-2 a {
   margin-left: auto;
 }
@@ -381,4 +385,34 @@
   margin-bottom: 5px;
   width: 25px;
   height: 25px;
+}
+
+.dtr-view-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.dtr-view-div {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: #acacac solid 2px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  height: 100px;
+  align-items: center;
+}
+
+.div-view-count {
+  display: flex;
+  position: absolute;
+  bottom: 18px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  font-size: 40px;
+  font-weight: 600;
 }

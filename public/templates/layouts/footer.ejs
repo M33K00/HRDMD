@@ -583,7 +583,7 @@
     if (hours >= 5 && hours < 12 && amPm === "AM") {
       // Morning background
       currentTime.style.backgroundImage = "url('../images/morning.png')";
-    } else if (hours >= 12 && hours < 6 && amPm === "PM") {
+    } else if (hours < 12 && hours <= 6 && amPm === "PM") {
       // Afternoon background
       currentTime.style.backgroundImage = "url('../images/afternoon.png')";
     } else {
