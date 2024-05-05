@@ -418,16 +418,7 @@ router.get("/approve-leave/:id", async (req, res) => {
       return res.redirect("/view_employees");
     }
 
-    leaveapplications.Status = "Approved";
-    leaveapplications.AppliedDate = new Date();
-    await leaveapplications.save();
-
-    req.session.message = {
-      type: "success",
-      message: "Leave application approved successfully",
-    };
-
-    res.redirect("/leave_applications");
+    res.render("HRIS/manage_leave", { leaveapplications });
   } catch (err) {
     console.log("Error approving leave: ", err);
     res.status(500).send("Internal Server Error");

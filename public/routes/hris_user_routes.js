@@ -62,7 +62,6 @@ router.get("/view_profile/:id", async (req, res) => {
     res.redirect("/hris");
   }
 });
-
 router.post("/apply_leave", async (req, res) => {
   try {
     // Data validation (not shown here, but you should validate input fields)
@@ -71,22 +70,47 @@ router.post("/apply_leave", async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       Type: req.body.Type, // Changed to lowercase for naming convention
-      StartDate: req.body.StartDate,
-      EndDate: req.body.EndDate,
+      StartDate: new Date(req.body.StartDate), // Convert to Date object
+      EndDate: new Date(req.body.EndDate), // Convert to Date object
       reason: req.body.reason,
     };
 
-    // Insert data into the database
-    await LeaveApplications.insertMany([data]);
+    // Calculate the number of days between StartDate and EndDate
+    const timeDiff = Math.abs(data.EndDate - data.StartDate);
+    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
 
     // Get account by name
     const account = await Attendance.findOne({ name: data.name });
 
-    // Update available leave based on leave type
+    // Check if account exists
+    if (!account) {
+      throw new Error("Account not found.");
+    }
+
+    // Check if there's sufficient leave balance
+    if (data.Type === "Sick Leave" && account.availableSL < daysDiff) {
+      req.session.message = {
+        type: "danger",
+        message: "You used up all your sick leave.",
+      };
+      res.redirect("/apply_leave");
+    } else if (data.Type === "Vacation Leave" && account.availableVL < daysDiff) {
+      req.session.message = {
+        type: "danger",
+        message: "You used up all your vacation leave.",
+      };
+      res.redirect("/apply_leave");
+      return;
+    }
+
+    // Insert data into the database
+    await LeaveApplications.insertMany([data]);
+
+    // Update available leave based on leave type and number of days
     if (data.Type === "Sick Leave") {
-      account.availableSL = account.availableSL - 1;
+      account.availableSL -= daysDiff;
     } else if (data.Type === "Vacation Leave") {
-      account.availableVL = account.availableVL - 1;
+      account.availableVL -= daysDiff;
     }
 
     // Save the updated account
@@ -104,11 +128,12 @@ router.post("/apply_leave", async (req, res) => {
     console.error("Error adding leave application:", err);
     req.session.message = {
       type: "danger",
-      message: "An error occurred while processing your request. Please try again later.",
+      message: err.message || "An error occurred while processing your request. Please try again later.",
     };
     res.redirect("/apply_leave");
   }
 });
+
 
 
 router.get("/HRFiles", async (req, res) => {
