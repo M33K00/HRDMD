@@ -25,47 +25,31 @@
       <input type="hidden" name="email" value="<%= user.email %>" />
       <input type="hidden" name="name" value="<%= user.name %>" />
       <div class="app-form-container">
-        <div class="app-field">
-          <label for="Title" class="form-label mt-4">Leave Title</label>
-          <input
-            type="text"
-            class="form-control"
-            id="leaveTitle"
-            name="Title"
-            placeholder="Enter leave title"
-            required
-          />
-        </div>
-        <div class="app-field">
-          <label for="exampleSelect1" class="form-label mt-4">Leave Type</label>
-          <select name="Type" class="form-select" id="exampleSelect1">
+        <div class="app-type">
+          <label for="Type" class="form-label mt-4">Leave Type</label>
+          <select name="Type" class="form-select" id="Type">
             <option></option>
-            <option>Annual Leave</option>
             <option>Sick Leave</option>
-            <option>Casual Leave</option>
-            <option>Personal Leave</option>
-            <option>Maternity Leave</option>
             <option>Vacation Leave</option>
-            <option>Others</option>
           </select>
         </div>
         <div class="app-field">
-          <label for="startDate" class="form-label mt-4">Start Date</label>
+          <label for="StartDate" class="form-label mt-4">Start Date</label>
           <input
             type="date"
             class="form-control"
-            id="startDate"
+            id="StartDate"
             name="StartDate"
             required
           />
         </div>
         <div class="app-field">
-          <label for="Period" class="form-label mt-4">Period</label>
+          <label for="EndDate" class="form-label mt-4">End Date</label>
           <input
-            type="number"
+            type="date"
             class="form-control"
-            id="Period"
-            name="Period"
+            id="EndDate"
+            name="EndDate"
             required
           />
         </div>

@@ -105,26 +105,26 @@
             <table id="table" class="table table-hover">
               <thead>
                 <tr class="table-dark">
-                  <th style="width: 150px">Applicant's Name</th>
-                  <th style="width: 200px">Title</th>
-                  <th style="width: 100px">Type</th>
-                  <th style="width: 100px">Applied Date</th>
-                  <th style="width: 100px">Period (Date)</th>
-                  <th style="width: 100px">Status</th>
-                  <th style="width: 80px">Actions</th>
+                  <th>Applicant's Name</th>
+                  <th>Type</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Applied Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <% leaveapplications.forEach((row, index) => { %>
                 <tr class="popup-row" data-reason="<%= row.reason %>">
                   <td><%= row.name %></td>
-                  <td><%= row.Title %></td>
                   <td><%= row.Type %></td>
+                  <td><%= row.StartDate.toISOString().split('T')[0] %></td>
+                  <td><%= row.EndDate.toISOString().split('T')[0] %></td>
                   <td>
                     <% if (row.AppliedDate === null) { %> N/A <% } else { %> <%=
                     row.AppliedDate.toISOString().split('T')[0] %> <% } %>
                   </td>
-                  <td><%= row.Period %></td>
                   <td
                     style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
                   >
@@ -171,26 +171,26 @@
               <table id="table" class="table table-hover">
                 <thead>
                   <tr class="table-dark">
-                    <th style="width: 150px">Applicant's Name</th>
-                    <th style="width: 200px">Title</th>
-                    <th style="width: 100px">Type</th>
-                    <th style="width: 100px">Applied Date</th>
-                    <th style="width: 100px">Period (Date)</th>
-                    <th style="width: 100px">Status</th>
-                    <th style="width: 80px">Actions</th>
+                    <th>Applicant's Name</th>
+                    <th>Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Applied Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% pendingApplications.forEach((row, index) => { %>
                   <tr class="popup-row" data-reason="<%= row.reason %>">
                     <td><%= row.name %></td>
-                    <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
+                    <td><%= row.StartDate.toISOString().split('T')[0] %></td>
+                    <td><%= row.EndDate.toISOString().split('T')[0] %></td>
                     <td>
                       <% if (row.AppliedDate === null) { %> N/A <% } else { %>
                       <%= row.AppliedDate.toISOString().split('T')[0] %> <% } %>
                     </td>
-                    <td><%= row.Period %></td>
                     <td
                       style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
                     >
@@ -236,13 +236,13 @@
               <table id="table" class="table table-hover">
                 <thead>
                   <tr class="table-dark">
-                    <th style="width: 150px">Applicant's Name</th>
-                    <th style="width: 200px">Title</th>
-                    <th style="width: 100px">Type</th>
-                    <th style="width: 100px">Applied Date</th>
-                    <th style="width: 100px">Period (Date)</th>
-                    <th style="width: 100px">Status</th>
-                    <th style="width: 80px">Actions</th>
+                    <th>Applicant's Name</th>
+                    <th>Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Applied Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -250,13 +250,13 @@
                   'Approved').forEach((row, index) => { %>
                   <tr class="popup-row" data-reason="<%= row.reason %>">
                     <td><%= row.name %></td>
-                    <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
+                    <td><%= row.StartDate.toISOString().split('T')[0] %></td>
+                    <td><%= row.EndDate.toISOString().split('T')[0] %></td>
                     <td>
                       <% if (row.AppliedDate === null) { %> N/A <% } else { %>
                       <%= row.AppliedDate.toISOString().split('T')[0] %> <% } %>
                     </td>
-                    <td><%= row.Period %></td>
                     <td
                       style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
                     >
@@ -302,13 +302,13 @@
               <table id="table" class="table table-hover">
                 <thead>
                   <tr class="table-dark">
-                    <th style="width: 150px">Applicant's Name</th>
-                    <th style="width: 200px">Title</th>
-                    <th style="width: 100px">Type</th>
-                    <th style="width: 100px">Applied Date</th>
-                    <th style="width: 100px">Period (Date)</th>
-                    <th style="width: 100px">Status</th>
-                    <th style="width: 80px">Actions</th>
+                    <th>Applicant's Name</th>
+                    <th>Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Applied Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -316,13 +316,13 @@
                   'Declined').forEach((row, index) => { %>
                   <tr class="popup-row" data-reason="<%= row.reason %>">
                     <td><%= row.name %></td>
-                    <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
+                    <td><%= row.StartDate.toISOString().split('T')[0] %></td>
+                    <td><%= row.EndDate.toISOString().split('T')[0] %></td>
                     <td>
                       <% if (row.AppliedDate === null) { %> N/A <% } else { %>
                       <%= row.AppliedDate.toISOString().split('T')[0] %> <% } %>
                     </td>
-                    <td><%= row.Period %></td>
                     <td
                       style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
                     >

@@ -379,7 +379,8 @@ router.get("/hris", checkRoleHR, async (req, res) => {
     const pendingleave = await LeaveApplications.countDocuments({
       Status: "Pending",
     });
-    res.render("hris", { employeecount, pendingleave });
+    const inAttendance = await Attendance.countDocuments({ status: "IN" });
+    res.render("hris", { employeecount, pendingleave, inAttendance });
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }

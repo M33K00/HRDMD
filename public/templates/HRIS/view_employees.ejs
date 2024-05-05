@@ -87,10 +87,10 @@
             <thead>
               <tr class="table-dark">
                 <th style="width: 150px">Name</th>
-                <th style="width: 200px">Email</th>
-                <th style="width: 150px">Contact No.</th>
+                <th style="width: 250px">Email</th>
+                <th style="width: 200px">Contact No.</th>
                 <th style="width: 200px">Department</th>
-                <th style="width: 50px; padding-left: 110px">Action</th>
+                <th style="width: 10px; padding-left: 40px">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -104,20 +104,11 @@
                   <a href="/view_emp_data/<%= row._id %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
                   ></a>
-                  <a href="#" class="icon-square">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </a>
                   <a
                     href="/delete/<%= row._id %>"
                     class="icon-square text-danger"
                     onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
                     ><i class="fa-solid fa-trash"></i
-                  ></a>
-                  <a href="#" class="icon-square"
-                    ><i class="fa-solid fa-plus"></i
-                  ></a>
-                  <a href="#" class="icon-square"
-                    ><i class="fa-solid fa-list"></i
                   ></a>
                 </td>
               </tr>
@@ -134,49 +125,38 @@
       <div class="tab-pane fade" id="HRdp" role="tabpanel">
         <div class="hris-container">
           <% if (HRdp != '') { %>
-          <table id="table" class="table table-hover table-striped">
-            <thead>
-              <tr class="table-dark">
-                <th style="width: 150px">Name</th>
-                <th style="width: 200px">Email</th>
-                <th style="width: 150px">Contact No.</th>
-                <th style="width: 200px">Department</th>
-                <th style="width: 150px">HR Role</th>
-                <th style="width: 50px; padding-left: 110px">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% HRdp.forEach((row, index) => { %>
-              <tr>
-                <td><%= row.name %></td>
-                <td><%= row.email %></td>
-                <td><%= row.contact %></td>
-                <td><%= row.department %></td>
-                <td><%= row.hrrole %></td>
-                <td class="action-buttons">
-                  <a href="/view_emp_data/<%= row._id %>" class="icon-square"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                  <a href="#" class="icon-square">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </a>
-                  <a
-                    href="/delete/<%= row._id %>"
-                    class="icon-square text-danger"
-                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-                  <a href="#" class="icon-square"
-                    ><i class="fa-solid fa-plus"></i
-                  ></a>
-                  <a href="#" class="icon-square"
-                    ><i class="fa-solid fa-list"></i
-                  ></a>
-                </td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
+            <table id="table" class="table table-hover table-striped">
+              <thead>
+                <tr class="table-dark">
+                  <th style="width: 150px">Name</th>
+                  <th style="width: 250px">Email</th>
+                  <th style="width: 200px">Contact No.</th>
+                  <th style="width: 200px">Department</th>
+                  <th style="width: 10px; padding-left: 40px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% HRdp.forEach((row, index) => { %>
+                <tr>
+                  <td><%= row.name %></td>
+                  <td><%= row.email %></td>
+                  <td><%= row.contact %></td>
+                  <td><%= row.department %></td>
+                  <td class="action-buttons">
+                    <a href="/view_emp_data/<%= row._id %>" class="icon-square"
+                      ><i class="fa-solid fa-eye"></i
+                    ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
           <% } else { %>
           <h1 class="text-center text-secondary mt-5">
             No Users found in database
@@ -187,47 +167,38 @@
       <div class="tab-pane fade" id="d1" role="tabpanel">
         <div class="hris-container">
           <% if (DP1 != '') { %>
-          <table id="table" class="table table-hover table-striped">
-            <thead>
-              <tr class="table-dark">
-                <th style="width: 150px">Name</th>
-                <th style="width: 200px">Email</th>
-                <th style="width: 150px">Contact No.</th>
-                <th style="width: 200px">Department</th>
-                <th style="width: 50px; padding-left: 110px">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% DP1.forEach((row, index) => { %>
-              <tr>
-                <td><%= row.name %></td>
-                <td><%= row.email %></td>
-                <td><%= row.contact %></td>
-                <td><%= row.department %></td>
-                <td class="action-buttons">
-                  <a href="/view_emp_data/<%= row._id %>" class="icon-square"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                  <a href="#" class="icon-square">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </a>
-                  <a
-                    href="/delete/<%= row._id %>"
-                    class="icon-square text-danger"
-                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-                  <a href="#" class="icon-square"
-                    ><i class="fa-solid fa-plus"></i
-                  ></a>
-                  <a href="#" class="icon-square"
-                    ><i class="fa-solid fa-list"></i
-                  ></a>
-                </td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
+            <table id="table" class="table table-hover table-striped">
+              <thead>
+                <tr class="table-dark">
+                  <th style="width: 150px">Name</th>
+                  <th style="width: 250px">Email</th>
+                  <th style="width: 200px">Contact No.</th>
+                  <th style="width: 200px">Department</th>
+                  <th style="width: 10px; padding-left: 40px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% DP1.forEach((row, index) => { %>
+                <tr>
+                  <td><%= row.name %></td>
+                  <td><%= row.email %></td>
+                  <td><%= row.contact %></td>
+                  <td><%= row.department %></td>
+                  <td class="action-buttons">
+                    <a href="/view_emp_data/<%= row._id %>" class="icon-square"
+                      ><i class="fa-solid fa-eye"></i
+                    ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
           <% } else { %>
           <h1 class="text-center text-secondary mt-5">
             No Users found in database
@@ -237,15 +208,14 @@
       </div>
       <div class="tab-pane fade" id="d2" role="tabpanel">
         <div class="hris-container">
-          <% if (DP2 != '') { %>
-          <table id="table" class="table table-hover table-striped">
+          <% if (DP2 != '') { %>          <table id="table" class="table table-hover table-striped">
             <thead>
               <tr class="table-dark">
                 <th style="width: 150px">Name</th>
-                <th style="width: 200px">Email</th>
-                <th style="width: 150px">Contact No.</th>
+                <th style="width: 250px">Email</th>
+                <th style="width: 200px">Contact No.</th>
                 <th style="width: 200px">Department</th>
-                <th style="width: 50px; padding-left: 110px">Action</th>
+                <th style="width: 10px; padding-left: 40px">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -259,20 +229,11 @@
                   <a href="/view_emp_data/<%= row._id %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
                   ></a>
-                  <a href="#" class="icon-square">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </a>
                   <a
                     href="/delete/<%= row._id %>"
                     class="icon-square text-danger"
                     onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
                     ><i class="fa-solid fa-trash"></i
-                  ></a>
-                  <a href="#" class="icon-square"
-                    ><i class="fa-solid fa-plus"></i
-                  ></a>
-                  <a href="#" class="icon-square"
-                    ><i class="fa-solid fa-list"></i
                   ></a>
                 </td>
               </tr>

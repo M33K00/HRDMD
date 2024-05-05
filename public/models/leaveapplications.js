@@ -12,11 +12,6 @@ const LeaveApplicationsSchema = new mongoose.Schema({
     lowercase: true,
     validate: [isEmail, "Please enter a valid email"],
   },
-  Title: {
-    type: String,
-    required: true,
-    index: false,
-  },
   Type: {
     type: String,
     required: true,
@@ -33,8 +28,8 @@ const LeaveApplicationsSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  Period: {
-    type: Number,
+  EndDate: {
+    type: Date,
     required: true,
   },
   Status: {

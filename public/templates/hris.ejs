@@ -8,6 +8,24 @@
         <h1>Human Resources Information System</h1>
       </div>
     </div>
+    <div class="dtr-status">
+      <div id="bgTime" class="dtr-div div-time">
+        <div class="div-title title-time">
+          <p>Current Time:</p>
+        </div>
+        <div class="div-count title-time">
+          <div class="mb-3" id="currentTime"></div>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-title">
+          <p>Employees Currently Clocked In:</p>
+        </div>
+        <div class="div-count">
+          <p><span class="green-dot status-count"></span><%= inAttendance %></p>
+        </div>
+      </div>
+    </div>
     <div class="hris-container-status">
       <div class="container-div">
         <a class="clickable-link" href="/view_employees">
@@ -28,5 +46,4 @@
     </div>
   </div>
 </body>
-
 <%- include('./layouts/footer') %>

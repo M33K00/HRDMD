@@ -105,19 +105,18 @@
             <table id="table" class="table table-hover">
               <thead>
                 <tr class="table-dark">
-                  <th style="width: 150px">Applicant's Name</th>
-                  <th style="width: 200px">Title</th>
-                  <th style="width: 100px">Type</th>
-                  <th style="width: 100px">Applied Date</th>
-                  <th style="width: 100px">Period (Date)</th>
-                  <th style="width: 100px">Status</th>
+                  <th>Applicant's Name</th>
+                  <th>Type</th>
+                  <th>Applied Date</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
                 <% leaveapplications.forEach((row, index) => { %>
                   <tr class="popup-row" data-reason="<%= row.reason %>">
                     <td><%= row.name %></td>
-                    <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
                     <td>
                       <% if (row.AppliedDate === null) { %>
@@ -126,7 +125,8 @@
                         <%= row.AppliedDate.toISOString().split('T')[0] %>
                       <% } %>
                     </td>
-                    <td><%= row.Period %></td>
+                    <td><%= row.StartDate.toISOString().split('T')[0] %></td>
+                    <td><%= row.EndDate.toISOString().split('T')[0] %></td>
                     <td
                     style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
                   ><%= row.Status %></td>

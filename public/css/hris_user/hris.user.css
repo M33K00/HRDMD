@@ -403,6 +403,12 @@
   margin: 5px; /* Add margin to create space between fields */
 }
 
+.app-type {
+  width: calc(100% - 10px); /* Set width for each field, accounting for gap */
+  margin: 5px; /* Add margin to create space between fields */
+  font-weight: 600;
+}
+
 .app-field label {
   margin-bottom: 5px;
   font-weight: 600;

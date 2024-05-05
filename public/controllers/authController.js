@@ -98,11 +98,8 @@ module.exports.signup_post = async (req, res) => {
       email,
     }
     await userdocuments.insertOne(userData);
-    await Attendance.insertOne(adata);
+    await Attendance.create(adata);
 
-    const token = createToken(logincollection._id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(200).json({ logincollection: logincollection._id });
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });

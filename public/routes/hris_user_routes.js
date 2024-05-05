@@ -65,17 +65,32 @@ router.get("/view_profile/:id", async (req, res) => {
 
 router.post("/apply_leave", async (req, res) => {
   try {
+    // Data validation (not shown here, but you should validate input fields)
+
     const data = {
       name: req.body.name,
       email: req.body.email,
-      Type: req.body.Type,
-      Title: req.body.Title,
+      Type: req.body.Type, // Changed to lowercase for naming convention
       StartDate: req.body.StartDate,
-      Period: req.body.Period,
+      EndDate: req.body.EndDate,
       reason: req.body.reason,
     };
 
+    // Insert data into the database
     await LeaveApplications.insertMany([data]);
+
+    // Get account by name
+    const account = await Attendance.findOne({ name: data.name });
+
+    // Update available leave based on leave type
+    if (data.Type === "Sick Leave") {
+      account.availableSL = account.availableSL - 1;
+    } else if (data.Type === "Vacation Leave") {
+      account.availableVL = account.availableVL - 1;
+    }
+
+    // Save the updated account
+    await account.save();
 
     // Set success message in session
     req.session.message = {
@@ -89,11 +104,12 @@ router.post("/apply_leave", async (req, res) => {
     console.error("Error adding leave application:", err);
     req.session.message = {
       type: "danger",
-      message: `Error adding leave application: ${err.message}`,
+      message: "An error occurred while processing your request. Please try again later.",
     };
     res.redirect("/apply_leave");
   }
 });
+
 
 router.get("/HRFiles", async (req, res) => {
   res.render("HRISUSER/HRFiles");

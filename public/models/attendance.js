@@ -49,7 +49,17 @@ const attendanceSchema = new mongoose.Schema({
         type: String,
         required: false,
         default: "",
-    }
+    },
+    availableSL: {
+        type: Number,
+        required: false,
+        default: 15,
+    },
+    availableVL: {
+        type: Number,
+        required: false,
+        default: 15,
+    },
 });
 
 const attendance = mongoose.model('attendance', attendanceSchema);
