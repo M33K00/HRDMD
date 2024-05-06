@@ -16,19 +16,19 @@ const attendanceSchema = new mongoose.Schema({
         default: "OUT",
     },
     daysPresent: {
-        type: Array,
+        type: Number,
         required: false,
-        default: [],
+        default: 0,
     },
     daysAbsent: {
-        type: Array,
+        type: Number,
         required: false,
-        default: [],
+        default: 0,
     },
     daysOnLeave: {
-        type: Array,
+        type: Number,
         required: false,
-        default: [],
+        default: 0,
     },
     timeIn: {
         type: Date,
@@ -41,14 +41,14 @@ const attendanceSchema = new mongoose.Schema({
         default: null,
     },
     totalTime : {
-        type: String,
+        type: Number,
         required: false,
-        default: "",
+        default: 0,
     },
     hoursWorked: {
-        type: String,
+        type: Number,
         required: false,
-        default: "",
+        default: 0,
     },
     availableSL: {
         type: Number,

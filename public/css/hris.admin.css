@@ -428,3 +428,25 @@
   font-size: 40px;
   font-weight: 600;
 }
+
+.clockin-tab {
+  display: flex;
+  align-items: center;
+  border: #acacac solid 2px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  height: 100px;
+}
+
+.clockin-tab p {
+  font-size: 25px;
+  font-weight: 600;
+  margin-left: 20px;
+  margin-top: 15px;
+}
+
+.clockin-btn {
+  display: flex;
+  margin-left: auto;
+}

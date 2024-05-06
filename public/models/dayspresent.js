@@ -5,6 +5,10 @@ const daysPresentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  date: {
+    type: Date,
+    required: true,
+  },
   timeIn: {
     type: Date,
     required: true,
@@ -15,9 +19,19 @@ const daysPresentSchema = new mongoose.Schema({
     default: null,
   },
   totalTime: {
-    type: String,
+    type: Number,
     required: false,
-    default: null,
+    default: 0,
+  },
+  underTime: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  overTime: {
+    type: Number,
+    required: false,
+    default: 0,
   },
 });
 
