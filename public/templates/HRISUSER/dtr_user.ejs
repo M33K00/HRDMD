@@ -104,11 +104,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% dayspresent.forEach((row, index) => { %>
+                  <% 
+                    // Sort the dayspresent array by date in descending order
+                    const sortedDaysPresent = dayspresent.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    sortedDaysPresent.forEach((row, index) => { %>
                   <tr>
                     <td><%= row.date.toISOString().slice(0, 10) %></td>
                     <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
-                    <td><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                    <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %><% } else { %>Ongoing<% } %></td>
                     <td><%= row.totalTime.toFixed(2) %></td>
                     <td><%= row.overTime.toFixed(2) %></td>
                     <td><%= row.underTime.toFixed(2) %></td>
@@ -118,7 +121,7 @@
               </table>
               <% } else { %>
                 <h1 class="text-center text-secondary mt-5">
-                  No Users found in database
+                  No Present Days Found
                 </h1>
                 <% } %>
             </div>
