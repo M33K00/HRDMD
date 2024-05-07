@@ -59,8 +59,12 @@
         <tr>
           <td><%= employee.name %></td>
           <td><%= employee.department %></td>
-          <td><%= attendance.daysAbsent.length %></td>
-          <td><% if (attendance.timeIn === null) { %> 00:00 <% } %></td>
+          <td><%= attendance.daysAbsent %></td>
+          <td>
+            <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%=
+            attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute:
+            '2-digit' }) %> %> <% } %>
+          </td>
           <td><% if (attendance.timeOut === null) { %> 00:00 <% } %></td>
           <td style="font-weight: 600">
             <% if (attendance.status === 'OUT') { %>

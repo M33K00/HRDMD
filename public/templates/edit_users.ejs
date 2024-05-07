@@ -10,33 +10,34 @@
       method="POST"
       enctype="multipart/form-data"
     >
-      <fieldset>
-        <div class="form-group">
-          <label for="InputName" class="form-label mt-4">Name</label>
-          <input
-            type="text"
-            name="name"
-            class="form-control"
-            aria-describedby="emailHelp"
-            placeholder="Enter name"
-            value="<%= logincollections.name  %>"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="InputName" class="form-label mt-4">Birthday</label>
-          <input
-            type="date"
-            name="birthday"
-            class="form-control"
-            value="<%= logincollections.birthday  %>"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleInputEmail1" class="form-label mt-4"
-            >Email address</label
-          >
+    <fieldset>
+      <div class="form-group">
+        <label for="InputName" class="form-label mt-4">Name</label>
+        <input
+          type="text"
+          name="name"
+          class="form-control"
+          aria-describedby="emailHelp"
+          placeholder="Enter name"
+          value="<%= logincollections.name  %>"
+          required
+          disabled
+        />
+      </div>
+      <div class="form-group">
+        <label for="InputName" class="form-label mt-4">Birthday</label>
+        <input
+          type="date"
+          name="birthday"
+          class="form-control"
+          value="<%= logincollections.birthday ? logincollections.birthday.toISOString().slice(0,10) : '' %>"
+          required
+          disabled
+        />
+      </div>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label for="exampleInputEmail1" class="form-label mt-4">Email address</label>
           <input
             type="text"
             name="email"
@@ -45,88 +46,139 @@
             placeholder="Enter email"
             value="<%= logincollections.email  %>"
             required
+            disabled
           />
-          <small id="emailHelp" class="form-text text-muted"
-            >We'll never share your email with anyone else.</small
-          >
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
-        <div class="form-group">
+        <div class="form-item">
           <label for="InputName" class="form-label mt-4">Contact Number</label>
           <input
             type="text"
             name="contact"
             class="form-control"
             placeholder="(+639) 123 456 7890"
-            value="<%= logincollections.contact  %>"
+            value="+<%= logincollections.contact  %>"
             maxlength="12"
             required
+            disabled
           />
         </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1" class="form-label mt-4"
-            >Password</label
-          >
-          <input
-            type="password"
-            name="password"
-            class="form-control"
-            id="exampleInputPassword1"
-            placeholder="Leave blank to keep old password"
-            autocomplete="off"
-          />
-          <input
-            type="hidden"
-            name="old_password"
-            autocomplete="off"
-            value="<%= logincollections.password  %>"
-          />
-        </div>
-        <div class="form-group">
-          <label for="formFile" class="form-label mt-4">Account Image</label>
-          <input class="form-control" type="file" name="image" id="formFile" />
-          <img
-            name="image"
-            src="../<%= logincollections.image  %>"
-            width="100"
-            class="img-thumbnail mt-1"
-          />
-          <input
-            type="hidden"
-            name="old_image"
-            value="<%= logincollections.image  %>"
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleSelect1" class="form-label mt-4">Department</label>
+      </div>          
+      <div class="form-group">
+        <label for="exampleInputPassword1" class="form-label mt-4"
+          >Password</label
+        >
+        <input
+          type="password"
+          name="password"
+          class="form-control"
+          id="exampleInputPassword1"
+          placeholder="Leave blank to keep old password"
+          autocomplete="off"
+        />
+        <input
+          type="hidden"
+          name="old_password"
+          autocomplete="off"
+          value="<%= logincollections.password  %>"
+        />
+      </div>
+      <div class="form-group">
+        <label for="formFile" class="form-label mt-4">Account Image</label>
+        <input class="form-control" type="file" name="image" id="formFile" disabled/>
+        <img
+          name="image"
+          src="../<%= logincollections.image  %>"
+          width="100"
+          class="img-thumbnail mt-1"
+        />
+        <input
+          type="hidden"
+          name="old_image"
+          value="<%= logincollections.image  %>"
+        />
+      </div>
+      <div class="border mt-4"></div>
+      <div class="mt-4">
+        <h4>HR Information:</h4>
+      </div>
+      <div class="form-group flex-container">
+        <div class="form-item-2">
+          <label for="department" class="form-label mt-4">Department</label>
           <select
             type="text"
             name="department"
             class="form-select"
             id="department"
           >
-          <option value="Department 1" <% if (logincollections.department === 'Department 1') { %> selected <% } %>>Department 1</option>
-          <option value="Department 2" <% if (logincollections.hrrole === 'Department 2') { %> selected <% } %>>Department 2</option>
-          <option value="HR Department" <% if (logincollections.hrrole === 'HR Department') { %> selected <% } %>>HR Department</option>
+            <option value="Department 1" <% if (logincollections.department === 'Department 1') { %> selected <% } %>>Department 1</option>
+            <option value="Department 2" <% if (logincollections.department === 'Department 2') { %> selected <% } %>>Department 2</option>
+            <option value="HR Department" <% if (logincollections.department === 'HR Department') { %> selected <% } %>>HR Department</option>
           </select>
         </div>
-        <div class="form-group" style="margin-bottom: 10px">
-          <label for="exampleSelect1" class="form-label mt-2">HR Role</label>
+        <div class="form-item-2">
+          <label for="position" class="form-label mt-4">Position</label>
+          <select
+            type="text"
+            name="hrrole"
+            class="form-select"
+            id="position"
+          >
+            <option value="POSITION 1" <% if (logincollections.position === 'Position 1') { %> selected <% } %>>Position 1</option>
+            <option value="POSITION 2" <% if (logincollections.position === 'Position 2') { %> selected <% } %>>Position 2</option>
+            <option value="POSITION 3" <% if (logincollections.position === 'Position 3') { %> selected <% } %>>Position 3</option>
+          </select>
+        </div>
+        <div class="form-item-2">
+          <label for="hrrole" class="form-label mt-4">HR Role</label>
           <select
             type="text"
             name="hrrole"
             class="form-select"
             id="hrrole"
           >
-          <option value="ROLE 1" <% if (logincollections.hrrole === 'ROLE 1') { %> selected <% } %>>ROLE 1</option>
-          <option value="ROLE 2" <% if (logincollections.hrrole === 'ROLE 2') { %> selected <% } %>>ROLE 2</option>
-          <option value="ROLE 3" <% if (logincollections.hrrole === 'ROLE 3') { %> selected <% } %>>ROLE 3</option>
+            <option value="ROLE 1" <% if (logincollections.hrrole === 'ROLE 1') { %> selected <% } %>>ROLE 1</option>
+            <option value="ROLE 2" <% if (logincollections.hrrole === 'ROLE 2') { %> selected <% } %>>ROLE 2</option>
+            <option value="ROLE 3" <% if (logincollections.hrrole === 'ROLE 3') { %> selected <% } %>>ROLE 3</option>
           </select>
         </div>
-      </fieldset>
-      <input type="submit" value="Update User" class="btn btn-success btn" />
+      </div>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label for="dayOff" class="form-label mt-4">Day Offs:</label>
+          <select
+            name="dayOff"
+            id="dayOff"
+            class="form-select"
+            multiple
+          >
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="paySched" class="form-label mt-4">Pay Schedule</label>
+          <select
+            type="text"
+            name="paySched"
+            class="form-select"
+            id="paySched"
+          >
+            <option value="Weekly" <% if (attendance.paySched === 'Weekly') { %> selected <% } %>>Weekly</option>
+            <option value="Bi-Weekly" <% if (attendance.paySched === 'Bi-Weekly') { %> selected <% } %>>Bi-Weekly</option>
+            <option value="Monthly" <% if (attendance.paySched === 'Monthly') { %> selected <% } %>>Monthly</option>
+          </select>
+        </div>
+    </fieldset>
+      <input type="submit" value="Update User" class="btn btn-success btn mt-4" />
       <a
         href="/manage_accounts"
-        class="btn btn-secondary"
+        class="btn btn-secondary mt-4"
         style="margin-left: 10px"
         >CANCEL</a
       >

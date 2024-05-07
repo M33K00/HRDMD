@@ -13,6 +13,7 @@ const Attendance = require("../models/attendance");
 // Models
 const LogInCollection = require("../models/logincollections");
 const LeaveApplications = require("../models/leaveapplications");
+const DaysPresent = require("../models/dayspresent");
 
 // Multer configuration
 var storage = multer.diskStorage({
@@ -130,6 +131,16 @@ router.get("/edit/:id", async (req, res) => {
     let id = req.params.id;
     let logincollections = await LogInCollection.findById(id);
 
+    let name = logincollections.name;
+
+    const attendance = await Attendance.findOne({ name: name });
+
+    if (!attendance) {
+      // Handle the case where the user's _id is not found
+      res.status(404).send("User not found.");
+      return; // Exit the function early
+    }
+
     if (!logincollections) {
       // If the user account doesn't exist, redirect to manage_accounts page
       return res.redirect("/manage_accounts");
@@ -139,6 +150,7 @@ router.get("/edit/:id", async (req, res) => {
     res.render("edit_users", {
       title: "Edit Account",
       logincollections: logincollections,
+      attendance: attendance,
     });
   } catch (err) {
     // Log and handle errors gracefully
@@ -552,10 +564,31 @@ router.get("/view-dtr/:id", async (req, res) => {
       email: email,
     });
 
+    const timeIn = new Date(attendance.timeIn);
+    const currentTime = new Date();
+
+    let totalHours = 0;
+    let totalMinutes = 0;
+
+    if (timeIn !== null) {
+      const timeDifference = currentTime - timeIn;
+      totalHours = Math.floor(timeDifference / (1000 * 60 * 60));
+      totalMinutes = Math.floor(
+        (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+      );
+    }
+
+    let dayspresent = await DaysPresent.find({
+      email: email,
+    });
+
     res.render("HRIS/view-dtr", {
       title: "View Account",
       logincollections: logincollections,
       attendance: attendance,
+      dayspresent: dayspresent,
+      totalHours: totalHours,
+      totalMinutes: totalMinutes,
     });
   } catch (err) {
     console.error("Error:", err);
