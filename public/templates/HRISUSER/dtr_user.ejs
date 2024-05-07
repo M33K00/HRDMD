@@ -11,11 +11,12 @@
           <div class="account-img">
             <img src="../<%= logincollections.image %>" />
           </div>
-          <div class="account-in mt-3">
+          <div class="account-in mt-3 text">
             <p><b>Name:</b> <%= logincollections.name %></p>
             <p><b>Email:</b> <%= logincollections.email %></p>
             <p><b>Contact:</b> <%= logincollections.contact %></p>
             <p><b>Department:</b> <%= logincollections.department %></p>
+            <p><b>Position:</b> <%= logincollections.hrrole %></p>
           </div>
           <div class="account-stat mt-3">
             <div class="account-stat-item">
@@ -31,8 +32,16 @@
                 <p><b>Days Present:</b> <%= attendance.daysPresent %></p></p>
                 <p><b>Days Absent:</b> <%= attendance.daysAbsent %></p>
                 <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
-          </div>
+            </div>
         </div>
+        <div class="account-stat mt-3">
+          <div class="account-stat-item">
+              <p><b>Dayoffs:</b> <%= attendance.dayOff %></p></p>
+              <p><b>Pay Sched:</b> <%= attendance.paySched %></p>
+              <p><b>Current Cut-off:</b> April 15</p>
+              <p><b>Next Cut-off:</b> March 2</p>
+          </div>
+      </div>
       </div>
       <div class="mt-4">
         <div class="account-column-2">
@@ -41,8 +50,12 @@
         <div class="clockin-tab">
           <p><%= getCurrentDateInWords() %></p>
           <div class="clockin-btn">
-            <a href="/clockin/<%= logincollections.email %>" class="btn btn-primary" >Clock In</a>
-            <a href="/clockout/<%= logincollections.email %>" class="btn btn-primary" style="margin-left: 10px; margin-right: 10px;">Clock Out</a>
+            <a href="/clockin/<%= logincollections.email %>" class="btn btn-primary <% if (attendance.status === 'IN') { %>
+             disabled
+            <% } %>" >Clock In</a>
+            <a href="/clockout/<%= logincollections.email %>" class="btn btn-secondary <% if (attendance.status === 'OUT') { %>
+             disabled"
+            <% } %>" style="margin-left: 10px; margin-right: 10px;">Clock Out</a>
           </div>
         </div>
         <ul class="nav nav-tabs" role="tablist">
@@ -65,7 +78,11 @@
                   <div class="div-title">
                     <p class="dtr-view-title">Total Today:</p>
                   </div>
-                  <div class="div-view-count" style="font-size: 30px; margin-bottom: 5px"><%= totalHours %> hours and <%= totalMinutes %> minutes</div>
+                  <div class="div-view-count" style="font-size: 30px; margin-bottom: 5px"><% if (attendance.status === 'OUT') { %>
+                   N/A
+                  <% } else { %>
+                    <%= totalHours %> hours and <%= totalMinutes %> minutes
+                  <% } %></div>
                 </div>
                 <div class="dtr-view-div">
                   <div class="div-title">
@@ -80,13 +97,24 @@
               </div>
               <h4 class="mt-4">Record Before Cutoff:</h4>
               <p class="text-muted">This is the total hours worked before the cutoff.</p>
-              <div class="dtr-view-container">
-
+              <div class="dtr-cut-container">
                 <div class="dtr-view-div">
                   <div class="div-title">
                     <p class="dtr-view-title">Total Hours Worked:</p>
                   </div>
                   <div class="div-view-count"><%= attendance.hoursWorked.toFixed(2) %> Hour(s)</div>
+                </div>
+                <div class="dtr-cut-div">
+                  <div class="div-cut-title">
+                    <p class="dtr-view-title text-uppercase">Cut-off:</p>
+                  </div>
+                  <div class="div-cut-count">April 15</div>
+                </div>
+                <div class="dtr-cut-div">
+                  <div class="div-cut-title">
+                    <p class="dtr-view-title text-uppercase">Next Cut-off:</p>
+                  </div>
+                  <div class="div-cut-count">March 2</div>
                 </div>
               </div>
               <h4 class="mt-4">Days Present:</h4>
@@ -126,7 +154,41 @@
                 <% } %>
             </div>
             <div class="tab-pane fade" id="da" role="tabpanel">
-              <%= attendance.daysAbsent %>
+              <h4 class="mt-4">Days Absent:</h4>
+              <p class="text-muted">This table shows the days absent.</p>
+              <table id="table" class="table table-hover table-striped table-bordered table-responsive text-center">
+                <thead>
+                  <% if (dayspresent != '') { %>
+                  <tr class="table-dark text-center text-uppercase">
+                    <th>Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Total Time</th>
+                    <th>Overtime</th>
+                    <th>Undertime</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% 
+                    // Sort the dayspresent array by date in descending order
+                    const sortedDaysPresent = dayspresent.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    sortedDaysPresent.forEach((row, index) => { %>
+                  <tr>
+                    <td><%= row.date.toISOString().slice(0, 10) %></td>
+                    <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                    <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %><% } else { %>Ongoing<% } %></td>
+                    <td><%= row.totalTime.toFixed(2) %></td>
+                    <td><%= row.overTime.toFixed(2) %></td>
+                    <td><%= row.underTime.toFixed(2) %></td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+              <% } else { %>
+                <h1 class="text-center text-secondary mt-5">
+                  No Absent Days Found
+                </h1>
+                <% } %>
             </div>
             <div class="tab-pane fade" id="dol" role="tabpanel">
               <h4 class="mt-4">Leave History:</h4>

@@ -14,7 +14,9 @@
         <a class="clickable-link" href="/dtr_user/<%= user._id %>">
           <div class="employee-count">
             <p class="display-label">Total Hours Worked:</p>
-            <p class="display-count">69</p>
+            <p class="display-count">
+              <%= attendance.hoursWorked.toFixed(2) %>
+            </p>
           </div>
         </a>
       </div>

@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const LogInCollection = require("../models/logincollections");
 const RejectedDocument = require("../models/rejecteddocuments");
+const Attendance = require("../models/attendance");
 
 // Edit Account
 router.get("/editacc/:name", async (req, res) => {
@@ -10,6 +11,14 @@ router.get("/editacc/:name", async (req, res) => {
     const name = req.params.name;
     // Use findOne with a query object to find the user by name
     const logincollections = await LogInCollection.findOne({ name: name });
+
+    const attendance = await Attendance.findOne({ name: name });
+
+    if (!attendance) {
+      // Handle the case where the user's _id is not found
+      res.status(404).send("User not found.");
+      return; // Exit the function early
+    }
 
     if (!logincollections) {
       // If the user account doesn't exist, redirect to manage_accounts page
@@ -20,6 +29,7 @@ router.get("/editacc/:name", async (req, res) => {
     res.render("role1_editacc", {
       title: "Edit Account",
       logincollections: logincollections,
+      attendance: attendance,
     });
   } catch (err) {
     // Log and handle errors gracefully

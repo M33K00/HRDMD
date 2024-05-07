@@ -538,3 +538,20 @@
   font-weight: 600;
   text-shadow: 7px 5px 0px rgba(0, 0, 0, 0.3);
 }
+
+.form-label {
+  font-weight: 600;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between; /* Adjust alignment as needed */
+}
+
+.form-item {
+  flex-basis: 49.7%; /* Adjust width of each item */
+}
+
+.form-item-2 {
+  flex-basis: 33%; /* Adjust width of each item */
+}

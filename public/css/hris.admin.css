@@ -274,7 +274,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 200px 550px 1fr; /* Grid with 3 columns */
+  grid-template-columns: 250px 350px 300px 1fr; /* Grid with 3 columns */
   gap: 5px; /* Gap between grid items */
 }
 
@@ -283,7 +283,7 @@
   display: flex; /* Use flexbox */
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
-  width: 200px; /* Set width to 100% of the column */
+  width: 250px; /* Set width to 100% of the column */
   height: 100%;
 }
 
@@ -418,6 +418,46 @@
   margin-bottom: 20px;
   height: 100px;
   align-items: center;
+}
+
+.dtr-cut-container {
+  display: grid;
+  grid-template-columns: 640px 320px 1fr;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.dtr-cut-div {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: #acacac solid 2px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  height: 100px;
+  align-items: center;
+}
+
+.div-cut-title {
+  display: flex;
+  position: absolute;
+  bottom: 45px; /* Adjust as needed */
+  left: 10px; /* Adjust as needed */
+  font-size: 20px;
+  font-weight: 600;
+  color: #686868;
+}
+
+.div-cut-count {
+  display: flex;
+  position: absolute;
+  bottom: 1px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  font-size: 30px;
+  font-weight: 600;
 }
 
 .div-view-count {

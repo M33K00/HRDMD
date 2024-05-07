@@ -13,7 +13,9 @@ router.get("/hris_user/:email", async (req, res) => {
     const leaveapplications = await LeaveApplications.find({
       email: userEmail,
     });
-    res.render("HRISUSER/hris_user", { leaveapplications });
+
+    const attendance = await Attendance.findOne({ email: userEmail });
+    res.render("HRISUSER/hris_user", { leaveapplications, attendance });
   } catch (err) {
     // Log and handle errors gracefully
     console.error("Error viewing leave applications:", err);
@@ -303,6 +305,11 @@ router.get("/clockout/:email", async (req, res) => {
       }
       await dp.save();
     }
+    req.session.message = {
+      type: "success",
+      message: "Clock-in successful.",
+    };
+    res.redirect("/dtr_user/" + userLogin._id);
   } catch (err) {
     console.error(err);
     res.status(500).send("Internal Server Error");

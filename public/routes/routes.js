@@ -153,6 +153,34 @@ router.post("/update/:id", upload, async (req, res) => {
   try {
     let id = req.params.id;
     let new_image = "";
+    let email = req.body.email;
+
+    const userLogin = await LogInCollection.findOne({ email: email });
+    if (!userLogin) {
+      // Handle the case where the user's _id is not found
+      res.status(404).send("User not found.");
+      return; // Exit the function early
+    }
+
+    const dayOffArray = Array.isArray(req.body.dayOff)
+      ? req.body.dayOff
+      : [req.body.dayOff];
+
+    const adata = {
+      paySched: req.body.paySched,
+      dayOff: dayOffArray,
+    };
+
+    // Update the user's document with the new data from adata
+    const updateAttendance = await Attendance.findOneAndUpdate(
+      { email: email }, // Find the document to update
+      { $set: adata }, // Set the new data
+      { new: true } // Return the updated document
+    );
+
+    if (!updateAttendance) {
+      throw new Error("Attendance document not found");
+    }
 
     if (req.file) {
       new_image = req.file.filename;
@@ -205,7 +233,11 @@ router.post("/update/:id", upload, async (req, res) => {
       message: " User updated successfully",
     };
     // Redirect after successful update
-    return res.redirect("/manage_accounts");
+    if (userLogin.hrrole === "ROLE 1") {
+      return res.redirect("/view-user/" + userLogin._id);
+    } else {
+      return res.redirect("/manage_accounts");
+    }
   } catch (err) {
     console.error(err);
     // Handle errors and provide a response
