@@ -419,7 +419,7 @@ router.get("/manage_accounts", async (req, res) => {
 
 router.get("/hris", checkRoleHR, async (req, res) => {
   try {
-    const employeecount = await LogInCollection.countDocuments();
+    const employeecount = await LogInCollection.find();
     const pendingleave = await LeaveApplications.countDocuments({
       Status: "Pending",
     });
@@ -458,13 +458,21 @@ router.get("/approve-leave/:id", async (req, res) => {
     const id = req.params.id;
     const leaveapplications = await LeaveApplications.findById(id);
     if (!leaveapplications) {
-      // If the user account doesn't exist, redirect to manage_accounts page
       return res.redirect("/view_employees");
     }
 
-    res.render("HRIS/manage_leave", { leaveapplications });
+    leaveapplications.Status = "Approved";
+    leaveapplications.AppliedDate = new Date();
+    await leaveapplications.save();
+
+    req.session.message = {
+      type: "success",
+      message: "Leave application approved successfully",
+    };
+
+    res.redirect("/leave_applications");
   } catch (err) {
-    console.log("Error approving leave: ", err);
+    console.log("Error declining leave: ", err);
     res.status(500).send("Internal Server Error");
   }
 });

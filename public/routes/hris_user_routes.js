@@ -282,14 +282,31 @@ router.get("/clockout/:email", async (req, res) => {
       await user.save();
     }
 
-    const dp = await DaysPresent.findOne({
-      email: email,
-      date: new Date(new Date().setHours(0, 0, 0, 0)),
-    });
+    // Get today's date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Find record for today
+    const dp = await DaysPresent.findOne({ email: email, date: today });
 
     if (!dp) {
-      console.log("DP not found");
-      return;
+      console.log("DP not found for today");
+
+      // Get yesterday's date
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
+
+      // Find record for yesterday
+      const dpYesterday = await DaysPresent.findOne({
+        email: email,
+        date: yesterday,
+      });
+
+      if (!dpYesterday) {
+        console.log("DP not found for yesterday as well");
+        return;
+      }
+      console.log("Record found for yesterday:", dpYesterday.date);
     } else {
       dp.timeOut = new Date();
       dp.totalTime = totalHoursDecimal;

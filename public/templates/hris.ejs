@@ -17,15 +17,55 @@
           <div class="mb-3" id="currentTime"></div>
         </div>
       </div>
-      <div class="dtr-div">
-        <div class="div-title">
+      <div class="dtr-div clocked-in">
+        <div class="div-title emp-count" >
           <p>Employees Currently Clocked In:</p>
         </div>
-        <div class="div-count">
+        <div class="div-count emp-count">
           <p><span class="green-dot status-count"></span><%= inAttendance %></p>
         </div>
       </div>
     </div>
+    <h1 class="mt-4">Statistics:</h1>
+    <% const HRDp = employeecount.filter((employee) => employee.department === 'HR Department'); const DP1 = employeecount.filter((employee) => employee.department === 'Department 1'); 
+        const DP2 = employeecount.filter((employee) => employee.department === 'Department 2'); %>
+    <div class="border"></div>
+    <h3 class="text-muted mt-4">Employee Count:</h3>
+    <div class="dtr-home-container mt-4">
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>All Employees:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= employeecount.length %></p>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>HR Department:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= HRDp.length %></p>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>Department 1:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= DP1.length %></p>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>Department 2:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= DP2.length %></p>
+        </div>
+      </div>
+    </div>
+    <!--
     <div class="hris-container-status">
       <div class="container-div">
         <a class="clickable-link" href="/view_employees">
@@ -43,6 +83,7 @@
           </div>
         </a>
       </div>
+    -->
     </div>
   </div>
 </body>

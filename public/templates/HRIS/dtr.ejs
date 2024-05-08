@@ -22,69 +22,319 @@
           <div class="mb-3" id="currentTime"></div>
         </div>
       </div>
-      <div class="dtr-div">
-        <div class="div-title">
+      <div class="dtr-div clocked-in">
+        <div class="div-title emp-count">
           <p>Employees Currently Clocked In:</p>
         </div>
-        <div class="div-count">
+        <div class="div-count emp-count">
           <p><span class="green-dot status-count"></span><%= inCount %></p>
         </div>
       </div>
     </div>
-    <div class="border mb-3 mt-3"></div>
+    <div class="border mb-4 mt-3"></div>
     <input
       class="form-control me-sm-2"
       type="text"
       id="accInput"
       placeholder="Search"
       style="margin-bottom: 20px"
-      oninput="searchFunc()"
+      oninput="searchTables()"
     />
-    <table id="table" class="table table-hover table-striped">
-      <thead class="table-dark">
-        <tr>
-          <th>Name</th>
-          <th>Department</th>
-          <th>Absents</th>
-          <th>Clock-In</th>
-          <th>Clock-Out</th>
-          <th>Status</th>
-          <th>Action</th>
-          <!-- Add other relevant columns -->
-        </tr>
-      </thead>
-      <tbody>
-        <% mergedData.forEach(employee => { %> <%
-        employee.attendanceData.forEach(attendance => { %>
-        <tr>
-          <td><%= employee.name %></td>
-          <td><%= employee.department %></td>
-          <td><%= attendance.daysAbsent %></td>
-          <td>
-            <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%=
-            attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute:
-            '2-digit' }) %> %> <% } %>
-          </td>
-          <td><% if (attendance.timeOut === null) { %> 00:00 <% } %></td>
-          <td style="font-weight: 600">
-            <% if (attendance.status === 'OUT') { %>
-            <span class="red-dot"></span>
-            <% } else if (attendance.status === 'IN') { %>
-            <span class="green-dot"></span>
-            <% } %> <%= attendance.status %>
-          </td>
-          <td class="action-buttons">
-            <a href="/view-dtr/<%= employee._id %>" class="icon-square"
-              ><i class="fa-solid fa-eye"></i
-            ></a>
-            <a href="#" class="icon-square">
-              <i class="fa-solid fa-pen-to-square"></i>
-            </a>
-          </td>
-        </tr>
-        <% }); %> <% }); %>
-      </tbody>
-    </table>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link active"
+          data-bs-toggle="tab"
+          id="allEmployees-tab"
+          href="#allEmployees"
+          aria-selected="true"
+          role="tab"
+          >All Employees</a
+        >
+      </li>
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          data-bs-toggle="tab"
+          id="hrDepartment-tab"
+          href="#hrDepartment"
+          aria-selected="false"
+          tabindex="-1"
+          role="tab"
+          >HR Department</a
+        >
+      </li>
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          data-bs-toggle="tab"
+          id="hrDepartment-tab"
+          href="#department1"
+          aria-selected="false"
+          tabindex="-1"
+          role="tab"
+          >Department 1</a
+        >
+      </li>
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          data-bs-toggle="tab"
+          id="hrDepartment-tab"
+          href="#department2"
+          aria-selected="false"
+          tabindex="-1"
+          role="tab"
+          >Department 2</a
+        >
+      </li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade show active" id="allEmployees" role="tabpanel">
+        <h4 class="mt-4">All Employees:</h4>
+        <table
+          id="allEmployeesTable"
+          class="table table-hover table-striped table-bordered mt-4"
+        >
+          <thead class="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Absents</th>
+              <th>Clock-In</th>
+              <th>Clock-Out</th>
+              <th>Status</th>
+              <th>Action</th>
+              <!-- Add other relevant columns -->
+            </tr>
+          </thead>
+          <tbody>
+            <% mergedData.forEach(employee => { %> <%
+            employee.attendanceData.forEach(attendance => { %>
+            <tr>
+              <td><%= employee.name %></td>
+              <td><%= employee.department %></td>
+              <td><%= attendance.daysAbsent %></td>
+              <td>
+                <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%=
+                attendance.timeIn.toLocaleTimeString([], { hour: '2-digit',
+                minute: '2-digit' }) %> %> <% } %>
+              </td>
+              <td><% if (attendance.timeOut === null) { %> 00:00 <% } %></td>
+              <td style="font-weight: 600">
+                <% if (attendance.status === 'OUT') { %>
+                <span class="red-dot"></span>
+                <% } else if (attendance.status === 'IN') { %>
+                <span class="green-dot"></span>
+                <% } %> <%= attendance.status %>
+              </td>
+              <td class="action-buttons">
+                <a href="/view-dtr/<%= employee._id %>" class="icon-square"
+                  ><i class="fa-solid fa-eye"></i
+                ></a>
+                <a href="#" class="icon-square">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+              </td>
+            </tr>
+            <% }); %> <% }); %>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="hrDepartment" role="tabpanel">
+        <h4 class="mt-4">HR Department:</h4>
+        <table
+          id="hrDepartment"
+          class="table table-hover table-striped table-bordered mt-4"
+        >
+          <thead class="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Absents</th>
+              <th>Clock-In</th>
+              <th>Clock-Out</th>
+              <th>Status</th>
+              <th>Action</th>
+              <!-- Add other relevant columns -->
+            </tr>
+          </thead>
+          <tbody>
+            <%
+                const hrEmployees = mergedData.filter(employee => employee.department === "HR Department");
+
+                if (hrEmployees.length === 0) {
+                %>
+                    <tr>
+                        <td colspan="7">No Employees Found</td>
+                    </tr>
+                <%
+                } else {
+                    hrEmployees.forEach(employee => {
+                        employee.attendanceData.forEach(attendance => {
+                %>
+                            <tr>
+                                <td><%= employee.name %></td>
+                                <td><%= employee.department %></td>
+                                <td><%= attendance.daysAbsent %></td>
+                                <td>
+                                    <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %>
+                                </td>
+                                <td><% if (attendance.timeOut === null) { %> 00:00 <% } else { %> <%= attendance.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %></td>
+                                <td style="font-weight: 600">
+                                    <% if (attendance.status === 'OUT') { %>
+                                        <span class="red-dot"></span>
+                                    <% } else if (attendance.status === 'IN') { %>
+                                        <span class="green-dot"></span>
+                                    <% } %> <%= attendance.status %>
+                                </td>
+                                <td class="action-buttons">
+                                    <a href="/view-dtr/<%= employee._id %>" class="icon-square">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                    <a href="#" class="icon-square">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                <%
+                        });
+                    });
+                }
+                %>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="department1" role="tabpanel">
+        <h4 class="mt-4">Department 1:</h4>
+        <table
+          id="department1"
+          class="table table-hover table-striped table-bordered mt-4"
+        >
+          <thead class="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Absents</th>
+              <th>Clock-In</th>
+              <th>Clock-Out</th>
+              <th>Status</th>
+              <th>Action</th>
+              <!-- Add other relevant columns -->
+            </tr>
+          </thead>
+          <tbody>
+            <%
+                const department1 = mergedData.filter(employee => employee.department === "Department 1");
+
+                if (department1.length === 0) {
+                %>
+                    <tr>
+                        <td colspan="7">No Employees Found</td>
+                    </tr>
+                <%
+                } else {
+                  department1.forEach(employee => {
+                        employee.attendanceData.forEach(attendance => {
+                %>
+                            <tr>
+                                <td><%= employee.name %></td>
+                                <td><%= employee.department %></td>
+                                <td><%= attendance.daysAbsent %></td>
+                                <td>
+                                    <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %>
+                                </td>
+                                <td><% if (attendance.timeOut === null) { %> 00:00 <% } else { %> <%= attendance.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %></td>
+                                <td style="font-weight: 600">
+                                    <% if (attendance.status === 'OUT') { %>
+                                        <span class="red-dot"></span>
+                                    <% } else if (attendance.status === 'IN') { %>
+                                        <span class="green-dot"></span>
+                                    <% } %> <%= attendance.status %>
+                                </td>
+                                <td class="action-buttons">
+                                    <a href="/view-dtr/<%= employee._id %>" class="icon-square">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                    <a href="#" class="icon-square">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                <%
+                        });
+                    });
+                }
+                %>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="department2" role="tabpanel">
+        <h4 class="mt-4">Department 2:</h4>
+        <table
+          id="department2"
+          class="table table-hover table-striped table-bordered mt-4"
+        >
+          <thead class="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Absents</th>
+              <th>Clock-In</th>
+              <th>Clock-Out</th>
+              <th>Status</th>
+              <th>Action</th>
+              <!-- Add other relevant columns -->
+            </tr>
+          </thead>
+          <tbody>
+            <%
+                const department2 = mergedData.filter(employee => employee.department === "Department 2");
+
+                if (department2.length === 0) {
+                %>
+                    <tr>
+                        <td colspan="7">No Employees Found</td>
+                    </tr>
+                <%
+                } else {
+                  department2.forEach(employee => {
+                        employee.attendanceData.forEach(attendance => {
+                %>
+                            <tr>
+                                <td><%= employee.name %></td>
+                                <td><%= employee.department %></td>
+                                <td><%= attendance.daysAbsent %></td>
+                                <td>
+                                    <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %>
+                                </td>
+                                <td><% if (attendance.timeOut === null) { %> 00:00 <% } else { %> <%= attendance.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %></td>
+                                <td style="font-weight: 600">
+                                    <% if (attendance.status === 'OUT') { %>
+                                        <span class="red-dot"></span>
+                                    <% } else if (attendance.status === 'IN') { %>
+                                        <span class="green-dot"></span>
+                                    <% } %> <%= attendance.status %>
+                                </td>
+                                <td class="action-buttons">
+                                    <a href="/view-dtr/<%= employee._id %>" class="icon-square">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                    <a href="#" class="icon-square">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                <%
+                        });
+                    });
+                }
+                %>
+          </tbody>
+        </table>
+      </div>
+      </div>
+    </div>
   </div>
   <% function getCurrentDateInWords() { const months = ['January', 'February',
   'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
