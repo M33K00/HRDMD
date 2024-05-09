@@ -14,6 +14,8 @@ const Attendance = require("../models/attendance");
 const LogInCollection = require("../models/logincollections");
 const LeaveApplications = require("../models/leaveapplications");
 const DaysPresent = require("../models/dayspresent");
+const DaysAbsent = require("../models/daysabsent");
+const daysAbsent = require("../models/daysabsent");
 
 // Multer configuration
 var storage = multer.diskStorage({
@@ -574,6 +576,7 @@ router.get("/view-dtr/:id", async (req, res) => {
 
     const timeIn = new Date(attendance.timeIn);
     const currentTime = new Date();
+    const dateA = new Date(new Date().setHours(0, 0, 0, 0));
 
     let totalHours = 0;
     let totalMinutes = 0;
@@ -590,17 +593,81 @@ router.get("/view-dtr/:id", async (req, res) => {
       email: email,
     });
 
+    let daysabsent = await DaysAbsent.find({
+      email: email,
+    });
+
+    let absentStatus = await DaysAbsent.findOne({
+      email: email,
+      date: dateA,
+    });
+
+    let status;
+
+    if (absentStatus) {
+      status = "Absent";
+    } else {
+      status = "Present";
+    }
+
     res.render("HRIS/view-dtr", {
       title: "View Account",
       logincollections: logincollections,
       attendance: attendance,
       dayspresent: dayspresent,
+      daysabsent: daysabsent,
+      status: status,
       totalHours: totalHours,
       totalMinutes: totalMinutes,
     });
   } catch (err) {
     console.error("Error:", err);
     res.status(500).send("Internal Server Error");
+  }
+});
+
+router.get("/m-absent/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+
+    let logincollections = await LogInCollection.findById(id);
+
+    let email = logincollections.email;
+
+    let attendance = await Attendance.findOne({
+      email: email,
+    });
+
+    if (!attendance) {
+      req.session.message = {
+        type: "warning",
+        message: "No attendance found for this user",
+      };
+      res.redirect("/view-dtr/" + logincollections._id);
+    } else {
+      attendance.daysAbsent += 1;
+      await attendance.save();
+    }
+
+    const dateA = new Date(new Date().setHours(0, 0, 0, 0));
+
+    mAbsent = {
+      name: logincollections.name,
+      email: logincollections.email,
+      date: dateA,
+    };
+
+    await daysAbsent.create(mAbsent);
+
+    req.session.message = {
+      type: "success",
+      message: "Marked as absent successfully",
+    };
+
+    res.redirect("/view-dtr/" + logincollections._id);
+  } catch (err) {
+    console.log("Error marking as absent: ", err);
+    res.status(500).send("aw bollucks!");
   }
 });
 
