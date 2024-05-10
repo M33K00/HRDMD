@@ -23,6 +23,43 @@
       </div>
       <% } %>
     </div>
+        <% const cHRDp = logincollections.filter((logincollections) => logincollections.department === 'HR Department'); const cDP1 = logincollections.filter((logincollections) => logincollections.department === 'Department 1'); 
+        const cDP2 = logincollections.filter((logincollections) => logincollections.department === 'Department 2'); %>
+    <div class="border"></div>
+    <div class="dtr-home-container mt-3">
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>All Employees:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= logincollections.length %></p>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>HR Department:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= cHRDp.length %></p>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>Department 1:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= cDP1.length %></p>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>Department 2:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= cDP2.length %></p>
+        </div>
+      </div>
+    </div>
     <input
       class="form-control me-sm-2"
       type="text"

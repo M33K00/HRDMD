@@ -364,19 +364,6 @@
   margin-right: auto;
 }
 
-.dtr-div {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  background-color: #fff;
-  border: #686868 solid 2px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  margin-bottom: 20px;
-  height: 100px;
-  align-items: center;
-}
-
 .div-title {
   display: flex;
   position: absolute;
@@ -457,31 +444,12 @@
   align-items: center;
 }
 
-.div-cut-title {
-  display: flex;
-  position: absolute;
-  bottom: 45px; /* Adjust as needed */
-  left: 10px; /* Adjust as needed */
-  font-size: 20px;
-  font-weight: 600;
-  color: #686868;
-}
-
 .div-cut-count {
   display: flex;
   position: absolute;
   bottom: 1px; /* Adjust as needed */
   right: 10px; /* Adjust as needed */
   font-size: 30px;
-  font-weight: 600;
-}
-
-.div-emp-count {
-  display: flex;
-  position: absolute;
-  bottom: -20px; /* Adjust as needed */
-  right: 15px; /* Adjust as needed */
-  font-size: 40px;
   font-weight: 600;
 }
 

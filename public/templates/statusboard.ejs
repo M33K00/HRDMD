@@ -60,7 +60,7 @@
               <tbody>
                 <% allRoleFiles.forEach((row, index) => { %>
                   <tr>
-                    <td><%= row.mtime %></td>
+                    <td><%= row.mtime.toISOString().split('T')[0] %></td>
                     <td><%= row.name %></td>
                     <td <% if (row.folder === "Rejected") { %>
                       style="color: brown; font-weight: 700"
@@ -80,6 +80,18 @@
                 <% }) %>
               </tbody>
             </table>
+              <!-- Pagination Links -->
+              <div class="pagination justify-content-center">
+                <% if (totalPages > 1) { %>
+                  <ul class="pagination justify-content-center">
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                      <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                        <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+                      </li>
+                    <% } %>
+                  </ul>
+                <% } %>
+              </div>
           <% } else { %>
             <h1 class="text-center text-secondary mt-5">No Users found in database</h1>
             <% } %>

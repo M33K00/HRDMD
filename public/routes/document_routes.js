@@ -381,20 +381,13 @@ router.get("/statusboard", (request, response) => {
 
   try {
     function getFilesInfo(directory) {
-      const fileNames = fs.readdirSync(directory.path); // Use directory.path to get the directory path
+      const fileNames = fs.readdirSync(directory.path);
       const filesInfo = fileNames.map((fileName) => {
-        const filePath = path.join(directory.path, fileName); // Use directory.path here too
+        const filePath = path.join(directory.path, fileName);
         const stats = fs.statSync(filePath);
         const sizeInBytes = stats.size;
         const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
-        // Convert mtime to desired format
-        const mtime = stats.mtime.toLocaleString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "2-digit",
-          hour: "numeric",
-          minute: "numeric",
-        });
+        const mtime = stats.mtime; // Keep the mtime as Date object
         return {
           name: fileName,
           size: sizeInMB + " MB",
@@ -410,14 +403,30 @@ router.get("/statusboard", (request, response) => {
       return allFiles.concat(roleFiles);
     }, []);
 
-    // Pass the files data to the "/statusboard" route
+    // Sort files by date (mtime)
+    allRoleFiles.sort((a, b) => b.mtime - a.mtime); // Sort in descending order
+
+    // Pagination logic
+    const page = parseInt(request.query.page) || 1;
+    const totalItems = allRoleFiles.length;
+    const ITEMS_PER_PAGE = 10; // Number of items per page
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    const startIndex = (page - 1) * ITEMS_PER_PAGE;
+    const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+    const paginatedFiles = allRoleFiles.slice(startIndex, endIndex);
+
     response.render("statusboard", {
-      allRoleFiles,
+      allRoleFiles: paginatedFiles,
+      currentPage: page,
+      totalPages: totalPages,
+      itemsPerPage: ITEMS_PER_PAGE,
     });
   } catch (error) {
     console.error("Error reading directory:", error);
+    response.status(500).send("Internal Server Error");
   }
 });
+
 
 // Archive Route
 router.get("/archive", (request, response) => {

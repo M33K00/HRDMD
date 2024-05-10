@@ -257,7 +257,7 @@ router.post("/update/:id", upload, async (req, res) => {
       cutoffDate: req.body.cutoffDate,
     };
 
-    if (req.body.nextCutoffDate) {
+    if (nextCutoffDate) {
       adata.nextCutoffDate = req.body.nextCutoffDate;
     }
 
@@ -488,14 +488,29 @@ router.get("/manage_account/:hrrole/:name", async (req, res) => {
   }
 });
 
+const ITEMS_PER_PAGE = 10; // Number of items per page
+
 router.get("/manage_accounts", async (req, res) => {
   try {
-    const logincollections = await LogInCollection.find();
-    res.render("manage_accounts", { logincollections });
+    const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+    const totalItems = await LogInCollection.countDocuments(); // Total number of items
+
+    const logincollections = await LogInCollection.find()
+      .skip((page - 1) * ITEMS_PER_PAGE) // Skip items based on current page
+      .limit(ITEMS_PER_PAGE); // Limit the number of items per page
+
+    res.render("manage_accounts", { 
+      logincollections,
+      currentPage: page,
+      totalPages: Math.ceil(totalItems / ITEMS_PER_PAGE),
+      itemsPerPage: ITEMS_PER_PAGE,
+      totalItems
+    });
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 // HRIS Routes
 

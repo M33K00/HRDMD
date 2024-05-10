@@ -578,3 +578,74 @@
   right: 10px;
   z-index: 1000; /* Ensure it's above other elements */
 }
+
+.action-buttons {
+  display: flex;
+  justify-content: center; /* Align items to the right */
+}
+
+.action-buttons-data {
+  display: flex;
+}
+
+.icon-square {
+  text-decoration: none;
+  display: flex;
+  justify-content: center; /* Center icon horizontally */
+  align-items: center; /* Center icon vertically */
+  width: 30px; /* Adjust size as needed */
+  height: 30px; /* Adjust size as needed */
+  border: 1px solid rgb(187, 187, 187); /* Optional: add border for square effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 5px; /* Optional: add spacing between squares */
+}
+
+.dtr-home-container {
+  display: grid;
+  grid-template-columns: 325px 325px 325px 1fr;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.dtr-div {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #fff;
+  border: #686868 solid 2px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  height: 100px;
+  align-items: center;
+}
+
+.div-cut-title {
+  display: flex;
+  position: absolute;
+  bottom: 45px; /* Adjust as needed */
+  left: 10px; /* Adjust as needed */
+  font-size: 20px;
+  font-weight: 600;
+  color: #686868;
+}
+
+.div-cut-count {
+  display: flex;
+  position: absolute;
+  bottom: 1px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.div-emp-count {
+  display: flex;
+  position: absolute;
+  bottom: -20px; /* Adjust as needed */
+  right: 15px; /* Adjust as needed */
+  font-size: 40px;
+  font-weight: 600;
+}
