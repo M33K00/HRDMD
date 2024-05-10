@@ -406,8 +406,8 @@
   position: absolute;
   top: 84%;
   left: 15;
-  right: 0;
-  height: 60px;
+  right: 10;
+  height: 45px;
   border-bottom: 3px solid #137ea7;
   border: 2px solid #137ea7;
   border-radius: 5px;
@@ -415,8 +415,16 @@
   align-items: center;
   display: flex;
   color: white;
+  font-weight: 600;
   transition: background-color, color, 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.lower-button .icon {
+  vertical-align: middle; /* Align the icon vertically with the text */
+  margin-right: 5px; /* Add space between the icon and text */
+  width: 15px;
+  color: #dee2e6;
 }
 
 .lower-button:hover {
@@ -554,4 +562,11 @@
 
 .form-item-2 {
   flex-basis: 33%; /* Adjust width of each item */
+}
+
+.bottom-right {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1000; /* Ensure it's above other elements */
 }

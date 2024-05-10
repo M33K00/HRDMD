@@ -10,6 +10,20 @@
       <a href="/manage_accounts" class="btn btn-secondary">Go Back</a>
     </div>
   </div>
+  <div id="alertContainer" class="bottom-right">
+    <% if (message) { %>
+    <div
+      class="alert alert-dismissible alert-<%= message.type %> fade show"
+      role="alert"
+      id="autoDismissAlert"
+    >
+      <strong>Attention!</strong> <%= message.message %><a
+        href="#"
+        class="alert-link"
+      ></a>
+    </div>
+    <% } %>
+  </div>
   <div class="account-basic1">
     <div class="account-image">
       <img src="../<%= logincollections.image %>" />

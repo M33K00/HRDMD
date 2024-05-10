@@ -18,14 +18,14 @@
         <span class="badge bg-success"> </span><a>Approved</a>
       </div>
     </div>
-    <div class="col-lg-12">
+    <div id="alertContainer" class="bottom-right">
       <% if (message) { %>
       <div
         class="alert alert-dismissible alert-<%= message.type %> fade show"
         role="alert"
         id="autoDismissAlert"
       >
-        <strong>Attention!</strong><%= message.message %><a
+        <strong>Attention!</strong> <%= message.message %><a
           href="#"
           class="alert-link"
         ></a>

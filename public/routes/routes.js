@@ -733,7 +733,7 @@ router.get("/m-absent/:id", async (req, res) => {
     await daysAbsent.create(mAbsent);
 
     req.session.message = {
-      type: "success",
+      type: "warning",
       message: "Marked as absent successfully",
     };
 
