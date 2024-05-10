@@ -64,7 +64,7 @@
     <div class="clockin-tab">
       <p><%= getCurrentDateInWords() %></p>
       <div class="clockin-btn">
-        <a href="/m-absent/<%= logincollections.id %>" class="btn btn-danger <% if (status === 'Absent') { %>
+        <a href="/m-absent/<%= logincollections.id %>" class="btn btn-danger <% if (status === 'Absent' || attendance.status === 'IN') { %>
          disabled
         <% } %>" style="margin-right: 10px;">mark as Absent</a>
       </div>

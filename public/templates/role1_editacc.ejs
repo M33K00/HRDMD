@@ -1,11 +1,15 @@
 <%- include('./layouts/header') -%>
 <body>
-  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
+  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenavR1') %>
   <div class="page-body">
     <div class="page-name">
       <h1 class="text-uppercase">Edit Account</h1>
       <div class="account-options">
-        <a href="/view-user/<%= logincollections.id %>" class="btn btn-secondary">GO BACK</a>
+        <a
+          href="/view-user/<%= logincollections.id %>"
+          class="btn btn-secondary"
+          >GO BACK</a
+        >
       </div>
     </div>
     <div class="border mt-4"></div>
@@ -14,7 +18,7 @@
         <h4>Personal Information:</h4>
       </div>
       <form
-       action="/update/<%= logincollections.id %>"
+        action="/update/<%= logincollections.id %>"
         method="POST"
         enctype="multipart/form-data"
       >
@@ -43,7 +47,9 @@
           </div>
           <div class="form-group flex-container">
             <div class="form-item">
-              <label for="exampleInputEmail1" class="form-label mt-4">Email address</label>
+              <label for="exampleInputEmail1" class="form-label mt-4"
+                >Email address</label
+              >
               <input
                 type="text"
                 name="email"
@@ -53,10 +59,14 @@
                 value="<%= logincollections.email  %>"
                 required
               />
-              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+              <small id="emailHelp" class="form-text text-muted"
+                >We'll never share your email with anyone else.</small
+              >
             </div>
             <div class="form-item">
-              <label for="InputName" class="form-label mt-4">Contact Number</label>
+              <label for="InputName" class="form-label mt-4"
+                >Contact Number</label
+              >
               <input
                 type="text"
                 name="contact"
@@ -67,7 +77,7 @@
                 required
               />
             </div>
-          </div>          
+          </div>
           <div class="form-group">
             <label for="exampleInputPassword1" class="form-label mt-4"
               >Password</label
@@ -89,7 +99,12 @@
           </div>
           <div class="form-group">
             <label for="formFile" class="form-label mt-4">Account Image</label>
-            <input class="form-control" type="file" name="image" id="formFile" />
+            <input
+              class="form-control"
+              type="file"
+              name="image"
+              id="formFile"
+            />
             <img
               name="image"
               src="../<%= logincollections.image  %>"
@@ -103,85 +118,12 @@
             />
           </div>
           <div class="border mt-4"></div>
-          <div class="mt-4">
-            <h4>HR Information:</h4>
-          </div>
-          <div class="form-group flex-container">
-            <div class="form-item-2">
-              <label for="department" class="form-label mt-4">Department</label>
-              <select
-                type="text"
-                name="department"
-                class="form-select"
-                id="department"
-              >
-                <option value="Department 1" <% if (logincollections.department === 'Department 1') { %> selected <% } %>>Department 1</option>
-                <option value="Department 2" <% if (logincollections.department === 'Department 2') { %> selected <% } %>>Department 2</option>
-                <option value="HR Department" <% if (logincollections.department === 'HR Department') { %> selected <% } %>>HR Department</option>
-              </select>
-            </div>
-            <div class="form-item-2">
-              <label for="position" class="form-label mt-4">Position</label>
-              <select
-                type="text"
-                name="hrrole"
-                class="form-select"
-                id="position"
-                disabled
-              >
-                <option value="POSITION 1" <% if (logincollections.position === 'Position 1') { %> selected <% } %>>Position 1</option>
-                <option value="POSITION 2" <% if (logincollections.position === 'Position 2') { %> selected <% } %>>Position 2</option>
-                <option value="POSITION 3" <% if (logincollections.position === 'Position 3') { %> selected <% } %>>Position 3</option>
-              </select>
-            </div>
-            <div class="form-item-2">
-              <label for="hrrole" class="form-label mt-4">HR Role</label>
-              <select
-                type="text"
-                name="hrrole"
-                class="form-select"
-                id="hrrole"
-                disabled
-              >
-                <option value="ROLE 1" <% if (logincollections.hrrole === 'ROLE 1') { %> selected <% } %>>ROLE 1</option>
-                <option value="ROLE 2" <% if (logincollections.hrrole === 'ROLE 2') { %> selected <% } %>>ROLE 2</option>
-                <option value="ROLE 3" <% if (logincollections.hrrole === 'ROLE 3') { %> selected <% } %>>ROLE 3</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group flex-container">
-            <div class="form-item">
-              <label for="dayOff" class="form-label mt-4">Day Offs:</label>
-              <select
-                name="dayOff"
-                id="dayOff"
-                class="form-select"
-                multiple
-              >
-                <option value="Sunday">Sunday</option>
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <option value="Thursday">Thursday</option>
-                <option value="Friday">Friday</option>
-                <option value="Saturday">Saturday</option>
-              </select>
-            </div>
-            <div class="form-item">
-              <label for="paySched" class="form-label mt-4">Pay Schedule</label>
-              <select
-                type="text"
-                name="paySched"
-                class="form-select"
-                id="paySched"
-              >
-                <option value="Weekly" <% if (attendance.paySched === 'Weekly') { %> selected <% } %>>Weekly</option>
-                <option value="Bi-Weekly" <% if (attendance.paySched === 'Bi-Weekly') { %> selected <% } %>>Bi-Weekly</option>
-                <option value="Monthly" <% if (attendance.paySched === 'Monthly') { %> selected <% } %>>Monthly</option>
-              </select>
-            </div>
         </fieldset>
-        <input type="submit" value="Save Changes" class="btn btn-success btn mt-4" />
+        <input
+          type="submit"
+          value="Save Changes"
+          class="btn btn-success btn mt-4"
+        />
       </form>
     </div>
   </div>

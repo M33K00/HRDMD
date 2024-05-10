@@ -368,6 +368,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  background-color: #fff;
   border: #686868 solid 2px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -425,6 +426,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  background-color: #fff;
   border: #acacac solid 2px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -446,6 +448,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  background-color: #fff;
   border: #acacac solid 2px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -498,6 +501,7 @@
 .clockin-tab {
   display: flex;
   align-items: center;
+  background-color: #fff;
   border: #acacac solid 2px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;

@@ -6,6 +6,7 @@ const LogInCollection = require("../models/logincollections");
 const LeaveApplications = require("../models/leaveapplications");
 const Attendance = require("../models/attendance");
 const DaysPresent = require("../models/dayspresent");
+const DaysAbsent = require("../models/daysabsent");
 
 router.get("/hris_user/:email", async (req, res) => {
   try {
@@ -182,11 +183,16 @@ router.get("/dtr_user/:id", async (req, res) => {
       email: email,
     });
 
+    let daysabsent = await DaysAbsent.find({
+      email: email,
+    });
+
     res.render("HRISUSER/dtr_user", {
       title: "View Account",
       logincollections: logincollections,
       attendance: attendance,
       dayspresent: dayspresent,
+      daysabsent: daysabsent,
       totalHours: totalHours,
       totalMinutes: totalMinutes,
     });

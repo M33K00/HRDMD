@@ -99,19 +99,27 @@
 .page-body {
   position: relative;
   overflow: visible;
-  height: fit-content;
-  background-color: #fff;
   margin-top: 80px;
   margin-left: 250px;
   padding: 20px;
   flex: 1;
 }
 
+.page-bg-img {
+  position: fixed;
+  left: 290;
+
+  z-index: -9999;
+  width: 1314px;
+  height: 100%;
+  background-color: #000000;
+  background-image: url("../images/pagebg.png");
+}
+
 .page-body2 {
   position: relative;
   overflow: visible;
   height: fit-content;
-  background-color: #fff;
   margin-top: 80px;
   margin-left: 260px;
   margin-right: 10px;

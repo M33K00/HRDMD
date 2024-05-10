@@ -180,79 +180,86 @@ router.post("/update/:id", upload, async (req, res) => {
       : [req.body.dayOff];
 
     // Calculate Next Cutoff Date// Parse inputs from request body
-    let nextCutoffDate; // Declare nextCutoffDate outside of any blocks
 
-    if (req.body.paySched === "Bi-Weekly") {
-      // Parse inputs from request body
-      const cutoffDate = new Date(req.body.cutoffDate);
-      const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
+    console.log("Req Body:", req.body);
 
-      // Function to check if a date is a day off
-      const isDayOff = (date) => {
-        const day = date.toLocaleString("en-US", { weekday: "long" });
-        return dayOff.includes(day);
-      };
+    if (req.params.paySched) {
+      let nextCutoffDate; // Declare nextCutoffDate outside of any blocks
 
-      // Calculate the next cutoff date with 15 working days
-      nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
-      let workingDaysCount = 0;
+      if (req.body.paySched === "Bi-Weekly") {
+        // Parse inputs from request body
+        const cutoffDate = new Date(req.body.cutoffDate);
+        const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
 
-      while (workingDaysCount < 15) {
-        nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
-        if (!isDayOff(nextCutoffDate)) {
-          workingDaysCount++; // Increment the working days count only if it's not a day off
+        // Function to check if a date is a day off
+        const isDayOff = (date) => {
+          const day = date.toLocaleString("en-US", { weekday: "long" });
+          return dayOff.includes(day);
+        };
+
+        // Calculate the next cutoff date with 15 working days
+        nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
+        let workingDaysCount = 0;
+
+        while (workingDaysCount < 15) {
+          nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
+          if (!isDayOff(nextCutoffDate)) {
+            workingDaysCount++; // Increment the working days count only if it's not a day off
+          }
+        }
+      } else if (req.body.paySched === "Monthly") {
+        const cutoffDate = new Date(req.body.cutoffDate);
+        const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
+
+        // Function to check if a date is a day off
+        const isDayOff = (date) => {
+          const day = date.toLocaleString("en-US", { weekday: "long" });
+          return dayOff.includes(day);
+        };
+
+        // Calculate the next cutoff date with 15 working days
+        nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
+        let workingDaysCount = 0;
+
+        while (workingDaysCount < 31) {
+          nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
+          if (!isDayOff(nextCutoffDate)) {
+            workingDaysCount++; // Increment the working days count only if it's not a day off
+          }
+        }
+      } else if (req.body.paySched === "Weekly") {
+        const cutoffDate = new Date(req.body.cutoffDate);
+        const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
+
+        // Function to check if a date is a day off
+        const isDayOff = (date) => {
+          const day = date.toLocaleString("en-US", { weekday: "long" });
+          return dayOff.includes(day);
+        };
+
+        // Calculate the next cutoff date with 15 working days
+        nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
+        let workingDaysCount = 0;
+
+        while (workingDaysCount < 7) {
+          nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
+          if (!isDayOff(nextCutoffDate)) {
+            workingDaysCount++; // Increment the working days count only if it's not a day off
+          }
         }
       }
-    } else if (req.body.paySched === "Monthly") {
-      const cutoffDate = new Date(req.body.cutoffDate);
-      const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
-
-      // Function to check if a date is a day off
-      const isDayOff = (date) => {
-        const day = date.toLocaleString("en-US", { weekday: "long" });
-        return dayOff.includes(day);
-      };
-
-      // Calculate the next cutoff date with 15 working days
-      nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
-      let workingDaysCount = 0;
-
-      while (workingDaysCount < 31) {
-        nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
-        if (!isDayOff(nextCutoffDate)) {
-          workingDaysCount++; // Increment the working days count only if it's not a day off
-        }
-      }
-    } else if (req.body.paySched === "Weekly") {
-      const cutoffDate = new Date(req.body.cutoffDate);
-      const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
-
-      // Function to check if a date is a day off
-      const isDayOff = (date) => {
-        const day = date.toLocaleString("en-US", { weekday: "long" });
-        return dayOff.includes(day);
-      };
-
-      // Calculate the next cutoff date with 15 working days
-      nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
-      let workingDaysCount = 0;
-
-      while (workingDaysCount < 7) {
-        nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
-        if (!isDayOff(nextCutoffDate)) {
-          workingDaysCount++; // Increment the working days count only if it's not a day off
-        }
-      }
+      console.log(nextCutoffDate); // Next cutoff date after calculation
     }
-
-    console.log(nextCutoffDate); // Next cutoff date after calculation
 
     const adata = {
       paySched: req.body.paySched,
       dayOff: dayOffArray,
       cutoffDate: req.body.cutoffDate,
-      nextCutoffDate: nextCutoffDate,
     };
+
+    if (req.body.nextCutoffDate) {
+      adata.nextCutoffDate = req.body.nextCutoffDate;
+    }
 
     // Update the user's document with the new data from adata
     const updateAttendance = await Attendance.findOneAndUpdate(
