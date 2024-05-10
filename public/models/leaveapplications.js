@@ -20,6 +20,11 @@ const LeaveApplicationsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  declineReason: {
+    type: String,
+    required: false,
+    default: null,
+  },
   AppliedDate: {
     type: Date,
     default: null,

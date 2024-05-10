@@ -16,7 +16,7 @@
         <p><b>Email:</b> <%= logincollections.email %></p>
         <p><b>Contact:</b> <%= logincollections.contact %></p>
         <p><b>Department:</b> <%= logincollections.department %></p>
-        <p><b>Position:</b> <%= logincollections.hrrole %></p>
+        <p><b>Position:</b> <%= logincollections.position %></p>
       </div>
       <div class="account-stat mt-3">
         <div class="account-stat-item">
@@ -38,8 +38,8 @@
       <div class="account-stat-item">
           <p><b>Dayoffs:</b> <%= attendance.dayOff %></p></p>
           <p><b>Pay Sched:</b> <%= attendance.paySched %></p>
-          <p><b>Current Cut-off:</b> April 15</p>
-          <p><b>Next Cut-off:</b> March 2</p>
+          <p><b>Current Cut-off:</b> <%= attendance.cutoffDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) %></p>
+          <p><b>Next Cut-off:</b> <%= attendance.nextCutoffDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) %></p>
       </div>
     </div>
   </div>
@@ -78,10 +78,12 @@
               <div class="div-title">
                 <p class="dtr-view-title">Total Today:</p>
               </div>
-              <div class="div-view-count" style="font-size: 30px; margin-bottom: 5px"><% if (attendance.status === 'OUT') { %>
-               N/A
-              <% } else { %>
+              <div class="div-view-count"><% if (attendance.status === 'OUT' && status === 'Absent') { %>
+                ABSENT
+              <% } else if (attendance.timeIn !== null && status === 'Present') { %>
                 <%= totalHours %> hours and <%= totalMinutes %> minutes
+              <% } else { %>
+                N/A
               <% } %></div>
             </div>
             <div class="dtr-view-div">
@@ -110,15 +112,16 @@
               <div class="div-cut-title">
                 <p class="dtr-view-title text-uppercase">Cut-off:</p>
               </div>
-              <div class="div-cut-count">April 15</div>
+              <div class="div-cut-count"><%= attendance.cutoffDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
+              </div>
             </div>
             <div class="dtr-cut-div">
               <div class="div-cut-title">
                 <p class="dtr-view-title text-uppercase">Next Cut-off:</p>
               </div>
-              <div class="div-cut-count">March 2</div>
+              <div class="div-cut-count"><%= attendance.nextCutoffDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
+              </div>
             </div>
-            
           </div>
         </div>
         <div class="tab-pane fade" id="dp" role="tabpanel">

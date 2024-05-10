@@ -167,9 +167,8 @@ router.post("/update/:id", upload, async (req, res) => {
   try {
     let id = req.params.id;
     let new_image = "";
-    let email = req.body.email;
 
-    const userLogin = await LogInCollection.findOne({ email: email });
+    const userLogin = await LogInCollection.findById(id);
     if (!userLogin) {
       // Handle the case where the user's _id is not found
       res.status(404).send("User not found.");
@@ -180,14 +179,84 @@ router.post("/update/:id", upload, async (req, res) => {
       ? req.body.dayOff
       : [req.body.dayOff];
 
+    // Calculate Next Cutoff Date// Parse inputs from request body
+    let nextCutoffDate; // Declare nextCutoffDate outside of any blocks
+
+    if (req.body.paySched === "Bi-Weekly") {
+      // Parse inputs from request body
+      const cutoffDate = new Date(req.body.cutoffDate);
+      const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
+
+      // Function to check if a date is a day off
+      const isDayOff = (date) => {
+        const day = date.toLocaleString("en-US", { weekday: "long" });
+        return dayOff.includes(day);
+      };
+
+      // Calculate the next cutoff date with 15 working days
+      nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
+      let workingDaysCount = 0;
+
+      while (workingDaysCount < 15) {
+        nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
+        if (!isDayOff(nextCutoffDate)) {
+          workingDaysCount++; // Increment the working days count only if it's not a day off
+        }
+      }
+    } else if (req.body.paySched === "Monthly") {
+      const cutoffDate = new Date(req.body.cutoffDate);
+      const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
+
+      // Function to check if a date is a day off
+      const isDayOff = (date) => {
+        const day = date.toLocaleString("en-US", { weekday: "long" });
+        return dayOff.includes(day);
+      };
+
+      // Calculate the next cutoff date with 15 working days
+      nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
+      let workingDaysCount = 0;
+
+      while (workingDaysCount < 31) {
+        nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
+        if (!isDayOff(nextCutoffDate)) {
+          workingDaysCount++; // Increment the working days count only if it's not a day off
+        }
+      }
+    } else if (req.body.paySched === "Weekly") {
+      const cutoffDate = new Date(req.body.cutoffDate);
+      const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
+
+      // Function to check if a date is a day off
+      const isDayOff = (date) => {
+        const day = date.toLocaleString("en-US", { weekday: "long" });
+        return dayOff.includes(day);
+      };
+
+      // Calculate the next cutoff date with 15 working days
+      nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
+      let workingDaysCount = 0;
+
+      while (workingDaysCount < 7) {
+        nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
+        if (!isDayOff(nextCutoffDate)) {
+          workingDaysCount++; // Increment the working days count only if it's not a day off
+        }
+      }
+    }
+
+    console.log(nextCutoffDate); // Next cutoff date after calculation
+
     const adata = {
       paySched: req.body.paySched,
       dayOff: dayOffArray,
+      cutoffDate: req.body.cutoffDate,
+      nextCutoffDate: nextCutoffDate,
     };
 
     // Update the user's document with the new data from adata
     const updateAttendance = await Attendance.findOneAndUpdate(
-      { email: email }, // Find the document to update
+      { email: userLogin.email }, // Find the document to update
       { $set: adata }, // Set the new data
       { new: true } // Return the updated document
     );
@@ -219,10 +288,13 @@ router.post("/update/:id", upload, async (req, res) => {
 
     // Update the user
 
-    const birthday = req.body.birthday;
+    if (req.body.birthday) {
+      const datePartOnly = req.body.birthday.split("T")[0];
+      parsedBirthday = new Date(datePartOnly); // Assign a value if req.body.birthday exists
+    } else {
+      parsedBirthday = userLogin.birthday;
+    }
 
-    const datePartOnly = birthday.split("T")[0];
-    const parsedBirthday = new Date(datePartOnly);
     const result = await LogInCollection.findByIdAndUpdate(
       id,
       {
@@ -232,6 +304,7 @@ router.post("/update/:id", upload, async (req, res) => {
         email: req.body.email,
         password: hashedPassword, // Use the hashed password here
         department: req.body.department,
+        position: req.body.position,
         hrrole: req.body.hrrole,
         image: new_image,
       },
@@ -248,7 +321,7 @@ router.post("/update/:id", upload, async (req, res) => {
     };
     // Redirect after successful update
     if (userLogin.hrrole === "ROLE 1") {
-      return res.redirect("/view-user/" + userLogin._id);
+      return res.redirect("/view/" + userLogin._id);
     } else {
       return res.redirect("/manage_accounts");
     }

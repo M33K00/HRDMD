@@ -120,7 +120,7 @@
           <label for="position" class="form-label mt-4">Position</label>
           <select
             type="text"
-            name="hrrole"
+            name="position"
             class="form-select"
             id="position"
           >
@@ -173,6 +173,19 @@
             <option value="Bi-Weekly" <% if (attendance.paySched === 'Bi-Weekly') { %> selected <% } %>>Bi-Weekly</option>
             <option value="Monthly" <% if (attendance.paySched === 'Monthly') { %> selected <% } %>>Monthly</option>
           </select>
+        </div>
+        <div class="form-item">
+          <label for="cutoffDate" class="form-label mt-4">Cut-off Date</label>
+          <input
+            type="date"
+            name="cutoffDate"
+            class="form-control"
+            value="<% if (attendance.cutoffDate !== null) { %>
+              <%= attendance.cutoffDate ? attendance.cutoffDate.toISOString().slice(0,10) : '' %>
+            <% } else { %>
+              ''
+            <% } %>"
+          />
         </div>
     </fieldset>
       <input type="submit" value="Update User" class="btn btn-success btn mt-4" />
