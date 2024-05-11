@@ -437,6 +437,10 @@ router.get("/", checkJWT, (req, res) => {
   res.render("login");
 });
 
+router.get("/startpage", (req, res) => {
+  res.render("startpage");
+})
+
 router.get("/document_tracker/:hrrole", async (req, res) => {
   try {
     const hrrole = req.params.hrrole;
@@ -574,7 +578,7 @@ router.get("/approve-leave/:id", async (req, res) => {
   }
 });
 
-router.get("/decline-leave/:id", async (req, res) => {
+router.post("/decline-leave/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const leaveapplications = await LeaveApplications.findById(id);
@@ -595,9 +599,34 @@ router.get("/decline-leave/:id", async (req, res) => {
     res.redirect("/leave_applications");
   } catch (err) {
     console.log("Error declining leave: ", err);
-    res.status(500).send("Internal Server Error");
+    req.session.message = {
+      type: "danger",
+      message: "Error declining leave",
+    }
+    res.redirect("/leave_applications");
   }
 });
+
+router.get("/manage-leave/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const leaveapplications = await LeaveApplications.findById(id);
+    if (!leaveapplications) {
+      req.session.message = {
+        type: "danger",
+        message: "Error managing leave",
+      }
+      res.redirect("/leave_applications");
+    }
+
+    res.render("HRIS/manage_leave", { leaveapplications });
+  } catch (err) {
+    // Log and handle errors gracefully
+    console.error("Error:", err);
+    // Redirect to manage_accounts page in case of an error
+    res.redirect("/leave_applications");
+  }
+})
 
 router.get("/view_emp_data/:id", async (req, res) => {
   try {
@@ -697,6 +726,11 @@ router.get("/view-dtr/:id", async (req, res) => {
       date: dateA,
     });
 
+    let leaveapplications = await LeaveApplications.find({
+      email: email,
+      Status: "Approved",
+    });
+
     let status;
 
     if (absentStatus) {
@@ -711,6 +745,7 @@ router.get("/view-dtr/:id", async (req, res) => {
       attendance: attendance,
       dayspresent: dayspresent,
       daysabsent: daysabsent,
+      leaveapplications: leaveapplications,
       status: status,
       totalHours: totalHours,
       totalMinutes: totalMinutes,

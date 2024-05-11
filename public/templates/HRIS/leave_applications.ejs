@@ -5,6 +5,7 @@
     <div class="page-bg-img"></div>
     <div class="page-name">
       <h1>Leave Applications</h1>
+      <h3><%= getCurrentDateInWords() %></h3>
     </div>
     <p class="text-muted">Manage employee leave applications</p>
     <%# Legend %>
@@ -117,7 +118,7 @@
               </thead>
               <tbody>
                 <% leaveapplications.forEach((row, index) => { %>
-                <tr class="popup-row" data-reason="<%= row.reason %>">
+                <tr class="popup-row" data-reason="<%= row.reason %>" data-declinereason="<%= row.declineReason %>">
                   <td><%= row.name %></td>
                   <td><%= row.Type %></td>
                   <td><%= row.StartDate.toISOString().split('T')[0] %></td>
@@ -135,15 +136,14 @@
                     <a
                       href="/approve-leave/<%= row.id %>"
                       class="icon-square-leave"
+                      onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
                       ><i
                         class="fa-solid fa-check <% if (row.Status === 'Approved') { %> text-secondary <% } else { %> text-success <% } %>"
-                        onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
                       ></i
                     ></a>
                     <a
-                      href="/decline-leave/<%= row.id %>"
+                      href="/manage-leave/<%= row.id %>"
                       class="icon-square-leave"
-                      onclick="return confirm('Are you sure you want to decline this application by <%= row.name %>?');"
                     >
                       <i
                         class="fa-solid fa-circle-xmark <% if (row.Status === 'Declined') { %> text-secondary <% } else { %> text-danger <% } %>"
@@ -183,7 +183,7 @@
                 </thead>
                 <tbody>
                   <% pendingApplications.forEach((row, index) => { %>
-                  <tr class="popup-row" data-reason="<%= row.reason %>">
+                  <tr class="popup-row" data-reason="<%= row.reason %>" data-declinereason="<%= row.declineReason %>">
                     <td><%= row.name %></td>
                     <td><%= row.Type %></td>
                     <td><%= row.StartDate.toISOString().split('T')[0] %></td>
@@ -201,15 +201,14 @@
                       <a
                         href="/approve-leave/<%= row.id %>"
                         class="icon-square-leave"
+                        onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
                         ><i
                           class="fa-solid fa-check <% if (row.Status === 'Approved') { %> text-secondary <% } else { %> text-success <% } %>"
-                          onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
                         ></i
                       ></a>
                       <a
-                        href="/decline-leave/<%= row.id %>"
+                        href="/manage-leave/<%= row.id %>"
                         class="icon-square-leave"
-                        onclick="return confirm('Are you sure you want to decline this application by <%= row.name %>?');"
                       >
                         <i class="fa-solid fa-circle-xmark text-danger"></i>
                       </a>
@@ -249,7 +248,7 @@
                 <tbody>
                   <% approvedApplications.filter(row => row.Status ===
                   'Approved').forEach((row, index) => { %>
-                  <tr class="popup-row" data-reason="<%= row.reason %>">
+                  <tr class="popup-row" data-reason="<%= row.reason %>" data-declinereason="<%= row.declineReason %>">
                     <td><%= row.name %></td>
                     <td><%= row.Type %></td>
                     <td><%= row.StartDate.toISOString().split('T')[0] %></td>
@@ -267,15 +266,14 @@
                       <a
                         href="/approve-leave/<%= row.id %>"
                         class="icon-square-leave"
+                        onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
                         ><i
                           class="fa-solid fa-check <% if (row.Status === 'Approved') { %> text-secondary <% } else { %> text-success <% } %>"
-                          onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
                         ></i
                       ></a>
                       <a
-                        href="/decline-leave/<%= row.id %>"
+                        href="/manage-leave/<%= row.id %>"
                         class="icon-square-leave"
-                        onclick="return confirm('Are you sure you want to decline this application by <%= row.name %>?');"
                       >
                         <i class="fa-solid fa-circle-xmark text-danger"></i>
                       </a>
@@ -315,7 +313,7 @@
                 <tbody>
                   <% declinedApplications.filter(row => row.Status ===
                   'Declined').forEach((row, index) => { %>
-                  <tr class="popup-row" data-reason="<%= row.reason %>">
+                  <tr class="popup-row" data-reason="<%= row.reason %>" data-declinereason="<%= row.declineReason %>">
                     <td><%= row.name %></td>
                     <td><%= row.Type %></td>
                     <td><%= row.StartDate.toISOString().split('T')[0] %></td>
@@ -333,15 +331,14 @@
                       <a
                         href="/approve-leave/<%= row.id %>"
                         class="icon-square-leave"
+                        onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
                         ><i
                           class="fa-solid fa-check <% if (row.Status === 'Approved') { %> text-secondary <% } else { %> text-success <% } %>"
-                          onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
                         ></i
                       ></a>
                       <a
-                        href="/decline-leave/<%= row.id %>"
+                        href="/manage-leave/<%= row.id %>"
                         class="icon-square-leave"
-                        onclick="return confirm('Are you sure you want to decline this application by <%= row.name %>?');"
                       >
                         <i
                           class="fa-solid fa-circle-xmark <% if (row.Status === 'Declined') { %> text-secondary <% } else { %> text-danger <% } %>"
@@ -364,11 +361,21 @@
           <div class="popup-content">
             <h3 id="popupHeader"></h3>
             <p id="popupReason"></p>
+            <h3 id="popupHeader2" style="color:brown"></h3>
+            <p id="popupDecline"></p>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <% function getCurrentDateInWords() { const months = ['January', 'February',
+  'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+  'November', 'December']; const days = ['Sunday', 'Monday', 'Tuesday',
+  'Wednesday', 'Thursday', 'Friday', 'Saturday']; const currentDate = new
+  Date(); const dayOfWeek = days[currentDate.getDay()]; const month =
+  months[currentDate.getMonth()]; const dayOfMonth = currentDate.getDate();
+  const year = currentDate.getFullYear(); return `${dayOfWeek}, ${month}
+  ${dayOfMonth}, ${year}`; } %>
 </body>
 
 <%- include('../layouts/footer') %>

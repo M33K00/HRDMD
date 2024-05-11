@@ -125,10 +125,9 @@
 }
 
 .hris-container-status {
-  margin: 10px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 3px; /* Gap between grid items */
+  gap: 15px; /* Gap between grid items */
 }
 
 .container-div {
@@ -144,9 +143,32 @@
   transition-delay: 0.1s;
 }
 
+.container-div-hu {
+  display: flex;
+  justify-content: center;
+  height: 300px;
+  transition: filter 0.5s ease; /* Smooth transition effect */
+}
+
+.container-div-hu:hover {
+  filter: brightness(70%);
+  transition-delay: 0.1s;
+}
+
+.thw {
+  background-image: url("../../images/thw.png");
+  background-size: cover;
+  border-radius: 5px;
+}
+
+.lv {
+  background-image: url("../../images/lv.png");
+  background-size: cover;
+  border-radius: 5px;
+}
+
 .employee-count {
   display: flex;
-  background-color: #3b8d2d;
   border-radius: 5px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
   height: 100%;
@@ -156,7 +178,6 @@
 
 .pending-count {
   display: flex;
-  background-color: #863434;
   border-radius: 5px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
   height: 100%;
@@ -237,7 +258,6 @@
   position: relative;
   overflow: visible;
   height: fit-content;
-  background-color: #fff;
   margin-left: 260px;
   margin-right: 10px;
   padding: 20px;
@@ -374,6 +394,10 @@
   color: #686868;
 }
 
+.div-time {
+  background-color: #414141;
+}
+
 .title-time {
   color: aliceblue;
   text-shadow: #000000 1px 0 10px;
@@ -494,3 +518,4 @@
   font-style: italic;
   border-color: #000000;
 }
+

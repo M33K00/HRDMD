@@ -1,17 +1,12 @@
-const { app, BrowserWindow } = require("electron");
-const Index = require("./index");
-const path = require("path");
+const { app, BrowserWindow, session } = require('electron');
+const server = require('./index');
+const path = require('path');
 const PORT = 3939;
-const {
-  setupTitlebar,
-  attachTitlebarToWindow,
-} = require("custom-electron-titlebar/main");
 
-setupTitlebar();
 function createWindow() {
+  const customSession = session.fromPartition('persist:my-cache-session', { cache: true });
+
   const win = new BrowserWindow({
-    //titleBarStyle: "hidden",
-    //titleBarOverlay: true,
     maxHeight: 900,
     maxWidth: 1600,
     width: 1600,
@@ -22,12 +17,11 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: true,
       devTools: true,
-      //sandbox: false,
-      //preload: path.join(__dirname, "preload.js"),
+      session: customSession // Use the custom session with caching
     },
   });
 
-  win.setMinimumSize(1280, 720);
+  win.setMinimumSize(1368, 768);
 
   win.loadURL(`http://localhost:${PORT}`);
 }
@@ -35,7 +29,7 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
-  app.on("activate", () => {
+  app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
@@ -43,16 +37,16 @@ app.whenReady().then(() => {
 });
 
 try {
-  require("electron-reloader")(module);
+  require('electron-reloader')(module);
 } catch {}
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-//Global exception handler
-process.on("uncaughtException", function (err) {
+// Global exception handler
+process.on('uncaughtException', function (err) {
   console.log(err);
 });

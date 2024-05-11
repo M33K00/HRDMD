@@ -1,5 +1,92 @@
 <%- include('../layouts/hrislayout') -%>
 <body>
   <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
-
+  <div class="page-body">
+    <div class="page-name">
+      <h1 style="font-weight: 600;">DECLINE LEAVE:</h1>
+      <a class="btn btn-danger" href="/leave_applications">CANCEL</a>
+    </div>
+    <div class="leaeveform">
+      <div class="leaveinfo">
+        <div class="row">
+          <div class="col">
+              <label for="name" class="form-label mt-4">Applicant Name:</label>
+              <input name="name" class="form-control" value="<%= leaveapplications.name %>" disabled/>
+          </div>
+          <div class="col">
+              <label for="email" class="form-label mt-4">Email</label>
+              <input name="email" class="form-control" value="<%= leaveapplications.email %>" disabled/>
+          </div>
+      </div>
+        <div class="app-form-container">
+          <div class="app-type">
+            <label for="Type" class="form-label mt-4">Leave Type</label>
+            <select name="Type" class="form-select" id="Type" disabled>
+              <option></option>
+              <option <% if (leaveapplications.Type == "Sick Leave") { %>
+               selected
+              <% } %>>Sick Leave</option>
+              <option <% if (leaveapplications.Type  == "Vacation Leave") { %>
+               selected
+              <% } %>>Vacation Leave</option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="col">
+            <label for="StartDate" class="form-label mt-4">Start Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="StartDate"
+              name="StartDate"
+              value="<%= leaveapplications.StartDate.toISOString().slice(0,10) %>"
+              disabled
+            />
+            </div>
+            <div class="col">
+            <label for="EndDate" class="form-label mt-4">End Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="EndDate"
+              name="EndDate"
+              value="<%= leaveapplications.EndDate.toISOString().slice(0,10) %>"
+              disabled
+            />
+            </div>
+          </div>
+        <div class="leave_reason" style="font-weight: 600">
+          <label for="designation" class="form-label mt-4">Designation</label>
+          <textarea
+            class="form-control"
+            maxlength="100"
+            id="designation"
+            rows=""
+            name="designation"
+            disabled
+          ><%= leaveapplications.designation %></textarea>
+        </div>
+        <div class="leave_reason" style="font-weight: 600">
+          <label for="reason" class="form-label">Reason for Leave</label>
+          <textarea
+            class="form-control"
+            maxlength="100"
+            id="reason"
+            rows=""
+            name="reason"
+            disabled
+          ><%= leaveapplications.reason %></textarea>
+        </div>
+      </div>
+      <div class="leaveform mt-4">
+        <div class="border mb-3"></div>
+        <h4>Reason for Declining Leave:</h4>
+        <form action="/decline-leave/<%= leaveapplications.id %>" method="POST">
+          <label for="declineReason" class="form-label">Reason:</label>
+          <textarea id="declineReason" name="declineReason" class="form-control" maxlength="100" rows="3" cols="50"></textarea><br><br>
+          <input class="btn btn-primary" type="submit" value="Submit">
+        </form>
+      </div>
+    </div>
+  </div>
   <%- include('../layouts/footer') %>

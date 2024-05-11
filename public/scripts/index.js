@@ -19,7 +19,6 @@ app.use(express.static("files/images"));
 // Production mode static files
 app.use(express.static("resources/app/public"));
 app.use(express.static("resources/app/files"));
-app.use(express.static("resources/app/files/documents"));
 
 app.set("view engine", "ejs");
 app.set("views", templatePath);
@@ -62,7 +61,7 @@ app.use((err, req, res, next) => {
   fs.readFile("./public/images/kys.png", (err, data) => {
     if (err) {
       console.error("pati image ayaw mag load bubu", err);
-      res.status(404).send("Kasalanan to ni Strike");
+      res.status(404).send("Kasalanan to ni Strike" + err);
     } else {
       res.send(data);
     }
