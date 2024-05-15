@@ -139,7 +139,11 @@ router.get("/edit/:id", async (req, res) => {
 
     if (!attendance) {
       // Handle the case where the user's _id is not found
-      res.status(404).send("User not found.");
+      req.session.message = {
+        type: "danger",
+        message: "User not found. Please try again.",
+      };
+      res.redirect("/view/" + id);
       return; // Exit the function early
     }
 
@@ -439,7 +443,7 @@ router.get("/", checkJWT, (req, res) => {
 
 router.get("/startpage", (req, res) => {
   res.render("startpage");
-})
+});
 
 router.get("/document_tracker/:hrrole", async (req, res) => {
   try {
@@ -503,18 +507,17 @@ router.get("/manage_accounts", async (req, res) => {
       .skip((page - 1) * ITEMS_PER_PAGE) // Skip items based on current page
       .limit(ITEMS_PER_PAGE); // Limit the number of items per page
 
-    res.render("manage_accounts", { 
+    res.render("manage_accounts", {
       logincollections,
       currentPage: page,
       totalPages: Math.ceil(totalItems / ITEMS_PER_PAGE),
       itemsPerPage: ITEMS_PER_PAGE,
-      totalItems
+      totalItems,
     });
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }
 });
-
 
 // HRIS Routes
 
@@ -602,7 +605,7 @@ router.post("/decline-leave/:id", async (req, res) => {
     req.session.message = {
       type: "danger",
       message: "Error declining leave",
-    }
+    };
     res.redirect("/leave_applications");
   }
 });
@@ -615,7 +618,7 @@ router.get("/manage-leave/:id", async (req, res) => {
       req.session.message = {
         type: "danger",
         message: "Error managing leave",
-      }
+      };
       res.redirect("/leave_applications");
     }
 
@@ -626,7 +629,7 @@ router.get("/manage-leave/:id", async (req, res) => {
     // Redirect to manage_accounts page in case of an error
     res.redirect("/leave_applications");
   }
-})
+});
 
 router.get("/view_emp_data/:id", async (req, res) => {
   try {

@@ -284,7 +284,7 @@ router.get("/clockout/:email", async (req, res) => {
     } else {
       user.timeIn = null; // Update timeIn to current date and time
       user.status = "OUT";
-      user.hoursWorked = totalHoursDecimal;
+      user.hoursWorked += totalHoursDecimal;
       await user.save();
     }
 
@@ -313,6 +313,11 @@ router.get("/clockout/:email", async (req, res) => {
         return;
       }
       console.log("Record found for yesterday:", dpYesterday.date);
+      dp.timeOut = new Date();
+      dp.totalTime = totalHoursDecimal;
+      if (totalHoursDecimal > 8) {
+        dp.overTime = totalHoursDecimal - 8;
+      }
     } else {
       dp.timeOut = new Date();
       dp.totalTime = totalHoursDecimal;

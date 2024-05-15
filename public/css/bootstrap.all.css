@@ -223,7 +223,7 @@
 .rolefolder-container {
   margin-bottom: 20px;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 3px; /* Gap between grid items */
   grid-auto-rows: 50px; /* Default height for each row */
 }
@@ -234,7 +234,7 @@
   color: #1f1f1f;
   display: flex;
   align-items: center; /* Center vertically */
-  width: 200px;
+  width: 250px;
   height: 50px;
   background-color: #f2f2f2;
   border: 1px solid #313131;
@@ -268,7 +268,7 @@
   margin-right: 5px; /* Space between icon and text */
 }
 
-.item-active {
+.rolefolder-item.active {
   background-color: #f2f2f2; /* Change background color on hover */
   border: 3px solid #ffffff;
   color: #525252;
@@ -340,7 +340,7 @@
 .legend-container {
   margin: 10px;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 3px; /* Gap between grid items */
   grid-auto-rows: 40px; /* Default height for each row */
 }
@@ -648,4 +648,14 @@
   right: 15px; /* Adjust as needed */
   font-size: 40px;
   font-weight: 600;
+}
+
+.content-div {
+  display: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.content-div.active {
+  display: block;
+  opacity: 1;
 }

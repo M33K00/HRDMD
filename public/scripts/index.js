@@ -70,6 +70,8 @@ app.use((err, req, res, next) => {
 
 mongoose.connect("mongodb://0.0.0.0:27017/HRDMD");
 
+// mongoose.connect("mongodb+srv://Meekoo:MXjxMUds0rFLchak@cluster0.lcpbw1e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+
 const db = mongoose.connection;
 db.on("error", (error) => console.log(error));
 db.on("open", () => console.log("Connected to the Database"));
