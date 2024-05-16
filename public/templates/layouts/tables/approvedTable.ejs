@@ -1,7 +1,5 @@
 <h2 class="mt-3">Approved Files:</h2>
-<% const approvedFiles = submittedFiles.filter( (submittedFiles) =>
-submittedFiles.status === "APPROVED" ) %> <% if (approvedFiles.length > 0) { %>
-<%# Search bar %>
+<% if (approvedFiles.length > 0) { %> <%# Search bar %>
 <input
   class="form-control me-sm-2"
   type="text"
@@ -21,14 +19,19 @@ submittedFiles.status === "APPROVED" ) %> <% if (approvedFiles.length > 0) { %>
     </tr>
   </thead>
   <tbody>
-    <% approvedFiles.forEach(file => { %>
+    <% approvedFiles.forEach((file, index) => { %>
     <tr>
       <td><%= file.fileCode %></td>
-      <td><%= file.fileName %></td>
+      <td>
+        <%= file.fileName.length > 25 ? file.fileName.substring(0, 25) + '...' :
+        file.fileName %>
+      </td>
       <td><%= file.assignTo %></td>
       <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
+        <a href="view_file/<%= file.id %>" class="icon-square"
+          ><i class="fa-solid fa-eye"></i
+        ></a>
         <a href="#" class="icon-square text-danger"
           ><i class="fa-solid fa-trash"></i
         ></a>

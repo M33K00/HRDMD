@@ -31,155 +31,52 @@ router.get("/startpage", requireAuth, (req, res) => {
 });
 
 router.get("/home", checkRole, async (request, response) => {
-  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
-  const role1directory_length = fs.readdirSync("./files/role1").length;
-  const role2directory_length = fs.readdirSync("./files/role2").length;
-  const role3directory_length = fs.readdirSync("./files/role3").length;
-  const role4directory_length = fs.readdirSync("./files/role4").length;
-  const roleDirectories = [
-    { name: "Entry Level", path: "./files/role1" },
-    { name: "Individual Contributors", path: "./files/role2" },
-    { name: "HR Manager", path: "./files/role3" },
-    { name: "HR Director", path: "./files/role4" },
-  ];
+  const currentPage = parseInt(request.query.page) || 1;
+  const pageSize = 10;
 
   try {
-    function getFilesInfo(directory) {
-      const fileNames = fs.readdirSync(directory.path); // Use directory.path to get the directory path
-      const filesInfo = fileNames.map((fileName) => {
-        const filePath = path.join(directory.path, fileName); // Use directory.path here too
-        const stats = fs.statSync(filePath);
-        const sizeInBytes = stats.size;
-        const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
-        // Convert mtime to desired format
-        const mtime = stats.mtime.toLocaleString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "2-digit",
-          hour: "numeric",
-          minute: "numeric",
-        });
-        const timestamp = stats.mtime.getTime();
-        return {
-          name: fileName,
-          size: sizeInMB + " MB",
-          mtime: mtime,
-          timestamp: timestamp,
-          folder: directory.name,
-        };
-      });
-      return filesInfo;
-    }
+    const totalSubmittedFiles = await SubmittedFiles.countDocuments();
+    const totalPages = Math.ceil(totalSubmittedFiles / pageSize);
+    // Fetch all submitted files and sort by dateSubmitted in descending order
+    const submittedFiles = await SubmittedFiles.find()
+      .sort({
+        dateSubmitted: -1,
+      })
+      .skip((currentPage - 1) * pageSize)
+      .limit(pageSize);
 
-    const allRoleFiles = roleDirectories.reduce((allFiles, directory) => {
-      const roleFiles = getFilesInfo(directory);
-      return allFiles.concat(roleFiles);
-    }, []);
+    // Fetch pending files and sort by dateSubmitted in descending order
+    const pendingFiles = await SubmittedFiles.find({ status: "PENDING" }).sort({
+      dateSubmitted: -1,
+    });
 
-    const currentDate = new Date();
+    // Fetch approved files and sort by dateSubmitted in descending order
+    const approvedFiles = await SubmittedFiles.find({
+      status: "APPROVED",
+    }).sort({ dateSubmitted: -1 });
 
-    const groupTimestamps = [
-      new Date(
-        currentDate.getFullYear(), // This Year
-        currentDate.getMonth(), // This Month
-        1 // Day 1
-      ).getTime(),
-      new Date(
-        currentDate.getFullYear(), // This Year
-        currentDate.getMonth() - 1, // Last Month
-        1 // Day 1
-      ).getTime(),
-      new Date(
-        currentDate.getFullYear(), // This Year
-        currentDate.getMonth() - 2, // Last 2 Months
-        1 // Day 1
-      ).getTime(),
-      new Date(
-        currentDate.getFullYear(), // This Year
-        currentDate.getMonth() - 3, // Last 3 Months
-        1 // Day 1
-      ).getTime(),
-    ];
+    // Fetch rejected files and sort by dateSubmitted in descending order
+    const rejectedFiles = await SubmittedFiles.find({
+      status: "REJECTED",
+    }).sort({ dateSubmitted: -1 });
 
-    // Each groupTimestamp represents the earlier boundary of a group
-    // eg.
-    //   This Month (groupName 0) is from day 1 of this month (groupTimestamp 0) until present
-    //   Last Month (groupName 1) is from day 1 of last month (groupTimestamp 1) until day 1 of this month (groupTimestamp 0)
-    //   ...
-
-    // Present
-    //  |
-    //  | Group 0 (This Month)
-    //  |
-    // groupTimestap 0 (Day 1 of this month)
-    //  |
-    //  | Group 1 (Last Month)
-    //  |
-    // groupTimestap 1 (Day 1 of last month)
-    // ...
-
-    // Put files into groups
-
-    const groupFiles = [];
-
-    for (var gago in groupTimestamps) {
-      groupFiles.push([]);
-    }
-
-    const lastGroup = [];
-
-    groupFiles.push(lastGroup);
-
-    for (var file of allRoleFiles) {
-      const fileTimestamp = file.timestamp;
-
-      // Hacky way to use some()
-      // some() will terminate once true is returned by the iteration function,
-      // and return true itself if it does
-
-      groupFound = groupTimestamps.some(function (groupTimestamp, i) {
-        if (fileTimestamp >= groupTimestamps[i]) {
-          // If a file is newer than a group timestamp,
-          // add that to the corresponding group
-          groupFiles[i].push(file);
-          // And return true to terminate the some() loop and make `groupFound` true as well
-          return true;
-        }
-        // If file is older, return false or whatever the fuck to check the next timestamp
-        return false;
-      });
-
-      if (!groupFound) {
-        // If a file didn't belong to a group,
-        // add it to the last group "Older Than Your Mom"
-        lastGroup.push(file);
-      }
-    }
-
-    filesThisMonth = groupFiles[0];
-    filesLastMonth = groupFiles[1];
-    filesLastTwoMonths = groupFiles[2];
-    filesLastThreeMonths = groupFiles[3];
-    filesOlderThanThreeMonths = groupFiles[4];
-
-    const submittedFiles = await SubmittedFiles.find();
+    // Fetch revision files and sort by dateSubmitted in descending order
+    const revisionFiles = await SubmittedFiles.find({
+      status: "REVISION",
+    }).sort({ dateSubmitted: -1 });
 
     response.render("home", {
-      allRoleFiles,
       submittedFiles,
-      rejecteddirectory_length,
-      role1directory_length,
-      role2directory_length,
-      role3directory_length,
-      role4directory_length,
-      filesOlderThanThreeMonths,
-      filesLastThreeMonths,
-      filesLastTwoMonths,
-      filesLastMonth,
-      filesThisMonth,
+      currentPage,
+      totalPages,
+      pendingFiles,
+      approvedFiles,
+      rejectedFiles,
+      revisionFiles,
     });
   } catch (error) {
     console.error("Error reading directory:", error);
+    response.status(500).send("Internal Server Error");
   }
 });
 
@@ -389,60 +286,27 @@ router.get("/role4_documents", (req, res) => {
 });
 
 // Status Board Route
-router.get("/statusboard", (request, response) => {
-  const roleDirectories = [
-    { name: "Rejected", path: "./files/rejected" },
-    { name: "Entry Level", path: "./files/role1" },
-    { name: "Individual Contributors", path: "./files/role2" },
-    { name: "HR Manager", path: "./files/role3" },
-    { name: "HR Director", path: "./files/role4" },
-  ];
-
+router.get("/statusboard", async (req, res) => {
   try {
-    function getFilesInfo(directory) {
-      const fileNames = fs.readdirSync(directory.path);
-      const filesInfo = fileNames.map((fileName) => {
-        const filePath = path.join(directory.path, fileName);
-        const stats = fs.statSync(filePath);
-        const sizeInBytes = stats.size;
-        const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
-        const mtime = stats.mtime; // Keep the mtime as Date object
-        return {
-          name: fileName,
-          size: sizeInMB + " MB",
-          mtime: mtime,
-          folder: directory.name,
-        };
-      });
-      return filesInfo;
-    }
-
-    const allRoleFiles = roleDirectories.reduce((allFiles, directory) => {
-      const roleFiles = getFilesInfo(directory);
-      return allFiles.concat(roleFiles);
-    }, []);
-
-    // Sort files by date (mtime)
-    allRoleFiles.sort((a, b) => b.mtime - a.mtime); // Sort in descending order
-
-    // Pagination logic
-    const page = parseInt(request.query.page) || 1;
-    const totalItems = allRoleFiles.length;
     const ITEMS_PER_PAGE = 10; // Number of items per page
-    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-    const startIndex = (page - 1) * ITEMS_PER_PAGE;
-    const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
-    const paginatedFiles = allRoleFiles.slice(startIndex, endIndex);
+    const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+    const totalItems = await SubmittedFiles.countDocuments(); // Total number of items
 
-    response.render("statusboard", {
-      allRoleFiles: paginatedFiles,
+    const submittedFiles = await SubmittedFiles.find()
+      .sort({ dateSubmitted: -1 }) // Sort by dateSubmitted in descending order
+      .skip((page - 1) * ITEMS_PER_PAGE) // Skip items based on current page
+      .limit(ITEMS_PER_PAGE); // Limit the number of items per page
+
+    res.render("statusboard", {
+      submittedFiles,
       currentPage: page,
-      totalPages: totalPages,
+      totalPages: Math.ceil(totalItems / ITEMS_PER_PAGE),
       itemsPerPage: ITEMS_PER_PAGE,
+      totalItems,
     });
   } catch (error) {
     console.error("Error reading directory:", error);
-    response.status(500).send("Internal Server Error");
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -690,39 +554,6 @@ router.get("/recyclebin", async (req, res) => {
   });
 });
 
-// Rename File
-router.post("/rename", (req, res) => {
-  const { file: oldFileName, newName } = req.body;
-
-  if (!oldFileName || !newName) {
-    return res
-      .status(400)
-      .json({ error: "Both oldFileName and newName are required." });
-  }
-
-  const fileExtension = path.extname(oldFileName);
-  const oldPath = path.join(__dirname, "../../files/documents", oldFileName);
-  const newPath = path.join(
-    __dirname,
-    "../../files/documents",
-    `${newName}${fileExtension}`
-  );
-
-  if (!fs.existsSync(oldPath)) {
-    return res.status(404).json({ error: "File not found." });
-  }
-
-  fs.rename(oldPath, newPath, (err) => {
-    if (err) {
-      console.error("Error renaming file:", err);
-      return res.status(500).json({ error: "Error renaming file." });
-    }
-
-    console.log("\nFile Renamed!\n");
-    res.json({ success: true, message: "File renamed successfully." });
-  });
-});
-
 // Delete all files in Recycle Bin
 router.get("/delete-all", (req, res) => {
   const folderPath = path.join(__dirname, "../../files/archive");
@@ -941,6 +772,30 @@ router.post("/submitfile", documentUpload.single("file"), async (req, res) => {
       message: "File Submitted Successfully",
     };
     res.redirect("/home");
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+});
+
+router.get("/view_file/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const file = await SubmittedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "File not found",
+      };
+      return res.redirect("/home");
+    }
+
+    res.render("DTRACKER/view_file", { file });
   } catch (error) {
     req.session.message = {
       type: "danger",

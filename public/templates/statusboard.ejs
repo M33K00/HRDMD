@@ -3,22 +3,37 @@
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
   <div class="page-body">
     <div class="page-name">
-      <h2>Status Board</h2>
+      <h2>STATUS BOARD</h2>
     </div>
     <p class="text-muted mb-4 ">Track the approval status of documents submitted in the system</p>
-    <%# Legend %>
-    <div class="legend-container">
-      <div class="legend-item">
-        <span class="badge bg-danger">  </span><a>Rejected</a>
+    <% const rejected = submittedFiles.filter((row) => row.status === 'REJECTED') %>
+    <% const pending = submittedFiles.filter((row) => row.status === 'PENDING') %>
+    <% const revision = submittedFiles.filter((row) => row.status === 'REVISION') %>
+    <% const approved = submittedFiles.filter((row) => row.status === 'APPROVED') %>
+    <div class="stat-container mb-4">
+      <div class="stat-div div-reject">
+        <div class="stat-title">
+          <p>Rejected:</p>
+        </div>
+        <div class="stat-count"><%= rejected.length %></div>
       </div>
-      <div class="legend-item">
-        <span class="badge bg-warning">  </span><a>Revision</a>
+      <div class="stat-div div-pending">
+        <div class="stat-title">
+          <p>Pending:</p>
+        </div>
+        <div class="stat-count"><%= pending.length %></div>
       </div>
-      <div class="legend-item">
-        <span class="badge bg-success">  </span><a>Pending</a>
+      <div class="stat-div div-revision">
+        <div class="stat-title">
+          <p>Revision:</p>
+        </div>
+        <div class="stat-count"><%= revision.length %></div>
       </div>
-      <div class="legend-item">
-        <span class="badge bg-primary">  </span><a>Approved</a>
+      <div class="stat-div div-approved">
+        <div class="stat-title">
+          <p>Approved:</p>
+        </div>
+        <div class="stat-count"><%= approved.length %></div>
       </div>
     </div>
     <%# Search bar %>
@@ -45,34 +60,35 @@
         </div>
         <% } %>        
       </div>
-          <% if (allRoleFiles != '') { %>
+          <% if (submittedFiles != '') { %>
+            <p class="text-muted mb-4 ">This table <strong>DOES NOT</strong> include <strong class="text-danger">CONFIDENTIAL</strong> files.</p>
             <table id="table" class="table table-hover table-striped text-center">
               <thead>
-                <tr class="table-primary">
-                  <th>Date Submitted</th>
+                <tr class="table-primary text-uppercase">
+                  <th>File Code</th>
                   <th>File Name</th>
-                  <th>Status/Current Designation</th>
-                  <th></th>
+                  <th>Date Submitted</th>
+                  <th>Handler</th>
+                  <th>Status</th>
               </thead>
               <tbody>
-                <% allRoleFiles.forEach((row, index) => { %>
+                <% submittedFiles.forEach((row, index) => { %>
                   <tr>
-                    <td><%= row.mtime.toISOString().split('T')[0] %></td>
-                    <td><%= row.name %></td>
-                    <td <% if (row.folder === "Rejected") { %>
-                      style="color: brown; font-weight: 700"
-                    <% } %>><%= row.folder %></td>
-                    <td><% if (row.folder === "HR Director") { %>
-                        <span class="badge bg-info table-span">
-                        <% } else if (row.folder === "HR Manager") { %>
-                        <span class="badge bg-primary table-span"> 
-                        <% } else if (row.folder === "Individual Contributors") { %>
-                        <span class="badge bg-success table-span"> 
-                        <% } else if (row.folder === "Entry Level") { %>
-                        <span class="badge bg-warning table-span"> 
-                        <% } else if (row.folder === "Rejected") { %>
-                        <span class="badge bg-danger table-span"> 
-                    <% } %></span></td>
+                    <td><%= row.fileCode %></td>
+                    <td><%= row.fileName %></td>
+                    <td><%= row.dateSubmitted.toISOString().split('T')[0] %></td>
+                    <td><%= row.assignTo %></td>
+                    <td><% if (row.status === 'APPROVED') { %>
+                      <span class="badge bg-success">APPROVED</span>
+                    <% } else if (row.status === 'REJECTED') { %>
+                      <span class="badge bg-danger">REJECTED</span>
+                    <% } else if (row.status === 'PENDING') { %>
+                      <span class="badge bg-warning">PENDING</span>
+                    <% } else if (row.status === 'REVISION') { %>
+                      <span class="badge bg-dark">REVISION</span>
+                    <% } else { %>
+                      <span class="badge bg-primary">UNKNOWN</span>
+                    <% } %></td>
                   </tr>
                 <% }) %>
               </tbody>

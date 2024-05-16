@@ -359,7 +359,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500;
+  font-weight: 600;
   width: 200px;
 }
 .legend-item span {
@@ -619,13 +619,79 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  background-color: #fff;
-  border: #686868 solid 2px;
+  border: 2px solid rgb(187, 187, 187);
+  background-color: white;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   margin-bottom: 20px;
   height: 100px;
   align-items: center;
+}
+
+.stat-container {
+  display: grid;
+  grid-template-columns: 315px 315px 315px 315px;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.div-reject {
+  background-color: brown;
+  background-image: url("../images/cross.png");
+  border: rgb(233, 72, 72) 2px solid;
+}
+
+.div-pending {
+  background-color: orange;
+  background-image: url("../images/pending.png");
+  border: rgb(233, 136, 72) 2px solid;
+}
+
+.div-revision {
+  background-color: #4d4d4d;
+  background-image: url("../images/rev.png");
+  border: rgb(116, 116, 116) 2px solid;
+}
+
+.div-approved {
+  background-color: green;
+  background-image: url("../images/approved.png");
+  border: rgb(52, 173, 52) 2px solid;
+}
+
+.stat-div {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  height: 100px;
+  align-items: center;
+}
+
+.stat-title {
+  display: flex;
+  position: absolute;
+  bottom: 45px; /* Adjust as needed */
+  left: 10px; /* Adjust as needed */
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: #000000 1px 0 10px;
+}
+
+.stat-count {
+  display: flex;
+  position: absolute;
+  bottom: 1px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  font-size: 45px;
+  font-weight: 600;
+  color: white;
+  text-shadow: #000000 1px 0 10px;
 }
 
 .div-cut-title {
