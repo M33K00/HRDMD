@@ -565,11 +565,17 @@
 }
 
 .form-item {
-  flex-basis: 33%; /* Adjust width of each item */
+  flex-basis: 49.8%; /* Adjust width of each item */
 }
 
 .form-item-2 {
   flex-basis: 33%; /* Adjust width of each item */
+}
+
+.btn-submit {
+  display: flex;
+  margin-top: 10px;
+  margin-left: auto;
 }
 
 .bottom-right {

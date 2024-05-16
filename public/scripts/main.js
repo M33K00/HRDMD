@@ -1,10 +1,12 @@
-const { app, BrowserWindow, session } = require('electron');
-const server = require('./index');
-const path = require('path');
+const { app, BrowserWindow, session } = require("electron");
+const server = require("./index");
+const path = require("path");
 const PORT = 3939;
 
 function createWindow() {
-  const customSession = session.fromPartition('persist:my-cache-session', { cache: true });
+  const customSession = session.fromPartition("persist:my-cache-session", {
+    cache: true,
+  });
 
   const win = new BrowserWindow({
     maxHeight: 900,
@@ -17,7 +19,7 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: true,
       devTools: true,
-      session: customSession // Use the custom session with caching
+      session: customSession, // Use the custom session with caching
     },
   });
 
@@ -29,7 +31,7 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
-  app.on('activate', () => {
+  app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
@@ -37,16 +39,16 @@ app.whenReady().then(() => {
 });
 
 try {
-  require('electron-reloader')(module);
+  require("electron-reloader")(module);
 } catch {}
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
 // Global exception handler
-process.on('uncaughtException', function (err) {
+process.on("uncaughtException", function (err) {
   console.log(err);
 });

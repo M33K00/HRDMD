@@ -4,29 +4,36 @@
   <div class="page-body">
     <div class="page-name">
       <h2>Document Tracker</h2>
-      <a class="btn btn-primary" href="#">ADD Document</a>
+      <a class="btn btn-primary" href="/submitfile">ADD Document</a>
     </div>
-    <% if (message) { %>
-    <div
-      class="alert alert-dismissible alert-success fade show auto-dismiss-alert"
-      role="alert"
-      id="autoDismissAlert"
-    >
-      <strong>Attention!</strong><%= message.message %><a
-        href="#"
-        class="alert-link"
-      ></a>
-    </div>
-    <% } %> <%# Search bar %>
-    <input
-      class="form-control me-sm-2"
-      type="text"
-      id="searchInput"
-      placeholder="Search"
-      style="margin-bottom: 20px"
-    />
+    <div id="alertContainer" class="bottom-right">
+      <% if (message) { %>
+      <div
+        class="alert alert-dismissible alert-<%= message.type %> fade show"
+        role="alert"
+        id="autoDismissAlert"
+      >
+        <strong>Attention! </strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
+    </div> 
     <%# Folder Buttons %>
-    <h5 class="folder-title">Folders</h5>
+    <% const pendingFiles = submittedFiles.filter(
+      (submittedFiles) => submittedFiles.status === "PENDING"
+    ) %>
+    <% const approvedFiles = submittedFiles.filter(
+      (submittedFiles) => submittedFiles.status === "APPROVED"
+    ) %>
+    <% const revisionFiles = submittedFiles.filter(
+      (submittedFiles) => submittedFiles.status === "REVISION"
+    ) %>
+    <% const rejectedFiles = submittedFiles.filter(
+      (submittedFiles) => submittedFiles.status === "REJECTED"
+    ) %>
+    <h5 class="folder-title">Folders:</h5>
     <div class="rolefolder-container">
       <a href="#" data-target="all-files"
         ><div class="rolefolder-item active">
@@ -38,9 +45,9 @@
         ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
           <p>Approved</p>
-          <% if (role4directory_length > 0) { %>
+          <% if (approvedFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
-            ><%= role4directory_length %></span
+            ><%= approvedFiles.length %></span
           >
           <% } %>
         </div></a
@@ -49,9 +56,9 @@
         ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
           <p>Pending</p>
-          <% if (role3directory_length > 0) { %>
+          <% if (pendingFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
-            ><%= role3directory_length %></span
+            ><%= pendingFiles.length %></span
           >
           <% } %>
         </div></a
@@ -60,9 +67,9 @@
         ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
           <p>Revision</p>
-          <% if (role2directory_length > 0) { %>
+          <% if (revisionFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
-            ><%= role2directory_length %></span
+            ><%= revisionFiles.length %></span
           >
           <% } %>
         </div></a
@@ -71,87 +78,14 @@
         ><div class="rolefolder-item">
           <box-icon type="solid" name="x-square"></box-icon>
           <p>Rejected Files</p>
-          <% if (rejecteddirectory_length > 0) { %>
+          <% if (rejectedFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
-            ><%= rejecteddirectory_length %></span
+            ><%= rejectedFiles.length %></span
           >
           <% } %>
         </div></a
       >
     </div>
-    <%# Filter %>
-    <h5 class="folder-title">All Files</h5>
-    <div class="sortation-container">
-      <div
-        class="btn-group filter-radio"
-        role="group"
-        aria-label="Basic radio toggle button group"
-      >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio1"
-          autocomplete="off"
-          checked=""
-        />
-        <label
-          class="btn btn-secondary filter-btn"
-          for="btnradio1"
-          data-extension="all"
-          >All</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio2"
-          autocomplete="off"
-        />
-        <label
-          class="btn btn-secondary filter-btn"
-          for="btnradio2"
-          data-extension="pdf"
-          >PDF</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio3"
-          autocomplete="off"
-        />
-        <label
-          class="btn btn-secondary filter-btn"
-          for="btnradio3"
-          data-extension="docx"
-          >DOCX</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio4"
-          autocomplete="off"
-        />
-        <label
-          class="btn btn-secondary filter-btn"
-          for="btnradio4"
-          data-extension="excel"
-          >EXCEL</label
-        >
-      </div>
-
-      <div class="btn-group btn-group-toggle">
-        <button class="btn btn-secondary toggle-sort-btn">
-          <i class="fa-solid fa-arrow-up-a-z"></i>
-        </button>
-        <button class="btn btn-secondary sort-btn">
-          <i class="fa-solid fa-arrow-up-wide-short"></i>
-        </button>
-      </div>
-    </div>
-    <%# File list %> <%# Sortation %>
   <div id="modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -168,7 +102,6 @@
       <span id="enlargeButton" class="enlargeButton">Enlarge</span>
     </div>
   </div>
-  <%# By Months Sort %>
   <div id="all-files" class="content-div active">
     <div class="sort-title mt-3" <% if (filesThisMonth.length == 0) { %>
       style="display: none"
@@ -687,13 +620,13 @@
     </div>
     </div>
   <div id="approved" class="content-div">
-    <h2 class="mt-3">Approved Files:</h2>
+    <%- include('./layouts/tables/approvedTable') -%>
   </div>
   <div id="pending" class="content-div">
-    <h2 class="mt-3">Pending Files:</h2>
+    <%- include('./layouts/tables/pendingTable') -%>
   </div>
   <div id="revision" class="content-div">
-    <h2 class="mt-3">Files for Revision:</h2>
+    <%- include('./layouts/tables/revisionTable') -%>
   </div>
   <div id="rejected" class="content-div">
     <h2 class="mt-3">Rejected Files:</h2>

@@ -1,0 +1,132 @@
+<%- include('./layouts/header') -%>
+<body>
+  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
+
+  <div class="page-body">
+    <div class="page-name">
+      <h1>Submit File:</h1>
+      <a class="btn btn-secondary" href="/home">GO BACK</a>
+    </div>
+    <div id="alertContainer" class="bottom-right">
+      <% if (message) { %>
+      <div
+        class="alert alert-dismissible alert-<%= message.type %> fade show"
+        role="alert"
+        id="autoDismissAlert"
+      >
+        <strong>Attention! </strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
+    </div>
+    <p class="text-muted">
+      This will send the file to the "PENDING" section. If the file is
+      CONFIDENTIAL, it will be sent to the "CONFIDENTIAL" section.
+    </p>
+    <div class="page-content">
+      <form action="/submitfile" method="post" enctype="multipart/form-data">
+        <fieldset>
+          <input type="hidden" name="status" value="PENDING" />
+          <input type="hidden" name="email" value="<%= user.email %>" />
+          <div class="form-group">
+            <label for="fileName" class="form-label">File Name:</label>
+            <input
+              type="text"
+              name="fileName"
+              id="FileName"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group flex-container">
+            <div class="form-item">
+              <label for="InputName" class="form-label mt-4">File Code:</label>
+              <input
+                type="text"
+                name="fileCode"
+                class="form-control"
+                maxlength="50"
+                required
+              />
+            </div>
+            <div class="form-item">
+              <label for="fileType" class="form-label mt-4">File Type:</label>
+              <select
+                name="fileType"
+                id="fileTypeSelect"
+                class="form-select"
+                required
+              >
+                <option value="non-confidential" selected>
+                  NON-CONFIDENTIAL
+                </option>
+                <option value="confidential">CONFIDENTIAL</option>
+              </select>
+            </div>
+          </div>
+          <div id="non-con" class="form-group">
+            <div class="form-item">
+              <label for="assignTo" class="form-label mt-4">Assign To:</label>
+              <select
+                name="assignTo"
+                class="form-control"
+                id="exampleInputEmail1"
+              >
+                <option value="">None</option>
+                <% users.forEach(user => { %>
+                <option value="<%= user.name %>"><%= user.name %></option>
+                <% }) %>
+              </select>
+              <small id="assignHelp" class="form-text text-muted"
+                >Assign the file to someone (Optional)</small
+              >
+            </div>
+            <div class="form-item">
+              <label for="fileInstruction" class="form-label mt-4"
+                >Instruction:</label
+              >
+              <textarea
+                name="fileInstruction"
+                class="form-control"
+                id="fileInstruction"
+              ></textarea>
+              <small id="fileInstructionhelp" class="form-text text-muted">
+                Add instructions on what to do to the file (Optional)
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fileUpload" class="form-label mt-4">Upload File:</label>
+            <input
+              type="file"
+              name="file"
+              id="fileUpload"
+              class="form-control"
+              accept=".pdf, .doc, .docx"
+            />
+            <small id="fileHelp" class="form-text text-muted"
+              >Upload your file here (Optional)</small
+            >
+          </div>
+        </fieldset>
+        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    document
+      .getElementById("fileTypeSelect")
+      .addEventListener("change", function () {
+        var fileType = this.value;
+        var nonConDiv = document.getElementById("non-con");
+        if (fileType === "non-confidential") {
+          nonConDiv.style.display = "block";
+        } else {
+          nonConDiv.style.display = "none";
+        }
+      });
+  </script>
+  <%- include('./layouts/footer') %>
+</body>

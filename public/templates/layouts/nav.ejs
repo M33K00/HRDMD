@@ -38,11 +38,12 @@
       <div class="user-details">
         <a><%= user.name %></a>
         <a class="user-role"
-          ><% if (user.hrrole === "ROLE 1") { %> Entry-level <% } else if
-          (user.hrrole === "ROLE 2") { %> Individual Contributors <% } else if
-          (user.hrrole === "ROLE 3") { %> HR Manager <% } else if (user.hrrole
-          === "ROLE 4") { %> HR Director <% } else if (user.hrrole === "ADMIN")
-          { %> ADMIN <% } %></a
+          ><% if (user.hrrole === "ROLE 1") { %> Administrative Officer <% }
+          else if (user.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+          else if (user.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+          (user.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+          (user.hrrole === "ROLE 5") { %> Admin Aide <% } else if (user.hrrole
+          === "ADMIN") { %> Department Head <% } %></a
         >
       </div>
     </div>

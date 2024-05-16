@@ -486,6 +486,54 @@
   }
 </script>
 
+<%# Search Tables Home %>
+<script>
+  function searchTable2() {
+    const input = document.getElementById("filesInput");
+    const filter = input.value.toLowerCase();
+
+    // Get the active tab content
+    const activeTabContent = document.querySelector(".content-div.active");
+
+    // Search in the table within the active tab content
+    searchTable(activeTabContent, filter);
+  }
+
+  function searchTable(activeTabContent, filter) {
+    // Get the table within the active tab content
+    const table = activeTabContent.querySelector("table");
+    if (!table) return; // Exit if no table found in the active tab content
+
+    const tbody = table.querySelector("tbody");
+    if (!tbody) return; // Exit if no tbody found in the table
+
+    const rows = tbody.getElementsByTagName("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const cells = row.getElementsByTagName("td");
+      let found = false;
+
+      for (let j = 0; j < cells.length; j++) {
+        const cell = cells[j];
+        if (cell) {
+          const textValue = cell.textContent || cell.innerText;
+          if (textValue.toLowerCase().indexOf(filter) > -1) {
+            found = true;
+            break;
+          }
+        }
+      }
+
+      if (found) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    }
+  }
+</script>
+
 <script>
   function searchFunc() {
     const input = document.getElementById("accInput");
@@ -520,62 +568,62 @@
 </script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-      const popupContainer = document.getElementById("popupContainer");
-      const popupHeader = document.getElementById("popupHeader");
-      const popupReason = document.getElementById("popupReason");
-      const popupHeader2 = document.getElementById("popupHeader2");
-      const popupDecline = document.getElementById("popupDecline");
-      const popupRows = document.querySelectorAll(".popup-row");
-      let popupTimeout; // Variable to hold the timeout ID
-  
-      popupRows.forEach((row) => {
-          row.addEventListener("mouseover", function (event) {
-              const mouseX = event.clientX;
-              const mouseY = event.clientY;
-  
-              popupHeader.textContent = "Leave Reason:";
-              popupReason.textContent = this.getAttribute("data-reason");
-              
-              // Check if the row has the data-declinereason attribute
-              const declineReason = this.getAttribute("data-declinereason");
-              if (declineReason) {
-                  popupHeader2.textContent = "Decline Reason:";
-                  popupDecline.textContent = declineReason;
-              } else {
-                  popupHeader2.textContent = ""; // Clear the header if no decline reason
-                  popupDecline.textContent = ""; // Clear the decline reason
-              }
-  
-              // Clear previous timeout if any
-              clearTimeout(popupTimeout);
-  
-              // Set a new timeout to show the popup after a delay (e.g., 500 milliseconds)
-              popupTimeout = setTimeout(() => {
-                  popupContainer.style.display = "block";
-                  popupContainer.style.top = mouseY + "px";
-                  popupContainer.style.left = mouseX + "px";
-              }, 500); // Adjust the delay time as needed
-          });
-  
-          row.addEventListener("mouseleave", function () {
-              // Clear the timeout when leaving the row to prevent the delayed popup from appearing
-              clearTimeout(popupTimeout);
-  
-              popupContainer.style.display = "none";
-          });
+    const popupContainer = document.getElementById("popupContainer");
+    const popupHeader = document.getElementById("popupHeader");
+    const popupReason = document.getElementById("popupReason");
+    const popupHeader2 = document.getElementById("popupHeader2");
+    const popupDecline = document.getElementById("popupDecline");
+    const popupRows = document.querySelectorAll(".popup-row");
+    let popupTimeout; // Variable to hold the timeout ID
+
+    popupRows.forEach((row) => {
+      row.addEventListener("mouseover", function (event) {
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+
+        popupHeader.textContent = "Leave Reason:";
+        popupReason.textContent = this.getAttribute("data-reason");
+
+        // Check if the row has the data-declinereason attribute
+        const declineReason = this.getAttribute("data-declinereason");
+        if (declineReason) {
+          popupHeader2.textContent = "Decline Reason:";
+          popupDecline.textContent = declineReason;
+        } else {
+          popupHeader2.textContent = ""; // Clear the header if no decline reason
+          popupDecline.textContent = ""; // Clear the decline reason
+        }
+
+        // Clear previous timeout if any
+        clearTimeout(popupTimeout);
+
+        // Set a new timeout to show the popup after a delay (e.g., 500 milliseconds)
+        popupTimeout = setTimeout(() => {
+          popupContainer.style.display = "block";
+          popupContainer.style.top = mouseY + "px";
+          popupContainer.style.left = mouseX + "px";
+        }, 500); // Adjust the delay time as needed
       });
-  
-      // Add event listener to hide popup when clicking outside
-      document.addEventListener("click", function (event) {
-          if (
-              !popupContainer.contains(event.target) &&
-              !popupRows.includes(event.target)
-          ) {
-              popupContainer.style.display = "none";
-          }
+
+      row.addEventListener("mouseleave", function () {
+        // Clear the timeout when leaving the row to prevent the delayed popup from appearing
+        clearTimeout(popupTimeout);
+
+        popupContainer.style.display = "none";
       });
+    });
+
+    // Add event listener to hide popup when clicking outside
+    document.addEventListener("click", function (event) {
+      if (
+        !popupContainer.contains(event.target) &&
+        !popupRows.includes(event.target)
+      ) {
+        popupContainer.style.display = "none";
+      }
+    });
   });
-  </script>  
+</script>
 <script>
   function updateClock() {
     const now = new Date();

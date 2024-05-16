@@ -137,14 +137,16 @@
             class="form-select"
             id="hrrole"
           >
-            <option value="ROLE 1" <% if (logincollections.hrrole === 'ROLE 1') { %> selected <% } %>>ROLE 1</option>
-            <option value="ROLE 2" <% if (logincollections.hrrole === 'ROLE 2') { %> selected <% } %>>ROLE 2</option>
-            <option value="ROLE 3" <% if (logincollections.hrrole === 'ROLE 3') { %> selected <% } %>>ROLE 3</option>
+            <option value="ROLE 1" <% if (logincollections.hrrole === 'ROLE 1') { %> selected <% } %>>Administrative Officer</option>
+            <option value="ROLE 2" <% if (logincollections.hrrole === 'ROLE 2') { %> selected <% } %>>Senior Admin Assistant</option>
+            <option value="ROLE 3" <% if (logincollections.hrrole === 'ROLE 3') { %> selected <% } %>>Admin Officer</option>
+            <option value="ROLE 4" <% if (logincollections.hrrole === 'ROLE 4') { %> selected <% } %>>Admin Assistant</option>
+            <option value="ROLE 5" <% if (logincollections.hrrole === 'ROLE 5') { %> selected <% } %>>Admin Aide</option>
           </select>
         </div>
       </div>
       <div class="form-group flex-container">
-        <div class="form-item">
+        <div class="form-item-2">
           <label for="dayOff" class="form-label mt-4">Day Offs:</label>
           <select
             name="dayOff"
@@ -161,7 +163,7 @@
             <option value="Saturday">Saturday</option>
           </select>
         </div>
-        <div class="form-item">
+        <div class="form-item-2">
           <label for="paySched" class="form-label mt-4">Pay Schedule</label>
           <select
             type="text"
@@ -174,7 +176,7 @@
             <option value="Monthly" <% if (attendance.paySched === 'Monthly') { %> selected <% } %>>Monthly</option>
           </select>
         </div>
-        <div class="form-item">
+        <div class="form-item-2">
           <label for="cutoffDate" class="form-label mt-4">Cut-off Date</label>
           <input
             type="date"

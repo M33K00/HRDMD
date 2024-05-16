@@ -4,17 +4,33 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const docxConverter = require("docx-pdf");
+const { requireAuth } = require("../middleware/authMiddleware");
+const { checkRole } = require("../middleware/authMiddleware.js");
+
+// Models
 const LogInCollection = require("../models/logincollections");
 const UserDocuments = require("../models/userdocuments");
 const rejectedDocuments = require("../models/rejecteddocuments");
-const { requireAuth } = require("../middleware/authMiddleware");
-const { checkRole } = require("../middleware/authMiddleware.js");
+const SubmittedFiles = require("../models/submitted_files");
+
+// Multer configuration
+const documentStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./files/documents");
+  },
+  filename: (req, file, cb) => {
+    const fileName = file.originalname;
+    cb(null, fileName); // Use the original filename without any modifications
+  },
+});
+
+const documentUpload = multer({ storage: documentStorage });
 
 router.get("/startpage", requireAuth, (req, res) => {
   res.render("startpage");
 });
 
-router.get("/home", checkRole, (request, response) => {
+router.get("/home", checkRole, async (request, response) => {
   const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
   const role1directory_length = fs.readdirSync("./files/role1").length;
   const role2directory_length = fs.readdirSync("./files/role2").length;
@@ -146,8 +162,11 @@ router.get("/home", checkRole, (request, response) => {
     filesLastThreeMonths = groupFiles[3];
     filesOlderThanThreeMonths = groupFiles[4];
 
+    const submittedFiles = await SubmittedFiles.find();
+
     response.render("home", {
       allRoleFiles,
+      submittedFiles,
       rejecteddirectory_length,
       role1directory_length,
       role2directory_length,
@@ -426,7 +445,6 @@ router.get("/statusboard", (request, response) => {
     response.status(500).send("Internal Server Error");
   }
 });
-
 
 // Archive Route
 router.get("/archive", (request, response) => {
@@ -770,28 +788,6 @@ router.get("/restore", (req, res) => {
   });
 });
 
-router.get("/convertFromOffice/:fileName", (req, res) => {
-  const fileName = req.params.fileName;
-  const filePath = path.join(__dirname, "../../files/documents/", fileName);
-  const outPath = path.resolve(
-    __dirname,
-    `../../files/documents/${fileName}_convert.pdf`
-  );
-
-  docxConverter(filePath, outPath, function (err, result) {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error converting file.");
-    }
-    console.log("PDF file converted successfully!");
-    const fileContent = fs.readFileSync(outPath);
-    const base64data = fileContent.toString("base64");
-    const pdfSrc = `data:application/pdf;base64,${base64data}`;
-    const iframeHtml = `<iframe src="${pdfSrc}" width="100%" height="100%" frameborder="0"></iframe>`;
-    res.send(iframeHtml);
-  });
-});
-
 router.get("/employeedocument", async (req, res) => {
   try {
     const logincollection = await LogInCollection.find();
@@ -894,5 +890,88 @@ router.post("/deletefile/:filename", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+// Submit File
+router.get("/submitfile", async (req, res) => {
+  try {
+    const users = await LogInCollection.find();
+    res.render("submitfile", { users });
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+});
+
+router.post("/submitfile", documentUpload.single("file"), async (req, res) => {
+  try {
+    // Check if file code already exists
+    const fileCodeExists = await SubmittedFiles.exists({
+      fileCode: req.body.fileCode,
+    });
+
+    if (fileCodeExists) {
+      req.session.message = {
+        type: "danger",
+        message: "File Code already exists!",
+      };
+      return res.redirect("/submitfile");
+    }
+
+    // Create fileData object if file code does not exist
+    const fileData = {
+      status: req.body.status,
+      fileName: req.body.fileName,
+      fileCode: req.body.fileCode,
+      fileType: req.body.fileType,
+      assignTo: req.body.assignTo,
+      email: req.body.email,
+      fileInstruction: req.body.fileInstruction,
+      dateSubmitted: new Date(),
+      fileUpload: req.file ? req.file.filename : null,
+    };
+
+    // Save fileData to database
+    await SubmittedFiles.create(fileData);
+
+    req.session.message = {
+      type: "success",
+      message: "File Submitted Successfully",
+    };
+    res.redirect("/home");
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+});
+
+/*
+router.get("/convertFromOffice/:fileName", (req, res) => {
+  const fileName = req.params.fileName;
+  const filePath = path.join(__dirname, "../../files/documents/", fileName);
+  const outPath = path.resolve(
+    __dirname,
+    `../../files/documents/${fileName}_convert.pdf`
+  );
+
+  docxConverter(filePath, outPath, function (err, result) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error converting file.");
+    }
+    console.log("PDF file converted successfully!");
+    const fileContent = fs.readFileSync(outPath);
+    const base64data = fileContent.toString("base64");
+    const pdfSrc = `data:application/pdf;base64,${base64data}`;
+    const iframeHtml = `<iframe src="${pdfSrc}" width="100%" height="100%" frameborder="0"></iframe>`;
+    res.send(iframeHtml);
+  });
+});
+*/
 
 module.exports = router;
