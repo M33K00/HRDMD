@@ -1,5 +1,5 @@
-<h2 class="mt-3">Files for Revision:</h2>
-<% if (revisionFiles.length > 0) { %> <%# Search bar %>
+<h2 class="mt-3">Rejected Files:</h2>
+<% if (rejectedFiles.length > 0) { %> <%# Search bar %>
 <input
   class="form-control me-sm-2"
   type="text"
@@ -19,7 +19,7 @@
     </tr>
   </thead>
   <tbody>
-    <% revisionFiles.forEach((file, index) => { %>
+    <% rejectedFiles.forEach((file, index) => { %>
     <tr>
       <td><%= file.fileCode %></td>
       <td>

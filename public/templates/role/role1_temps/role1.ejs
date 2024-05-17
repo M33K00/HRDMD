@@ -1,753 +1,139 @@
 <%- include('../../layouts/header') -%>
-<link rel="stylesheet" href="../../css/role1.min.css" />
 <body>
   <%- include('../../layouts/nav') -%> <%- include('../../layouts/sidenavR1') %>
   <div class="page-body">
     <div class="page-name">
       <h2>Document Tracker</h2>
     </div>
-    <% if (message) { %>
-    <div
-      class="alert alert-dismissible alert-success fade show auto-dismiss-alert"
-      role="alert"
-      id="autoDismissAlert"
-    >
-      <strong>Attention!</strong><%= message.message %><a
-        href="#"
-        class="alert-link"
-      ></a>
+    <div id="alertContainer" class="bottom-right">
+      <% if (message) { %>
+      <div
+        class="alert alert-dismissible alert-<%= message.type %> fade show"
+        role="alert"
+        id="autoDismissAlert"
+      >
+        <strong>Attention! </strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
     </div>
-    <% } %> <%# Search bar %>
-    <input
-      class="form-control me-sm-2"
-      type="text"
-      id="searchInput"
-      placeholder="Search"
-      style="margin-bottom: 20px"
-    />
     <%# Folder Buttons %>
-    <h5 class="folder-title">Folders</h5>
-    <div class="role1folder-container">
-      <a href="#"
-        ><div class="role1folder-item item-active">
+    <h5 class="folder-title">Folders:</h5>
+    <div class="rolefolder-container">
+      <a href="#" data-target="all-files"
+        ><div class="rolefolder-item active">
           <i class="fa-regular fa-folder"></i>
           <p>All Files</p>
         </div></a
       >
-      <a href="/role2_docu"
-        ><div class="role1folder-item">
+      <a href="#" data-target="approved"
+        ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
-          <p>Individual Contributor</p>
-          <% if (role2directory_length > 0) { %>
+          <p>Approved</p>
+          <% if (approvedFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
-            ><%= role2directory_length %></span
+            ><%= approvedFiles.length %></span
           >
           <% } %>
         </div></a
       >
-      <a href="/role1_docu"
-        ><div class="role1folder-item">
+      <a href="#" data-target="pending"
+        ><div class="rolefolder-item">
           <i class="fa-regular fa-folder"></i>
-          <p>Entry-level</p>
-          <% if (role1directory_length > 0) { %>
+          <p>Pending</p>
+          <% if (pendingFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
-            ><%= role1directory_length %></span
+            ><%= pendingFiles.length %></span
           >
           <% } %>
         </div></a
       >
-      <a href="/rejected_docu"
-        ><div class="role1folder-item">
+      <a href="#" data-target="revision"
+        ><div class="rolefolder-item">
+          <i class="fa-regular fa-folder"></i>
+          <p>Revision</p>
+          <% if (revisionFiles.length > 0) { %>
+          <span class="badge rounded-pill bg-danger"
+            ><%= revisionFiles.length %></span
+          >
+          <% } %>
+        </div></a
+      >
+      <a href="#" data-target="rejected"
+        ><div class="rolefolder-item">
           <box-icon type="solid" name="x-square"></box-icon>
-          <p>Rejected Documents</p>
-          <% if (rejecteddirectory_length > 0) { %>
+          <p>Rejected Files</p>
+          <% if (rejectedFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
-            ><%= rejecteddirectory_length %></span
+            ><%= rejectedFiles.length %></span
           >
           <% } %>
         </div></a
       >
     </div>
-    <%# Filter %>
-    <h5 class="folder-title">Files</h5>
-    <div class="sortation-container">
-      <div
-        class="btn-group filter-radio"
-        role="group"
-        aria-label="Basic radio toggle button group"
-      >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio1"
-          autocomplete="off"
-          checked=""
-        />
-        <label
-          class="btn btn-secondary filter-btn"
-          for="btnradio1"
-          data-extension="all"
-          >All</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio2"
-          autocomplete="off"
-        />
-        <label
-          class="btn btn-secondary filter-btn"
-          for="btnradio2"
-          data-extension="pdf"
-          >PDF</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio3"
-          autocomplete="off"
-        />
-        <label
-          class="btn btn-secondary filter-btn"
-          for="btnradio3"
-          data-extension="docx"
-          >DOCX</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio4"
-          autocomplete="off"
-        />
-        <label
-          class="btn btn-secondary filter-btn"
-          for="btnradio4"
-          data-extension="excel"
-          >EXCEL</label
-        >
-      </div>
-      <div class="btn-group btn-group-toggle">
-        <button class="btn btn-secondary toggle-sort-btn">
-          <i class="fa-solid fa-arrow-up-a-z"></i>
-        </button>
-        <button class="btn btn-secondary sort-btn">
-          <i class="fa-solid fa-arrow-up-wide-short"></i>
-        </button>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <iframe
+          type="application/pdf"
+          id="pdfViewer"
+          src=""
+          width="100%"
+          height="100%"
+          frameborder="0"
+          toolbar="0"
+          scrollbar="0"
+        ></iframe>
+        <span id="enlargeButton" class="enlargeButton">Enlarge</span>
       </div>
     </div>
-    <p class="text-muted text-center mt-3 mb-4">
-      This list does not contain rejected files
-    </p>
-    <%# File list %>
-    <div class="sort-title mt-3" <% if (filesThisMonth.length == 0) { %>
-      style="display: none"
-    <% } %>>
-      <h5
-        class="collapse-title"
-        data-toggle="collapse"
-        data-target="#collapseThisMonth"
-      >
-        This Month <i class="fa-solid fa-caret-down"></i>
-      </h5>
+    <div id="all-files" class="content-div active">
+      <%- include('../../layouts/tables/allTable') -%>
     </div>
-    <div class="collapse show" id="collapseThisMonth" <% if (filesThisMonth.length == 0) { %>
-      style="display: none"
-    <% } %>>
-      <div class="page-container">
-        <% if (filesThisMonth.length > 0) { %> <% filesThisMonth.forEach(file =>
-        { %>
-        <div class="page-item">
-          <div class="card mb-3 file-card">
-            <div
-              class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
-            >
-              <span class="card-text"><%= file.name %></span>
-              <div class="dropdown options">
-                <button
-                  class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="fa-solid fa-caret-down"></i>
-                </button>
-                <div
-                  class="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <a
-                    href="#"
-                    style="color: black"
-                    class="dropdown-item btn-rename"
-                    data-file="<%= file.name %>"
-                    >Rename</a
-                  >
-                  <a
-                    href="/download/<%= file.name %>"
-                    style="color: black"
-                    class="dropdown-item"
-                    >Download File</a
-                  >
-                  <% if (file.name.endsWith('.docx')) { %>
-                  <a
-                    href="#"
-                    style="color: black"
-                    class="dropdown-item convert-link"
-                    data-filename="<%= file.name %>"
-                    >Convert</a
-                  >
-                  <% } %>
-                  <a
-                    href="#"
-                    style="color: red"
-                    class="dropdown-item btn-archive"
-                    data-file="<%= file.name %>"
-                    >Delete</a
-                  >
-                </div>
-              </div>
-            </div>
-            <a href="#" class="hover-div">
-              <!-- DIV to display different icons based on file extension -->
-              <% if (file.name.endsWith('.pdf')) { %>
-              <div class="file-preview" style="background-color: #680404">
-                PDF
-              </div>
-              <% } else if (file.name.endsWith('.docx')) { %>
-              <div class="file-preview" style="background-color: #00326b">
-                DOCX
-              </div>
-              <% } else if (file.name.endsWith('.xlsx')) { %>
-              <div class="file-preview" style="background-color: #006b12">
-                EXCEL
-              </div>
-              <% } else { %>
-              <!-- Default icon for other file types -->
-              <div class="file-preview" style="background-color: lightskyblue">
-                UNKNOWN
-              </div>
-              <% } %>
-              <div class="extra-info file-hr-role">
-                <% if (file.folder === "HR Director") { %>
-                        <span class="badge bg-primary">
-                        <% } else if (file.folder === "HR Manager") { %>
-                        <span class="badge bg-success"> 
-                        <% } else if (file.folder === "Individual Contributors") { %>
-                        <span class="badge bg-warning"> 
-                        <% } else if (file.folder === "Entry Level") { %>
-                        <span class="badge bg-danger"> 
-                        <% } else if (file.folder === "Rejected") { %>
-                        <span class="badge bg-dark"> 
-                    <% } %> </span><%= file.folder %>
-              </div>
-            </a>
-            <div><a class="card-footer card-options file-date"><%= file.mtime %></a></div>    
-          </div>
-        </div>
-        <% }); %> <% } else { %>
-        <p class="no-files">No files found.</p>
-        <% } %>
-      </div>
+    <div id="approved" class="content-div">
+      <%- include('../../layouts/tables/approvedTable') -%>
     </div>
-    <div class="sort-title" <% if (filesLastMonth.length == 0) { %>
-      style="display: none"
-    <% } %>>
-      <h5
-        class="collapse-title"
-        data-toggle="collapse"
-        data-target="#collapseLastMonth"
-      >
-        Last Month <i class="fa-solid fa-caret-down"></i>
-      </h5>
+    <div id="pending" class="content-div">
+      <%- include('../../layouts/tables/pendingTable') -%>
     </div>
-    <div class="collapse show" id="collapseLastMonth" <% if (filesLastMonth.length == 0) { %>
-      style="display: none"
-    <% } %>>
-      <div class="page-container">
-        <% if (filesLastMonth.length > 0) { %> <% filesLastMonth.forEach(file =>
-        { %>
-        <div class="page-item">
-          <div class="card mb-3 file-card">
-            <div
-              class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
-            >
-              <span class="card-text"><%= file.name %></span>
-              <div class="dropdown options">
-                <button
-                  class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="fa-solid fa-caret-down"></i>
-                </button>
-                <div
-                  class="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <a
-                    href="#"
-                    style="color: black"
-                    class="dropdown-item btn-rename"
-                    data-file="<%= file.name %>"
-                    >Rename</a
-                  >
-                  <a
-                    href="/download/<%= file.name %>"
-                    style="color: black"
-                    class="dropdown-item"
-                    >Download File</a
-                  >
-                  <% if (file.name.endsWith('.docx')) { %>
-                  <a
-                    href="#"
-                    style="color: black"
-                    class="dropdown-item convert-link"
-                    data-filename="<%= file.name %>"
-                    >Convert</a
-                  >
-                  <% } %>
-                  <a
-                    href="#"
-                    style="color: red"
-                    class="dropdown-item btn-archive"
-                    data-file="<%= file.name %>"
-                    >Delete</a
-                  >
-                </div>
-              </div>
-            </div>
-            <a href="#" class="hover-div">
-              <!-- DIV to display different icons based on file extension -->
-              <% if (file.name.endsWith('.pdf')) { %>
-              <div class="file-preview" style="background-color: #680404">
-                PDF
-              </div>
-              <% } else if (file.name.endsWith('.docx')) { %>
-              <div class="file-preview" style="background-color: #00326b">
-                DOCX
-              </div>
-              <% } else if (file.name.endsWith('.xlsx')) { %>
-              <div class="file-preview" style="background-color: #006b12">
-                EXCEL
-              </div>
-              <% } else { %>
-              <!-- Default icon for other file types -->
-              <div class="file-preview" style="background-color: lightskyblue">
-                UNKNOWN
-              </div>
-              <% } %>
-              <div class="extra-info file-hr-role">
-                <% if (file.folder === "HR Director") { %>
-                        <span class="badge bg-primary">
-                        <% } else if (file.folder === "HR Manager") { %>
-                        <span class="badge bg-success"> 
-                        <% } else if (file.folder === "Individual Contributors") { %>
-                        <span class="badge bg-warning"> 
-                        <% } else if (file.folder === "Entry Level") { %>
-                        <span class="badge bg-danger"> 
-                        <% } else if (file.folder === "Rejected") { %>
-                        <span class="badge bg-dark"> 
-                    <% } %> </span><%= file.folder %>
-              </div>
-            </a>
-            <a class="card-footer card-options file-date"><%= file.mtime %></a>
-          </div>
-        </div>
-        <% }); %> <% } else { %>
-        <p class="no-files">No files received last month.</p>
-        <% } %>
-      </div>
+    <div id="revision" class="content-div">
+      <%- include('../../layouts/tables/revisionTable') -%>
     </div>
-    <div class="sort-title" <% if (filesLastTwoMonths.length == 0) { %>
-      style="display: none"
-    <% } %>>
-      <h5
-        class="collapse-title"
-        data-toggle="collapse"
-        data-target="#collapseTwoMonth"
-      >
-        Last 2 Months <i class="fa-solid fa-caret-down"></i>
-      </h5>
-    </div>
-    <div class="collapse show" id="collapseTwoMonth" <% if (filesLastTwoMonths.length == 0) { %>
-      style="display: none"
-    <% } %>>
-      <div class="page-container">
-        <% if (filesLastTwoMonths.length > 0) { %> <%
-        filesLastTwoMonths.forEach(file => { %>
-        <div class="page-item">
-          <div class="card mb-3 file-card">
-            <div
-              class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
-            >
-              <span class="card-text"><%= file.name %></span>
-              <div class="dropdown options">
-                <button
-                  class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="fa-solid fa-caret-down"></i>
-                </button>
-                <div
-                  class="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <a
-                    href="#"
-                    style="color: black"
-                    class="dropdown-item btn-rename"
-                    data-file="<%= file.name %>"
-                    >Rename</a
-                  >
-                  <a
-                    href="/download/<%= file.name %>"
-                    style="color: black"
-                    class="dropdown-item"
-                    >Download File</a
-                  >
-                  <% if (file.name.endsWith('.docx')) { %>
-                  <a
-                    href="#"
-                    style="color: black"
-                    class="dropdown-item convert-link"
-                    data-filename="<%= file.name %>"
-                    >Convert</a
-                  >
-                  <% } %>
-                  <a
-                    href="#"
-                    style="color: red"
-                    class="dropdown-item btn-archive"
-                    data-file="<%= file.name %>"
-                    >Delete</a
-                  >
-                </div>
-              </div>
-            </div>
-            <a href="#" class="hover-div">
-              <!-- DIV to display different icons based on file extension -->
-              <% if (file.name.endsWith('.pdf')) { %>
-              <div class="file-preview" style="background-color: #680404">
-                PDF
-              </div>
-              <% } else if (file.name.endsWith('.docx')) { %>
-              <div class="file-preview" style="background-color: #00326b">
-                DOCX
-              </div>
-              <% } else if (file.name.endsWith('.xlsx')) { %>
-              <div class="file-preview" style="background-color: #006b12">
-                EXCEL
-              </div>
-              <% } else { %>
-              <!-- Default icon for other file types -->
-              <div class="file-preview" style="background-color: lightskyblue">
-                UNKNOWN
-              </div>
-              <% } %>
-              <div class="extra-info file-hr-role">
-                <% if (file.folder === "HR Director") { %>
-                        <span class="badge bg-primary">
-                        <% } else if (file.folder === "HR Manager") { %>
-                        <span class="badge bg-success"> 
-                        <% } else if (file.folder === "Individual Contributors") { %>
-                        <span class="badge bg-warning"> 
-                        <% } else if (file.folder === "Entry Level") { %>
-                        <span class="badge bg-danger"> 
-                        <% } else if (file.folder === "Rejected") { %>
-                        <span class="badge bg-dark"> 
-                    <% } %> </span><%= file.folder %>
-              </div>
-            </a>
-            <a class="card-footer card-options file-date"><%= file.mtime %></a>
-          </div>
-        </div>
-        <% }); %> <% } else { %>
-        <p class="no-files">No files received this past 2 months.</p>
-        <% } %>
-      </div>
-    </div>
-    <div class="sort-title" <% if (filesLastThreeMonths.length == 0) { %>
-      style="display: none"
-    <% } %>>
-      <h5
-        class="collapse-title"
-        data-toggle="collapse"
-        data-target="#collapseThreeMonth"
-      >
-        Last 3 Months <i class="fa-solid fa-caret-down"></i>
-      </h5>
-    </div>
-    <div class="collapse show" id="collapseThreeMonth" <% if (filesLastThreeMonths.length == 0) { %>
-      style="display: none"
-    <% } %>>
-      <div class="page-container">
-        <% if (filesLastThreeMonths.length > 0) { %> <%
-        filesLastThreeMonths.forEach(file => { %>
-        <div class="page-item">
-          <div class="card mb-3 file-card">
-            <div
-              class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
-            >
-              <span class="card-text"><%= file.name %></span>
-              <div class="dropdown options">
-                <button
-                  class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="fa-solid fa-caret-down"></i>
-                </button>
-                <div
-                  class="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <a
-                    href="#"
-                    style="color: black"
-                    class="dropdown-item btn-rename"
-                    data-file="<%= file.name %>"
-                    >Rename</a
-                  >
-                  <a
-                    href="/download/<%= file.name %>"
-                    style="color: black"
-                    class="dropdown-item"
-                    >Download File</a
-                  >
-                  <% if (file.name.endsWith('.docx')) { %>
-                  <a
-                    href="#"
-                    style="color: black"
-                    class="dropdown-item convert-link"
-                    data-filename="<%= file.name %>"
-                    >Convert</a
-                  >
-                  <% } %>
-                  <a
-                    href="#"
-                    style="color: red"
-                    class="dropdown-item btn-archive"
-                    data-file="<%= file.name %>"
-                    >Delete</a
-                  >
-                </div>
-              </div>
-            </div>
-            <a href="#" class="hover-div">
-              <!-- DIV to display different icons based on file extension -->
-              <% if (file.name.endsWith('.pdf')) { %>
-              <div class="file-preview" style="background-color: #680404">
-                PDF
-              </div>
-              <% } else if (file.name.endsWith('.docx')) { %>
-              <div class="file-preview" style="background-color: #00326b">
-                DOCX
-              </div>
-              <% } else if (file.name.endsWith('.xlsx')) { %>
-              <div class="file-preview" style="background-color: #006b12">
-                EXCEL
-              </div>
-              <% } else { %>
-              <!-- Default icon for other file types -->
-              <div class="file-preview" style="background-color: lightskyblue">
-                UNKNOWN
-              </div>
-              <% } %>
-              <div class="extra-info file-hr-role">
-                <% if (file.folder === "HR Director") { %>
-                        <span class="badge bg-primary">
-                        <% } else if (file.folder === "HR Manager") { %>
-                        <span class="badge bg-success"> 
-                        <% } else if (file.folder === "Individual Contributors") { %>
-                        <span class="badge bg-warning"> 
-                        <% } else if (file.folder === "Entry Level") { %>
-                        <span class="badge bg-danger"> 
-                        <% } else if (file.folder === "Rejected") { %>
-                        <span class="badge bg-dark"> 
-                    <% } %> </span><%= file.folder %>
-              </div>
-            </a>
-            <a class="card-footer card-options file-date"><%= file.mtime %></a>
-          </div>
-        </div>
-        <% }); %> <% } else { %>
-        <p class="no-files">No files received this past 3 months.</p>
-        <% } %>
-      </div>
-    </div>
-    <div class="sort-title" <% if (filesOlderThanThreeMonths.length == 0) { %>
-      style="display: none"
-    <% } %>>
-      <h5
-        class="collapse-title"
-        data-toggle="collapse"
-        data-target="#collapseOlderThanThreeMonths"
-      >
-        Older than 3 Months <i class="fa-solid fa-caret-down"></i>
-      </h5>
-    </div>
-    <div class="collapse show" id="collapseOlderThanThreeMonths" <% if (filesOlderThanThreeMonths.length == 0) { %>
-      style="display: none"
-    <% } %>>
-      <div class="page-container">
-        <% if (filesOlderThanThreeMonths.length > 0) { %> <%
-        filesOlderThanThreeMonths.forEach(file => { %>
-        <div class="page-item">
-          <div class="card mb-3 file-card">
-            <div
-              class="card-header card-options card-header-options card-header-font d-flex justify-content-between align-items-center"
-            >
-              <span class="card-text"><%= file.name %></span>
-              <div class="dropdown options">
-                <button
-                  class="btn btn-secondary dropdown-toggle no-caret bg-nobg options"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="fa-solid fa-caret-down"></i>
-                </button>
-                <div
-                  class="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <a
-                    href="#"
-                    style="color: black"
-                    class="dropdown-item btn-rename"
-                    data-file="<%= file.name %>"
-                    >Rename</a
-                  >
-                  <a
-                    href="/download/<%= file.name %>"
-                    style="color: black"
-                    class="dropdown-item"
-                    >Download File</a
-                  >
-                  <% if (file.name.endsWith('.docx')) { %>
-                  <a
-                    href="#"
-                    style="color: black"
-                    class="dropdown-item convert-link"
-                    data-filename="<%= file.name %>"
-                    >Convert</a
-                  >
-                  <% } %>
-                  <a
-                    href="#"
-                    style="color: red"
-                    class="dropdown-item btn-archive"
-                    data-file="<%= file.name %>"
-                    >Delete</a
-                  >
-                </div>
-              </div>
-            </div>
-            <a href="#" class="hover-div">
-              <!-- DIV to display different icons based on file extension -->
-              <% if (file.name.endsWith('.pdf')) { %>
-              <div class="file-preview" style="background-color: #680404">
-                PDF
-              </div>
-              <% } else if (file.name.endsWith('.docx')) { %>
-              <div class="file-preview" style="background-color: #00326b">
-                DOCX
-              </div>
-              <% } else if (file.name.endsWith('.xlsx')) { %>
-              <div class="file-preview" style="background-color: #006b12">
-                EXCEL
-              </div>
-              <% } else { %>
-              <!-- Default icon for other file types -->
-              <div class="file-preview" style="background-color: lightskyblue">
-                UNKNOWN
-              </div>
-              <% } %>
-              <div class="extra-info file-hr-role">
-                <% if (file.folder === "HR Director") { %>
-                        <span class="badge bg-primary">
-                        <% } else if (file.folder === "HR Manager") { %>
-                        <span class="badge bg-success"> 
-                        <% } else if (file.folder === "Individual Contributors") { %>
-                        <span class="badge bg-warning"> 
-                        <% } else if (file.folder === "Entry Level") { %>
-                        <span class="badge bg-danger"> 
-                        <% } else if (file.folder === "Rejected") { %>
-                        <span class="badge bg-dark"> 
-                    <% } %> </span><%= file.folder %>
-              </div>
-            </a>
-            <a class="card-footer card-options file-date"><%= file.mtime %></a>
-          </div>
-        </div>
-        <% }); %> <% } else { %>
-        <p class="no-files">No files received this past 3 months.</p>
-        <% } %>
-      </div>
-    </div>
-  </div>
-  <!-- PDF Modal-->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <iframe
-        type="application/pdf"
-        id="pdfViewer"
-        src=""
-        width="100%"
-        height="100%"
-        frameborder="0"
-        toolbar="0"
-        scrollbar="0"
-      ></iframe>
-      <span id="enlargeButton" class="enlargeButton">Enlarge</span>
+    <div id="rejected" class="content-div">
+      <%- include('../../layouts/tables/rejectedTable') %>
     </div>
   </div>
 </body>
-<%- include('../../layouts/footer') -%>
-<!-- Rename Modal -->
-<div class="modal" id="renameModal">
-  <div class="modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Enter the new file name:</h5>
-      </div>
-      <div class="modal-body">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" id="newFileNameInput" />
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="renameBtn">
-          Save changes
-        </button>
-        <button
-          type="button"
-          id="closerename"
-          class="btn btn-secondary"
-          data-bs-dismiss="modal"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+  <%- include('../../layouts/footer') -%>
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll(".rolefolder-container a");
+    const contentDivs = document.querySelectorAll(".content-div");
+
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const targetId = link.getAttribute("data-target");
+
+        // Remove active class from all rolefolder items
+        links.forEach((l) =>
+          l.querySelector(".rolefolder-item").classList.remove("active")
+        );
+
+        // Add active class to the clicked rolefolder item
+        link.querySelector(".rolefolder-item").classList.add("active");
+
+        // Hide all content divs and show the targeted one
+        contentDivs.forEach((div) => {
+          div.classList.remove("active");
+          if (div.id === targetId) {
+            div.classList.add("active");
+          }
+        });
+      });
+    });
+  });
+</script>

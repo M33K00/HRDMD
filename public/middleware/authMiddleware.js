@@ -63,12 +63,17 @@ const checkRoleHR = (req, res, next) => {
   } else if (user.hrrole === "ROLE 2") {
     res.redirect("/role2");
   } else if (user.hrrole === "ROLE 3") {
-     res.redirect("/role3");
+    res.redirect("/role3");
   } else if (user.hrrole === "ROLE 4") {
     res.redirect("/role4");
   } else {
     next();
   }
-}
+};
 
-module.exports = { requireAuth, checkUser, checkRole, checkRoleHR };
+module.exports = {
+  requireAuth,
+  checkUser,
+  checkRole,
+  checkRoleHR,
+};

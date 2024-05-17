@@ -38,7 +38,9 @@ router.get("/home", checkRole, async (request, response) => {
     const totalSubmittedFiles = await SubmittedFiles.countDocuments();
     const totalPages = Math.ceil(totalSubmittedFiles / pageSize);
     // Fetch all submitted files and sort by dateSubmitted in descending order
-    const submittedFiles = await SubmittedFiles.find()
+    const submittedFiles = await SubmittedFiles.find({
+      fileType: "non-confidential",
+    })
       .sort({
         dateSubmitted: -1,
       })
@@ -292,7 +294,9 @@ router.get("/statusboard", async (req, res) => {
     const page = parseInt(req.query.page) || 1; // Current page number, default to 1
     const totalItems = await SubmittedFiles.countDocuments(); // Total number of items
 
-    const submittedFiles = await SubmittedFiles.find()
+    const submittedFiles = await SubmittedFiles.find({
+      fileType: "non-confidential",
+    })
       .sort({ dateSubmitted: -1 }) // Sort by dateSubmitted in descending order
       .skip((page - 1) * ITEMS_PER_PAGE) // Skip items based on current page
       .limit(ITEMS_PER_PAGE); // Limit the number of items per page
@@ -393,8 +397,6 @@ router.use(
   express.static(path.join(__dirname, "../../files/role1"))
 );
 
-// Route to download files
-
 // Function to retrieve the list of files in the documents directory
 function getFileList(callback) {
   const directoryPath = path.join(__dirname, "../../files/documents");
@@ -408,10 +410,51 @@ function getFileList(callback) {
   });
 }
 
-router.get("/download/:fileName", (request, response) => {
-  const fileName = request.params.fileName;
-  const filePath = path.join(__dirname, "../../files/documents", fileName);
-  response.download(filePath);
+router.get("/download/:id", async (request, response) => {
+  try {
+    const id = request.params.id;
+
+    const submittedFiles = await SubmittedFiles.findById(id);
+
+    if (!submittedFiles) {
+      request.session.message = {
+        type: "danger",
+        message: "File not found!",
+      };
+      return response.redirect("/home");
+    }
+
+    const fileUpload = submittedFiles.fileUpload;
+
+    if (!fileUpload) {
+      request.session.message = {
+        type: "danger",
+        message: "No File Attached!",
+      };
+      return response.redirect("/home");
+    }
+
+    const filePath = path.join(__dirname, "../../files/documents", fileUpload);
+
+    // Ensure the file exists before attempting to download
+    const fs = require("fs");
+    if (fs.existsSync(filePath)) {
+      response.download(filePath);
+    } else {
+      request.session.message = {
+        type: "danger",
+        message: "File does not exist on the server!",
+      };
+      response.redirect("/home");
+    }
+  } catch (error) {
+    console.error(error);
+    request.session.message = {
+      type: "danger",
+      message: "An error occurred while processing your request.",
+    };
+    response.redirect("/home");
+  }
 });
 
 router.get("/delete", (req, res) => {
@@ -796,6 +839,130 @@ router.get("/view_file/:id", async (req, res) => {
     }
 
     res.render("DTRACKER/view_file", { file });
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+});
+
+router.get("/approve-file/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const file = await SubmittedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "File not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
+
+    file.status = "APPROVED";
+    await file.save();
+
+    req.session.message = {
+      type: "success",
+      message: "File Approved Successfully",
+    };
+    res.redirect("/view_file/" + id);
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+});
+
+router.get("/reject-file/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const file = await SubmittedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "File not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
+
+    file.status = "REJECTED";
+    await file.save();
+
+    req.session.message = {
+      type: "danger",
+      message: "File Approved Successfully",
+    };
+    res.redirect("/view_file/" + id);
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+});
+
+router.get("/revision-file/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const file = await SubmittedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "File not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
+
+    file.status = "REVISION";
+    await file.save();
+
+    req.session.message = {
+      type: "dark",
+      message: "File Approved Successfully",
+    };
+    res.redirect("/view_file/" + id);
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+});
+
+router.get("/pending-file/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const file = await SubmittedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "File not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
+
+    file.status = "PENDING";
+    await file.save();
+
+    req.session.message = {
+      type: "warning",
+      message: "File Approved Successfully",
+    };
+    res.redirect("/view_file/" + id);
   } catch (error) {
     req.session.message = {
       type: "danger",
