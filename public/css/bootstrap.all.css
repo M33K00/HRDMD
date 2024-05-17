@@ -814,3 +814,10 @@
   align-items: center;
   justify-content: center;
 }
+
+.img-icon {
+  width: 15px;
+  margin-right: 5px;
+  align-items: center;
+  justify-content: center;
+}

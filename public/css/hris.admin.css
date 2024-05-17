@@ -294,7 +294,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 250px 350px 300px 1fr; /* Grid with 3 columns */
+  grid-template-columns: 250px 380px 300px 1fr; /* Grid with 3 columns */
   gap: 5px; /* Gap between grid items */
 }
 
@@ -340,6 +340,7 @@
 .account-column-2 h3 {
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
 }
 
 .button-container {
@@ -519,3 +520,24 @@
   border-color: #000000;
 }
 
+.status-icon {
+  display: flex;
+  justify-content: center;
+  border: #cfcfcf solid 2px;
+  width: 200px;
+  background-color: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.status-icon span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-right: 5px;
+}

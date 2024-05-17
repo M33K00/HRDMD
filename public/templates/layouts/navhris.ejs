@@ -55,6 +55,17 @@
             >
             <% } %>
           </li>
+          <% if (user.hrrole === "ADMIN") { %>
+          <li>
+            <a
+              href="<%= user.hrrole === 'ADMIN' ? '/view_emp_data/' + user._id : '#' %>"
+              ><img
+                src="../images/svg/lock-solid.svg"
+                class="img-icon"
+              />Confidential Files</a
+            >
+          </li>
+          <% } %>
           <li>
             <a
               href="<%= user.hrrole === 'ADMIN' ? '/view_emp_data/' + user._id : '#' %>"

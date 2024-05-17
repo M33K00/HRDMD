@@ -44,17 +44,6 @@ const logInSchema = new mongoose.Schema({
       message: "department cannot be empty",
     },
   },
-  position: {
-    type: String,
-    default: "NOPOS",
-    validate: {
-      validator: function (value) {
-        // Custom validation function to allow null or non-empty values
-        return value !== "";
-      },
-      message: "position cannot be empty",
-    },
-  },
   hrrole: {
     type: String,
     default: "NOROLE", // Set default value to "NOROLE"

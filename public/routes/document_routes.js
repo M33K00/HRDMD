@@ -48,26 +48,91 @@ router.get("/home", checkRole, async (request, response) => {
       .limit(pageSize);
 
     // Fetch pending files and sort by dateSubmitted in descending order
-    const pendingFiles = await SubmittedFiles.find({ status: "PENDING" }).sort({
+    const pendingFiles = await SubmittedFiles.find({
+      status: "PENDING",
+      fileType: "non-confidential",
+    }).sort({
       dateSubmitted: -1,
     });
 
     // Fetch approved files and sort by dateSubmitted in descending order
     const approvedFiles = await SubmittedFiles.find({
       status: "APPROVED",
+      fileType: "non-confidential",
     }).sort({ dateSubmitted: -1 });
 
     // Fetch rejected files and sort by dateSubmitted in descending order
     const rejectedFiles = await SubmittedFiles.find({
       status: "REJECTED",
+      fileType: "non-confidential",
     }).sort({ dateSubmitted: -1 });
 
     // Fetch revision files and sort by dateSubmitted in descending order
     const revisionFiles = await SubmittedFiles.find({
       status: "REVISION",
+      fileType: "non-confidential",
     }).sort({ dateSubmitted: -1 });
 
     response.render("home", {
+      submittedFiles,
+      currentPage,
+      totalPages,
+      pendingFiles,
+      approvedFiles,
+      rejectedFiles,
+      revisionFiles,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+    response.status(500).send("Internal Server Error");
+  }
+});
+
+// Confidential Files
+router.get("/confidential", checkRole, async (request, response) => {
+  const currentPage = parseInt(request.query.page) || 1;
+  const pageSize = 10;
+
+  try {
+    const totalSubmittedFiles = await SubmittedFiles.countDocuments();
+    const totalPages = Math.ceil(totalSubmittedFiles / pageSize);
+    // Fetch all submitted files and sort by dateSubmitted in descending order
+    const submittedFiles = await SubmittedFiles.find({
+      fileType: "confidential",
+    })
+      .sort({
+        dateSubmitted: -1,
+      })
+      .skip((currentPage - 1) * pageSize)
+      .limit(pageSize);
+
+    // Fetch pending files and sort by dateSubmitted in descending order
+    const pendingFiles = await SubmittedFiles.find({
+      status: "PENDING",
+      fileType: "confidential",
+    }).sort({
+      dateSubmitted: -1,
+    });
+
+    // Fetch approved files and sort by dateSubmitted in descending order
+    const approvedFiles = await SubmittedFiles.find({
+      status: "APPROVED",
+      fileType: "confidential",
+    }).sort({ dateSubmitted: -1 });
+
+    // Fetch rejected files and sort by dateSubmitted in descending order
+    const rejectedFiles = await SubmittedFiles.find({
+      status: "REJECTED",
+      fileType: "confidential",
+    }).sort({ dateSubmitted: -1 });
+
+    // Fetch revision files and sort by dateSubmitted in descending order
+    const revisionFiles = await SubmittedFiles.find({
+      status: "REVISION",
+      fileType: "confidential",
+    }).sort({ dateSubmitted: -1 });
+
+    response.render("confidential", {
       submittedFiles,
       currentPage,
       totalPages,

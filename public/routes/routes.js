@@ -94,6 +94,101 @@ router.post("/addacc", upload, async (req, res) => {
   }
 });
 
+router.post("/add_employee", upload, async (req, res) => {
+  try {
+    console.log(req.body);
+
+    let hashedPassword = req.body.password;
+    if (req.body.password) {
+      // Generate a salt and hash the new password
+      const salt = await bcrypt.genSalt();
+      hashedPassword = await bcrypt.hash(req.body.password, salt);
+    }
+
+    const parsedBirthday = new Date(req.body.birthday);
+
+    const data = {
+      name: req.body.name,
+      birthday: parsedBirthday,
+      contact: req.body.contact,
+      email: req.body.email,
+      password: hashedPassword, // Use the hashed password here
+      department: req.body.department,
+      hrrole: req.body.hrrole,
+      image: req.file.filename,
+    };
+
+    const dayOff = req.body.dayOff; // Array of day off strings like ["Sunday", "Monday"]
+
+    const isDayOff = (date) => {
+      const day = date.toLocaleString("en-US", { weekday: "long" });
+      return dayOff.includes(day);
+    };
+
+    // Calculate the next cutoff date based on pay schedule
+    const calculateNextCutoffDate = (initialDate, workingDaysRequired) => {
+      let date = new Date(initialDate);
+      let workingDaysCount = 0;
+
+      while (workingDaysCount < workingDaysRequired) {
+        date.setDate(date.getDate() + 1); // Move to the next day
+        if (!isDayOff(date)) {
+          workingDaysCount++; // Increment the working days count only if it's not a day off
+        }
+      }
+      return date;
+    };
+
+    let nextCutoffDate;
+    const cutoffDate = new Date(req.body.cutoffDate); // Assuming cutoffDate comes from req.body
+    if (req.body.paySched === "Bi-Weekly") {
+      nextCutoffDate = calculateNextCutoffDate(cutoffDate, 15);
+    } else if (req.body.paySched === "Monthly") {
+      nextCutoffDate = calculateNextCutoffDate(cutoffDate, 31);
+    } else if (req.body.paySched === "Weekly") {
+      nextCutoffDate = calculateNextCutoffDate(cutoffDate, 7);
+    }
+
+    const adata = {
+      name: req.body.name,
+      paySched: req.body.paySched,
+      dayOff: dayOff,
+      cutoffDate: cutoffDate,
+      nextCutoffDate: nextCutoffDate,
+    };
+
+    // Insert data into the LogInCollection
+    await LogInCollection.insertMany([data]);
+
+    // Update the user's document with the new data from adata
+    await Attendance.updateOne(
+      { email: req.body.email }, // Find the document to update
+      { $set: adata }, // Set the new data
+      { new: true, upsert: true } // Ensure document is created if it doesn't exist
+    );
+
+    // Set success message in session
+    req.session.message = {
+      type: "success",
+      message: "User added successfully",
+    };
+
+    // Redirect to manage_accounts page
+    return res.redirect("/view_employees");
+  } catch (error) {
+    console.error(error);
+
+    // Set error message in session
+    req.session.message = {
+      type: "error",
+      message: error.message,
+    };
+
+    // Redirect to the previous page or an error page
+    return res.redirect("/view_employees");
+  }
+});
+
 // View a user
 router.get("/view/:id", async (req, res) => {
   try {
@@ -184,96 +279,62 @@ router.post("/update/:id", upload, async (req, res) => {
       : [req.body.dayOff];
 
     // Calculate Next Cutoff Date// Parse inputs from request body
+    let nextCutoffDate;
 
-    console.log("Req Body:", req.body);
+    if (req.body.paySched) {
+      // Parse inputs from request body
+      const cutoffDate = new Date(req.body.cutoffDate);
+      const dayOff = req.body.dayOff; // Array of day off strings like ["Sunday", "Monday"]
 
-    if (req.params.paySched) {
-      let nextCutoffDate; // Declare nextCutoffDate outside of any blocks
+      // Function to check if a date is a day off
+      const isDayOff = (date) => {
+        const day = date.toLocaleString("en-US", { weekday: "long" });
+        return dayOff.includes(day);
+      };
+
+      // Calculate the next cutoff date based on pay schedule
+      const calculateNextCutoffDate = (initialDate, workingDaysRequired) => {
+        let date = new Date(initialDate);
+        let workingDaysCount = 0;
+
+        while (workingDaysCount < workingDaysRequired) {
+          date.setDate(date.getDate() + 1); // Move to the next day
+          if (!isDayOff(date)) {
+            workingDaysCount++; // Increment the working days count only if it's not a day off
+          }
+        }
+        return date;
+      };
 
       if (req.body.paySched === "Bi-Weekly") {
-        // Parse inputs from request body
-        const cutoffDate = new Date(req.body.cutoffDate);
-        const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
-
-        // Function to check if a date is a day off
-        const isDayOff = (date) => {
-          const day = date.toLocaleString("en-US", { weekday: "long" });
-          return dayOff.includes(day);
-        };
-
-        // Calculate the next cutoff date with 15 working days
-        nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
-        let workingDaysCount = 0;
-
-        while (workingDaysCount < 15) {
-          nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
-          if (!isDayOff(nextCutoffDate)) {
-            workingDaysCount++; // Increment the working days count only if it's not a day off
-          }
-        }
+        nextCutoffDate = calculateNextCutoffDate(cutoffDate, 15);
       } else if (req.body.paySched === "Monthly") {
-        const cutoffDate = new Date(req.body.cutoffDate);
-        const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
-
-        // Function to check if a date is a day off
-        const isDayOff = (date) => {
-          const day = date.toLocaleString("en-US", { weekday: "long" });
-          return dayOff.includes(day);
-        };
-
-        // Calculate the next cutoff date with 15 working days
-        nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
-        let workingDaysCount = 0;
-
-        while (workingDaysCount < 31) {
-          nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
-          if (!isDayOff(nextCutoffDate)) {
-            workingDaysCount++; // Increment the working days count only if it's not a day off
-          }
-        }
+        nextCutoffDate = calculateNextCutoffDate(cutoffDate, 31);
       } else if (req.body.paySched === "Weekly") {
-        const cutoffDate = new Date(req.body.cutoffDate);
-        const dayOff = req.body.dayOff; // Array of day off strings like ["Tuesday", "Wednesday"]
-
-        // Function to check if a date is a day off
-        const isDayOff = (date) => {
-          const day = date.toLocaleString("en-US", { weekday: "long" });
-          return dayOff.includes(day);
-        };
-
-        // Calculate the next cutoff date with 15 working days
-        nextCutoffDate = new Date(cutoffDate); // Start with the provided cutoff date
-        let workingDaysCount = 0;
-
-        while (workingDaysCount < 7) {
-          nextCutoffDate.setDate(nextCutoffDate.getDate() + 1); // Move to the next day
-          if (!isDayOff(nextCutoffDate)) {
-            workingDaysCount++; // Increment the working days count only if it's not a day off
-          }
-        }
+        nextCutoffDate = calculateNextCutoffDate(cutoffDate, 7);
       }
-      console.log(nextCutoffDate); // Next cutoff date after calculation
-    }
+      // Create the adata object
+      const adata = {
+        paySched: req.body.paySched,
+        dayOff: dayOffArray,
+        cutoffDate: req.body.cutoffDate,
+        nextCutoffDate: nextCutoffDate,
+      };
 
-    const adata = {
-      paySched: req.body.paySched,
-      dayOff: dayOffArray,
-      cutoffDate: req.body.cutoffDate,
-    };
+      // Update the user's document with the new data from adata
+      const updateAttendance = await Attendance.findOneAndUpdate(
+        { email: userLogin.email }, // Find the document to update
+        { $set: adata }, // Set the new data
+        { new: true } // Return the updated document
+      );
 
-    if (nextCutoffDate) {
-      adata.nextCutoffDate = req.body.nextCutoffDate;
-    }
+      if (!updateAttendance) {
+        throw new Error("Attendance document not found");
+      }
 
-    // Update the user's document with the new data from adata
-    const updateAttendance = await Attendance.findOneAndUpdate(
-      { email: userLogin.email }, // Find the document to update
-      { $set: adata }, // Set the new data
-      { new: true } // Return the updated document
-    );
-
-    if (!updateAttendance) {
-      throw new Error("Attendance document not found");
+      console.log("adata object:", adata); // Log the adata object
+    } else {
+      console.log("No pay schedule provided in request.");
     }
 
     if (req.file) {

@@ -1,0 +1,169 @@
+<%- include('./layouts/header') -%>
+<body>
+  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
+  <div class="page-body">
+    <div class="page-name">
+      <h2>
+        Document Tracker: <strong class="text-danger">CONFIDENTIAL</strong>
+      </h2>
+      <a class="btn btn-primary" href="/submitfile">ADD Document</a>
+    </div>
+    <div id="alertContainer" class="bottom-right">
+      <% if (message) { %>
+      <div
+        class="alert alert-dismissible alert-<%= message.type %> fade show"
+        role="alert"
+        id="autoDismissAlert"
+      >
+        <strong>Attention! </strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
+    </div>
+    <%# Folder Buttons %>
+    <h5 class="folder-title">Folders:</h5>
+    <div class="rolefolder-container">
+      <a href="#" data-target="all-files"
+        ><div class="rolefolder-item active">
+          <i class="fa-regular fa-folder"></i>
+          <p>All Files</p>
+        </div></a
+      >
+      <a href="#" data-target="approved"
+        ><div class="rolefolder-item">
+          <i class="fa-regular fa-folder"></i>
+          <p>Approved</p>
+          <% if (approvedFiles.length > 0) { %>
+          <span class="badge rounded-pill bg-danger"
+            ><%= approvedFiles.length %></span
+          >
+          <% } %>
+        </div></a
+      >
+      <a href="#" data-target="pending"
+        ><div class="rolefolder-item">
+          <i class="fa-regular fa-folder"></i>
+          <p>Pending</p>
+          <% if (pendingFiles.length > 0) { %>
+          <span class="badge rounded-pill bg-danger"
+            ><%= pendingFiles.length %></span
+          >
+          <% } %>
+        </div></a
+      >
+      <a href="#" data-target="revision"
+        ><div class="rolefolder-item">
+          <i class="fa-regular fa-folder"></i>
+          <p>Revision</p>
+          <% if (revisionFiles.length > 0) { %>
+          <span class="badge rounded-pill bg-danger"
+            ><%= revisionFiles.length %></span
+          >
+          <% } %>
+        </div></a
+      >
+      <a href="#" data-target="rejected"
+        ><div class="rolefolder-item">
+          <box-icon type="solid" name="x-square"></box-icon>
+          <p>Rejected Files</p>
+          <% if (rejectedFiles.length > 0) { %>
+          <span class="badge rounded-pill bg-danger"
+            ><%= rejectedFiles.length %></span
+          >
+          <% } %>
+        </div></a
+      >
+    </div>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <iframe
+          type="application/pdf"
+          id="pdfViewer"
+          src=""
+          width="100%"
+          height="100%"
+          frameborder="0"
+          toolbar="0"
+          scrollbar="0"
+        ></iframe>
+        <span id="enlargeButton" class="enlargeButton">Enlarge</span>
+      </div>
+    </div>
+    <div id="all-files" class="content-div active">
+      <%- include('./layouts/tables/allTable') -%>
+    </div>
+    <div id="approved" class="content-div">
+      <%- include('./layouts/tables/approvedTable') -%>
+    </div>
+    <div id="pending" class="content-div">
+      <%- include('./layouts/tables/pendingTable') -%>
+    </div>
+    <div id="revision" class="content-div">
+      <%- include('./layouts/tables/revisionTable') -%>
+    </div>
+    <div id="rejected" class="content-div">
+      <%- include('./layouts/tables/rejectedTable') %>
+    </div>
+  </div>
+</body>
+<%- include('./layouts/footer') -%>
+<!-- Rename Modal -->
+<div class="modal" id="renameModal">
+  <div class="modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Enter the new file name:</h5>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="newFileNameInput" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="renameBtn">
+          Save changes
+        </button>
+        <button
+          type="button"
+          id="closerename"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll(".rolefolder-container a");
+    const contentDivs = document.querySelectorAll(".content-div");
+
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const targetId = link.getAttribute("data-target");
+
+        // Remove active class from all rolefolder items
+        links.forEach((l) =>
+          l.querySelector(".rolefolder-item").classList.remove("active")
+        );
+
+        // Add active class to the clicked rolefolder item
+        link.querySelector(".rolefolder-item").classList.add("active");
+
+        // Hide all content divs and show the targeted one
+        contentDivs.forEach((div) => {
+          div.classList.remove("active");
+          if (div.id === targetId) {
+            div.classList.add("active");
+          }
+        });
+      });
+    });
+  });
+</script>

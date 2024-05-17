@@ -22,7 +22,15 @@
           logincollections.birthday.toISOString().split('T')[0] %>
         </p>
         <p><b>Department:</b> <%= logincollections.department %></p>
-        <p><b>HR Role:</b> <%= logincollections.hrrole %></p>
+        <p>
+          <b>Position:</b>
+          <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
+          else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+          else if (logincollections.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+          (logincollections.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+          (logincollections.hrrole === "ROLE 5") { %> Admin Aide <% } else if (logincollections.hrrole
+          === "ADMIN") { %> Department Head <% } %>
+        </p>
       </div>
     </div>
   </div>
@@ -41,48 +49,61 @@
       oninput="searchFunc()"
     />
     <table id="table" class="table table-hover table-striped">
-        <thead>
-            <tr class="table-primary">
-              <th style="width: 150px">Type</th>
-              <th style="width: 500px">File Name</th>
-              <th style="width: 50px;">Actions</th>
-          </thead>
-          <tbody>
-            <td style="font-weight: 600;">Bio-Data</td>
-            <td>kanade.exe</td>
-            <td class="action-buttons-data">
-                  <a href="#" class="icon-square">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </a>
-                  <a href="#" class="icon-square text-danger" onclick="return confirm('Are you sure you want to delete?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-            </td>
-          </tbody>
-          <tbody>
-            <td style="font-weight: 600;">Medical Record</td>
-            <td>JDAM_launchCodes.txt</td>
-            <td class="action-buttons-data">
-                  <a href="#" class="icon-square">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </a>
-                  <a href="#" class="icon-square text-danger" onclick="return confirm('Are you sure you want to delete?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-            </td>
-          </tbody>
-          <tbody>
-            <td style="font-weight: 600;">Certificates</td>
-            <td class="text-danger" style="font-weight: 600;">NO CERTIFICATES SUBMITTED</td>
-            <td class="action-buttons-data">
-                  <a href="#" class="icon-square">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </a>
-                  <a href="#" class="icon-square text-danger" onclick="return confirm('Are you sure you want to delete?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-            </td>
-          </tbody>
+      <thead>
+        <tr class="table-primary">
+          <th style="width: 150px">Type</th>
+          <th style="width: 500px">File Name</th>
+          <th style="width: 50px">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <td style="font-weight: 600">Bio-Data</td>
+        <td>kanade.exe</td>
+        <td class="action-buttons-data">
+          <a href="#" class="icon-square">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </a>
+          <a
+            href="#"
+            class="icon-square text-danger"
+            onclick="return confirm('Are you sure you want to delete?')"
+            ><i class="fa-solid fa-trash"></i
+          ></a>
+        </td>
+      </tbody>
+      <tbody>
+        <td style="font-weight: 600">Medical Record</td>
+        <td>JDAM_launchCodes.txt</td>
+        <td class="action-buttons-data">
+          <a href="#" class="icon-square">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </a>
+          <a
+            href="#"
+            class="icon-square text-danger"
+            onclick="return confirm('Are you sure you want to delete?')"
+            ><i class="fa-solid fa-trash"></i
+          ></a>
+        </td>
+      </tbody>
+      <tbody>
+        <td style="font-weight: 600">Certificates</td>
+        <td class="text-danger" style="font-weight: 600">
+          NO CERTIFICATES SUBMITTED
+        </td>
+        <td class="action-buttons-data">
+          <a href="#" class="icon-square">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </a>
+          <a
+            href="#"
+            class="icon-square text-danger"
+            onclick="return confirm('Are you sure you want to delete?')"
+            ><i class="fa-solid fa-trash"></i
+          ></a>
+        </td>
+      </tbody>
     </table>
   </div>
   <%- include('../layouts/footer') %>

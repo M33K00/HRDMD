@@ -28,7 +28,9 @@
         <div class="file-item text-uppercase">
           <h3>File Details:</h3>
           <p><strong>File Name:</strong> <%= file.fileName %></p>
-          <P><strong>File Type:</strong> <%= file.fileType %></P>
+          <p <% if (file.fileType === 'confidential') { %>
+           class="text-danger" style="font-weight: 800"
+          <% } %>><strong>File Type:</strong> <%= file.fileType %></p>
           <p>
             <strong>Date Submitted:</strong> <%=
             file.dateSubmitted.toISOString().split('T')[0] %>

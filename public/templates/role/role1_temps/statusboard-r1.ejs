@@ -11,11 +11,11 @@
     <% const revision = submittedFiles.filter((row) => row.status === 'REVISION') %>
     <% const approved = submittedFiles.filter((row) => row.status === 'APPROVED') %>
     <div class="stat-container mb-4">
-      <div class="stat-div div-reject">
+      <div class="stat-div div-approved">
         <div class="stat-title">
-          <p>Rejected:</p>
+          <p>Approved:</p>
         </div>
-        <div class="stat-count"><%= rejected.length %></div>
+        <div class="stat-count"><%= approved.length %></div>
       </div>
       <div class="stat-div div-pending">
         <div class="stat-title">
@@ -29,11 +29,11 @@
         </div>
         <div class="stat-count"><%= revision.length %></div>
       </div>
-      <div class="stat-div div-approved">
+      <div class="stat-div div-reject">
         <div class="stat-title">
-          <p>Approved:</p>
+          <p>Rejected:</p>
         </div>
-        <div class="stat-count"><%= approved.length %></div>
+        <div class="stat-count"><%= rejected.length %></div>
       </div>
     </div>
     <%# Search bar %>

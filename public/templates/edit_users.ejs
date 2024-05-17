@@ -103,7 +103,7 @@
         <h4>HR Information:</h4>
       </div>
       <div class="form-group flex-container">
-        <div class="form-item-2">
+        <div class="form-item">
           <label for="department" class="form-label mt-4">Department</label>
           <select
             type="text"
@@ -116,20 +116,7 @@
             <option value="HR Department" <% if (logincollections.department === 'HR Department') { %> selected <% } %>>HR Department</option>
           </select>
         </div>
-        <div class="form-item-2">
-          <label for="position" class="form-label mt-4">Position</label>
-          <select
-            type="text"
-            name="position"
-            class="form-select"
-            id="position"
-          >
-            <option value="POSITION 1" <% if (logincollections.position === 'Position 1') { %> selected <% } %>>Position 1</option>
-            <option value="POSITION 2" <% if (logincollections.position === 'Position 2') { %> selected <% } %>>Position 2</option>
-            <option value="POSITION 3" <% if (logincollections.position === 'Position 3') { %> selected <% } %>>Position 3</option>
-          </select>
-        </div>
-        <div class="form-item-2">
+        <div class="form-item">
           <label for="hrrole" class="form-label mt-4">HR Role</label>
           <select
             type="text"
@@ -183,7 +170,7 @@
             name="cutoffDate"
             class="form-control"
             value="<% if (attendance.cutoffDate !== null) { %>
-              <%= attendance.cutoffDate ? attendance.cutoffDate.toISOString().slice(0,10) : '' %>
+              <%= attendance.cutoffDate ? attendance.cutoffDate.toLocaleDateString() : '' %>
             <% } else { %>
               ''
             <% } %>"

@@ -30,22 +30,19 @@
         <p><b>Email:</b> <%= logincollections.email %></p>
         <p><b>Contact:</b> <%= logincollections.contact %></p>
         <p><b>Department:</b> <%= logincollections.department %></p>
-        <p><b>Position:</b> <%= logincollections.position %></p>
+        <p><b>Position:</b> <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
+          else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+          else if (logincollections.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+          (logincollections.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+          (logincollections.hrrole === "ROLE 5") { %> Admin Aide <% } else if (logincollections.hrrole
+          === "ADMIN") { %> Department Head <% } %></p>
       </div>
       <div class="account-stat mt-3">
-        <div class="account-stat-item">
-          <p>
-            <b>Status:</b> <% if (attendance.status === 'IN') { %>
-            <span class="green-dot"></span>
-            <% } else if (attendance.status === 'OUT') { %>
-            <span class="red-dot"></span>
-            <% } %><%= attendance.status %>
-          </p>
-        </div>
         <div class="account-stat-item">
             <p><b>Days Present:</b> <%= attendance.daysPresent %></p></p>
             <p><b>Days Absent:</b> <%= attendance.daysAbsent %></p>
             <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
+            <p><b>Credit Points:</b> <%= attendance.creditPoints %></p>
         </div>
     </div>
     <div class="account-stat mt-3">
@@ -60,6 +57,13 @@
   <div class="mt-4">
     <div class="account-column-2">
         <h3>Daily Time Record:</h3>
+        <div class="status-icon">
+          <b>STATUS:</b> <% if (attendance.status === 'IN') { %>
+            <span class="green-dot"></span>
+            <% } else if (attendance.status === 'OUT') { %>
+            <span class="red-dot"></span>
+            <% } %><%= attendance.status %>
+        </div>
     </div>
     <div class="clockin-tab">
       <p><%= getCurrentDateInWords() %></p>
