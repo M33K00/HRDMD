@@ -59,39 +59,35 @@
       </div>
       <div class="file-option">
         <div class="file-buttons">
-          <a
-            href="/reject-file/<%= file.id %>"
-            class="btn btn-danger"
-            onclick="return confirm('Are you sure you want to reject this file?');"
-            ><img src="../images/svg/xmark-solid.svg" class="icon" />REJECT</a
-          >
-          <a
-            href="/pending-file/<%= file.id %>"
-            class="btn btn-warning"
-            onclick="return confirm('Are you sure you want to mark this file as pending?');"
-            ><img
-              src="../images/svg/hourglass-start-solid.svg"
+            <!-- Archive Button -->
+            <button class="btn btn-secondary" onclick="showConfirmationModal('Archive', '<%= file.id %>')"><img
+              src="../images/svg/box-archive-solid.svg"
               class="icon"
-            />PENDING</a
-          >
-          <a
-            href="/revision-file/<%= file.id %>"
-            class="btn btn-dark"
-            onclick="return confirm('Are you sure you want send this file for revision?');"
-            ><img
+            />Archive</button>
+            <!-- Reject Button -->
+            <button class="btn btn-danger" onclick="showConfirmationModal('Reject', '<%= file.id %>')"><img
               src="../images/svg/rotate-right-solid.svg"
               class="icon"
-            />REVISION</a
-          >
-          <a
-            href="/approve-file/<%= file.id %>"
-            class="btn btn-success"
-            onclick="return confirm('Are you sure you want to approve this file?');"
-            ><img src="../images/svg/check-solid.svg" class="icon" />APPROVE</a
-          >
+            />Reject</button>
+
+            <!-- Pending Button -->
+            <button class="btn btn-warning" onclick="showConfirmationModal('Pending', '<%= file.id %>')"><img
+              src="../images/svg/hourglass-start-solid.svg"
+              class="icon"
+            />Pending</button>
+
+            <!-- Revision Button -->
+            <button class="btn btn-dark" onclick="showConfirmationModal('Revision', '<%= file.id %>')"><img
+              src="../images/svg/rotate-right-solid.svg"
+              class="icon"
+            />Revision</button>
+
+            <!-- Approve Button -->
+            <button class="btn btn-success" onclick="showConfirmationModal('Approve', '<%= file.id %>')"><img src="../images/svg/check-solid.svg" class="icon" />Approve</button>
         </div>
       </div>
     </div>
   </div>
+  <%- include('../layouts/modals/confirm') %>
   <%- include('../layouts/footer') -%>
 </body>

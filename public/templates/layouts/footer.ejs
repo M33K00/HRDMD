@@ -658,3 +658,71 @@
   // Initial call to set the clock and background immediately when the page loads
   updateClock();
 </script>
+<script>
+  function showConfirmationModal(action, fileId) {
+    // Set the action text and file ID in the modal
+    document.getElementById("actionText").textContent = action;
+    const confirmActionBtn = document.getElementById("confirmAction");
+
+    // Customize confirm button based on the action
+    switch (action) {
+      case "Archive":
+        confirmActionBtn.textContent = "Archive";
+        confirmActionBtn.className = "btn btn-secondary";
+        break;
+      case "Reject":
+        confirmActionBtn.textContent = "Reject";
+        confirmActionBtn.className = "btn btn-danger";
+        break;
+      case "Pending":
+        confirmActionBtn.textContent = "Mark as Pending";
+        confirmActionBtn.className = "btn btn-warning";
+        break;
+      case "Revision":
+        confirmActionBtn.textContent = "Send for Revision";
+        confirmActionBtn.className = "btn btn-dark";
+        break;
+      case "Approve":
+        confirmActionBtn.textContent = "Approve";
+        confirmActionBtn.className = "btn btn-success";
+        break;
+      default:
+        break;
+    }
+
+    // Show the modal
+    var confirmationModal = new bootstrap.Modal(
+      document.getElementById("confirmationModal")
+    );
+    confirmationModal.show();
+
+    // Set up the confirm button action
+    confirmActionBtn.onclick = function () {
+      performAction(action, fileId);
+      confirmationModal.hide();
+    };
+  }
+
+  function performAction(action, fileId) {
+    // Perform the action based on the button clicked
+    switch (action) {
+      case "Archive":
+        window.location.href = `/archive_file/${fileId}`;
+        break;
+      case "Reject":
+        window.location.href = `/reject-file/${fileId}`;
+        break;
+      case "Pending":
+        window.location.href = `/pending-file/${fileId}`;
+        break;
+      case "Revision":
+        window.location.href = `/revision-file/${fileId}`;
+        break;
+      case "Approve":
+        window.location.href = `/approve-file/${fileId}`;
+        break;
+      default:
+        break;
+    }
+  }
+</script>

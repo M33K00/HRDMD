@@ -1,0 +1,152 @@
+<%- include('../layouts/header') -%>
+<body>
+  <%- include('../layouts/nav') -%> <%- include('../layouts/sidenav') %>
+  <div class="page-body">
+    <div class="page-name">
+      <h1>Archived Files:</h1>
+    </div>
+    <div class="page-content">
+      <% if (archivedFiles.length > 0) { %>
+      <table id="table" class="table table-hover table-striped">
+        <thead>
+          <tr class="table-dark">
+            <th style="width: 250px">File Code</th>
+            <th style="width: 250px">File Name</th>
+            <th style="width: 200px">Date Submitted</th>
+            <th style="width: 200px">Last Handler</th>
+            <th style="width: 10px; padding-left: 30px">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% archivedFiles.sort((a, b) => new Date(b.dateSubmitted) - new
+          Date(a.dateSubmitted)).forEach((file, index) => { %>
+          <tr>
+            <td>
+              <%= file.fileCode.length > 20 ? file.fileCode.substring(0, 20) +
+              '...' : file.fileCode %>
+            </td>
+            <td>
+              <%= file.fileName.length > 20 ? file.fileName.substring(0, 20) +
+              '...' : file.fileName %>
+            </td>
+            <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
+            <td><%= file.assignTo %></td>
+            <td class="action-buttons">
+              <a href="view_file/<%= file.id %>" class="icon-square"
+                ><i class="fa-solid fa-eye"></i
+              ></a>
+              <a
+                href="#"
+                class="icon-square text-danger"
+                onclick="showCustomConfirm('<%= file.fileName %>', '<%= file._id %>')"
+                ><i class="fa-solid fa-trash"></i
+              ></a>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <!-- Pagination Links -->
+      <div class="pagination justify-content-center">
+        <% if (totalPages > 1) { %>
+        <ul class="pagination justify-content-center">
+          <% for (let i = 1; i <= totalPages; i++) { %>
+          <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+            <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+          </li>
+          <% } %>
+        </ul>
+        <% } %>
+      </div>
+      <% } else { %>
+      <p class="text-muted text-center">No files approved yet.</p>
+      <% } %>
+    </div>
+  </div>
+  <!-- Custom confirmation modal -->
+  <div
+    class="modal fade"
+    id="customConfirmModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="customConfirmModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="customConfirmModalLabel">
+            Confirm Deletion
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete
+            <span id="fileName"></span> permanently? This action cannot be
+            undone.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" id="confirmDelete">
+            Confirm
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include('../layouts/footer') -%>
+  <script>
+    function showCustomConfirm(fileName, fileId) {
+      // Set the file name in the modal
+      document.getElementById("fileName").textContent = fileName;
+
+      // Show the modal
+      var customConfirmModal = new bootstrap.Modal(
+        document.getElementById("customConfirmModal")
+      );
+      customConfirmModal.show();
+
+      // Set up the confirm button action
+      document.getElementById("confirmDelete").onclick = function () {
+        deleteFile(fileId);
+        customConfirmModal.hide();
+      };
+    }
+
+    function deleteFile(fileId) {
+      // Perform the deletion action (e.g., making a request to the server)
+      fetch(`/delete_file/${fileId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            window.location.href = "/home"; // Redirect or update the page as needed
+          } else {
+            response.json().then((data) => {
+              alert(data.message); // Show error message if deletion fails
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred while deleting the file.");
+        });
+    }
+  </script>
+</body>

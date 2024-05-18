@@ -29,14 +29,32 @@
       <td><%= file.assignTo %></td>
       <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
       <td class="action-buttons">
-        <a href="view_file/<%= file.id %>" class="icon-square"
+        <a href="view_file/<%= file.id %>" class="icon-square text-dark"
           ><i class="fa-solid fa-eye"></i
         ></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/archive_file/<%= file.id %>" class="icon-square text-warning" data-bs-toggle="modal" data-bs-target="#archiveModal2"
+          ><i class="fa-solid fa-box-archive"></i>
+        </a>
       </td>
     </tr>
+    <!-- Modal for the "Archive" action -->
+    <div class="modal fade" id="archiveModal2" tabindex="-1" aria-labelledby="archiveModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="archiveModalLabel">Confirm Archive</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to archive this file?</p>
+          </div>
+          <div class="modal-footer">
+            <a href="/archive_file/<%= file.id %>" class="btn btn-warning">Archive</a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <% }); %>
   </tbody>
 </table>

@@ -74,22 +74,6 @@
         </div></a
       >
     </div>
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <iframe
-          type="application/pdf"
-          id="pdfViewer"
-          src=""
-          width="100%"
-          height="100%"
-          frameborder="0"
-          toolbar="0"
-          scrollbar="0"
-        ></iframe>
-        <span id="enlargeButton" class="enlargeButton">Enlarge</span>
-      </div>
-    </div>
     <div id="all-files" class="content-div active">
       <%- include('./layouts/tables/allTable') -%>
     </div>
@@ -107,35 +91,8 @@
     </div>
   </div>
 </body>
+<%- include('./layouts/modals/confirm') %>
 <%- include('./layouts/footer') -%>
-<!-- Rename Modal -->
-<div class="modal" id="renameModal">
-  <div class="modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Enter the new file name:</h5>
-      </div>
-      <div class="modal-body">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" id="newFileNameInput" />
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="renameBtn">
-          Save changes
-        </button>
-        <button
-          type="button"
-          id="closerename"
-          class="btn btn-secondary"
-          data-bs-dismiss="modal"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const links = document.querySelectorAll(".rolefolder-container a");

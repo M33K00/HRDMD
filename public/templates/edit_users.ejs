@@ -170,7 +170,7 @@
             name="cutoffDate"
             class="form-control"
             value="<% if (attendance.cutoffDate !== null) { %>
-              <%= attendance.cutoffDate ? attendance.cutoffDate.toLocaleDateString() : '' %>
+              <%= attendance.cutoffDate ? attendance.cutoffDate.toISOString().slice(0,10) : '' %>
             <% } else { %>
               ''
             <% } %>"

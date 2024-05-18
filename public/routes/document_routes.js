@@ -3,7 +3,6 @@ const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const docxConverter = require("docx-pdf");
 const { requireAuth } = require("../middleware/authMiddleware");
 const { checkRole } = require("../middleware/authMiddleware.js");
 
@@ -12,6 +11,7 @@ const LogInCollection = require("../models/logincollections");
 const UserDocuments = require("../models/userdocuments");
 const rejectedDocuments = require("../models/rejecteddocuments");
 const SubmittedFiles = require("../models/submitted_files");
+const ArchivedFiles = require("../models/archivedfiles");
 
 // Multer configuration
 const documentStorage = multer.diskStorage({
@@ -147,6 +147,32 @@ router.get("/confidential", checkRole, async (request, response) => {
   }
 });
 
+router.get("/archive_files", async (req, res) => {
+  const currentPage = parseInt(req.query.page) || 1;
+  const pageSize = 10;
+
+  try {
+    const totalArchivedFiles = await ArchivedFiles.countDocuments();
+    const totalPages = Math.ceil(totalArchivedFiles / pageSize);
+    // Fetch all submitted files and sort by dateSubmitted in descending order
+    const archivedFiles = await ArchivedFiles.find()
+      .sort({
+        dateSubmitted: -1,
+      })
+      .skip((currentPage - 1) * pageSize)
+      .limit(pageSize);
+
+    res.render("DTRACKER/archive_files", {
+      archivedFiles,
+      currentPage,
+      totalPages,
+    });
+  } catch (error) {
+    console.error("Error reading directory:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 // Rejected Documents
 router.get("/rejected_documents", async (req, res) => {
   const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
@@ -217,141 +243,6 @@ router.get("/role1_documents", (req, res) => {
   }
 });
 
-router.get("/role2_documents", (req, res) => {
-  const role2directory = "./files/role2";
-  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
-  const role1directory_length = fs.readdirSync("./files/role1").length;
-  const role2directory_length = fs.readdirSync("./files/role2").length;
-  const role3directory_length = fs.readdirSync("./files/role3").length;
-  const role4directory_length = fs.readdirSync("./files/role4").length;
-
-  try {
-    const fileNames = fs.readdirSync(role2directory);
-    const files = fileNames.map((fileName) => {
-      const filePath = path.join(role2directory, fileName);
-      const stats = fs.statSync(filePath);
-      const sizeInBytes = stats.size;
-      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
-      // Convert mtime to desired format
-      const mtime = stats.mtime.toLocaleString("en-US", {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-        hour: "numeric",
-        minute: "numeric",
-      });
-      return {
-        name: fileName,
-        size: sizeInMB + " MB",
-        mtime: mtime,
-      };
-    });
-
-    // Pass the files data to the "/role1_documents" route
-    res.render("role2_documents", {
-      files,
-      rejecteddirectory_length,
-      role1directory_length,
-      role2directory_length,
-      role3directory_length,
-      role4directory_length,
-    });
-  } catch (error) {
-    console.error("Error reading directory:", error);
-  }
-});
-
-router.get("/role3_documents", (req, res) => {
-  const role3directory = "./files/role3";
-  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
-  const role1directory_length = fs.readdirSync("./files/role1").length;
-  const role2directory_length = fs.readdirSync("./files/role2").length;
-  const role3directory_length = fs.readdirSync("./files/role3").length;
-  const role4directory_length = fs.readdirSync("./files/role4").length;
-
-  try {
-    const fileNames = fs.readdirSync(role3directory);
-    const files = fileNames.map((fileName) => {
-      const filePath = path.join(role3directory, fileName);
-      const stats = fs.statSync(filePath);
-      const sizeInBytes = stats.size;
-      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
-      // Convert mtime to desired format
-      const mtime = stats.mtime.toLocaleString("en-US", {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-        hour: "numeric",
-        minute: "numeric",
-      });
-      return {
-        name: fileName,
-        size: sizeInMB + " MB",
-        mtime: mtime,
-      };
-    });
-
-    // Pass the files data to the "/role1_documents" route
-    res.render("role3_documents", {
-      files,
-      rejecteddirectory_length,
-      role1directory_length,
-      role2directory_length,
-      role3directory_length,
-      role4directory_length,
-    });
-  } catch (error) {
-    console.error("Error reading directory:", error);
-  }
-});
-
-router.get("/role4_documents", (req, res) => {
-  const role4directory = "./files/role4";
-  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
-  const role1directory_length = fs.readdirSync("./files/role1").length;
-  const role2directory_length = fs.readdirSync("./files/role2").length;
-  const role3directory_length = fs.readdirSync("./files/role3").length;
-  const role4directory_length = fs.readdirSync("./files/role4").length;
-
-  try {
-    const fileNames = fs.readdirSync(role4directory);
-    const files = fileNames.map((fileName) => {
-      const filePath = path.join(role4directory, fileName);
-      const stats = fs.statSync(filePath);
-      const sizeInBytes = stats.size;
-      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
-      // Convert mtime to desired format
-      const mtime = stats.mtime.toLocaleString("en-US", {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-        hour: "numeric",
-        minute: "numeric",
-      });
-      return {
-        name: fileName,
-        size: sizeInMB + " MB",
-        mtime: mtime,
-      };
-    });
-
-    // Pass the files data to the "/role1_documents" route
-    res.render("role4_documents", {
-      files,
-      rejecteddirectory_length,
-      role1directory_length,
-      role2directory_length,
-      role3directory_length,
-      role4directory_length,
-    });
-  } catch (error) {
-    console.error("Error reading directory:", error);
-  }
-});
-
 // Status Board Route
 router.get("/statusboard", async (req, res) => {
   try {
@@ -408,30 +299,6 @@ router.get("/archive", (request, response) => {
 
     // Pass the files data to the "/home" route
     response.render("archive", { files });
-  } catch (error) {
-    console.error("Error reading directory:", error);
-  }
-});
-
-// Rejected Documents
-router.get("/rejected_documents", async (req, res) => {
-  const rejecteddirectory_length = fs.readdirSync("./files/rejected").length;
-  const role1directory_length = fs.readdirSync("./files/role1").length;
-  const role2directory_length = fs.readdirSync("./files/role2").length;
-  const role3directory_length = fs.readdirSync("./files/role3").length;
-  const role4directory_length = fs.readdirSync("./files/role4").length;
-
-  try {
-    const rejectedDocs = await rejectedDocuments.find();
-    // Pass the files data to the "/role1_documents" route
-    res.render("/rejected_docu", {
-      rejectedDocuments: rejectedDocs,
-      role1directory_length,
-      rejecteddirectory_length,
-      role2directory_length,
-      role3directory_length,
-      role4directory_length,
-    });
   } catch (error) {
     console.error("Error reading directory:", error);
   }
@@ -1028,6 +895,44 @@ router.get("/pending-file/:id", async (req, res) => {
       message: "File Approved Successfully",
     };
     res.redirect("/view_file/" + id);
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+});
+
+router.get("/archive_file/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const file = await SubmittedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = { type: "danger", message: "File not found" };
+      return res.redirect("/view_file/" + id);
+    }
+
+    try {
+      await ArchivedFiles.create(file.toObject());
+    } catch (error) {
+      console.error(error);
+      req.session.message = {
+        type: "danger",
+        message: "Error: " + error,
+      };
+      return res.redirect("/home");
+    }
+    await SubmittedFiles.findByIdAndDelete(id);
+
+    req.session.message = {
+      type: "warning",
+      message: "File Archived Successfully",
+    };
+
+    res.redirect("/home");
   } catch (error) {
     req.session.message = {
       type: "danger",
