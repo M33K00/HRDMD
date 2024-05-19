@@ -915,10 +915,54 @@ router.post("/hrSettings", checkHRSettings, async (req, res) => {
   }
 });
 
-router.get("/print-hr-dtr", async (req, res) => {
+router.get("/print-hr-dtr/:department", async (req, res) => {
   try {
-    const attendance = await Attendance.find();
-    res.render("HRIS/PRINT/hrprint", { attendance });
+    const reqdep = req.params.department;
+
+    let department;
+
+    switch (reqdep) {
+      case "HR":
+        department = "HR Department";
+        break;
+      case "DP2":
+        department = "Department 2";
+        break;
+      case "DP3":
+        department = "Department 3";
+        break;
+      case "DP4":
+        department = "Department 4";
+        break;
+      case "DP5":
+        department = "Department 5";
+        break;
+      case "DP6":
+        department = "Department 6";
+        break;
+      default:
+        res.status(404).send("Department not found");
+    }
+
+    const employees = await LogInCollection.find({
+      department: department,
+    });
+
+    const employeeNames = employees.map((employee) => employee.name);
+
+    const attendance = await Attendance.find({
+      name: { $in: employeeNames },
+    });
+    if (attendance.length === 0) {
+      req.session.message = {
+        type: "danger",
+        message: "There are no employees in this department",
+      };
+      res.redirect("/hrSettings");
+      return;
+    }
+
+    res.render("HRIS/PRINT/hrprint", { attendance, department });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
