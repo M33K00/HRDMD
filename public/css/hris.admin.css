@@ -45,13 +45,16 @@
   top: 2.6%;
 }
 .nav-links-hris li:nth-child(2):hover ~ .active-button {
-  top: 27.6%;
+  top: 22.6%;
 }
 .nav-links-hris li:nth-child(3):hover ~ .active-button {
-  top: 52.6%;
+  top: 42.6%;
 }
 .nav-links-hris li:nth-child(4):hover ~ .active-button {
-  top: 77.6%;
+  top: 62.6%;
+}
+.nav-links-hris li:nth-child(5):hover ~ .active-button {
+  top: 82.6%;
 }
 
 @media only screen and (max-width: 600px) {
@@ -540,4 +543,133 @@
   margin-left: 10px;
   margin-top: 5px;
   margin-right: 5px;
+}
+
+.settings-container {
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px; /* Gap between grid items */
+  grid-auto-rows: 50px; /* Default height for each row */
+}
+.settings-container a {
+  text-decoration: inherit;
+}
+.settings-item {
+  display: flex;
+  align-items: center; /* Center vertically */
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+}
+
+.settings-item i {
+  font-size: 25px;
+  margin-left: 10px;
+  margin-right: 10px; /* Space between icon and text */
+}
+
+.settings-item p {
+  margin: 0; /* Remove default margin for <p> */
+  font-weight: 600;
+}
+
+.settings-item span {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.settings-item box-icon {
+  font-size: 25px;
+  margin-left: 5px;
+  margin-right: 5px; /* Space between icon and text */
+}
+
+.settings-title {
+  display: flex;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.settings-title p {
+  margin-left: auto;
+}
+
+.settings-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: #414141 solid 1px;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 1%;
+  height: 62%;
+  backdrop-filter: blur(10px); /* Blur effect */
+}
+
+.settings-div label {
+  font-size: 15px;
+  margin-right: 10px;
+  font-weight: 600;
+}
+
+.hr-settings {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.date-input {
+  width: 140px;
+}
+
+.f-group {
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  display: flex;
+}
+
+.f-group legend {
+  font-size: 20px;
+}
+
+.fieldset {
+  display: grid;
+  grid-template-columns: 600px 600px 1fr;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.button-container {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.button-label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.button-label p {
+  font-weight: 800;
+}
+
+.btn-print {
+  width: 500px;
+}
+
+.print-body {
+  position: relative;
+  overflow: visible;
+  margin-top: 80px;
+  padding: 20px;
+  flex: 1;
 }

@@ -1,0 +1,58 @@
+<%- include('../../layouts/hrislayout') -%>
+<body>
+  <%- include('../../layouts/navhris') -%>
+</body>
+<div class="print-body">
+  <div class="page-name">
+    <h1>HR Department DTR Report</h1>
+    <a href="/hrSettings" class="btn btn-secondary">GO BACK</a>
+  </div>
+  <button id="download" class="btn btn-primary mb-2">Download as PDF</button>
+  <div class="page-content" id="page-content">
+    <h3>DTR Report:</h3>
+    <table id="table" class="table table-hover table-striped table-bordered">
+      <thead>
+        <tr class="table-dark text-center text-uppercase">
+          <th>Employee Name</th>
+          <th>Days Present</th>
+          <th>Days Absent</th>
+          <th>Days on Leave</th>
+          <th>Total Hours Worked</th>
+          <th>Credit Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% attendance.forEach((attendance) => { -%>
+        <tr>
+          <td><%- attendance.name %></td>
+          <td><%- attendance.daysPresent %></td>
+          <td><%- attendance.daysAbsent %></td>
+          <td><%- attendance.daysOnLeave %></td>
+          <td><%- attendance.hoursWorked.toFixed(2) %></td>
+          <td><%- attendance.creditPoints %></td>
+        </tr>
+        <% }) -%>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script src="../../scripts/html2pdf.bundle.min.js"></script>
+<script>
+  document.getElementById("download").addEventListener("click", () => {
+    // Select the content of the div
+    var element = document.getElementById("page-content");
+
+    // Configure the options for the PDF
+    var opt = {
+      margin: 0.5,
+      filename: "Report.pdf",
+      image: { type: "jpeg", quality: 1.0 },
+      html2canvas: { scale: 1 },
+      jsPDF: { unit: "in", format: "letter", orientation: "landscape" },
+    };
+
+    // Use html2pdf to create and download the PDF
+    html2pdf().from(element).set(opt).save();
+  });
+</script>
+<% include('../../layouts/footer') %>

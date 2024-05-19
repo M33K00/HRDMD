@@ -42,6 +42,14 @@
           <p style="font-size: 13px">Daily Time Record</p></a
         >
       </li>
+      <% if (user.hrrole === "ADMIN") { %>
+        <li>
+          <a href="/hrSettings"
+            ><i class="fa-solid fa-gear"></i>
+            <p style="font-size: 13px">HRIS Settings</p></a
+          >
+        </li>
+      <% } %>
       <div class="active-button"></div>
     </ul>
     <a href="/startpage" class="lower-button text-uppercase"

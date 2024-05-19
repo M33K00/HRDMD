@@ -1,0 +1,178 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
+  <div class="page-body">
+    <div class="page-name text-uppercase">
+      <h1>HRIS Settings</h1>
+    </div>
+    <div id="alertContainer" class="bottom-right">
+      <% if (message) { %>
+      <div
+        class="alert alert-dismissible alert-<%= message.type %> fade show"
+        role="alert"
+        id="autoDismissAlert"
+      >
+        <strong>Attention! </strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
+    </div>
+    <div class="settings-container">
+      <a href="#" data-target="hrSettings"
+        ><div class="btn btn-lg btn-primary settings-item active">
+          <i class="fa-solid fa-print"></i>
+          <p>Print Reports</p>
+        </div></a
+      >
+      <a href="#" data-target="dtrSettings"
+        ><div class="btn btn-lg btn-primary settings-item">
+          <i class="fa-solid fa-clock"></i>
+          <p>DTR Settings</p>
+        </div></a
+      >
+    </div>
+    <div id="hrSettings" class="content-div active">
+      <div class="settings-title">
+        <h4>Print Reports:</h4>
+        <p>Print reports for employees</p>
+      </div>
+      <div class="settings-div">
+        <div class="button-container">
+          <label for="dtrButton" class="button-label"
+            ><p>DTR Report for HR Department:</p></label
+          >
+          <button id="dtrButton" class="btn btn-secondary btn-print">
+            PRINT
+          </button>
+          <div class="button-container">
+            <label for="dtrButton" class="button-label"
+              ><p>DTR Report for Department 2:</p></label
+            >
+            <button
+              id="dtrButton"
+              class="btn btn-secondary btn-print"
+              onclick="window.location.href='/print-hr-dtr'"
+            >
+              PRINT
+            </button>
+            <div class="button-container">
+              <label for="dtrButton" class="button-label"
+                ><p>DTR Report for Department 3:</p></label
+              >
+              <button id="dtrButton" class="btn btn-secondary btn-print">
+                PRINT
+              </button>
+              <div class="button-container">
+                <label for="dtrButton" class="button-label"
+                  ><p>DTR Report for Department 4:</p></label
+                >
+                <button id="dtrButton" class="btn btn-secondary btn-print">
+                  PRINT
+                </button>
+              </div>
+              <div class="button-container">
+                <label for="dtrButton" class="button-label">
+                  <p>DTR Report for Department 5:</p></label
+                >
+                <button id="dtrButton" class="btn btn-secondary btn-print">
+                  PRINT
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="dtrSettings" class="content-div">
+      <div class="settings-title">
+        <h4>DTR Settings:</h4>
+        <p>Manage department paydates and other HRIS settings</p>
+      </div>
+      <div class="settings-div">
+        <form action="/hrSettings" method="POST">
+          <fieldset class="fieldset">
+            <div class="f-group">
+              <legend>Cutoff Dates:</legend>
+              <div class="hr-settings">
+                <label for="startDay">Start Day: </label>
+                <input
+                  type="number"
+                  id="startDate"
+                  name="startDate"
+                  class="form-control date-input"
+                  min="1"
+                  max="31"
+                  placeholder="DD"
+                  value="<%= hrSettings.startDate %>"
+                />
+                <label for="endDate" style="margin-left: 10px">End Day: </label>
+                <input
+                  type="number"
+                  id="endDate"
+                  name="endDate"
+                  class="form-control date-input"
+                  min="1"
+                  max="31"
+                  placeholder="DD"
+                  value="<%= hrSettings.endDate %>"
+                />
+              </div>
+            </div>
+            <div class="f-group">
+              <input
+                type="submit"
+                value="Save Changes"
+                class="btn btn-primary"
+              />
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+<%- include('../layouts/footer') %>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll(".settings-container a");
+    const contentDivs = document.querySelectorAll(".content-div");
+
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const targetId = link.getAttribute("data-target");
+
+        // Remove active class from all rolefolder items
+        links.forEach((l) =>
+          l.querySelector(".settings-item").classList.remove("active")
+        );
+
+        // Add active class to the clicked rolefolder item
+        link.querySelector(".settings-item").classList.add("active");
+
+        // Hide all content divs and show the targeted one
+        contentDivs.forEach((div) => {
+          div.classList.remove("active");
+          if (div.id === targetId) {
+            div.classList.add("active");
+          }
+        });
+      });
+    });
+  });
+</script>
+<script>
+  document.getElementById("startDay").addEventListener("input", function () {
+    const value = this.value;
+    if (value < 1) this.value = 1;
+    if (value > 31) this.value = 31;
+  });
+
+  document.getElementById("endDay").addEventListener("input", function () {
+    const value = this.value;
+    if (value < 1) this.value = 1;
+    if (value > 31) this.value = 31;
+  });
+</script>

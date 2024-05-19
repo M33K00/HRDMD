@@ -8,14 +8,16 @@ const authController = require("../controllers/authController");
 const bcrypt = require("bcrypt");
 const { checkRoleHR } = require("../middleware/authMiddleware.js");
 const RejectedDocument = require("../models/rejecteddocuments");
-const Attendance = require("../models/attendance");
+const { checkHRSettings } = require("../middleware/HRSettingsMiddleware");
 
 // Models
 const LogInCollection = require("../models/logincollections");
 const LeaveApplications = require("../models/leaveapplications");
+const Attendance = require("../models/attendance");
 const DaysPresent = require("../models/dayspresent");
 const DaysAbsent = require("../models/daysabsent");
 const daysAbsent = require("../models/daysabsent");
+const HRSettings = require("../models/hrsettings");
 
 // Multer configuration
 var storage = multer.diskStorage({
@@ -862,6 +864,64 @@ router.get("/m-absent/:id", async (req, res) => {
   } catch (err) {
     console.log("Error marking as absent: ", err);
     res.status(500).send("aw bollucks!");
+  }
+});
+
+router.get("/hrSettings", checkHRSettings, async (req, res) => {
+  try {
+    const hrSettings = await req.models.HRSettings.findOne();
+    if (!hrSettings) {
+      console.log("No HR settings found.");
+      // Handle the case where no settings are found, such as setting default values.
+      // Example:
+      // const defaultSettings = { startDate: 1, endDate: 31 };
+      // res.render("HRIS/hrSettings", { hrSettings: defaultSettings });
+      res.status(404).send("HR settings not found.");
+      return;
+    }
+    res.render("HRIS/hrSettings", { hrSettings });
+  } catch (err) {
+    console.error("Error fetching HR settings:", err);
+    res.status(500).send("Error fetching HR settings.");
+  }
+});
+
+router.post("/hrSettings", checkHRSettings, async (req, res) => {
+  try {
+    // Find the existing HR settings (assuming only one document exists)
+    let existingSettings = await req.models.HRSettings.findOne();
+
+    if (!existingSettings) {
+      // If no existing settings found, create a new instance
+      existingSettings = new req.models.HRSettings(req.body);
+    } else {
+      // Update the existing settings with the new values from req.body
+      existingSettings.startDate = req.body.startDate;
+      existingSettings.endDate = req.body.endDate;
+    }
+
+    // Save the settings (either new or updated)
+    await existingSettings.save();
+
+    req.session.message = {
+      type: "success",
+      message: "HR settings updated successfully",
+    };
+
+    res.redirect("/hrSettings"); // Redirect to the settings page or another page as needed
+  } catch (err) {
+    console.error("Error updating/creating HR settings:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.get("/print-hr-dtr", async (req, res) => {
+  try {
+    const attendance = await Attendance.find();
+    res.render("HRIS/PRINT/hrprint", { attendance });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
