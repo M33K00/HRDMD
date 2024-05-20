@@ -3,22 +3,18 @@ const mongoose = require("mongoose");
 const userDocuSchema = new mongoose.Schema({
   name: {
     type: String,
+    unique: true,
     required: true,
   },
   email: {
     type: String,
+    unique: true,
     required: true,
     unique: true,
   },
-  fileName: {
-    type: [String],
-    required: false,
-    default: [],
-  },
-  recycleBin: {
-    type: [String],
-    required: false,
-    default: [],
+  isComplete: {
+    type: Boolean,
+    default: false,
   },
 });
 

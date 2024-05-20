@@ -452,6 +452,7 @@
   display: grid;
   grid-template-columns: 300px 1fr; /* Grid with 2 columns */
   gap: 5px; /* Gap between grid items */
+  backdrop-filter: blur(5px); /* Blur effect */
 }
 
 .account-image {

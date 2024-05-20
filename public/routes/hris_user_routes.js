@@ -8,6 +8,85 @@ const Attendance = require("../models/attendance");
 const DaysPresent = require("../models/dayspresent");
 const DaysAbsent = require("../models/daysabsent");
 
+// 201 File Models
+const UserDocuments = require("../models/userdocuments");
+const AppPaper = require("../models/201File/appPaper");
+const CertERL = require("../models/201File/certERL");
+const Certifications = require("../models/201File/certifications");
+const CertLB = require("../models/201File/certLB");
+const Clearances = require("../models/201File/clearances");
+const Commendations = require("../models/201File/commendations");
+const CopyReso = require("../models/201File/copyReso");
+const Cos = require("../models/201File/cos");
+const OathO = require("../models/201File/oathO");
+const OfficeOrder = require("../models/201File/officeOrder");
+const PDS = require("../models/201File/pds");
+const PosDF = require("../models/201File/posDF");
+const Schol = require("../models/201File/schol");
+const SwornStat = require("../models/201File/swornStat");
+
+// 201 File Model Array
+const userDocumentsArray = [
+  AppPaper,
+  CertERL,
+  Certifications,
+  CertLB,
+  Clearances,
+  Commendations,
+  CopyReso,
+  Cos,
+  OathO,
+  OfficeOrder,
+  PDS,
+  PosDF,
+  Schol,
+  SwornStat,
+];
+
+const findDocumentsByEmail = async (email, batchSize = 5) => {
+  const results = [];
+
+  for (let i = 0; i < userDocumentsArray.length; i += batchSize) {
+    const batch = userDocumentsArray
+      .slice(i, i + batchSize)
+      .map((userDocumentsArray) =>
+        userDocumentsArray.findOne({ email }).exec()
+      );
+    const batchResults = await Promise.all(batch);
+    results.push(...batchResults);
+  }
+
+  return results;
+};
+
+// Routes
+router.get("/view_profile/:email", async (req, res) => {
+  try {
+    let email = req.params.email;
+    let logincollections = await LogInCollection.findOne({
+      email: email,
+    });
+
+    if (!logincollections) {
+      // If the user account doesn't exist, redirect to manage_accounts page
+      return res.redirect("/hris");
+    }
+
+    const results = await findDocumentsByEmail(email);
+
+    res.render("HRISUSER/view_profile", {
+      title: "View Account",
+      logincollections: logincollections,
+      results: results,
+    });
+  } catch (err) {
+    // Log and handle errors gracefully
+    console.error("Error editing user account:", err);
+    // Redirect to manage_accounts page in case of an error
+    res.redirect("/hris");
+  }
+});
+
 router.get("/hris_user/:email", async (req, res) => {
   try {
     const userEmail = req.params.email; // Retrieve email from URL parameter
@@ -44,28 +123,6 @@ router.get("/view_leave/:email", async (req, res) => {
   }
 });
 
-router.get("/view_profile/:id", async (req, res) => {
-  try {
-    let id = req.params.id;
-    let logincollections = await LogInCollection.findById(id);
-
-    if (!logincollections) {
-      // If the user account doesn't exist, redirect to manage_accounts page
-      return res.redirect("/hris");
-    }
-
-    // Render the edit_users template with the retrieved user data
-    res.render("HRISUSER/view_profile", {
-      title: "View Account",
-      logincollections: logincollections,
-    });
-  } catch (err) {
-    // Log and handle errors gracefully
-    console.error("Error editing user account:", err);
-    // Redirect to manage_accounts page in case of an error
-    res.redirect("/hris");
-  }
-});
 router.post("/apply_leave", async (req, res) => {
   try {
     // Data validation (not shown here, but you should validate input fields)

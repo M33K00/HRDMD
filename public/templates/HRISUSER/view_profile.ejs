@@ -7,7 +7,10 @@
       <h1>View Account (<%= logincollections.name %>)</h1>
     </div>
     <h4>HRIS Profile Information</h4>
-    <p class="text-muted mb-4">If you want to edit your profile information, head to the edit profile page</p>
+    <p class="text-muted mb-4">
+      If you want to edit your profile information, head to the edit profile
+      page
+    </p>
     <div class="account-basic1">
       <div class="account-image">
         <img src="../<%= logincollections.image %>" />
@@ -24,6 +27,11 @@
         <p><b>HR Role:</b> <%= logincollections.hrrole %></p>
       </div>
     </div>
+    <h4 class="mt-4">201 Files:</h4>
+    <p class="text-muted mb-4">
+      If you want to edit your 201 files, head to the edit profile page
+    </p>
+    <div class="div-table"><%- include('../layouts/tables/201Table') %></div>
   </div>
   <%- include('../layouts/footer') %>
 </body>

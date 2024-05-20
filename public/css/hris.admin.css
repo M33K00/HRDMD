@@ -606,7 +606,7 @@
   margin-bottom: 20px;
   padding: 1%;
   height: 62%;
-  backdrop-filter: blur(10px); /* Blur effect */
+  backdrop-filter: blur(5px); /* Blur effect */
 }
 
 .settings-div label {
@@ -672,4 +672,15 @@
   margin-top: 80px;
   padding: 20px;
   flex: 1;
+}
+
+.fileType {
+  font-weight: 600;
+}
+
+.blurred-table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5); /* Adjust opacity as needed */
+  backdrop-filter: blur(5px); /* Adjust blur radius as needed */
 }
