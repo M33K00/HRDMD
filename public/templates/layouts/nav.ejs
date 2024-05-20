@@ -73,7 +73,9 @@
           <% } %>
           <li>
             <a
-              href="<%= user.hrrole === 'ADMIN' ? '/view_emp_data/' + user._id : '#' %>"
+              href="<% if (user.hrrole === 'ADMIN') { %> 
+            /hris <% } else { %> 
+            /view_profile/<%= user.email %> <% } %>"
               ><i class="fa-regular fa-file"></i>HR File</a
             >
           </li>

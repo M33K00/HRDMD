@@ -24,13 +24,22 @@
           logincollections.birthday.toISOString().split('T')[0] %>
         </p>
         <p><b>Department:</b> <%= logincollections.department %></p>
-        <p><b>HR Role:</b> <%= logincollections.hrrole %></p>
+        <p><b>Position:</b>
+          <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
+          else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+          else if (logincollections.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+          (logincollections.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+          (logincollections.hrrole === "ROLE 5") { %> Admin Aide <% } else if (logincollections.hrrole
+          === "ADMIN") { %> Department Head <% } %>
+        </p>
       </div>
     </div>
     <h4 class="mt-4">201 Files:</h4>
     <p class="text-muted mb-4">
       If you want to edit your 201 files, head to the edit profile page
     </p>
+    <div class="profile-stats">
+    </div>
     <div class="div-table"><%- include('../layouts/tables/201Table') %></div>
   </div>
   <%- include('../layouts/footer') %>

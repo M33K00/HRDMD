@@ -36,3 +36,26 @@
     }
   });
 </script>
+<script>
+  // Get the link and popover elements
+  const forgotPasswordLink = document.getElementById("forgot-password-link");
+  const forgotPasswordPopover = document.getElementById(
+    "forgot-password-popover"
+  );
+
+  // Show the popover when the link is clicked
+  forgotPasswordLink.addEventListener("click", (event) => {
+    event.preventDefault(); // Prevent the default link behavior
+    forgotPasswordPopover.style.display = "block";
+  });
+
+  // Hide the popover when clicking outside of it
+  document.addEventListener("click", (event) => {
+    if (
+      !forgotPasswordPopover.contains(event.target) &&
+      event.target !== forgotPasswordLink
+    ) {
+      forgotPasswordPopover.style.display = "none";
+    }
+  });
+</script>
