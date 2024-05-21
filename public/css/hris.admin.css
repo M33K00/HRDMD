@@ -680,7 +680,26 @@
 
 .blurred-table {
   border-collapse: collapse;
-  width: 100%;
+  width: 90%;
   background-color: rgba(255, 255, 255, 0.5); /* Adjust opacity as needed */
   backdrop-filter: blur(5px); /* Adjust blur radius as needed */
+}
+.custom-table {
+  width: 95%; /* Set the width of the table */
+  border-collapse: collapse; /* Collapse table borders */
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 8px; /* Add padding to table cells */
+  text-align: left; /* Align text to the left */
+  border: 1px solid #ddd; /* Add border to table cells */
+}
+
+.leave-form {
+  border: #cfcfcf solid 1px;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px); /* Blur effect */
 }

@@ -20,19 +20,87 @@
       </div>
       <% } %>
     </div>
-    <p class="text-muted mb-4 text-center">
-      Enter the details of your leave application.
+    <p class="mb-4 text-uppercase text-danger">
+      Please file application 5 days in advance, whenever possible, of the
+      effictive date of the application
     </p>
-    <form action="/apply_leave" method="POST" class="app-form">
-      <input type="hidden" name="email" value="<%= user.email %>" />
-      <input type="hidden" name="name" value="<%= user.name %>" />
+    <form action="/apply_leave" method="POST" class="app-form leave-form">
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <input type="hidden" name="name" value="<%= user.name %>" />
+          <input type="hidden" name="email" value="<%= user.email %>" />
+          <label for="email" class="form-label mt-4">Email address</label>
+          <input
+            type="text"
+            name="email"
+            class="form-control"
+            id="email"
+            placeholder="Enter email"
+            value="<%= user.email %>"
+            required
+            disabled
+          />
+        </div>
+        <div class="form-item">
+          <label for="contact" class="form-label mt-4">Contact Number</label>
+          <input
+            type="text"
+            name="contact"
+            class="form-control"
+            placeholder="(+639) 123 456 7890"
+            value="+<%= user.contact  %>"
+            maxlength="12"
+            required
+            disabled
+          />
+        </div>
+      </div>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label for="InputName" class="form-label mt-4">Date Filing</label>
+          <input
+            type="date"
+            name="dateFiling"
+            id="dateFiling"
+            class="form-control"
+            maxlength="12"
+            required
+            disabled
+          />
+        </div>
+        <div class="form-item">
+          <label for="exampleInputEmail1" class="form-label mt-4"
+            >Position</label
+          >
+          <input type="text" name="hrrole" class="form-control"
+          id="exampleInputEmail1" placeholder="Enter email" value="<% if
+          (user.hrrole === "ROLE 1") { %> Administrative Officer <% } else if
+          (user.hrrole === "ROLE 2") { %> Senior Admin Assistant <% } else if
+          (user.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+          (user.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+          (user.hrrole === "ROLE 5") { %> Admin Aide <% } else if (user.hrrole
+          === "ADMIN") { %> Department Head <% } %>" required disabled />
+        </div>
+      </div>
       <div class="app-form-container">
         <div class="app-type">
           <label for="Type" class="form-label mt-4">Leave Type</label>
           <select name="Type" class="form-select" id="Type">
             <option></option>
             <option>Sick Leave</option>
+            <option>Mandatory/Forced Leave</option>
             <option>Vacation Leave</option>
+            <option>Study Leave</option>
+            <option>Maternity Leave</option>
+            <option>Paternity Leave</option>
+            <option>Special Privilege Leave</option>
+            <option>Solo Parent Leave</option>
+            <option>10-Day VAWC Leave</option>
+            <option>Rehabilitation Privilege</option>
+            <option>Special leave with benefits</option>
+            <option>Special Emergency Leave</option>
+            <option>Adoption Leave</option>
+            <option>Others</option>
           </select>
         </div>
         <div class="app-field">
@@ -56,32 +124,149 @@
           />
         </div>
       </div>
-      <div class="leave_reason" style="font-weight: 600">
-        <label for="designation" class="form-label mt-4">Designation</label>
-        <textarea
-          class="form-control"
-          maxlength="100"
-          id="designation"
-          rows=""
-          name="designation"
-          required
-        ></textarea>
+      <h4 class="mt-5 text-uppercase">Details of Leave</h4>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label
+            for="leaveOptions"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            In case of vacation/special privilege leave:
+          </label>
+          <div></div>
+          <label
+            for="withinPH"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            Within the Philippines
+          </label>
+          <input
+            type="text"
+            name="withinPH"
+            class="form-control"
+            id="withinPH"
+            placeholder="specify if applicable"
+          />
+          <label for="abroad" class="form-label mt-4 text-uppercase text-muted">
+            Abroad (Specify)
+          </label>
+          <input
+            type="text"
+            name="abroad"
+            class="form-control"
+            id="abroad"
+            placeholder="specify if applicable"
+          />
+        </div>
+        <div class="form-item">
+          <label
+            for="leaveOptions"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            In case of sick leave:
+          </label>
+          <div></div>
+          <label
+            for="inHospital"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            In Hospital (Specify illness)
+          </label>
+          <input
+            type="text"
+            name="inHospital"
+            class="form-control"
+            id="inHospital"
+            placeholder="specify if applicable"
+          />
+          <label
+            for="outPatient"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            Out patient (specify illness)
+          </label>
+          <input
+            type="text"
+            name="outPatient"
+            class="form-control"
+            id="outPatient"
+            placeholder="specify if applicable"
+          />
+        </div>
       </div>
-      <div class="leave_reason" style="font-weight: 600">
-        <label for="reason" class="form-label">Reason for Leave</label>
-        <textarea
-          class="form-control"
-          maxlength="100"
-          id="reason"
-          rows=""
-          name="reason"
-          required
-        ></textarea>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label
+            for="studyLReason"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            In case of study leave:
+          </label>
+          <div>
+            <input
+              type="checkbox"
+              id="studyLReason"
+              name="studyLReason"
+              value="Completion of Master's Degree"
+            />
+            <label for="studyLReason">Completion of Master's Degree</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="studyLReason"
+              name="studyLReason"
+              value="BAR/Board Examination Review"
+            />
+            <label for="studyLReason">BAR/Board Examination Review</label>
+          </div>
+        </div>
+        <div class="form-item">
+          <label
+            for="studyLReason"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            Other purpose:
+          </label>
+          <div>
+            <input
+              type="checkbox"
+              id="otherPurpose"
+              name="otherPurpose"
+              value="Monetization of Leave Credits"
+            />
+            <label for="otherPurpose">Monetization of Leave Credits</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="otherPurpose"
+              name="otherPurpose"
+              value="Terminal Leave"
+            />
+            <label for="otherPurpose">Terminal Leave</label>
+          </div>
+        </div>
       </div>
+      <p class="mt-4 text-uppercase text-danger" style="font-weight: bold">
+        PLEASE CHECK ALL DETAILS BEFORE SUBMITTING!
+      </p>
       <div class="button-container mt-4">
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </form>
   </div>
 </body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    var mm = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+    var dd = String(today.getDate()).padStart(2, "0");
+
+    var currentDate = `${yyyy}-${mm}-${dd}`;
+    document.getElementById("dateFiling").value = currentDate;
+  });
+</script>
+
 <%-include('../layouts/footer') %>

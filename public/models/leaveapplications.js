@@ -16,15 +16,6 @@ const LeaveApplicationsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  reason: {
-    type: String,
-    required: true,
-  },
-  declineReason: {
-    type: String,
-    required: false,
-    default: null,
-  },
   AppliedDate: {
     type: Date,
     default: null,
@@ -37,6 +28,40 @@ const LeaveApplicationsSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+
+  // Details of Leave
+
+  withinPH: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  abroad: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  inHospital: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  outPatient: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  studyLReason: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  otherPurpose: {
+    type: String,
+    required: false,
+    default: "",
+  },
+
   Status: {
     type: String,
     required: true,

@@ -1,0 +1,362 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
+  <%- include('../layouts/footer') %>
+  <div class="page-body">
+    <div class="page-name">
+      <h1>MANAGE LEAVE:</h1>
+      <a href="/leave_applications" class="btn btn-secondary">GO Back</a>
+    </div>
+    <H3 class="text-muted text-uppercase text-center"
+      >Details of application</H3
+    >
+    <form action="/manage_leave" method="post" class="leave-form">
+      <p></p>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label for="email" class="form-label mt-4">Email address</label>
+          <input
+            type="text"
+            name="email"
+            class="form-control"
+            id="email"
+            placeholder="Enter email"
+            value="<%= leaveuser.email %>"
+            required
+            disabled
+          />
+        </div>
+        <div class="form-item">
+          <label for="contact" class="form-label mt-4">Contact Number</label>
+          <input
+            type="text"
+            name="contact"
+            class="form-control"
+            placeholder="(+639) 123 456 7890"
+            value="+<%= leaveuser.contact  %>"
+            maxlength="12"
+            required
+            disabled
+          />
+        </div>
+      </div>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label for="InputName" class="form-label mt-4">Date Filing</label>
+          <input
+            type="date"
+            name="dateFiling"
+            id="dateFiling"
+            class="form-control"
+            maxlength="12"
+            required
+            disabled
+          />
+        </div>
+        <div class="form-item">
+          <label for="exampleInputEmail1" class="form-label mt-4"
+            >Position</label
+          >
+          <input type="text" name="hrrole" class="form-control"
+          id="exampleInputEmail1" placeholder="Enter email" value="<% if
+          (leaveuser.hrrole === "ROLE 1") { %> Administrative Officer <% } else
+          if (leaveuser.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+          else if (leaveuser.hrrole === "ROLE 3") { %> Admin Officer <% } else
+          if (leaveuser.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+          (leaveuser.hrrole === "ROLE 5") { %> Admin Aide <% } else if
+          (leaveuser.hrrole === "ADMIN") { %> Department Head <% } %>" required
+          disabled />
+        </div>
+      </div>
+      <div class="app-form-container">
+        <div class="app-type">
+          <label for="Type" class="form-label mt-4">Leave Type</label>
+          <select name="Type" class="form-select" id="Type" disabled>
+            <option selected><%= leaveapplications.Type %></option>
+          </select>
+        </div>
+        <div class="app-field">
+          <label for="StartDate" class="form-label mt-4">Start Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="StartDate"
+            name="StartDate"
+            value="<%= leaveapplications.StartDate.toISOString().split('T')[0] %>"
+            disabled
+            required
+          />
+        </div>
+        <div class="app-field">
+          <label for="EndDate" class="form-label mt-4">End Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="EndDate"
+            name="EndDate"
+            value="<%= leaveapplications.EndDate.toISOString().split('T')[0] %>"
+            disabled
+            required
+          />
+        </div>
+      </div>
+      <h4 class="mt-5 text-uppercase">Details of Leave</h4>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label
+            for="leaveOptions"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            In case of vacation/special privilege leave:
+          </label>
+          <div></div>
+          <label
+            for="withinPH"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            Within the Philippines
+          </label>
+          <input
+            type="text"
+            name="withinPH"
+            class="form-control"
+            id="withinPH"
+            value="<%= leaveapplications.withinPH %>"
+            disabled
+          />
+          <label for="abroad" class="form-label mt-4 text-uppercase text-muted">
+            Abroad (Specify)
+          </label>
+          <input
+            type="text"
+            name="abroad"
+            class="form-control"
+            id="abroad"
+            value="<%= leaveapplications.abroad %>"
+            disabled
+          />
+        </div>
+        <div class="form-item">
+          <label
+            for="leaveOptions"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            In case of sick leave:
+          </label>
+          <div></div>
+          <label
+            for="inHospital"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            In Hospital (Specify illness)
+          </label>
+          <input
+            type="text"
+            name="inHospital"
+            class="form-control"
+            id="inHospital"
+            value="<%= leaveapplications.inHospital %>"
+            disabled
+          />
+          <label
+            for="outPatient"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            Out patient (specify illness)
+          </label>
+          <input
+            type="text"
+            name="outPatient"
+            class="form-control"
+            id="outPatient"
+            value="<%= leaveapplications.outPatient %>"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label
+            for="studyLReason"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            In case of study leave:
+          </label>
+          <div>
+            <input type="checkbox" id="studyLReason" name="studyLReason"
+            value="Completion of Master's Degree" disabled <% if
+            (leaveapplications.studyLReason === "Completion of Master's Degree")
+            { %> checked <% } %> />
+            <label for="studyLReason">Completion of Master's Degree</label>
+          </div>
+          <div>
+            <input type="checkbox" id="studyLReason" name="studyLReason"
+            value="BAR/Board Examination Review" disabled <% if
+            (leaveapplications.studyLReason === "BAR/Board Examination Review")
+            { %> checked <% } %> />
+            <label for="studyLReason">BAR/Board Examination Review</label>
+          </div>
+        </div>
+        <div class="form-item">
+          <label
+            for="studyLReason"
+            class="form-label mt-4 text-uppercase text-muted"
+          >
+            Other purpose:
+          </label>
+          <div>
+            <input type="checkbox" id="otherPurpose" name="otherPurpose"
+            value="Monetization of Leave Credits" disabled <% if
+            (leaveapplications.otherPurpose === "Monetization of Leave Credits")
+            { %> checked <% } %> />
+            <label for="otherPurpose">Monetization of Leave Credits</label>
+          </div>
+          <div>
+            <input type="checkbox" id="otherPurpose" name="otherPurpose"
+            value="Terminal Leave" disabled <% if
+            (leaveapplications.otherPurpose === "Terminal Leave") { %> checked
+            <% } %> />
+            <label for="otherPurpose">Terminal Leave</label>
+          </div>
+        </div>
+      </div>
+      <div class="border mt-3"></div>
+      <h4 class="mt-3 text-uppercase text-center">Details of action on application:</h4>
+      <p class="text-muted text-uppercase mt-4">
+        Certification of leave credits
+      </p>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <table
+            id="table"
+            class="table custom-table table-hover table-striped table-bordered text-center"
+          >
+            <thead>
+              <tr class="table-dark">
+                <th></th>
+                <th>Vacation Leave</th>
+                <th>Sick Leave</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-size: 15px">Total Earned</td>
+                <td class="text-center"><%= userAttendance.availableSL %></td>
+                <td class="text-center"><%= userAttendance.availableVL %></td>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <td style="font-size: 15px">Less this application</td>
+                <td>
+                  <input
+                    type="number"
+                    name="balanceInput1"
+                    class="text-center"
+                    style="
+                      background-color: transparent;
+                      border: 1px solid black;
+                    "
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name="balanceInput2"
+                    class="text-center"
+                    style="
+                      background-color: transparent;
+                      border: 1px solid black;
+                    "
+                  />
+                </td>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <td style="font-size: 15px">Balance</td>
+                <td>
+                  <input
+                    type="number"
+                    name="balanceInput1"
+                    class="text-center"
+                    style="
+                      background-color: transparent;
+                      border: 1px solid black;
+                    "
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name="balanceInput2"
+                    class="text-center"
+                    style="
+                      background-color: transparent;
+                      border: 1px solid black;
+                    "
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-item">
+          <p class="text-muted text-uppercase mt-4">Recommendation:</p>
+          </label>
+          <div>
+            <input type="checkbox" id="approved" name="recommendation"
+            <label for="approved"> For Approval</label>
+          </div>
+          <div>
+            <input type="checkbox" id="disapprove" name="recommendation"
+            <label for="disapprove"> For disapproval</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group flex-container mt-2">
+        <div class="form-item">
+            <p class="text-muted text-uppercase">APPROVED FOR:</p>
+            <div style="display: flex; align-items: center;">
+                <input
+                    type="number"
+                    name="daysWithPay"
+                    class="form-control"
+                    id="daysWithPay"
+                    style="margin-right: 5px; width: 70px; height: 30px;"
+                />
+                <label for="daysWithPay">days with pay</label>
+            </div>
+            <div class="mt-2" style="display: flex; align-items: center;">
+                <input
+                    type="number"
+                    name="daysWithoutPay"
+                    class="form-control"
+                    id="daysWithoutPay"
+                    style="margin-right: 5px; width: 70px; height: 30px;"
+                />
+                <label for="daysWithoutPay">days without pay</label>
+            </div>
+            <div class="mt-2" style="display: flex; align-items: center;">
+                <input
+                    type="text"
+                    name="daysOthers"
+                    class="form-control"
+                    id="daysOthers"
+                    style="margin-right: 5px; width: 70px; height: 30px;"
+                />
+                <label for="daysOthers">others (Specify)</label>
+            </div>
+        </div>
+        <div class="form-item">
+        <p class="text-muted text-uppercase">DISAPPROVED DUE TO:</p>
+        <textarea class="form-control" id="disapprovedReason" name="disapprovedReason"></textarea>
+        </div>
+    </div>
+    <p class="text-danger mt-4" style="font-weight: 600;">PLEASE DOUBLE CHECK ACTION DETAILS BEFORE SUBMITTING!</p>
+      <div class="button-container mt-4">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+</body>

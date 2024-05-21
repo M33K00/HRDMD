@@ -624,20 +624,41 @@ router.get("/approve-leave/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const leaveapplications = await LeaveApplications.findById(id);
+
     if (!leaveapplications) {
-      return res.redirect("/view_employees");
+      req.session.message = {
+        type: "warning",
+        message: "Leave application not found",
+      };
+      return res.redirect("HRIS/view_employees");
     }
 
-    leaveapplications.Status = "Approved";
-    leaveapplications.AppliedDate = new Date();
-    await leaveapplications.save();
+    const leaveuser = await LogInCollection.findOne({
+      email: leaveapplications.email,
+    });
+    if (!leaveuser) {
+      req.session.message = {
+        type: "warning",
+        message: "User not found",
+      };
+    }
 
-    req.session.message = {
-      type: "success",
-      message: "Leave application approved successfully",
-    };
+    const userAttendance = await Attendance.findOne({
+      email: leaveapplications.email,
+    });
 
-    res.redirect("/leave_applications");
+    if (!userAttendance) {
+      req.session.message = {
+        type: "warning",
+        message: "User not found",
+      };
+    }
+
+    res.render("HRIS/approve-leave", {
+      leaveapplications,
+      leaveuser,
+      userAttendance,
+    });
   } catch (err) {
     console.log("Error declining leave: ", err);
     res.status(500).send("Internal Server Error");

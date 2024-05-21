@@ -19,14 +19,14 @@
         <span class="badge bg-success"> </span><a>Approved</a>
       </div>
     </div>
-    <div class="col-lg-12">
+    <div id="alertContainer" class="bottom-right">
       <% if (message) { %>
       <div
         class="alert alert-dismissible alert-<%= message.type %> fade show"
         role="alert"
         id="autoDismissAlert"
       >
-        <strong>Attention!</strong><%= message.message %><a
+        <strong>Attention!</strong> <%= message.message %><a
           href="#"
           class="alert-link"
         ></a>
@@ -115,22 +115,21 @@
               </thead>
               <tbody>
                 <% leaveapplications.forEach((row, index) => { %>
-                  <tr class="popup-row" data-reason="<%= row.reason %>">
-                    <td><%= row.name %></td>
-                    <td><%= row.Type %></td>
-                    <td>
-                      <% if (row.AppliedDate === null) { %>
-                        N/A
-                      <% } else { %>
-                        <%= row.AppliedDate.toISOString().split('T')[0] %>
-                      <% } %>
-                    </td>
-                    <td><%= row.StartDate.toISOString().split('T')[0] %></td>
-                    <td><%= row.EndDate.toISOString().split('T')[0] %></td>
-                    <td
+                <tr class="popup-row" data-reason="<%= row.reason %>">
+                  <td><%= row.name %></td>
+                  <td><%= row.Type %></td>
+                  <td>
+                    <% if (row.AppliedDate === null) { %> N/A <% } else { %> <%=
+                    row.AppliedDate.toISOString().split('T')[0] %> <% } %>
+                  </td>
+                  <td><%= row.StartDate.toISOString().split('T')[0] %></td>
+                  <td><%= row.EndDate.toISOString().split('T')[0] %></td>
+                  <td
                     style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
-                  ><%= row.Status %></td>
-                  </tr>
+                  >
+                    <%= row.Status %>
+                  </td>
+                </tr>
                 <% }) %>
               </tbody>
             </table>
@@ -167,19 +166,18 @@
                     <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
                     <td>
-                      <% if (row.AppliedDate === null) { %>
-                        N/A
-                      <% } else { %>
-                        <%= row.AppliedDate.toISOString().split('T')[0] %>
-                      <% } %>
+                      <% if (row.AppliedDate === null) { %> N/A <% } else { %>
+                      <%= row.AppliedDate.toISOString().split('T')[0] %> <% } %>
                     </td>
                     <td><%= row.Period %></td>
                     <td
-                    style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
-                  ><%= row.Status %></td>
+                      style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
+                    >
+                      <%= row.Status %>
+                    </td>
                   </tr>
                   <% }) %>
-                </tbody>                
+                </tbody>
               </table>
             </div>
             <% } else { %>
@@ -211,21 +209,20 @@
                 <tbody>
                   <% approvedApplications.filter(row => row.Status ===
                   'Approved').forEach((row, index) => { %>
-                    <tr class="popup-row" data-reason="<%= row.reason %>">
+                  <tr class="popup-row" data-reason="<%= row.reason %>">
                     <td><%= row.name %></td>
                     <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
                     <td>
-                      <% if (row.AppliedDate === null) { %>
-                        N/A
-                      <% } else { %>
-                        <%= row.AppliedDate.toISOString().split('T')[0] %>
-                      <% } %>
+                      <% if (row.AppliedDate === null) { %> N/A <% } else { %>
+                      <%= row.AppliedDate.toISOString().split('T')[0] %> <% } %>
                     </td>
                     <td><%= row.Period %></td>
                     <td
-                    style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
-                  ><%= row.Status %></td>
+                      style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
+                    >
+                      <%= row.Status %>
+                    </td>
                   </tr>
                   <% }) %>
                 </tbody>
@@ -260,21 +257,20 @@
                 <tbody>
                   <% declinedApplications.filter(row => row.Status ===
                   'Approved').forEach((row, index) => { %>
-                    <tr class="popup-row" data-reason="<%= row.reason %>">
+                  <tr class="popup-row" data-reason="<%= row.reason %>">
                     <td><%= row.name %></td>
                     <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
                     <td>
-                      <% if (row.AppliedDate === null) { %>
-                        N/A
-                      <% } else { %>
-                        <%= row.AppliedDate.toISOString().split('T')[0] %>
-                      <% } %>
+                      <% if (row.AppliedDate === null) { %> N/A <% } else { %>
+                      <%= row.AppliedDate.toISOString().split('T')[0] %> <% } %>
                     </td>
                     <td><%= row.Period %></td>
                     <td
-                    style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
-                  ><%= row.Status %></td>
+                      style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
+                    >
+                      <%= row.Status %>
+                    </td>
                   </tr>
                   <% }) %>
                 </tbody>

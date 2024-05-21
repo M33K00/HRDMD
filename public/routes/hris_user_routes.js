@@ -125,15 +125,15 @@ router.get("/view_leave/:email", async (req, res) => {
 
 router.post("/apply_leave", async (req, res) => {
   try {
-    // Data validation (not shown here, but you should validate input fields)
+    // Data validation (ensure robust validation for input fields)
 
     const data = {
       name: req.body.name,
       email: req.body.email,
-      Type: req.body.Type, // Changed to lowercase for naming convention
+      Type: req.body.Type.toLowerCase(), // Changed to lowercase for naming convention
       StartDate: new Date(req.body.StartDate), // Convert to Date object
       EndDate: new Date(req.body.EndDate), // Convert to Date object
-      reason: req.body.reason,
+      ...req.body,
     };
 
     // Calculate the number of days between StartDate and EndDate
@@ -148,17 +148,17 @@ router.post("/apply_leave", async (req, res) => {
       throw new Error("Account not found.");
     }
 
+    const availableSL = parseInt(account.availableSL, 10) || 0;
+    const availableVL = parseInt(account.availableVL, 10) || 0;
+
     // Check if there's sufficient leave balance
-    if (data.Type === "Sick Leave" && account.availableSL < daysDiff) {
+    if (data.Type === "sick leave" && availableSL < daysDiff) {
       req.session.message = {
         type: "danger",
         message: "You used up all your sick leave.",
       };
       res.redirect("/apply_leave");
-    } else if (
-      data.Type === "Vacation Leave" &&
-      account.availableVL < daysDiff
-    ) {
+    } else if (data.Type === "vacation leave" && availableVL < daysDiff) {
       req.session.message = {
         type: "danger",
         message: "You used up all your vacation leave.",
@@ -171,9 +171,9 @@ router.post("/apply_leave", async (req, res) => {
     await LeaveApplications.insertMany([data]);
 
     // Update available leave based on leave type and number of days
-    if (data.Type === "Sick Leave") {
+    if (data.Type === "sick leave") {
       account.availableSL -= daysDiff;
-    } else if (data.Type === "Vacation Leave") {
+    } else if (data.Type === "vacation leave") {
       account.availableVL -= daysDiff;
     }
 
@@ -186,7 +186,7 @@ router.post("/apply_leave", async (req, res) => {
       message: "Leave application submitted successfully!",
     };
 
-    res.redirect("/apply_leave");
+    res.redirect("/view_leave/" + data.email); // Redirect to a different page after successful submission
   } catch (err) {
     // Log and handle errors gracefully
     console.error("Error adding leave application:", err);
