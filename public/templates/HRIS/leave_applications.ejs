@@ -118,7 +118,11 @@
               </thead>
               <tbody>
                 <% leaveapplications.forEach((row, index) => { %>
-                <tr class="popup-row" data-reason="<%= row.reason %>" data-declinereason="<%= row.declineReason %>">
+                <tr
+                  class="popup-row"
+                  data-reason="<%= row.reason %>"
+                  data-declinereason="<%= row.declineReason %>"
+                >
                   <td><%= row.name %></td>
                   <td><%= row.Type %></td>
                   <td><%= row.StartDate.toISOString().split('T')[0] %></td>
@@ -134,20 +138,15 @@
                   </td>
                   <td class="action-buttons-leave">
                     <a
-                      href="/approve-leave/<%= row.id %>"
-                      class="icon-square-leave"
-                      onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
-                      ><i
-                        class="fa-solid fa-check <% if (row.Status === 'Approved') { %> text-secondary <% } else { %> text-success <% } %>"
-                      ></i
-                    ></a>
-                    <a
                       href="/manage-leave/<%= row.id %>"
                       class="icon-square-leave"
+                      ><i class="fa-solid fa-pen-to-square text-warning"></i
+                    ></a>
+                    <a
+                      href="/view-leave/<%= row.id %>"
+                      class="icon-square-leave"
                     >
-                      <i
-                        class="fa-solid fa-circle-xmark <% if (row.Status === 'Declined') { %> text-secondary <% } else { %> text-danger <% } %>"
-                      ></i>
+                      <i class="fa-solid fa-eye text-dark"></i>
                     </a>
                   </td>
                 </tr>
@@ -183,7 +182,11 @@
                 </thead>
                 <tbody>
                   <% pendingApplications.forEach((row, index) => { %>
-                  <tr class="popup-row" data-reason="<%= row.reason %>" data-declinereason="<%= row.declineReason %>">
+                  <tr
+                    class="popup-row"
+                    data-reason="<%= row.reason %>"
+                    data-declinereason="<%= row.declineReason %>"
+                  >
                     <td><%= row.name %></td>
                     <td><%= row.Type %></td>
                     <td><%= row.StartDate.toISOString().split('T')[0] %></td>
@@ -199,18 +202,15 @@
                     </td>
                     <td class="action-buttons-leave">
                       <a
-                        href="/approve-leave/<%= row.id %>"
-                        class="icon-square-leave"
-                        onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
-                        ><i
-                          class="fa-solid fa-check <% if (row.Status === 'Approved') { %> text-secondary <% } else { %> text-success <% } %>"
-                        ></i
-                      ></a>
-                      <a
                         href="/manage-leave/<%= row.id %>"
                         class="icon-square-leave"
+                        ><i class="fa-solid fa-pen-to-square text-warning"></i
+                      ></a>
+                      <a
+                        href="/view-leave/<%= row.id %>"
+                        class="icon-square-leave"
                       >
-                        <i class="fa-solid fa-circle-xmark text-danger"></i>
+                        <i class="fa-solid fa-eye text-dark"></i>
                       </a>
                     </td>
                   </tr>
@@ -248,7 +248,11 @@
                 <tbody>
                   <% approvedApplications.filter(row => row.Status ===
                   'Approved').forEach((row, index) => { %>
-                  <tr class="popup-row" data-reason="<%= row.reason %>" data-declinereason="<%= row.declineReason %>">
+                  <tr
+                    class="popup-row"
+                    data-reason="<%= row.reason %>"
+                    data-declinereason="<%= row.declineReason %>"
+                  >
                     <td><%= row.name %></td>
                     <td><%= row.Type %></td>
                     <td><%= row.StartDate.toISOString().split('T')[0] %></td>
@@ -264,18 +268,15 @@
                     </td>
                     <td class="action-buttons-leave">
                       <a
-                        href="/approve-leave/<%= row.id %>"
-                        class="icon-square-leave"
-                        onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
-                        ><i
-                          class="fa-solid fa-check <% if (row.Status === 'Approved') { %> text-secondary <% } else { %> text-success <% } %>"
-                        ></i
-                      ></a>
-                      <a
                         href="/manage-leave/<%= row.id %>"
                         class="icon-square-leave"
+                        ><i class="fa-solid fa-pen-to-square text-warning"></i
+                      ></a>
+                      <a
+                        href="/view-leave/<%= row.id %>"
+                        class="icon-square-leave"
                       >
-                        <i class="fa-solid fa-circle-xmark text-danger"></i>
+                        <i class="fa-solid fa-eye text-dark"></i>
                       </a>
                     </td>
                   </tr>
@@ -313,7 +314,11 @@
                 <tbody>
                   <% declinedApplications.filter(row => row.Status ===
                   'Declined').forEach((row, index) => { %>
-                  <tr class="popup-row" data-reason="<%= row.reason %>" data-declinereason="<%= row.declineReason %>">
+                  <tr
+                    class="popup-row"
+                    data-reason="<%= row.reason %>"
+                    data-declinereason="<%= row.declineReason %>"
+                  >
                     <td><%= row.name %></td>
                     <td><%= row.Type %></td>
                     <td><%= row.StartDate.toISOString().split('T')[0] %></td>
@@ -329,20 +334,15 @@
                     </td>
                     <td class="action-buttons-leave">
                       <a
-                        href="/approve-leave/<%= row.id %>"
-                        class="icon-square-leave"
-                        onclick="return confirm('Are you sure you want to approve this application by <%= row.name %>?');"
-                        ><i
-                          class="fa-solid fa-check <% if (row.Status === 'Approved') { %> text-secondary <% } else { %> text-success <% } %>"
-                        ></i
-                      ></a>
-                      <a
                         href="/manage-leave/<%= row.id %>"
                         class="icon-square-leave"
+                        ><i class="fa-solid fa-pen-to-square text-warning"></i
+                      ></a>
+                      <a
+                        href="/view-leave/<%= row.id %>"
+                        class="icon-square-leave"
                       >
-                        <i
-                          class="fa-solid fa-circle-xmark <% if (row.Status === 'Declined') { %> text-secondary <% } else { %> text-danger <% } %>"
-                        ></i>
+                        <i class="fa-solid fa-eye text-dark"></i>
                       </a>
                     </td>
                   </tr>
@@ -355,14 +355,6 @@
               No declined leave applications
             </h2>
             <% } %>
-          </div>
-        </div>
-        <div id="popupContainer" class="popup-container">
-          <div class="popup-content">
-            <h3 id="popupHeader"></h3>
-            <p id="popupReason"></p>
-            <h3 id="popupHeader2" style="color:brown"></h3>
-            <p id="popupDecline"></p>
           </div>
         </div>
       </div>

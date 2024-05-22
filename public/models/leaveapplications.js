@@ -62,6 +62,34 @@ const LeaveApplicationsSchema = new mongoose.Schema({
     default: "",
   },
 
+  // Details of Action on Application
+
+  recommendation: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  daysWithPay: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  daysWithoutPay: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  daysOthers: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  dissaprovedReason: {
+    type: String,
+    required: false,
+    default: "",
+  },
+
   Status: {
     type: String,
     required: true,

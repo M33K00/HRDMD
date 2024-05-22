@@ -4,7 +4,7 @@
   <%- include('../layouts/footer') %>
   <div class="page-body">
     <div class="page-name">
-      <h1>MANAGE LEAVE:</h1>
+      <h1>VIEW LEAVE:</h1>
       <a href="/leave_applications" class="btn btn-secondary">GO Back</a>
     </div>
     <H3 class="text-muted text-uppercase text-center"
@@ -241,61 +241,29 @@
             <tbody>
               <tr>
                 <td style="font-size: 15px">Total Earned</td>
-                <td class="text-center"><%= userAttendance.availableSL %></td>
                 <td class="text-center"><%= userAttendance.availableVL %></td>
+                <td class="text-center"><%= userAttendance.availableSL %></td>
               </tr>
             </tbody>
             <tbody>
               <tr>
                 <td style="font-size: 15px">Less this application</td>
-                <td>
-                  <input
-                    type="number"
-                    name="VLLess"
-                    class="text-center"
-                    style="
-                      background-color: transparent;
-                      border: 1px solid black;
-                    "
-                  />
+                <td class="text-center">
+                  <%= leaveapplications.VLLess %>
                 </td>
-                <td>
-                  <input
-                    type="number"
-                    name="SLLess"
-                    class="text-center"
-                    style="
-                      background-color: transparent;
-                      border: 1px solid black;
-                    "
-                  />
+                <td class="text-center">
+                  <%= leaveapplications.SLLess %>
                 </td>
               </tr>
             </tbody>
             <tbody>
               <tr>
                 <td style="font-size: 15px">Balance</td>
-                <td>
-                  <input
-                    type="number"
-                    name="VLBalance"
-                    class="text-center"
-                    style="
-                      background-color: transparent;
-                      border: 1px solid black;
-                    "
-                  />
+                <td class="text-center">
+                  <%= userAttendance.availableVL %>
                 </td>
-                <td>
-                  <input
-                    type="number"
-                    name="SLBalance"
-                    class="text-center"
-                    style="
-                      background-color: transparent;
-                      border: 1px solid black;
-                    "
-                  />
+                <td class="text-center">
+                  <%= userAttendance.availableSL %>
                 </td>
               </tr>
             </tbody>
@@ -305,12 +273,12 @@
           <p class="text-muted text-uppercase mt-4">Recommendation:</p>
           </label>
           <div>
-            <input type="checkbox" id="approved" name="recommendation" value="Approved"
+            <input type="checkbox" id="approved" name="recommendation" value="Approved" <% if (leaveapplications.recommendation === "Approved") { %> checked <% } %> disabled>
             <label for="approved"> For Approval</label>
-          </div>
+            </div>
           <div>
-            <input type="checkbox" id="disapprove" name="recommendation" value="Disapproved"
-            <label for="disapprove"> For disapproval</label>
+            <input type="checkbox" id="approved" name="recommendation" value="Approved" <% if (leaveapplications.recommendation === "Disapproved") { %> checked <% } %> disabled>
+            <label for="approved"> For Disapproval</label>
           </div>
         </div>
       </div>
@@ -350,13 +318,9 @@
         </div>
         <div class="form-item">
         <p class="text-muted text-uppercase">DISAPPROVED DUE TO:</p>
-        <textarea class="form-control" id="dissaprovedReason" name="dissaprovedReason"></textarea>
+        <textarea class="form-control" id="dissaprovedReason" name="dissaprovedReason" rows="4" disabled><%= leaveapplications.dissaprovedReason %></textarea>
         </div>
     </div>
-    <p class="text-danger mt-4" style="font-weight: 600;">PLEASE DOUBLE CHECK ACTION DETAILS BEFORE SUBMITTING!</p>
-      <div class="button-container mt-4">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
     </form>
   </div>
 </body>

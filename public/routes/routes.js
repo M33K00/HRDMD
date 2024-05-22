@@ -620,7 +620,7 @@ router.get("/leave_applications", async (req, res) => {
   }
 });
 
-router.get("/approve-leave/:id", async (req, res) => {
+router.get("/manage-leave/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const leaveapplications = await LeaveApplications.findById(id);
@@ -660,57 +660,147 @@ router.get("/approve-leave/:id", async (req, res) => {
       userAttendance,
     });
   } catch (err) {
-    console.log("Error declining leave: ", err);
+    console.log("Error viewing leave: ", err);
     res.status(500).send("Internal Server Error");
   }
 });
 
-router.post("/decline-leave/:id", async (req, res) => {
+router.get("/view-leave/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const leaveapplications = await LeaveApplications.findById(id);
+
     if (!leaveapplications) {
-      // If the user account doesn't exist, redirect to manage_accounts page
-      return res.redirect("/view_employees");
+      req.session.message = {
+        type: "warning",
+        message: "Leave application not found",
+      };
+      return res.redirect("HRIS/view_employees");
     }
 
-    leaveapplications.Status = "Declined";
-    leaveapplications.AppliedDate = new Date();
-    await leaveapplications.save();
+    const leaveuser = await LogInCollection.findOne({
+      email: leaveapplications.email,
+    });
+    if (!leaveuser) {
+      req.session.message = {
+        type: "warning",
+        message: "User not found",
+      };
+    }
 
-    req.session.message = {
-      type: "warning",
-      message: "Leave application declined successfully",
+    const userAttendance = await Attendance.findOne({
+      email: leaveapplications.email,
+    });
+
+    if (!userAttendance) {
+      req.session.message = {
+        type: "warning",
+        message: "User not found",
+      };
+    }
+
+    res.render("HRIS/view-leave", {
+      leaveapplications,
+      leaveuser,
+      userAttendance,
+    });
+  } catch (err) {
+    console.log("Error viewing leave: ", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/manage-leave/:id", async (req, res) => {
+  console.log(req.body);
+
+  try {
+    const id = req.params.id;
+    const leaveapplications = await LeaveApplications.findById(id);
+
+    if (!leaveapplications) {
+      req.session.message = {
+        type: "warning",
+        message: "Leave application not found",
+      };
+      return res.redirect("/leave_applications");
+    }
+
+    const attendance = await Attendance.findOne({
+      email: leaveapplications.email,
+    });
+
+    if (!attendance) {
+      req.session.message = {
+        type: "warning",
+        message: "User not found",
+      };
+      return res.redirect("/leave_applications");
+    }
+
+    let recommendation = req.body.recommendation;
+    let status;
+
+    if (recommendation === "Approved") {
+      status = "Approved";
+    } else if (recommendation === "Disapproved") {
+      status = "Declined";
+    }
+
+    const data = {
+      Status: status,
+      recommendation: recommendation,
+      daysWithPay: req.body.daysWithPay,
+      daysWithoutPay: req.body.daysWithoutPay,
+      daysOthers: req.body.daysOthers,
+      dissaprovedReason: req.body.dissaprovedReason,
+      AppliedDate: new Date(),
     };
 
+    let VLBalance = attendance.availableVL;
+    let SLBalance = attendance.availableSL;
+    let VLLess = parseInt(req.body.VLLess, 10) || 0;
+    let SLLess = parseInt(req.body.SLLess, 10) || 0;
+    let newVLBalance;
+    let newSLBalance;
+
+    if (recommendation === "Approved") {
+      newVLBalance = VLBalance - VLLess;
+      newSLBalance = SLBalance - SLLess;
+
+      const data2 = {
+        availableVL: newVLBalance,
+        availableSL: newSLBalance,
+      };
+
+      console.log(data2);
+
+      try {
+        await Attendance.findByIdAndUpdate(attendance._id, data2);
+
+        console.log("Attendance updated successfully");
+      } catch (err) {
+        console.log("Error updating attendance: ", err);
+        req.session.message = {
+          type: "warning",
+          message: "Error updating attendance",
+        };
+        return res.redirect("/leave_applications");
+      }
+    }
+
+    await LeaveApplications.findByIdAndUpdate(id, data);
+
+    req.session.message = {
+      type: "success",
+      message: "Leave application " + status,
+    };
     res.redirect("/leave_applications");
   } catch (err) {
     console.log("Error declining leave: ", err);
     req.session.message = {
-      type: "danger",
-      message: "Error declining leave",
+      type: "warning",
+      message: "Error declining leave application",
     };
-    res.redirect("/leave_applications");
-  }
-});
-
-router.get("/manage-leave/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const leaveapplications = await LeaveApplications.findById(id);
-    if (!leaveapplications) {
-      req.session.message = {
-        type: "danger",
-        message: "Error managing leave",
-      };
-      res.redirect("/leave_applications");
-    }
-
-    res.render("HRIS/manage_leave", { leaveapplications });
-  } catch (err) {
-    // Log and handle errors gracefully
-    console.error("Error:", err);
-    // Redirect to manage_accounts page in case of an error
     res.redirect("/leave_applications");
   }
 });
