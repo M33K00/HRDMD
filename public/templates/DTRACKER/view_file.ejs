@@ -58,32 +58,18 @@
         >
       </div>
       <div class="file-option">
-        <div class="file-buttons">
-            <!-- Archive Button -->
-            <button class="btn btn-secondary" onclick="showConfirmationModal('Archive', '<%= file.id %>')"><img
-              src="../images/svg/box-archive-solid.svg"
-              class="icon"
-            />Archive</button>
-            <!-- Reject Button -->
-            <button class="btn btn-danger" onclick="showConfirmationModal('Reject', '<%= file.id %>')"><img
-              src="../images/svg/rotate-right-solid.svg"
-              class="icon"
-            />Reject</button>
-
-            <!-- Pending Button -->
-            <button class="btn btn-warning" onclick="showConfirmationModal('Pending', '<%= file.id %>')"><img
-              src="../images/svg/hourglass-start-solid.svg"
-              class="icon"
-            />Pending</button>
-
-            <!-- Revision Button -->
-            <button class="btn btn-dark" onclick="showConfirmationModal('Revision', '<%= file.id %>')"><img
-              src="../images/svg/rotate-right-solid.svg"
-              class="icon"
-            />Revision</button>
-
-            <!-- Approve Button -->
-            <button class="btn btn-success" onclick="showConfirmationModal('Approve', '<%= file.id %>')"><img src="../images/svg/check-solid.svg" class="icon" />Approve</button>
+        <div class="file-dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Actions
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#" onclick="showConfirmationModal('Archive', '<%= file.id %>')"><img src="../images/svg/box-archive-solid.svg" class="icon" /> Archive</a>
+            <a class="dropdown-item" href="#" onclick="showConfirmationModal('Reject', '<%= file.id %>')"><img src="../images/svg/xmark-solid.svg" class="icon" /> Reject</a>
+            <a class="dropdown-item" href="#" onclick="showConfirmationModal('Pending', '<%= file.id %>')"><img src="../images/svg/hourglass-start-solid.svg" class="icon" /> Pending</a>
+            <a class="dropdown-item" href="#" onclick="showConfirmationModal('Revision', '<%= file.id %>')"><img src="../images/svg/rotate-right-solid.svg" class="icon" /> Revision</a>
+            <a class="dropdown-item" href="#" onclick="showConfirmationModal('Approve', '<%= file.id %>')"><img src="../images/svg/check-solid.svg" class="icon" /> Approve</a>
+          </div>
+        </div>
         </div>
       </div>
     </div>

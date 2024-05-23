@@ -804,16 +804,20 @@
   align-items: center;
 }
 
-.file-buttons {
+.file-dropdown {
   margin-top: 10px;
   margin-left: auto;
 }
 
-.file-buttons img {
+.file-dropdown img {
   width: 15px;
   margin-right: 5px;
   align-items: center;
   justify-content: center;
+}
+
+.dropdown-menu {
+  margin-right: 40px;
 }
 
 .img-icon {
