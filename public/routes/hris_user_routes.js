@@ -1,5 +1,7 @@
 const router = require("./routes");
 const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
 // Models
 const LogInCollection = require("../models/logincollections");
@@ -7,6 +9,19 @@ const LeaveApplications = require("../models/leaveapplications");
 const Attendance = require("../models/attendance");
 const DaysPresent = require("../models/dayspresent");
 const DaysAbsent = require("../models/daysabsent");
+
+// Multer Config
+const EmployeeStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./files/employeedocument");
+  },
+  filename: (req, file, cb) => {
+    const fileName = file.originalname;
+    cb(null, fileName); // Use the original filename without any modifications
+  },
+});
+
+const employeeUpload = multer({ storage: EmployeeStorage });
 
 // 201 File Models
 const UserDocuments = require("../models/userdocuments");
@@ -400,5 +415,141 @@ router.get("/clockout/:email", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+router.get("/view-201/:type/:email" , async (req, res) => {
+  try {
+    const type = req.params.type;
+    const email = req.params.email;
+
+    switch (type) {
+      case "appPaper":
+        res.redirect("/appPaper/" + email);
+        break;
+      case "month":
+        res.render("HRISUSER/view-201-month");
+        break;
+      default:
+        res.status(400).send("Invalid request parameter");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.get("/appPaper/:email" , async (req, res) => {
+  try {
+    const email = req.params.email;
+    const appPaper = await AppPaper.findOne({email: email});
+
+    res.render("HRIS/appPaper", {appPaper});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+})
+
+router.post("/submit_paper", employeeUpload.fields([
+  { name: 'origFile', maxCount: 1 },
+  { name: 'reappointFile', maxCount: 1 },
+  { name: 'reemployFile', maxCount: 1 },
+  { name: 'promFile', maxCount: 1 },
+  { name: 'transferFile', maxCount: 1 },
+  { name: 'transPromFile', maxCount: 1 }
+]), async (req, res) => {
+  try {
+      const email = req.body.email;
+      const files = req.files;
+
+      const existingData = await AppPaper.findOne({ email: email });
+
+      const updateData = {};
+
+      if (files.origFile) {
+        if (existingData.origFile && existingData.origFile !== files.origFile[0].path) {
+            // Delete old file
+            fs.unlinkSync(existingData.origFile);
+        }
+        updateData['origFile'] = files.origFile[0].path;
+      }
+      if (files.reappointFile) {
+          if (existingData.reappointFile && existingData.reappointFile !== files.reappointFile[0].path) {
+              // Delete old file
+              fs.unlinkSync(existingData.reappointFile);
+          }
+          updateData['reappointFile'] = files.reappointFile[0].path;
+      }
+      if (files.reemployFile) {
+          if (existingData.reemployFile && existingData.reemployFile !== files.reemployFile[0].path) {
+              // Delete old file
+              fs.unlinkSync(existingData.reemployFile);
+          }
+          updateData['reemployFile'] = files.reemployFile[0].path;
+      }
+      if (files.promFile) {
+          if (existingData.promFile && existingData.promFile !== files.promFile[0].path) {
+              // Delete old file
+              fs.unlinkSync(existingData.promFile);
+          }
+          updateData['promFile'] = files.promFile[0].path;
+      }
+      if (files.transferFile) {
+          if (existingData.transferFile && existingData.transferFile !== files.transferFile[0].path) {
+              // Delete old file
+              fs.unlinkSync(existingData.transferFile);
+          }
+          updateData['transferFile'] = files.transferFile[0].path;
+      }
+      if (files.transPromFile) {
+          if (existingData.transPromFile && existingData.transPromFile !== files.transPromFile[0].path) {
+              // Delete old file
+              fs.unlinkSync(existingData.transPromFile);
+          }
+          updateData['transPromFile'] = files.transPromFile[0].path;
+      }
+
+      // Use findOneAndUpdate to update only specified fields if document exists
+      await AppPaper.findOneAndUpdate(
+          { email: email }, // filter
+          { $set: updateData }, // update data
+          { upsert: true, new: true, setDefaultsOnInsert: true } // options
+      );
+      
+
+      req.session.message = {
+          type: "success",
+          message: "Paper submitted successfully",
+      };
+      res.redirect("/appPaper/" + email);
+  } catch (err) {
+      console.error(err);
+      req.session.message = {
+          type: "danger",
+          message: "Error submitting paper",
+      };
+      res.redirect("/hris");
+  }
+});
+
+router.get("/download-201/:fileName", async (req, res) => {
+  const fileName = req.params.fileName;
+  const filePath = path.join(__dirname, "../../files/employeedocument", fileName);
+  res.download(filePath, (err) => {
+    if (err) {
+      console.error(`Error downloading file ${fileName}: ${err}`);
+      req.session.message = {
+        type: "danger",
+        message: "Error downloading file",
+      };
+      res.redirect("/hris");
+      return;
+    }
+    console.log(`File ${fileName} downloaded successfully`);
+  });
+})
 
 module.exports = router;

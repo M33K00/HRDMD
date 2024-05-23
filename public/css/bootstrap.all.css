@@ -822,3 +822,24 @@
   align-items: center;
   justify-content: center;
 }
+
+.submission {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: #f8f9fa;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+}
+
+.submission.visible {
+  max-height: fit-content; /* Adjust based on content size */
+  opacity: 1;
+  padding: 20px;
+}
+
+.hidden {
+  padding: 0;
+}

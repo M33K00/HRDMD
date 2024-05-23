@@ -1080,6 +1080,7 @@ router.get("/print-hr-dtr/:department", async (req, res) => {
   }
 });
 
+
 router.get("/addacc", (req, res) => {
   res.render("addacc");
 });

@@ -9,10 +9,14 @@
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Appointment Paper</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[0] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
         <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
+        <a href="/view-201/appPaper/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
         <a href="#" class="icon-square text-danger"
           ><i class="fa-solid fa-trash"></i
         ></a>
@@ -22,7 +26,11 @@
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Personal Data Sheet</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[1] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
         <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
         <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>

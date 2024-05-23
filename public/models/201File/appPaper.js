@@ -16,7 +16,17 @@ const appPaperSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
+  origFile: {
+    type: String,
+    required: false,
+    default: "",
+  },
   reappoint: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  reappointFile: {
     type: String,
     required: false,
     default: "",
@@ -26,7 +36,17 @@ const appPaperSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
+  reemployFile: {
+    type: String,
+    required: false,
+    default: "",
+  },
   prom: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  promFile: {
     type: String,
     required: false,
     default: "",
@@ -36,7 +56,17 @@ const appPaperSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
+  transferFile: {
+    type: String,
+    required: false,
+    default: "",
+  },
   transProm: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  transPromFile: {
     type: String,
     required: false,
     default: "",

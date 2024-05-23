@@ -48,63 +48,7 @@
       style="margin-bottom: 20px"
       oninput="searchFunc()"
     />
-    <table id="table" class="table table-hover table-striped">
-      <thead>
-        <tr class="table-primary">
-          <th style="width: 150px">Type</th>
-          <th style="width: 500px">File Name</th>
-          <th style="width: 50px">Actions</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <td style="font-weight: 600">Bio-Data</td>
-        <td>kanade.exe</td>
-        <td class="action-buttons-data">
-          <a href="#" class="icon-square">
-            <i class="fa-solid fa-pen-to-square"></i>
-          </a>
-          <a
-            href="#"
-            class="icon-square text-danger"
-            onclick="return confirm('Are you sure you want to delete?')"
-            ><i class="fa-solid fa-trash"></i
-          ></a>
-        </td>
-      </tbody>
-      <tbody>
-        <td style="font-weight: 600">Medical Record</td>
-        <td>JDAM_launchCodes.txt</td>
-        <td class="action-buttons-data">
-          <a href="#" class="icon-square">
-            <i class="fa-solid fa-pen-to-square"></i>
-          </a>
-          <a
-            href="#"
-            class="icon-square text-danger"
-            onclick="return confirm('Are you sure you want to delete?')"
-            ><i class="fa-solid fa-trash"></i
-          ></a>
-        </td>
-      </tbody>
-      <tbody>
-        <td style="font-weight: 600">Certificates</td>
-        <td class="text-danger" style="font-weight: 600">
-          NO CERTIFICATES SUBMITTED
-        </td>
-        <td class="action-buttons-data">
-          <a href="#" class="icon-square">
-            <i class="fa-solid fa-pen-to-square"></i>
-          </a>
-          <a
-            href="#"
-            class="icon-square text-danger"
-            onclick="return confirm('Are you sure you want to delete?')"
-            ><i class="fa-solid fa-trash"></i
-          ></a>
-        </td>
-      </tbody>
-    </table>
+    <%- include('../layouts/tables/201Table.ejs') -%>
   </div>
   <%- include('../layouts/footer') %>
 </body>

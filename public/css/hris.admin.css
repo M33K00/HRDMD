@@ -703,3 +703,7 @@
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px); /* Blur effect */
 }
+
+.download-file {
+  width: 620px;
+}
