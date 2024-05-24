@@ -43,6 +43,7 @@ const SwornStat = require("../models/201File/swornStat");
 // 201 File Model Array
 const userDocumentsArray = [
   AppPaper,
+  PDS,
   CertERL,
   Certifications,
   CertLB,
@@ -52,7 +53,6 @@ const userDocumentsArray = [
   Cos,
   OathO,
   OfficeOrder,
-  PDS,
   PosDF,
   Schol,
   SwornStat,
@@ -425,8 +425,11 @@ router.get("/view-201/:type/:email" , async (req, res) => {
       case "appPaper":
         res.redirect("/appPaper/" + email);
         break;
-      case "month":
-        res.render("HRISUSER/view-201-month");
+      case "pds":
+        res.redirect("/pds/" + email);
+        break;
+      case "certERL":
+        res.redirect("/certERL/" + email);
         break;
       default:
         res.status(400).send("Invalid request parameter");
@@ -441,6 +444,12 @@ router.get("/appPaper/:email" , async (req, res) => {
   try {
     const email = req.params.email;
     const appPaper = await AppPaper.findOne({email: email});
+
+    if (!appPaper) {
+      await AppPaper.create({
+        email: email,
+      })
+    };
 
     res.render("HRIS/appPaper", {appPaper});
   } catch (err) {
@@ -461,6 +470,7 @@ router.post("/submit_paper", employeeUpload.fields([
   { name: 'transferFile', maxCount: 1 },
   { name: 'transPromFile', maxCount: 1 }
 ]), async (req, res) => {
+  console.log(req.body);
   try {
       const email = req.body.email;
       const files = req.files;
@@ -512,14 +522,41 @@ router.post("/submit_paper", employeeUpload.fields([
           updateData['transPromFile'] = files.transPromFile[0].path;
       }
 
-      // Use findOneAndUpdate to update only specified fields if document exists
-      await AppPaper.findOneAndUpdate(
+      if (req.body.orig && req.body.orig !== existingData.orig) {
+        updateData['orig'] = req.body.orig;
+      }
+      if (req.body.reappoint && req.body.reappoint !== existingData.reappoint) {
+        updateData['reappoint'] = req.body.reappoint;
+      }
+      if (req.body.reemploy && req.body.reemploy !== existingData.reemploy) {
+        updateData['reemploy'] = req.body.reemploy;
+      }
+      if (req.body.prom && req.body.prom !== existingData.prom) {
+        updateData['prom'] = req.body.prom;
+      }
+      if (req.body.transfer && req.body.transfer !== existingData.transfer) {
+        updateData['transfer'] = req.body.transfer;
+      }
+      if (req.body.transProm && req.body.transProm !== existingData.transProm) {
+        updateData['transProm'] = req.body.transProm;
+      }
+
+      if (!existingData) {
+        // No existing record, create a new one
+        await AppPaper.create({
+          email: email,
+          name: req.body.name,
+          ...updateData,
+        });
+      } else {
+        // Update existing record
+        await AppPaper.findOneAndUpdate(
           { email: email }, // filter
           { $set: updateData }, // update data
-          { upsert: true, new: true, setDefaultsOnInsert: true } // options
-      );
+          { new: true } // options
+        );
+      }
       
-
       req.session.message = {
           type: "success",
           message: "Paper submitted successfully",
@@ -532,6 +569,188 @@ router.post("/submit_paper", employeeUpload.fields([
           message: "Error submitting paper",
       };
       res.redirect("/hris");
+  }
+});
+
+router.get("/pds/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const pds = await PDS.findOne({email: email});
+    const pageName = "Personal Data Sheet";
+    res.render("HRIS/201S", {pds, pageName});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.post("/pds-submit/:email", employeeUpload.single("files"), async (req, res) => {
+  try {
+    const email = req.params.email;
+    const file = req.file;
+
+    // Validate the email and file
+    if (!email || !file) {
+      throw new Error('Email or file is missing');
+    }
+
+    const filename = path.basename(file.path);
+
+    const existingData = await PDS.findOne({ email: email });
+    if (existingData && existingData.files) {
+      const oldFilePath = path.join(__dirname, "../../files/employeedocument", existingData.files);
+      fs.unlink(oldFilePath, (unlinkErr) => { // Use fs.unlink with a callback
+        if (unlinkErr) {
+          console.error(`Error deleting old file: ${unlinkErr}`);
+          throw new Error('Error deleting old file');
+        }
+      });
+    }
+
+    const updateData = {
+      files: filename,
+      fileYear: req.body.fileYear,
+    };
+
+    await PDS.findOneAndUpdate(
+      { email: email }, // filter
+      { $set: updateData }, // update data
+      { upsert: true, new: true, setDefaultsOnInsert: true } // options
+    );
+
+    req.session.message = {
+      type: "success",
+      message: "Personal Data Sheet submitted successfully",
+    };
+    res.redirect(`/pds/${email}`);
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error submitting PDS",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/certERL/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const certERL = await CertERL.findOne({email: email});
+
+    if (!certERL) {
+      await CertERL.create({
+        email: email,
+      })
+    }; 
+
+    res.render("HRIS/certERL", {certERL});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.post("/certERL-submit", employeeUpload.fields([
+  { name: 'CSC', maxCount: 1 },
+  { name: 'NPC', maxCount: 1 },
+  { name: 'CESB', maxCount: 1 },
+  { name: 'PRC', maxCount: 1 },
+  { name: 'SC', maxCount: 1 },
+]), async (req, res) => {
+  console.log(req.body);
+
+  try {
+    const email = req.body.email;
+    const files = req.files;
+
+    const updateData = {};
+
+    let existingData = await CertERL.findOne({ email: email });
+
+    if (files.CSC) {
+      if (existingData && existingData.CSC && existingData.CSC !== files.CSC[0].path) {
+        fs.unlinkSync(existingData.CSC);
+      }
+      updateData['CSC'] = files.CSC[0].path;
+    }
+    if (files.NPC) {
+      if (existingData && existingData.NPC && existingData.NPC !== files.NPC[0].path) {
+        fs.unlinkSync(existingData.NPC);
+      }
+      updateData['NPC'] = files.NPC[0].path;
+    }
+    if (files.CESB) {
+      if (existingData && existingData.CESB && existingData.CESB !== files.CESB[0].path) {
+        fs.unlinkSync(existingData.CESB);
+      }
+      updateData['CESB'] = files.CESB[0].path;
+    }
+    if (files.PRC) {
+      if (existingData && existingData.PRC && existingData.PRC !== files.PRC[0].path) {
+        fs.unlinkSync(existingData.PRC);
+      }
+      updateData['PRC'] = files.PRC[0].path;
+    }
+    if (files.SC) {
+      if (existingData && existingData.SC && existingData.SC !== files.SC[0].path) {
+        fs.unlinkSync(existingData.SC);
+      }
+      updateData['SC'] = files.SC[0].path;
+    }
+
+    if (req.body.CSCYear && req.body.CSCYear !== existingData.CSCYear) {
+      updateData['CSCYear'] = req.body.CSCYear;
+    }
+    if (req.body.NPCYear && req.body.NPCYear !== existingData.NPCYear) {
+      updateData['NPCYear'] = req.body.NPCYear;
+    }
+    if (req.body.CESBYear && req.body.CESBYear !== existingData.CESBYear) {
+      updateData['CESBYear'] = req.body.CESBYear;
+    }
+    if (req.body.PRCYear && req.body.PRCYear !== existingData.PRCYear) {
+      updateData['PRCYear'] = req.body.PRCYear;
+    }
+    if (req.body.SCYear && req.body.SCYear !== existingData.SCYear) {
+      updateData['SCYear'] = req.body.SCYear;
+    }
+
+    if (!existingData) {
+      // No existing record, create a new one
+      await CertERL.create({
+        email: email,
+        name: req.body.name,
+        ...updateData,
+      });
+    } else {
+      // Update existing record
+      await CertERL.findOneAndUpdate(
+        { email: email }, // filter
+        { $set: updateData }, // update data
+        { new: true } // options
+      );
+    }
+
+    req.session.message = {
+      type: "success",
+      message: "Paper submitted successfully",
+    };
+    res.redirect("/certERL/" + email);
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error submitting paper",
+    };
+    res.redirect("/hris");
   }
 });
 
@@ -548,7 +767,6 @@ router.get("/download-201/:fileName", async (req, res) => {
       res.redirect("/hris");
       return;
     }
-    console.log(`File ${fileName} downloaded successfully`);
   });
 })
 

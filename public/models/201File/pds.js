@@ -16,6 +16,11 @@ const PersonalDataSheetsSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
+  fileYear: {
+    type: String,
+    required: false,
+    default: "",
+  },
 });
 
 const PersonalDataSheets = mongoose.model(

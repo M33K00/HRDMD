@@ -23,7 +23,7 @@ function createWindow() {
     },
   });
 
-  win.setMinimumSize(1368, 768);
+  win.setMinimumSize(1600, 900);
 
   win.loadURL(`http://localhost:${PORT}`);
 }

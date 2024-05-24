@@ -1,0 +1,227 @@
+<%- include('../layouts/user_hris/hris_user_header') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%-
+  include('../layouts/user_hris/sidenavhris_user') %>
+    <div class="page-body">
+        <div class="page-name">
+            <h1>Certificate of Eligibility/Rating/License</h1>
+            <a href="/view_profile/<%= user.email %>" class="btn btn-secondary">Go Back</a>
+        </div>
+        <div id="alertContainer" class="bottom-right">
+            <% if (message) { %>
+            <div
+              class="alert alert-dismissible alert-<%= message.type %> fade show"
+              role="alert"
+              id="autoDismissAlert"
+            >
+              <strong>Attention! </strong><%= message.message %><a
+                href="#"
+                class="alert-link"
+              ></a>
+            </div>
+            <% } %>
+        </div>
+        <div class="file-code">
+            <button id="submitButton" class="btn btn-secondary">Submit Certificates</button>
+        </div>
+        <div id="submitPaper" class="submission hidden mt-4">
+            <form action="/certERL-submit" method="POST" enctype="multipart/form-data">
+                <fieldset>
+                    <legend>Upload Certificates</legend>
+                    <p class="text-muted">Please make sure to only upload <strong>PDF</strong> files.</p>
+                    <div class="form-group flex-container">
+                        <div class="form-item">
+                          <input type="hidden" name="email" value="<%= user.email %>" />
+                          <label for="CSCYear" class="form-label mt-4">CSC</label>
+                          <input
+                            type="text"
+                            name="CSCYear"
+                            class="form-control"
+                            id="CSCYear"
+                            placeholder="Enter year"
+                          />
+                        </div>
+                        <div class="form-item">
+                          <label for="CSC" class="form-label mt-4">Upload</label>
+                          <input
+                            type="file"
+                            name="CSC"
+                            class="form-control"
+                          />
+                        </div>
+                    </div>
+                    <div class="form-group flex-container">
+                        <div class="form-item">
+                          <label for="NPCYear" class="form-label mt-4">National Police Commission (NAPOLCOM)</label>
+                          <input
+                            type="text"
+                            name="NPCYear"
+                            class="form-control"
+                            id="NPCYear"
+                            placeholder="Enter year"
+                          />
+                        </div>
+                        <div class="form-item">
+                          <label for="NPC" class="form-label mt-4">Upload</label>
+                          <input
+                            type="file"
+                            name="NPC"
+                            class="form-control"
+                          />
+                        </div>
+                    </div>
+                    <div class="form-group flex-container">
+                        <div class="form-item">
+                          <label for="CESBYear" class="form-label mt-4">Career Executive Serive Board (CESB)</label>
+                          <input
+                            type="text"
+                            name="CESBYear"
+                            class="form-control"
+                            id="CESBYear"
+                            placeholder="Enter year"
+                          />
+                        </div>
+                        <div class="form-item">
+                          <label for="CESB" class="form-label mt-4">Upload</label>
+                          <input
+                            type="file"
+                            name="CESB"
+                            class="form-control"
+                          />
+                        </div>
+                    </div>
+                    <div class="form-group flex-container">
+                        <div class="form-item">
+                          <label for="PRCYear" class="form-label mt-4">Professional Regulation Commission (PRC)</label>
+                          <input
+                            type="text"
+                            name="PRCYear"
+                            class="form-control"
+                            id="PRCYear"
+                            placeholder="Enter year"
+                          />
+                        </div>
+                        <div class="form-item">
+                          <label for="PRC" class="form-label mt-4">Upload</label>
+                          <input
+                            type="file"
+                            name="PRC"
+                            class="form-control"
+                          />
+                        </div>
+                    </div>
+                    <div class="form-group flex-container">
+                        <div class="form-item">
+                          <label for="SCYear" class="form-label mt-4">Supreme Court of the Philippines (SC)</label>
+                          <input
+                            type="text"
+                            name="SCYear"
+                            class="form-control"
+                            id="SCYear"
+                            placeholder="Enter year"
+                          />
+                        </div>
+                        <div class="form-item">
+                          <label for="SC" class="form-label mt-4">Upload</label>
+                          <input
+                            type="file"
+                            name="SC"
+                            class="form-control"
+                          />
+                        </div>
+                    </div>
+                </fieldset>
+                <button type="submit" class="btn btn-primary btn-submit w-100 mt-3" style="text-align: center; display: inline-block;">Submit</button>
+            </form>
+          </div>
+          <% if (certERL !== null) { %>
+            <% if (certERL.CSCYear !== "") { %>
+            <div class="file-container">
+                <div class="file-item text-uppercase">
+                    <h3>CSC:</h3>
+                    <p><strong>File Year:</strong> <%= certERL.CSCYear %></p>
+                  </div>
+                <div class="file-item text-uppercase">
+                    <h4>File Attached:</h4>
+                    <p><strong>File Name:</strong> <%= certERL.CSC.split('\\').pop() %></p>
+                    <a
+                      href="/download-201/<%= certERL.CSC.split('\\').pop() %>"
+                      class="btn btn-primary download-file"
+                      >Download File</a
+                    >
+                </div>
+            </div>
+            <% } %>
+            <% if (certERL.NPCYear !== "") { %>
+            <div class="file-container mt-4">
+                <div class="file-item text-uppercase">
+                    <h3>National Police Commission:</h3>
+                    <p><strong>File Year:</strong> <%= certERL.NPCYear %></p>
+                  </div>
+                <div class="file-item text-uppercase">
+                    <h4>File Attached:</h4>
+                    <p><strong>File Name:</strong> <%= certERL.NPC.split('\\').pop() %></p>
+                    <a
+                      href="/download-201/<%= certERL.NPC.split('\\').pop() %>"
+                      class="btn btn-primary download-file"
+                      >Download File</a
+                    >
+                </div>
+            </div>
+            <% } %>
+            <% if (certERL.CESBYear !== "") { %>
+            <div class="file-container mt-4">
+                <div class="file-item text-uppercase">
+                    <h3>Career Executive Serive Board:</h3>
+                    <p><strong>File Year:</strong> <%= certERL.CESBYear %></p>
+                  </div>
+                <div class="file-item text-uppercase">
+                    <h4>File Attached:</h4>
+                    <p><strong>File Name:</strong> <%= certERL.CESB.split('\\').pop() %></p>
+                    <a
+                      href="/download-201/<%= certERL.CESB.split('\\').pop() %>"
+                      class="btn btn-primary download-file"
+                      >Download File</a
+                    >
+                </div>
+            </div>
+            <% } %>
+            <% if (certERL.PRCYear !== "") { %>
+            <div class="file-container mt-4">
+                <div class="file-item text-uppercase">
+                    <h3>Professional Regulation Commission:</h3>
+                    <p><strong>File Year:</strong> <%= certERL.PRCYear %></p>
+                  </div>
+                <div class="file-item text-uppercase">
+                    <h4>File Attached:</h4>
+                    <p><strong>File Name:</strong> <%= certERL.PRC.split('\\').pop() %></p>
+                    <a
+                      href="/download-201/<%= certERL.PRC.split('\\').pop() %>"
+                      class="btn btn-primary download-file"
+                      >Download File</a
+                    >
+                </div>
+            </div>
+            <% } %>
+            <% if (certERL.SCYear !== "") { %>
+            <div class="file-container mt-4">
+                <div class="file-item text-uppercase">
+                    <h3>Supreme Court of the Philippines:</h3>
+                    <p><strong>File Year:</strong> <%= certERL.SCYear %></p>
+                  </div>
+                <div class="file-item text-uppercase">
+                    <h4>File Attached:</h4>
+                    <p><strong>File Name:</strong> <%= certERL.SC.split('\\').pop() %></p>
+                    <a
+                      href="/download-201/<%= certERL.SC.split('\\').pop() %>"
+                      class="btn btn-primary download-file"
+                      >Download File</a
+                    >
+                </div>
+            </div>
+            <% } %>
+            <% } else { %>
+                <p class="text-muted text-center mt-4">No certifications submitted</p>
+          <% } %>
+    </div>
+<%- include('../layouts/footer') %>

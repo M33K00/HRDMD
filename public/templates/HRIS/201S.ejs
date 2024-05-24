@@ -1,0 +1,76 @@
+<%- include('../layouts/user_hris/hris_user_header') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%-
+  include('../layouts/user_hris/sidenavhris_user') %>
+    <div class="page-body">
+        <div class="page-name">
+            <h1><%= pageName %></h1>
+            <a href="/view_profile/<%= user.email %>" class="btn btn-secondary">Go Back</a>
+        </div>
+        <div id="alertContainer" class="bottom-right">
+            <% if (message) { %>
+            <div
+              class="alert alert-dismissible alert-<%= message.type %> fade show"
+              role="alert"
+              id="autoDismissAlert"
+            >
+              <strong>Attention! </strong><%= message.message %><a
+                href="#"
+                class="alert-link"
+              ></a>
+            </div>
+            <% } %>
+          </div>
+        <div class="file-code">
+            <button id="submitButton" class="btn btn-secondary">Submit <%= pageName %></button>
+        </div>
+        <div id="submitPaper" class="submission hidden mt-4 mb-4">
+            <form action="/pds-submit/<%= user.email %>" method="POST" enctype="multipart/form-data">
+                <fieldset>
+                    <legend>Upload <%= pageName %></legend>
+                    <p class="text-muted">Please make sure to only submit <strong>PDF</strong> file</p>
+                    <div class="form-group flex-container">
+                        <div class="form-item">
+                          <input type="hidden" name="name" value="<%= user.name %>" />
+                          <input type="hidden" name="email" value="<%= user.email %>" />
+                          <input
+                            type="text"
+                            name="fileYear"
+                            class="form-control"
+                            id="orig"
+                            placeholder="Enter year"
+                          />
+                        </div>
+                        <div class="form-item">
+                          <input
+                            type="file"
+                            name="files"
+                            class="form-control"
+                          />
+                        </div>
+                    </div>
+                </fieldset>
+                <button type="submit" class="btn btn-primary btn-submit w-100 mt-3" style="text-align: center; display: inline-block;">Submit</button>
+            </form>
+          </div>
+          <% if (pds !== null) { %>
+            <div class="file-container">
+                <div class="file-item text-uppercase">
+                    <h3>Original:</h3>
+                    <p><strong>File Year:</strong> <%= pds.fileYear %></p>
+                  </div>
+                <div class="file-item text-uppercase">
+                    <h3>File Attached:</h3>
+                    <p><strong>File Name:</strong> <%= pds.files.split('\\').pop() %></p>
+                    <a
+                      href="/download-201/<%= pds.files %>"
+                      class="btn btn-primary download-file"
+                      >Download File</a
+                    >
+                </div>
+            </div>
+          <% } else { %>
+            <p class="text-muted text-center mt-4">No <%= pageName %> found</p>
+          <% } %>
+    </div>
+<%- include('../layouts/footer') %>

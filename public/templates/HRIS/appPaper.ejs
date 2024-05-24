@@ -24,6 +24,137 @@
           <div class="file-code">
             <button id="submitButton" class="btn btn-secondary">Submit Appointment Paper</button>
         </div>
+        <div id="submitPaper" class="submission hidden mt-4">
+          <form action="/submit_paper" method="POST" enctype="multipart/form-data">
+              <fieldset>
+                  <legend>Upload Appointment Paper</legend>
+                  <p class="text-muted">Please make sure to only upload <strong>PDF</strong> files with your surname at the start.</p>
+                  <div class="form-group flex-container">
+                      <div class="form-item">
+                        <input type="hidden" name="name" value="<%= user.name %>" />
+                        <input type="hidden" name="email" value="<%= user.email %>" />
+                        <label for="orig" class="form-label mt-4">Original</label>
+                        <input
+                          type="text"
+                          name="orig"
+                          class="form-control"
+                          id="orig"
+                          placeholder="Enter year"
+                        />
+                      </div>
+                      <div class="form-item">
+                        <label for="upload" class="form-label mt-4">Upload</label>
+                        <input
+                          type="file"
+                          name="origFile"
+                          class="form-control"
+                        />
+                      </div>
+                  </div>
+                  <div class="form-group flex-container">
+                      <div class="form-item">
+                        <label for="reappoint" class="form-label mt-4">Reappointment</label>
+                        <input
+                          type="text"
+                          name="reappoint"
+                          class="form-control"
+                          id="reappoint"
+                          placeholder="Enter year"
+                        />
+                      </div>
+                      <div class="form-item">
+                        <label for="upload" class="form-label mt-4">Upload</label>
+                        <input
+                          type="file"
+                          name="reappointFile"
+                          class="form-control"
+                        />
+                      </div>
+                  </div>
+                  <div class="form-group flex-container">
+                      <div class="form-item">
+                        <label for="reemploy" class="form-label mt-4">Reemployment</label>
+                        <input
+                          type="text"
+                          name="reemploy"
+                          class="form-control"
+                          id="reemploy"
+                          placeholder="Enter year"
+                        />
+                      </div>
+                      <div class="form-item">
+                        <label for="upload" class="form-label mt-4">Upload</label>
+                        <input
+                          type="file"
+                          name="reemployFile"
+                          class="form-control"
+                        />
+                      </div>
+                  </div>
+                  <div class="form-group flex-container">
+                      <div class="form-item">
+                        <label for="prom" class="form-label mt-4">Promotion</label>
+                        <input
+                          type="text"
+                          name="prom"
+                          class="form-control"
+                          id="prom"
+                          placeholder="Enter year"
+                        />
+                      </div>
+                      <div class="form-item">
+                        <label for="upload" class="form-label mt-4">Upload</label>
+                        <input
+                          type="file"
+                          name="promFile"
+                          class="form-control"
+                        />
+                      </div>
+                  </div>
+                  <div class="form-group flex-container">
+                      <div class="form-item">
+                        <label for="trans" class="form-label mt-4">Transfer</label>
+                        <input
+                          type="text"
+                          name="trans"
+                          class="form-control"
+                          id="trans"
+                          placeholder="Enter year"
+                        />
+                      </div>
+                      <div class="form-item">
+                        <label for="upload" class="form-label mt-4">Upload</label>
+                        <input
+                          type="file"
+                          name="transFile"
+                          class="form-control"
+                        />
+                      </div>
+                  </div>
+                  <div class="form-group flex-container">
+                      <div class="form-item">
+                        <label for="transProm" class="form-label mt-4">Transfer with Promotion</label>
+                        <input
+                          type="text"
+                          name="transProm"
+                          class="form-control"
+                          id="transProm"
+                          placeholder="Enter year"
+                        />
+                      </div>
+                      <div class="form-item">
+                        <label for="upload" class="form-label mt-4">Upload</label>
+                        <input
+                          type="file"
+                          name="transPromFile"
+                          class="form-control"
+                        />
+                      </div>
+                  </div>
+              </fieldset>
+              <button type="submit" class="btn btn-primary btn-submit w-100 mt-3" style="text-align: center; display: inline-block;">Submit</button>
+          </form>
+        </div>
           <div class="page-content mt-3">
             <% if (appPaper !== "") { %>
             <% if (appPaper.orig !== "") { %>
@@ -100,7 +231,7 @@
                     </div>
                 </div>
             <% } %>
-            <% if (appPaper.transfer !== "" && appPaper.transfer !== null) { %>
+            <% if (appPaper.transfer !== "") { %>
                 <div class="file-container mt-4">
                     <div class="file-item text-uppercase">
                         <h3>Transfer:</h3>
@@ -119,7 +250,7 @@
                     </div>
                 </div>
             <% } %>
-            <% if (appPaper.transProm !== "" && appPaper.transProm !== null) { %>
+            <% if (appPaper.transProm !== "") { %>
                 <div class="file-container mt-4">
                     <div class="file-item text-uppercase">
                         <h3>Transfer with Promotion:</h3>
@@ -138,156 +269,9 @@
                     </div>
                 </div>
             <% } %>
-            <% } else { %>
+          </div>
+          <% } else { %>
             <p class="text-muted text-center mt-4">No Appointment Papers Submitted</p>
-            <% } %>
-          </div>
-          <div id="submitPaper" class="submission hidden mt-4">
-            <form action="/submit_paper" method="POST" enctype="multipart/form-data">
-                <fieldset>
-                    <legend>Upload Appointment Paper</legend>
-                    <div class="form-group flex-container">
-                        <div class="form-item">
-                          <input type="hidden" name="name" value="<%= user.name %>" />
-                          <input type="hidden" name="email" value="<%= user.email %>" />
-                          <label for="orig" class="form-label mt-4">Original</label>
-                          <input
-                            type="text"
-                            name="orig"
-                            class="form-control"
-                            id="orig"
-                            placeholder="Enter year"
-                          />
-                        </div>
-                        <div class="form-item">
-                          <label for="upload" class="form-label mt-4">Upload</label>
-                          <input
-                            type="file"
-                            name="origFile"
-                            class="form-control"
-                          />
-                        </div>
-                    </div>
-                    <div class="form-group flex-container">
-                        <div class="form-item">
-                          <label for="reappoint" class="form-label mt-4">Reappointment</label>
-                          <input
-                            type="text"
-                            name="reappoint"
-                            class="form-control"
-                            id="reappoint"
-                            placeholder="Enter year"
-                          />
-                        </div>
-                        <div class="form-item">
-                          <label for="upload" class="form-label mt-4">Upload</label>
-                          <input
-                            type="file"
-                            name="reappointFile"
-                            class="form-control"
-                          />
-                        </div>
-                    </div>
-                    <div class="form-group flex-container">
-                        <div class="form-item">
-                          <label for="reemploy" class="form-label mt-4">Reemployment</label>
-                          <input
-                            type="text"
-                            name="reemploy"
-                            class="form-control"
-                            id="reemploy"
-                            placeholder="Enter year"
-                          />
-                        </div>
-                        <div class="form-item">
-                          <label for="upload" class="form-label mt-4">Upload</label>
-                          <input
-                            type="file"
-                            name="reemployFile"
-                            class="form-control"
-                          />
-                        </div>
-                    </div>
-                    <div class="form-group flex-container">
-                        <div class="form-item">
-                          <label for="prom" class="form-label mt-4">Promotion</label>
-                          <input
-                            type="text"
-                            name="prom"
-                            class="form-control"
-                            id="prom"
-                            placeholder="Enter year"
-                          />
-                        </div>
-                        <div class="form-item">
-                          <label for="upload" class="form-label mt-4">Upload</label>
-                          <input
-                            type="file"
-                            name="promFile"
-                            class="form-control"
-                          />
-                        </div>
-                    </div>
-                    <div class="form-group flex-container">
-                        <div class="form-item">
-                          <label for="trans" class="form-label mt-4">Transfer</label>
-                          <input
-                            type="text"
-                            name="trans"
-                            class="form-control"
-                            id="trans"
-                            placeholder="Enter year"
-                          />
-                        </div>
-                        <div class="form-item">
-                          <label for="upload" class="form-label mt-4">Upload</label>
-                          <input
-                            type="file"
-                            name="transFile"
-                            class="form-control"
-                          />
-                        </div>
-                    </div>
-                    <div class="form-group flex-container">
-                        <div class="form-item">
-                          <label for="transProm" class="form-label mt-4">Transfer with Promotion</label>
-                          <input
-                            type="text"
-                            name="transProm"
-                            class="form-control"
-                            id="transProm"
-                            placeholder="Enter year"
-                          />
-                        </div>
-                        <div class="form-item">
-                          <label for="upload" class="form-label mt-4">Upload</label>
-                          <input
-                            type="file"
-                            name="transPromFile"
-                            class="form-control"
-                          />
-                        </div>
-                    </div>
-                </fieldset>
-                <button type="submit" class="btn btn-primary btn-submit w-100 mt-3" style="text-align: center; display: inline-block;">Submit</button>
-            </form>
-          </div>
+          <% } %>
     </div>
-    <script>
-    // script.js
-    document.addEventListener("DOMContentLoaded", function() {
-        const submitButton = document.getElementById('submitButton');
-        const submitPaperDiv = document.getElementById('submitPaper');
-
-        submitButton.addEventListener('click', function() {
-            if (submitPaperDiv.classList.contains('visible')) {
-                submitPaperDiv.classList.remove('visible');
-                submitPaperDiv.classList.add('hidden');
-            } else {
-                submitPaperDiv.classList.remove('hidden');
-                submitPaperDiv.classList.add('visible');
-            }
-        });
-    });
-    </script>
 <%- include('../layouts/footer') %>

@@ -15,11 +15,8 @@
         <td class="text-danger">NOT SUBMITTED</td>
       <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/appPaper/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
         <a href="/view-201/appPaper/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
       </td>
     </tr>
   </tbody>
@@ -32,24 +29,22 @@
         <td class="text-danger">NOT SUBMITTED</td>
       <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/pds/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/pds/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
-      <td class="fileType text-uppercase">Certificate of Eligibility</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <td class="fileType text-uppercase">Certificate of Eligibility/Rating/License</td>
+      <% if (results[2] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/certERL/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/certERL/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>

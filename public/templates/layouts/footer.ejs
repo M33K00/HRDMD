@@ -669,3 +669,20 @@
     }
   }
 </script>
+<script>
+  // script.js
+  document.addEventListener("DOMContentLoaded", function() {
+      const submitButton = document.getElementById('submitButton');
+      const submitPaperDiv = document.getElementById('submitPaper');
+
+      submitButton.addEventListener('click', function() {
+          if (submitPaperDiv.classList.contains('visible')) {
+              submitPaperDiv.classList.remove('visible');
+              submitPaperDiv.classList.add('hidden');
+          } else {
+              submitPaperDiv.classList.remove('hidden');
+              submitPaperDiv.classList.add('visible');
+          }
+      });
+  });
+  </script>
