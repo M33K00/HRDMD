@@ -76,7 +76,7 @@
                       </li>
                       <li>
                         <form action="/delete-201/<%= docuType %>/<%= row.files %>/<%= user.email %>" method="POST" style="display: inline;">
-                            <button class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-file="<%= row.files %>" data-email="<%= row.email %>">Delete</button>
+                            <button class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-type="<%= docuType %>" data-file="<%= row.files %>" data-email="<%= row.email %>">Delete</button>
                         </form>
                       </li>
                     </ul>
@@ -110,11 +110,12 @@
     const deleteModal = document.getElementById('deleteModal');
     deleteModal.addEventListener('show.bs.modal', function (event) {
       const button = event.relatedTarget; // Button that triggered the modal
+      const docuType = button.getAttribute('data-type');
       const fileName = button.getAttribute('data-file'); // Extract file info from data-* attributes
       const email = button.getAttribute('data-email'); // Extract email info from data-* attributes
   
       const form = deleteModal.querySelector('#deleteForm');
-      form.action = `/delete-201/${fileName}/${email}`;
+      form.action = `/delete-201/${docuType}/${fileName}/${email}`;
     });
   </script>
   <%- include('../layouts/footer') %>
