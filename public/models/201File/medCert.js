@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const positionDescriptionSchema = new mongoose.Schema({
+const medCertSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -25,9 +25,6 @@ const positionDescriptionSchema = new mongoose.Schema({
   },
 });
 
-const positionDescriptions = mongoose.model(
-  "positionDescriptions",
-  positionDescriptionSchema
-);
+const medCerts = mongoose.model("medCerts", medCertSchema);
 
-module.exports = positionDescriptions;
+module.exports = medCerts;

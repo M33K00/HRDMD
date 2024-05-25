@@ -8,12 +8,20 @@ const oathOSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
   },
-  fileName: {
+  files: {
     type: String,
     required: false,
     default: "",
+  },
+  fileYear: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  dateSubmitted: {
+    type: Date,
+    default: null,
   },
 });
 

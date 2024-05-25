@@ -27,7 +27,9 @@ const employeeUpload = multer({ storage: EmployeeStorage });
 const UserDocuments = require("../models/userdocuments");
 const AppPaper = require("../models/201File/appPaper");
 const CertERL = require("../models/201File/certERL");
-const Certifications = require("../models/201File/certifications");
+const CertATD = require("../models/201File/certATD");
+const CertBL = require("../models/201File/certBL");
+const MedCert = require("../models/201File/medCert");
 const CertLB = require("../models/201File/certLB");
 const Clearances = require("../models/201File/clearances");
 const Commendations = require("../models/201File/commendations");
@@ -39,21 +41,24 @@ const PDS = require("../models/201File/pds");
 const PosDF = require("../models/201File/posDF");
 const Schol = require("../models/201File/schol");
 const SwornStat = require("../models/201File/swornStat");
+const oathO = require("../models/201File/oathO");
 
 // 201 File Model Array
 const userDocumentsArray = [
   AppPaper,
   PDS,
   CertERL,
-  Certifications,
+  OathO,
+  CertATD,
+  CertBL,
+  PosDF,
+  MedCert,
   CertLB,
   Clearances,
   Commendations,
   CopyReso,
   Cos,
-  OathO,
   OfficeOrder,
-  PosDF,
   Schol,
   SwornStat,
 ];
@@ -431,6 +436,21 @@ router.get("/view-201/:type/:email" , async (req, res) => {
       case "certERL":
         res.redirect("/certERL/" + email);
         break;
+      case "oathOfOffice":
+        res.redirect("/oathO/" + email);
+        break;
+      case "certATD":
+        res.redirect("/certATD/" + email);
+        break;
+      case "certBL":
+        res.redirect("/certBL/" + email);
+        break;
+      case "posDF":
+        res.redirect("/posDF/" + email);
+        break;
+      case "medCert":
+        res.redirect("/medCert/" + email);
+        break;
       default:
         res.status(400).send("Invalid request parameter");
     }
@@ -753,6 +773,338 @@ router.post("/certERL-submit", employeeUpload.fields([
     res.redirect("/hris");
   }
 });
+
+router.get("/oathO/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await OathO.find({email: email});
+    const pageName = "Oath of Office";
+    const docuType = "oathO";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/certATD/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await CertATD.find({email: email});
+    const pageName = "Certificate of Attendance";
+    const docuType = "certATD";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/certBL/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await CertBL.find({email: email});
+    const pageName = "Certificate of Budgetary Limitation";
+    const docuType = "certBL";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/posDF/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await PosDF.find({email: email});
+    const pageName = "Position Description Form";
+    const docuType = "posDF";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/medCert/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await MedCert.find({email: email});
+    const pageName = "Medical Certificate";
+    const docuType = "medCert";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.post("/file-submit", employeeUpload.single("files"), async (req, res) => {
+  try {
+    const email = req.body.email;
+    const docuType = req.body.docuType;
+    const file = req.file;
+
+    if (docuType === "oathO") {
+      const oatho = await OathO.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (oatho) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/oathO/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await OathO.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/oathO/" + email);
+    } else if (docuType === "certATD") {
+      const certATD = await CertATD.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (certATD) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/certATD/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await CertATD.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/certATD/" + email);
+    } else if (docuType === "certBL") {
+      const certBL = await CertBL.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (certBL) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/certBL/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await CertBL.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/certBL/" + email);
+    } else if (docuType === "posDF") {
+      const posDF = await PosDF.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (posDF) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/posDF/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await PosDF.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/posDF/" + email);
+    } else if (docuType === "medCert") {
+      const medCert = await MedCert.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (medCert) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/medCert/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await MedCert.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/medCert/" + email);
+    }
+
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.post("/delete-201/:docuType/:fileName/:email", async (req, res) => {
+  try {
+    const docuType = req.params.docuType;
+    const fileName = req.params.fileName;
+    const email = req.params.email;
+    const filePath = path.join(__dirname, "../../files/employeedocument", fileName);
+
+    if (docuType === "oathO") {
+    const result = await OathO.deleteOne({ email: email, files: fileName });
+    if (result.deletedCount === 0) {
+      req.session.message = {
+        type: "danger",
+        message: "No document found to delete",
+      };
+      return res.redirect("/oathO/" + email);
+    }
+    fs.unlinkSync(filePath);
+    req.session.message = {
+      type: "danger",
+      message: "File deleted successfully",
+    };
+    res.redirect("/oathO/" + email);
+    } else if (docuType === "certATD") {
+      const result = await CertATD.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/certATD/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      }; 
+      res.redirect("/certATD/" + email);
+    } else if (docuType === "certBL") {
+      const result = await CertBL.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/certBL/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/certBL/" + email);
+    } else if (docuType === "posDF") {
+      const result = await PosDF.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/posDF/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/posDF/" + email);
+    } else if (docuType === "medCert") {
+      const result = await MedCert.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/medCert/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/medCert/" + email);
+    }
+
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error deleting file",
+    };
+    res.redirect("/hris");
+  }
+})
 
 router.get("/download-201/:fileName", async (req, res) => {
   const fileName = req.params.fileName;

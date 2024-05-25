@@ -239,26 +239,6 @@ router.use(
   express.static(path.join(__dirname, "../../files/documents"))
 );
 
-router.use(
-  "/files/role4",
-  express.static(path.join(__dirname, "../../files/role4"))
-);
-
-router.use(
-  "/files/role3",
-  express.static(path.join(__dirname, "../../files/role3"))
-);
-
-router.use(
-  "/files/role2",
-  express.static(path.join(__dirname, "../../files/role2"))
-);
-
-router.use(
-  "/files/role1",
-  express.static(path.join(__dirname, "../../files/role1"))
-);
-
 // Function to retrieve the list of files in the documents directory
 function getFileList(callback) {
   const directoryPath = path.join(__dirname, "../../files/documents");

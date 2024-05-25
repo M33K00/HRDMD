@@ -51,26 +51,28 @@
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Oath of Office</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[3] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/oathOfOffice/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/oathOfOffice/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Certification of Assumption</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[4] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/certATD/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/certATD/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
@@ -79,39 +81,42 @@
       <td class="fileType text-uppercase">
         Certification of Budgetary Limitation
       </td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[5] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/certBL/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/certBL/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Position Description Form</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[6] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/posDF/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/posDF/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Medical Certificate</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[7] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/medCert/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/medCert/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>

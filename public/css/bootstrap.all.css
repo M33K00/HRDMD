@@ -763,7 +763,7 @@ body {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 50% 50%; /* Grid with 3 columns */
+  grid-template-columns: 50% 50%;
   gap: 5px; /* Gap between grid items */
 }
 

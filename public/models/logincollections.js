@@ -60,8 +60,9 @@ const logInSchema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
-  verified: {
-    type: Boolean,
+  completeFiles: {
+    type: String,
+    default: "INCOMPLETE",
   },
 });
 

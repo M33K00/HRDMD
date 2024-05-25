@@ -704,6 +704,29 @@
   backdrop-filter: blur(5px); /* Blur effect */
 }
 
-.download-file {
-  width: 620px;
+.file-container-hris {
+  display: flex;
+  border: #686868 solid 2px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 5px; /* Gap between grid items */
+}
+
+.dropdown-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.dropdown-menu .dropdown-item {
+  color: #000000; /* Change this to your desired color */
+}
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+  color: #5c5c5c; /* Change this to your desired hover/active color */
 }

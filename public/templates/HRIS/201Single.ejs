@@ -1,0 +1,120 @@
+<%- include('../layouts/user_hris/hris_user_header') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%-
+  include('../layouts/user_hris/sidenavhris_user') %>
+  <div class="page-body">
+    <div class="page-name">
+      <h1><%= pageName %></h1>
+      <a href="/view_profile/<%= user.email %>" class="btn btn-secondary">Go Back</a>
+    </div>
+    <div id="alertContainer" class="bottom-right">
+        <% if (message) { %>
+        <div
+          class="alert alert-dismissible alert-<%= message.type %> fade show"
+          role="alert"
+          id="autoDismissAlert"
+        >
+          <strong>Attention! </strong><%= message.message %><a
+            href="#"
+            class="alert-link"
+          ></a>
+        </div>
+        <% } %>
+      </div>
+      <div class="file-code">
+        <button id="submitButton" class="btn btn-secondary">Submit <%= pageName %></button>
+    </div>
+    <div id="submitPaper" class="submission hidden mt-4 mb-4">
+        <form action="/file-submit" method="POST" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Upload <%= pageName %></legend>
+                <p class="text-muted">Please make sure to only submit <strong>PDF</strong> file</p>
+                <div class="form-group flex-container">
+                    <div class="form-item">
+                      <input type="hidden" name="name" value="<%= user.name %>" />
+                      <input type="hidden" name="email" value="<%= user.email %>" />
+                      <input type="hidden" name="docuType" value="<%= docuType %>" />
+                      <input
+                        type="text"
+                        name="fileYear"
+                        class="form-control"
+                        id="orig"
+                        placeholder="Enter Year or Description"
+                      />
+                    </div>
+                    <div class="form-item">
+                      <input
+                        type="file"
+                        name="files"
+                        class="form-control"
+                      />
+                    </div>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary btn-submit w-100 mt-3" style="text-align: center; display: inline-block;">Submit</button>
+        </form>
+      </div>
+      <% if (fileType.length > 0) { %>
+        <% fileType.forEach((row, index) => { %>
+            <div class="file-container-hris mt-4">
+                <div class="file-item text-uppercase">
+                    <h3>File Details:</h3>
+                    <p><strong>File Year:</strong> <%= row.fileYear %></p>
+                    <p><strong>Date Submitted:</strong> <%= row.dateSubmitted.toISOString().split('T')[0] %></p>
+                  </div>
+                <div class="file-item text-uppercase">
+                    <h3>File Attached:</h3>
+                    <p><strong>File Name:</strong> <%= row.files.split('\\').pop() %></p>
+                </div>
+                <div class="dropdown-button">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      Actions
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <li>
+                        <a class="dropdown-item" href="/download-201/<%= row.files %>">Download</a>
+                      </li>
+                      <li>
+                        <form action="/delete-201/<%= docuType %>/<%= row.files %>/<%= user.email %>" method="POST" style="display: inline;">
+                            <button class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-file="<%= row.files %>" data-email="<%= row.email %>">Delete</button>
+                        </form>
+                      </li>
+                    </ul>
+                  </div>
+            </div>
+        <% }) %>
+      <% } else { %>
+        <p class="text-muted text-center">No <%= pageName %> files submitted.</p>
+      <% } %>
+  </div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this file?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <form id="deleteForm" method="POST" action="">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget; // Button that triggered the modal
+      const fileName = button.getAttribute('data-file'); // Extract file info from data-* attributes
+      const email = button.getAttribute('data-email'); // Extract email info from data-* attributes
+  
+      const form = deleteModal.querySelector('#deleteForm');
+      form.action = `/delete-201/${fileName}/${email}`;
+    });
+  </script>
+  <%- include('../layouts/footer') %>
