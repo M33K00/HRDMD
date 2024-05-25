@@ -12,6 +12,8 @@ An app specifically made for HR Departments with built-in HRMS and Document Trac
 
 - Run with ```npm start```
 
+- Or you can run the app by running the start_app.vbs
+
 ### Folder Structure
 
 Please create the following folder structure in the root of the app for it to work properly
@@ -21,10 +23,6 @@ Please create the following folder structure in the root of the app for it to wo
   - `documents/`
   - `images/`
   - `rejected/`
-  - `role1/`
-  - `role2/`
-  - `role3/`
-  - `role4/`
 
 ## Folder Details
 
@@ -36,11 +34,6 @@ This folder contains various subfolders to organize different types of files.
 - `documents/`: Stores document files such as PDFs, Word documents, etc.
 - `images/`: Stores image files set by the users
 - `rejected/`: Contains files that were rejected or not approved for further processing.
-- `role1/`: Files related to Role 1.
-- `role2/`: Files related to Role 2.
-- `role3/`: Files related to Role 3.
-- `role4/`: Files related to Role 4.
-
 
 ## Status and stuff
 
