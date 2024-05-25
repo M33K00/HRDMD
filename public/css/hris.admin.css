@@ -664,6 +664,7 @@
 
 .btn-print {
   width: 500px;
+  margin-bottom: 12px;
 }
 
 .print-body {
@@ -702,6 +703,24 @@
   padding: 10px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px); /* Blur effect */
+}
+
+.file-container-hrSet {
+  display: flex;
+  background-color: white;
+  border-radius: 5px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; /* Gap between grid items */
+}
+
+.file-container-hrSet label {
+  font-weight: 600;
+  padding-top: 10px;
+  align-items: center;
 }
 
 .file-container-hris {

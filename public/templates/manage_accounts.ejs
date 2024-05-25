@@ -3,11 +3,11 @@
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
   <div class="page-body">
     <div class="page-name">
-      <h1>All Accounts</h1>
-      <a href="/addacc" class="btn btn-primary">Add Account/Employee</a>
+      <h1>All Accounts </h1>
+      <a href="/view_employees" class="btn btn-primary">HRIS Mode</a>
     </div>
     <p class="text-muted mb-4">
-      Manage all accounts registered in the system. 
+      Manage accounts that have access to the Document Tracker System (<strong>HR Department</strong>). 
     </p>
     <div id="alertContainer" class="bottom-right">
       <% if (message) { %>
@@ -23,42 +23,6 @@
       </div>
       <% } %>
     </div>
-    <% const cHRDp = logincollections.filter((logincollections) => logincollections.department === 'HR Department'); const cDP1 = logincollections.filter((logincollections) => logincollections.department === 'Department 1'); 
-        const cDP2 = logincollections.filter((logincollections) => logincollections.department === 'Department 2'); %>
-    <div class="dtr-home-container mt-3">
-      <div class="dtr-div">
-        <div class="div-cut-title">
-          <p>All Employees:</p>
-        </div>
-        <div class="div-emp-count">
-          <p><%= logincollections.length %></p>
-        </div>
-      </div>
-      <div class="dtr-div">
-        <div class="div-cut-title">
-          <p>HR Department:</p>
-        </div>
-        <div class="div-emp-count">
-          <p><%= cHRDp.length %></p>
-        </div>
-      </div>
-      <div class="dtr-div">
-        <div class="div-cut-title">
-          <p>Department 1:</p>
-        </div>
-        <div class="div-emp-count">
-          <p><%= cDP1.length %></p>
-        </div>
-      </div>
-      <div class="dtr-div">
-        <div class="div-cut-title">
-          <p>Department 2:</p>
-        </div>
-        <div class="div-emp-count">
-          <p><%= cDP2.length %></p>
-        </div>
-      </div>
-    </div>
     <div class="border mb-3 mt-3"></div>
     <h4>Search:</h4>
     <input
@@ -69,264 +33,38 @@
       style="margin-bottom: 20px"
       oninput="searchTables()"
     />
-    <ul class="nav nav-tabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <a
-          class="nav-link active"
-          data-bs-toggle="tab"
-          href="#allD"
-          aria-selected="true"
-          role="tab"
-          >All Employees</a
-        >
-      </li>
-      <li class="nav-item" role="presentation">
-        <a
-          class="nav-link"
-          data-bs-toggle="tab"
-          href="#HRdp"
-          aria-selected="false"
-          tabindex="-1"
-          role="tab"
-          >HR Department</a
-        >
-      </li>
-      <li class="nav-item" role="presentation">
-        <a
-          class="nav-link"
-          data-bs-toggle="tab"
-          href="#d1"
-          aria-selected="false"
-          tabindex="-1"
-          role="tab"
-          >Department 1</a
-        >
-      </li>
-      <li class="nav-item" role="presentation">
-        <a
-          class="nav-link"
-          data-bs-toggle="tab"
-          href="#d2"
-          aria-selected="false"
-          tabindex="-1"
-          role="tab"
-          >Department 2</a
-        >
-      </li>
-    </ul>
-    <% const HRdp = logincollections.filter((row) => row.department === 'HR Department'); %>
-    <% const DP1 = logincollections.filter((row) => row.department === 'Department 1'); %>
-    <% const DP2 = logincollections.filter((row) => row.department === 'Department 2'); %>
     <div id="myTabContent" class="tab-content mt-4">
       <div class="tab-pane fade show active" id="allD" role="tabpanel">
         <div class="hris-container">
+          <% const HRDp = logincollections.filter((item) => item.department === "HR Department"); %>
           <% if (logincollections.length > 0) { %>
-          <table id="table" class="table table-hover table-striped">
+          <table id="table" class="table table-hover table-striped text-center">
             <thead>
               <tr class="table-dark">
                 <th style="width: 150px">Name</th>
-                <th style="width: 250px">Email</th>
-                <th style="width: 200px">Contact No.</th>
-                <th style="width: 200px">Department</th>
-                <th style="width: 10px; padding-left: 40px">Action</th>
+                <th style="width: 200px">Email</th>
+                <th style="width: 250px">Position</th>
+                <th style="width: 10px; padding-left: 40px"></th>
               </tr>
             </thead>
             <tbody>
-              <% logincollections.forEach((row, index) => { %>
+              <% HRDp.forEach((item) => { %>
               <tr>
-                <td><%= row.name %></td>
-                <td><%= row.email %></td>
-                <td><%= row.contact %></td>
-                <td><%= row.department %></td>
-                <td class="action-buttons">
-                  <a href="/view/<%= row._id %>" class="icon-square"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                  <a
-                    href="/delete/<%= row._id %>"
-                    class="icon-square text-danger"
-                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
+                <td>
+                      <p class="fw-bold mb-1">
+                        <%= item.name %>
+                      </p>
                 </td>
+                <td><%= item.email %></td>
+                <td><% if (item.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                  else if (item.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                  else if (item.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                  (item.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                  (item.hrrole === "ROLE 5") { %> Admin Aide <% } else if (item.hrrole
+                  === "ADMIN") { %> Department Head <% } %></td>
+                <td><a href="/view/<%= item.id %>" class="icon-square"><i class="fa-solid fa-eye"></i></a></td>
               </tr>
-              <% }) %>
-            </tbody>
-          </table>
-          <!-- Pagination Links -->
-          <div class="pagination justify-content-center">
-            <% if (totalPages > 1) { %>
-              <ul class="pagination justify-content-center">
-                <% for (let i = 1; i <= totalPages; i++) { %>
-                  <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                    <a href="?page=<%= i %>" class="page-link"><%= i %></a>
-                  </li>
-                <% } %>
-              </ul>
-            <% } %>
-          </div>
-          <% } else { %>
-          <h1 class="text-center text-secondary mt-5">
-            No Users found in database
-          </h1>
-          <% } %>
-        </div>
-      </div>
-      
-      <div class="tab-pane fade" id="HRdp" role="tabpanel">
-        <div class="hris-container">
-          <% if (HRdp != '') { %>
-            <table id="table" class="table table-hover table-striped">
-              <thead>
-                <tr class="table-dark">
-                  <th style="width: 150px">Name</th>
-                  <th style="width: 250px">Email</th>
-                  <th style="width: 200px">Contact No.</th>
-                  <th style="width: 200px">Department</th>
-                  <th style="width: 10px; padding-left: 40px">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% HRdp.forEach((row, index) => { %>
-                <tr>
-                  <td><%= row.name %></td>
-                  <td><%= row.email %></td>
-                  <td><%= row.contact %></td>
-                  <td><%= row.department %></td>
-                  <td class="action-buttons">
-                    <a href="/view/<%= row._id %>" class="icon-square"
-                      ><i class="fa-solid fa-eye"></i
-                    ></a>
-                    <a
-                      href="/delete/<%= row._id %>"
-                      class="icon-square text-danger"
-                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                      ><i class="fa-solid fa-trash"></i
-                    ></a>
-                  </td>
-                </tr>
-                <% }) %>
-              </tbody>
-            </table>
-              <!-- Pagination Links -->
-              <div class="pagination justify-content-center">
-                <% if (totalPages > 1) { %>
-                  <ul class="pagination justify-content-center">
-                    <% for (let i = 1; i <= totalPages; i++) { %>
-                      <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                        <a href="?page=<%= i %>" class="page-link"><%= i %></a>
-                      </li>
-                    <% } %>
-                  </ul>
-                <% } %>
-              </div>
-          <% } else { %>
-          <h1 class="text-center text-secondary mt-5">
-            No Users found in database
-          </h1>
-          <% } %>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="d1" role="tabpanel">
-        <div class="hris-container">
-          <% if (DP1 != '') { %>
-            <table id="table" class="table table-hover table-striped">
-              <thead>
-                <tr class="table-dark">
-                  <th style="width: 150px">Name</th>
-                  <th style="width: 250px">Email</th>
-                  <th style="width: 200px">Contact No.</th>
-                  <th style="width: 200px">Department</th>
-                  <th style="width: 10px; padding-left: 40px">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% DP1.forEach((row, index) => { %>
-                <tr>
-                  <td><%= row.name %></td>
-                  <td><%= row.email %></td>
-                  <td><%= row.contact %></td>
-                  <td><%= row.department %></td>
-                  <td class="action-buttons">
-                    <a href="/view/<%= row._id %>" class="icon-square"
-                      ><i class="fa-solid fa-eye"></i
-                    ></a>
-                    <a
-                      href="/delete/<%= row._id %>"
-                      class="icon-square text-danger"
-                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                      ><i class="fa-solid fa-trash"></i
-                    ></a>
-                  </td>
-                </tr>
-                <% }) %>
-              </tbody>
-            </table>
-                      <!-- Pagination Links -->
-          <div class="pagination justify-content-center">
-            <% if (totalPages > 1) { %>
-              <ul class="pagination justify-content-center">
-                <% for (let i = 1; i <= totalPages; i++) { %>
-                  <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                    <a href="?page=<%= i %>" class="page-link"><%= i %></a>
-                  </li>
-                <% } %>
-              </ul>
-            <% } %>
-          </div>
-          <% } else { %>
-          <h1 class="text-center text-secondary mt-5">
-            No Users found in database
-          </h1>
-          <% } %>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="d2" role="tabpanel">
-        <div class="hris-container">
-          <% if (DP2 != '') { %>          <table id="table" class="table table-hover table-striped">
-            <thead>
-              <tr class="table-dark">
-                <th style="width: 150px">Name</th>
-                <th style="width: 250px">Email</th>
-                <th style="width: 200px">Contact No.</th>
-                <th style="width: 200px">Department</th>
-                <th style="width: 10px; padding-left: 40px">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% DP2.forEach((row, index) => { %>
-              <tr>
-                <td><%= row.name %></td>
-                <td><%= row.email %></td>
-                <td><%= row.contact %></td>
-                <td><%= row.department %></td>
-                <td class="action-buttons">
-                  <a href="/view/<%= row._id %>" class="icon-square"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                  <a
-                    href="/delete/<%= row._id %>"
-                    class="icon-square text-danger"
-                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-                </td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
-                    <!-- Pagination Links -->
-                    <div class="pagination justify-content-center">
-                      <% if (totalPages > 1) { %>
-                        <ul class="pagination justify-content-center">
-                          <% for (let i = 1; i <= totalPages; i++) { %>
-                            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                              <a href="?page=<%= i %>" class="page-link"><%= i %></a>
-                            </li>
-                          <% } %>
-                        </ul>
-                      <% } %>
-                    </div>
+              <% }); %>
           <% } else { %>
           <h1 class="text-center text-secondary mt-5">
             No Users found in database

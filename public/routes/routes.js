@@ -19,6 +19,62 @@ const DaysAbsent = require("../models/daysabsent");
 const daysAbsent = require("../models/daysabsent");
 const HRSettings = require("../models/hrsettings");
 
+// 201 File Models
+const UserDocuments = require("../models/userdocuments");
+const AppPaper = require("../models/201File/appPaper");
+const CertERL = require("../models/201File/certERL");
+const CertATD = require("../models/201File/certATD");
+const CertBL = require("../models/201File/certBL");
+const MedCert = require("../models/201File/medCert");
+const CertLB = require("../models/201File/certLB");
+const Clearances = require("../models/201File/clearances");
+const Commendations = require("../models/201File/commendations");
+const CopyReso = require("../models/201File/copyReso");
+const Cos = require("../models/201File/cos");
+const OathO = require("../models/201File/oathO");
+const OfficeOrder = require("../models/201File/officeOrder");
+const PDS = require("../models/201File/pds");
+const PosDF = require("../models/201File/posDF");
+const Schol = require("../models/201File/schol");
+const SwornStat = require("../models/201File/swornStat");
+const oathO = require("../models/201File/oathO");
+
+// 201 File Model Array
+const userDocumentsArray = [
+  AppPaper,
+  PDS,
+  CertERL,
+  OathO,
+  CertATD,
+  CertBL,
+  PosDF,
+  MedCert,
+  CertLB,
+  Clearances,
+  Commendations,
+  CopyReso,
+  Cos,
+  OfficeOrder,
+  Schol,
+  SwornStat,
+];
+
+const findDocumentsByEmail = async (email, batchSize = 5) => {
+  const results = [];
+
+  for (let i = 0; i < userDocumentsArray.length; i += batchSize) {
+    const batch = userDocumentsArray
+      .slice(i, i + batchSize)
+      .map((userDocumentsArray) =>
+        userDocumentsArray.findOne({ email }).exec()
+      );
+    const batchResults = await Promise.all(batch);
+    results.push(...batchResults);
+  }
+
+  return results;
+};
+
 // Multer configuration
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -815,10 +871,13 @@ router.get("/view_emp_data/:id", async (req, res) => {
       return res.redirect("/hris");
     }
 
+    const results = await findDocumentsByEmail(logincollections.email);
+
     // Render the edit_users template with the retrieved user data
     res.render("HRIS/view_emp_data", {
       title: "View Account",
       logincollections: logincollections,
+      results: results,
     });
   } catch (err) {
     // Log and handle errors gracefully
