@@ -4,32 +4,24 @@ const scholasticSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true,
   },
-  hsDiploma: {
+  files: {
     type: String,
     required: false,
     default: "",
   },
-  collegeDiploma: {
+  fileYear: {
     type: String,
     required: false,
     default: "",
   },
-  transRecord: {
-    type: String,
-    required: false,
-    default: "",
-  },
-  noticeOfSalary: {
-    type: String,
-    required: false,
-    default: "",
+  dateSubmitted: {
+    type: Date,
+    default: null,
   },
 });
 

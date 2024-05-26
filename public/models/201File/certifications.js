@@ -8,27 +8,20 @@ const certificationSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
   },
-  certAD: {
+  files: {
     type: String,
     required: false,
     default: "",
   },
-  certBD: {
+  fileYear: {
     type: String,
     required: false,
     default: "",
   },
-  medCert: {
-    type: String,
-    required: false,
-    default: "",
-  },
-  certLeaveB: {
-    type: String,
-    required: false,
-    default: "",
+  dateSubmitted: {
+    type: Date,
+    default: null,
   },
 });
 

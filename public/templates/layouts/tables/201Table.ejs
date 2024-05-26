@@ -123,143 +123,154 @@
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Certificate of Live Birth (PSA)</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[8] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/certLB/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/certLB/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Marriage Contract</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[9] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/marriageCont/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/marriageCont/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Clearances</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[10] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/clearances/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/clearances/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Scholastic Record</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[11] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/schol/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/schol/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Certificate of Leave Balances</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[12] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/certLeaveB/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/certLeaveB/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Copy of Resolution</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[13] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/copyReso/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/copyReso/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Commendations</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[14] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/commendations/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/commendations/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Disciplinary Action Documents</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[15] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/disAct/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/disAct/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Contract of Service</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[16] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/cos/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/cos/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Sworn Statement of Assets</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[17] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/swornS/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/swornS/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>
   <tbody>
     <tr>
       <td class="fileType text-uppercase">Office Order</td>
-      <td class="text-danger">NOT SUBMITTED</td>
+      <% if (results[18] !== null) { %>
+        <td class="text-success">SUBMITTED</td>
+      <% } else { %>
+        <td class="text-danger">NOT SUBMITTED</td>
+      <% } %>
       <td class="action-buttons">
-        <a href="#" class="icon-square"><i class="fa-solid fa-upload"></i></a>
-        <a href="#" class="icon-square"><i class="fa-solid fa-eye"></i></a>
-        <a href="#" class="icon-square text-danger"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+        <a href="/view-201/officeOrder/<%= user.email %>" class="icon-square"><i class="fa-solid fa-upload"></i></a>
+        <a href="/view-201/officeOrder/<%= user.email %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
       </td>
     </tr>
   </tbody>

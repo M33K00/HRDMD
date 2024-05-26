@@ -31,6 +31,7 @@ const CertATD = require("../models/201File/certATD");
 const CertBL = require("../models/201File/certBL");
 const MedCert = require("../models/201File/medCert");
 const CertLB = require("../models/201File/certLB");
+const MarriageCont = require("../models/201File/marriageCont");
 const Clearances = require("../models/201File/clearances");
 const Commendations = require("../models/201File/commendations");
 const CopyReso = require("../models/201File/copyReso");
@@ -40,8 +41,9 @@ const OfficeOrder = require("../models/201File/officeOrder");
 const PDS = require("../models/201File/pds");
 const PosDF = require("../models/201File/posDF");
 const Schol = require("../models/201File/schol");
-const SwornStat = require("../models/201File/swornStat");
-const oathO = require("../models/201File/oathO");
+const SwornS = require("../models/201File/swornS");
+const CertLeaveB = require("../models/201File/certLeaveB");
+const DisAct = require("../models/201File/disAct");
 
 // 201 File Model Array
 const userDocumentsArray = [
@@ -54,13 +56,16 @@ const userDocumentsArray = [
   PosDF,
   MedCert,
   CertLB,
+  MarriageCont,
   Clearances,
-  Commendations,
-  CopyReso,
-  Cos,
-  OfficeOrder,
   Schol,
-  SwornStat,
+  CertLeaveB,
+  CopyReso,
+  Commendations,
+  DisAct,
+  Cos,
+  SwornS,
+  OfficeOrder,
 ];
 
 const findDocumentsByEmail = async (email, batchSize = 5) => {
@@ -450,6 +455,39 @@ router.get("/view-201/:type/:email" , async (req, res) => {
         break;
       case "medCert":
         res.redirect("/medCert/" + email);
+        break;
+      case "certLB":
+        res.redirect("/certLB/" + email);
+        break;
+      case "marriageCont":
+        res.redirect("/marriageCont/" + email);
+        break;
+      case "clearances":
+        res.redirect("/clearances/" + email);
+        break;
+      case "schol":
+        res.redirect("/schol/" + email);
+        break;
+      case "certLeaveB":
+        res.redirect("/certLeaveB/" + email);
+        break;
+      case "copyReso":
+        res.redirect("/copyReso/" + email);
+        break;
+      case "commendations":
+        res.redirect("/commendations/" + email);
+        break;
+      case "disAct":
+        res.redirect("/disAct/" + email);
+        break;
+      case "cos":
+        res.redirect("/cos/" + email);
+        break;
+      case "swornS":
+        res.redirect("/swornS/" + email);
+        break;
+      case "officeOrder":
+        res.redirect("/officeOrder/" + email);
         break;
       default:
         res.status(400).send("Invalid request parameter");
@@ -859,6 +897,194 @@ router.get("/medCert/:email", async (req, res) => {
   }
 });
 
+router.get("/certLB/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await CertLB.find({email: email});
+    const pageName = "Certificate of Live Birth";
+    const docuType = "certLB";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/marriageCont/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await MarriageCont.find({email: email});
+    const pageName = "Marriage Contract";
+    const docuType = "marriageCont";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/clearances/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await Clearances.find({email: email});
+    const pageName = "Clearances";
+    const docuType = "clearances";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/schol/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await Schol.find({email: email});
+    const pageName = "Scholastic Record/Academic Record";
+    const docuType = "schol";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/certLeaveB/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await CertLeaveB.find({email: email});
+    const pageName = "Certificate of Leave Balances";
+    const docuType = "certLeaveB";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/copyReso/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await CopyReso.find({email: email});
+    const pageName = "Copy of Resolution";
+    const docuType = "copyReso";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/commendations/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await Commendations.find({email: email});
+    const pageName = "Commendations";
+    const docuType = "commendations";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/disAct/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await DisAct.find({email: email});
+    const pageName = "Disciplinary Action Documents";
+    const docuType = "disAct";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/cos/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await Cos.find({email: email});
+    const pageName = "Contract of Service";
+    const docuType = "cos";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/swornS/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await SwornS.find({email: email});
+    const pageName = "Sworn Statement of Assets";
+    const docuType = "swornS";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.get("/officeOrder/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const fileType = await OfficeOrder.find({email: email});
+    const pageName = "Office Order";
+    const docuType = "officeOrder";
+    res.render("HRIS/201Single", {fileType, pageName, docuType});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+
 router.post("/file-submit", employeeUpload.single("files"), async (req, res) => {
   try {
     const email = req.body.email;
@@ -1000,6 +1226,303 @@ router.post("/file-submit", employeeUpload.single("files"), async (req, res) => 
         message: "Paper submitted successfully",
       };
       res.redirect("/medCert/" + email);
+    } else if (docuType === "certLB") {
+      const certLB = await CertLB.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (certLB) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/certLB/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await CertLB.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/certLB/" + email);
+    } else if (docuType === "marriageCont") {
+      const marriageCont = await MarriageCont.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (marriageCont) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/marriageCont/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await MarriageCont.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/marriageCont/" + email);
+    } else if (docuType === "clearances") {
+      const clearances = await Clearances.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (clearances) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/clearances/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await Clearances.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/clearances/" + email);
+    } else if (docuType === "schol") {
+      const schol = await Schol.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (schol) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/schol/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await Schol.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/schol/" + email);
+    } else if (docuType === "certLeaveB") {
+      const certLeaveB = await CertLeaveB.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (certLeaveB) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/certLeaveB/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await CertLeaveB.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/certLeaveB/" + email);
+    } else if (docuType === "copyReso") {
+      const copyReso = await CopyReso.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (copyReso) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/copyReso/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await CopyReso.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/copyReso/" + email);
+    } else if (docuType === "commendations") {
+      const commendations = await Commendations.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (commendations) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/commendations/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await Commendations.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/commendations/" + email);
+    } else if (docuType === "disAct") {
+      const disAct = await DisAct.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (disAct) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/disAct/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await DisAct.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/disAct/" + email);
+    } else if (docuType === "cos") {
+      const cos = await Cos.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (cos) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/cos/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await Cos.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/cos/" + email);
+    } else if (docuType === "swornS") {
+      const swornS = await SwornS.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (swornS) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/swornS/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await SwornS.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/swornS/" + email);
+    } else if (docuType === "officeOrder") {
+      const officeOrder = await OfficeOrder.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (officeOrder) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/officeOrder/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await OfficeOrder.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/officeOrder/" + email);
     }
 
   } catch (err) {
@@ -1094,6 +1617,171 @@ router.post("/delete-201/:docuType/:fileName/:email", async (req, res) => {
         message: "File deleted successfully",
       };
       res.redirect("/medCert/" + email);
+    } else if (docuType === "certLB") {
+      const result = await CertLB.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/certLB/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/certLB/" + email);
+    } else if (docuType === "marriageCont") {
+      const result = await MarriageCont.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/marriageCont/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/marriageCont/" + email);
+    } else if (docuType === "clearances") {
+      const result = await Clearances.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/clearances/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/clearances/" + email);
+    } else if (docuType === "schol") {
+      const result = await Schol.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/schol/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/schol/" + email);
+    } else if (docuType === "certLeaveB") {
+      const result = await CertLeaveB.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/certLeaveB/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/certLeaveB/" + email);
+    } else if (docuType === "copyReso") {
+      const result = await CopyReso.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/copyReso/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/copyReso/" + email);
+    } else if (docuType === "commendations") {
+      const result = await Commendations.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/commendations/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/commendations/" + email);
+    } else if (docuType === "disAct") {
+      const result = await DisAct.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/disAct/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/disAct/" + email);
+    } else if (docuType === "cos") {
+      const result = await Cos.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/cos/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/cos/" + email);
+    } else if (docuType === "swornS") {
+      const result = await SwornS.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/swornS/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/swornS/" + email);
+    } else if (docuType === "officeOrder") {
+      const result = await OfficeOrder.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/officeOrder/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/officeOrder/" + email);
     }
 
   } catch (err) {

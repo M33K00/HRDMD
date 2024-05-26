@@ -4,22 +4,24 @@ const clearanceSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true,
   },
-  NBI: {
+  files: {
     type: String,
     required: false,
     default: "",
   },
-  CSForm7: {
+  fileYear: {
     type: String,
     required: false,
     default: "",
+  },
+  dateSubmitted: {
+    type: Date,
+    default: null,
   },
 });
 

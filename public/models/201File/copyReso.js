@@ -4,17 +4,24 @@ const resoOrderSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true,
   },
   files: {
-    type: [String],
+    type: String,
     required: false,
-    default: [],
+    default: "",
+  },
+  fileYear: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  dateSubmitted: {
+    type: Date,
+    default: null,
   },
 });
 

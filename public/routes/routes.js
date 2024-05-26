@@ -27,6 +27,7 @@ const CertATD = require("../models/201File/certATD");
 const CertBL = require("../models/201File/certBL");
 const MedCert = require("../models/201File/medCert");
 const CertLB = require("../models/201File/certLB");
+const MarriageCont = require("../models/201File/marriageCont");
 const Clearances = require("../models/201File/clearances");
 const Commendations = require("../models/201File/commendations");
 const CopyReso = require("../models/201File/copyReso");
@@ -36,11 +37,12 @@ const OfficeOrder = require("../models/201File/officeOrder");
 const PDS = require("../models/201File/pds");
 const PosDF = require("../models/201File/posDF");
 const Schol = require("../models/201File/schol");
-const SwornStat = require("../models/201File/swornStat");
-const oathO = require("../models/201File/oathO");
+const SwornS = require("../models/201File/swornS");
+const CertLeaveB = require("../models/201File/certLeaveB");
+const DisAct = require("../models/201File/disAct");
 
 // 201 File Model Array
-const userDocumentsArray = [
+const userDocumentsArray = [  
   AppPaper,
   PDS,
   CertERL,
@@ -50,13 +52,16 @@ const userDocumentsArray = [
   PosDF,
   MedCert,
   CertLB,
+  MarriageCont,
   Clearances,
-  Commendations,
-  CopyReso,
-  Cos,
-  OfficeOrder,
   Schol,
-  SwornStat,
+  CertLeaveB,
+  CopyReso,
+  Commendations,
+  DisAct,
+  Cos,
+  SwornS,
+  OfficeOrder,
 ];
 
 const findDocumentsByEmail = async (email, batchSize = 5) => {
