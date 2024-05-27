@@ -122,6 +122,23 @@
   color: white;
 }
 
+
+.hris-header-user h1 {
+  position: absolute;
+  top: -168;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0; /* Remove default margin to align text perfectly */
+  font-weight: 700;
+  font-size: 50px;
+  text-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
 .hris-container {
   min-height: fit-content;
   margin-bottom: 20px;

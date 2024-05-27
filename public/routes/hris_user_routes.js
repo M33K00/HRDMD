@@ -1808,6 +1808,57 @@ router.get("/download-201/:fileName", async (req, res) => {
       return;
     }
   });
+});
+
+router.get("/hrSettingsUser" , async (req, res) => {
+  res.render("HRISUSER/hrSettingsUser");
+})
+
+router.get("/printDTR/:email", async (req, res) => {
+  const email = req.params.email;
+  try {
+    const logincollections = await LogInCollection.findOne({
+      email: email,
+    });
+  
+    if (!logincollections) {
+      req.session.message = {
+        type: "danger",
+        message: "No data found",
+      };
+      return res.redirect("/hrSettingsUser");
+    }
+  
+    const attendance = await Attendance.findOne({
+      email: email,
+    });
+  
+    if (!attendance) {
+      req.session.message = {
+        type: "danger",
+        message: "No data found (Attendance Data)",
+      };
+      return res.redirect("/hrSettingsUser");
+    }
+
+    const daysPresent = await DaysPresent.find({ email: email });
+    if (!daysPresent) {
+      req.session.message = {
+        type: "danger",
+        message: "No data found (Days Present Data)",
+      };
+      return res.redirect("/hrSettingsUser");
+    }
+
+    res.render("HRISUSER/printDTR", {logincollections, attendance, daysPresent});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hrSettingsUser");
+  }
 })
 
 module.exports = router;

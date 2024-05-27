@@ -1,0 +1,99 @@
+<%- include('../layouts/user_hris/hris_user_header') -%>
+<body>
+  <%- include('../layouts/navhris') -%>
+  <div class="print-body">
+    <div class="page-name">
+      <h1>Daily Time Record:</h1>
+      <a href="/hrSettingsuser" class="btn btn-secondary">GO BACK</a>
+    </div>
+    <button id="download" class="btn btn-primary mb-2">Download as PDF</button>
+    <div class="page-content mt-4 p-4 bg-light" id="page-content">
+        <h3>DTR Report for <strong><%= user.name %></strong>:</h3>
+        <table id="table" class="table table-bordered">
+            <tr>
+              <td style="width: 50%"><strong>Name:</strong> <%= user.name %></td>
+              <td><strong>Email:</strong> <%= user.email %></td>
+            </tr>
+            <tr>
+              <td><strong>Position:</strong> <% if (user.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                else if (user.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                else if (user.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                (user.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                (user.hrrole === "ROLE 5") { %> Admin Aide <% } else if (user.hrrole
+                === "ADMIN") { %> Department Head <% } %></td>
+              <td><strong>Department:</strong> <%= user.department %></td>
+            </tr>
+          </table>
+        <table id="table" class="table table-bordered">
+            <h5 class="mt-4">REPORT SUMMARY:</h5>
+          <thead>
+            <tr class="table-dark text-center text-uppercase">
+              <th>Days Present</th>
+              <th>Days Absent</th>
+              <th>Days on Leave</th>
+              <th>Total Hours Worked</th>
+              <th>Credit Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="text-center">
+              <td><%- attendance.daysPresent %></td>
+              <td><%- attendance.daysAbsent %></td>
+              <td><%- attendance.daysOnLeave %></td>
+              <td class="fw-bold"><%- attendance.hoursWorked.toFixed(2) %></td>
+              <td><%- attendance.creditPoints %></td>
+            </tr>
+          </tbody>
+        </table>
+        <table id="table" class="table table-bordered">
+            <h5 class="mt-4">DAYS PRESENT:</h5>
+          <thead>
+            <% if (daysPresent != '') { %>
+            <tr class="table-dark text-center text-uppercase">
+                <th>Date</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Total Time</th>
+                <th>Overtime</th>
+                <th>Undertime</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% // Sort dayspresent array by date (from latest to oldest)
+                daysPresent.sort((a, b) => new Date(b.date) - new Date(a.date));
+                daysPresent.forEach((row, index) => { %>
+                  <tr class="text-center">
+                    <td><%= row.date.toISOString().slice(0, 10) %></td>
+                <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %><% } else { %>Ongoing<% } %></td>
+                <td><%= row.totalTime.toFixed(2) %></td>
+                <td><%= row.overTime.toFixed(2) %></td>
+                <td><%= row.underTime.toFixed(2) %></td>
+              </tr>
+                  <% }) %>
+          </tbody>
+          <% } %>
+        </table>
+      </div>
+    </div>
+</div>
+<script src="../scripts/html2pdf.bundle.min.js"></script>
+<script>
+    document.getElementById("download").addEventListener("click", () => {
+      // Select the content of the div
+      var element = document.getElementById("page-content");
+  
+      // Configure the options for the PDF
+      var opt = {
+        margin: 0.5,
+        filename: "DTRReport.pdf",
+        image: { type: "jpeg", quality: 1.0 },
+        html2canvas: { scale: 5.0 },
+        jsPDF: { unit: "in", format: "legal", orientation: "portrait" },
+      };
+  
+      // Use html2pdf to create and download the PDF
+      html2pdf().from(element).set(opt).save();
+    });
+</script>
+<%- include('../layouts/footer') %>
