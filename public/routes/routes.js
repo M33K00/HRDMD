@@ -866,10 +866,10 @@ router.post("/manage-leave/:id", async (req, res) => {
   }
 });
 
-router.get("/view_emp_data/:id", async (req, res) => {
+router.get("/view_emp_data/:email", async (req, res) => {
   try {
-    let id = req.params.id;
-    let logincollections = await LogInCollection.findById(id);
+    let email = req.params.email;
+    let logincollections = await LogInCollection.findOne({ email: email });
 
     if (!logincollections) {
       // If the user account doesn't exist, redirect to manage_accounts page
@@ -1044,16 +1044,16 @@ router.get("/m-absent/:id", async (req, res) => {
 
 router.get("/hrSettings", checkHRSettings, async (req, res) => {
   try {
-    const hrSettings = await req.models.HRSettings.findOne();
+    let hrSettings = await req.models.HRSettings.findOne();
+
     if (!hrSettings) {
-      console.log("No HR settings found.");
-      // Handle the case where no settings are found, such as setting default values.
-      // Example:
-      // const defaultSettings = { startDate: 1, endDate: 31 };
-      // res.render("HRIS/hrSettings", { hrSettings: defaultSettings });
-      res.status(404).send("HR settings not found.");
-      return;
+      hrSettings = await req.models.HRSettings.create({
+        startDate: "",
+        endDate: "",
+        hoursPerDay: "",
+      });
     }
+
     res.render("HRIS/hrSettings", { hrSettings });
   } catch (err) {
     console.error("Error fetching HR settings:", err);
@@ -1073,6 +1073,7 @@ router.post("/hrSettings", checkHRSettings, async (req, res) => {
       // Update the existing settings with the new values from req.body
       existingSettings.startDate = req.body.startDate;
       existingSettings.endDate = req.body.endDate;
+      existingSettings.hoursPerDay = req.body.hoursPerDay;
     }
 
     // Save the settings (either new or updated)
@@ -1099,6 +1100,9 @@ router.get("/print-hr-dtr/:department", async (req, res) => {
     switch (reqdep) {
       case "HR":
         department = "HR Department";
+        break;
+      case "DP1":
+        department = "Department 1";
         break;
       case "DP2":
         department = "Department 2";

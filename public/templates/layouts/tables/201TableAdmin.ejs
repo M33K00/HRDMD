@@ -1,0 +1,354 @@
+<table id="table" class="table table-hover table-striped">
+    <thead>
+      <tr class="table-primary text-uppercase">
+        <th>File Type</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Appointment Paper</td>
+        <% if (results[0] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/appPaper/<%= logincollections.email %>" class="icon-square <% if (results[0] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/appPaper/<%= logincollections.email %>" class="icon-square <% if (results[0] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Personal Data Sheet</td>
+        <% if (results[1] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/pds/<%= logincollections.email %>" class="icon-square <% if (results[1] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/pds/<%= logincollections.email %>" class="icon-square <% if (results[1] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Certificate of Eligibility/Rating/License</td>
+        <% if (results[2] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/certERL/<%= logincollections.email %>" class="icon-square <% if (results[2] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/certERL/<%= logincollections.email %>" class="icon-square <% if (results[2] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Oath of Office</td>
+        <% if (results[3] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/oathOfOffice/<%= logincollections.email %>" class="icon-square <% if (results[3] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/oathOfOffice/<%= logincollections.email %>" class="icon-square <% if (results[3] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Certification of Assumption</td>
+        <% if (results[4] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/certATD/<%= logincollections.email %>" class="icon-square <% if (results[4] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/certATD/<%= logincollections.email %>" class="icon-square <% if (results[4] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">
+          Certification of Budgetary Limitation
+        </td>
+        <% if (results[5] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/certBL/<%= logincollections.email %>" class="icon-square <% if (results[5] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/certBL/<%= logincollections.email %>" class="icon-square <% if (results[5] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Position Description Form</td>
+        <% if (results[6] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/posDF/<%= logincollections.email %>" class="icon-square <% if (results[6] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/posDF/<%= logincollections.email %>" class="icon-square <% if (results[6] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Medical Certificate</td>
+        <% if (results[7] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/medCert/<%= logincollections.email %>" class="icon-square <% if (results[7] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/medCert/<%= logincollections.email %>" class="icon-square <% if (results[7] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Certificate of Live Birth (PSA)</td>
+        <% if (results[8] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/certLB/<%= logincollections.email %>" class="icon-square <% if (results[8] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/certLB/<%= logincollections.email %>" class="icon-square <% if (results[8] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Marriage Contract</td>
+        <% if (results[9] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/marriageCont/<%= logincollections.email %>" class="icon-square <% if (results[9] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/marriageCont/<%= logincollections.email %>" class="icon-square <% if (results[9] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Clearances</td>
+        <% if (results[10] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/clearances/<%= logincollections.email %>" class="icon-square <% if (results[10] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/clearances/<%= logincollections.email %>" class="icon-square <% if (results[10] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Scholastic Record</td>
+        <% if (results[11] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/schol/<%= logincollections.email %>" class="icon-square <% if (results[11] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/schol/<%= logincollections.email %>" class="icon-square <% if (results[11] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Certificate of Leave Balances</td>
+        <% if (results[12] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/certLeaveB/<%= logincollections.email %>" class="icon-square <% if (results[12] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/certLeaveB/<%= logincollections.email %>" class="icon-square <% if (results[12] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Copy of Resolution</td>
+        <% if (results[13] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/copyReso/<%= logincollections.email %>" class="icon-square <% if (results[13] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/copyReso/<%= logincollections.email %>" class="icon-square <% if (results[13] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Commendations</td>
+        <% if (results[14] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/commendations/<%= logincollections.email %>" class="icon-square <% if (results[14] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/commendations/<%= logincollections.email %>" class="icon-square <% if (results[14] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Disciplinary Action Documents</td>
+        <% if (results[15] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/disAct/<%= logincollections.email %>" class="icon-square <% if (results[15] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/disAct/<%= logincollections.email %>" class="icon-square <% if (results[15] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Contract of Service</td>
+        <% if (results[16] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/cos/<%= logincollections.email %>" class="icon-square <% if (results[16] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/cos/<%= logincollections.email %>" class="icon-square <% if (results[16] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Sworn Statement of Assets</td>
+        <% if (results[17] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/swornS/<%= logincollections.email %>" class="icon-square <% if (results[17] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/swornS/<%= logincollections.email %>" class="icon-square <% if (results[17] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class="fileType text-uppercase">Office Order</td>
+        <% if (results[18] !== null) { %>
+          <td class="text-success">SUBMITTED</td>
+        <% } else { %>
+          <td class="text-danger">NOT SUBMITTED</td>
+        <% } %>
+        <td class="action-buttons">
+          <a href="/view-201/officeOrder/<%= logincollections.email %>" class="icon-square <% if (results[18] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-upload"></i></a>
+          <a href="/view-201/officeOrder/<%= logincollections.email %>" class="icon-square <% if (results[18] === null) { %>
+            disabled-link
+          <% } %>"><i class="fa-solid fa-eye"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  

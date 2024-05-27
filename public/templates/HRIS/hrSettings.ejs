@@ -51,8 +51,18 @@
           >
             PRINT
           </button>
+          <label for="dtrButton" class="button-label"
+              ><p>DTR Report for PESO Department:</p></label
+            >
+            <button
+              id="dtrButton"
+              class="btn btn-secondary btn-print"
+              onclick="window.location.href='/print-hr-dtr/DP1'"
+            >
+              PRINT
+            </button>
             <label for="dtrButton" class="button-label"
-              ><p>DTR Report for Department 2:</p></label
+              ><p>DTR Report for CCD Office:</p></label
             >
             <button
               id="dtrButton"
@@ -62,7 +72,7 @@
               PRINT
             </button>
               <label for="dtrButton" class="button-label"
-                ><p>DTR Report for Department 3:</p></label
+                ><p>DTR Report for OAS Department:</p></label
               >
               <button
                 id="dtrButton"
@@ -72,7 +82,7 @@
                 PRINT
               </button>
                 <label for="dtrButton" class="button-label"
-                  ><p>DTR Report for Department 4:</p></label
+                  ><p>DTR Report for BTM Department:</p></label
                 >
                 <button
                   id="dtrButton"
@@ -82,12 +92,22 @@
                   PRINT
                 </button>
                 <label for="dtrButton" class="button-label">
-                  <p>DTR Report for Department 5:</p></label
+                  <p>DTR Report for BPL Department:</p></label
                 >
                 <button
                   id="dtrButton"
                   class="btn btn-secondary btn-print"
                   onclick="window.location.href='/print-hr-dtr/DP5'"
+                >
+                  PRINT
+                </button>
+                <label for="dtrButton" class="button-label">
+                  <p>DTR Report for CAD Department:</p></label
+                >
+                <button
+                  id="dtrButton"
+                  class="btn btn-secondary btn-print"
+                  onclick="window.location.href='/print-hr-dtr/DP6'"
                 >
                   PRINT
                 </button>
@@ -100,45 +120,57 @@
         <h4>DTR Settings:</h4>
         <p>Manage department paydates and other HRIS settings</p>
       </div>
-      <div class="settings-div">
+      <div class="settings-div-dtr">
+        <h3>Cutoff Dates:</h3>
         <form action="/hrSettings" method="POST">
-          <fieldset class="fieldset">
-            <div class="f-group">
-              <legend>Cutoff Dates:</legend>
-              <div class="hr-settings">
-                <label for="startDay">Start Day: </label>
-                <input
-                  type="number"
-                  id="startDate"
-                  name="startDate"
-                  class="form-control date-input"
-                  min="1"
-                  max="31"
-                  placeholder="DD"
-                  value="<%= hrSettings.startDate %>"
-                />
-                <label for="endDate" style="margin-left: 10px">End Day: </label>
-                <input
-                  type="number"
-                  id="endDate"
-                  name="endDate"
-                  class="form-control date-input"
-                  min="1"
-                  max="31"
-                  placeholder="DD"
-                  value="<%= hrSettings.endDate %>"
-                />
-              </div>
-            </div>
-            <div class="f-group">
-              <input
-                type="submit"
-                value="Save Changes"
-                class="btn btn-primary btn-print"
-              />
-            </div>
-          </fieldset>
-        </form>
+        <div class="form-group flex-container">
+          <div class="form-item">
+            <label for="startDate" class="form-label mt-2 text-muted">First Day:</label>
+            <input
+              type="number"
+              id="startDate"
+              name="startDate"
+              class="form-control"
+              placeholder="DD"
+              value="<%= hrSettings.startDate %>"
+              required
+            />
+            <small>Adjust the first day of the Cutoff.</small>
+          </div>
+          <div class="form-item">
+            <label for="endDate" class="form-label mt-2 text-muted">Second Day:</label>
+            <input
+              type="number"
+              id="endDate"
+              name="endDate"
+              class="form-control"
+              placeholder="DD"
+              maxlength="12"
+              value="<%= hrSettings.endDate %>"
+              required
+            />
+            <small>Adjust the second day of the Cutoff.</small>
+          </div>
+        </div>
+        <h3 class="mt-4">Hours Per Day:</h3>
+        <div class="form-group flex-container">
+          <div class="form-item">
+            <label for="hoursPerDay" class="form-label mt-2 text-muted">Work Hours:</label>
+            <input
+              type="number"
+              id="hoursPerDay"
+              name="hoursPerDay"
+              class="form-control"
+              placeholder="8"
+              value="<%= hrSettings.hoursPerDay %>"
+              required
+            />
+            <small>Adjust the required hours worked per day.</small>
+          </div>
+        </div>
+        <input type="submit" value="SAVE CHANGES" class="btn btn-primary btn-save"></button> 
+      </form>
+        </div>
       </div>
     </div>
   </div>

@@ -25,8 +25,9 @@
       <% } %>
     </div>
         <% const cHRDp = logincollections.filter((logincollections) => logincollections.department === 'HR Department'); const cDP1 = logincollections.filter((logincollections) => logincollections.department === 'Department 1'); 
-        const cDP2 = logincollections.filter((logincollections) => logincollections.department === 'Department 2'); %>
-    <div class="border"></div>
+        const cDP2 = logincollections.filter((logincollections) => logincollections.department === 'Department 2'); const cDP3 = logincollections.filter((logincollections) => logincollections.department === 'Department 3');
+        const cDP4 = logincollections.filter((logincollections) => logincollections.department === 'Department 4'); const cDP5 = logincollections.filter((logincollections) => logincollections.department === 'Department 5'); 
+        const cDP6 = logincollections.filter((logincollections) => logincollections.department === 'Department 6'); %>
     <div class="dtr-home-container mt-3">
       <div class="dtr-div">
         <div class="div-cut-title">
@@ -46,7 +47,7 @@
       </div>
       <div class="dtr-div">
         <div class="div-cut-title">
-          <p>Department 1:</p>
+          <p>PESO Department:</p>
         </div>
         <div class="div-emp-count">
           <p><%= cDP1.length %></p>
@@ -54,10 +55,42 @@
       </div>
       <div class="dtr-div">
         <div class="div-cut-title">
-          <p>Department 2:</p>
+          <p>CC Development Office:</p>
         </div>
         <div class="div-emp-count">
           <p><%= cDP2.length %></p>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>OAS Department:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= cDP3.length %></p>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>BTM Department:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= cDP4.length %></p>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>BPL Department:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= cDP5.length %></p>
+        </div>
+      </div>
+      <div class="dtr-div">
+        <div class="div-cut-title">
+          <p>City Assessor's Department:</p>
+        </div>
+        <div class="div-emp-count">
+          <p><%= cDP6.length %></p>
         </div>
       </div>
     </div>
@@ -80,7 +113,7 @@
           >All Employees</a
         >
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item nav-bg" role="presentation">
         <a
           class="nav-link"
           data-bs-toggle="tab"
@@ -91,7 +124,7 @@
           >HR Department</a
         >
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item nav-bg" role="presentation">
         <a
           class="nav-link"
           data-bs-toggle="tab"
@@ -99,10 +132,10 @@
           aria-selected="false"
           tabindex="-1"
           role="tab"
-          >Department 1</a
+          >PESO Department</a
         >
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item nav-bg" role="presentation">
         <a
           class="nav-link"
           data-bs-toggle="tab"
@@ -110,13 +143,61 @@
           aria-selected="false"
           tabindex="-1"
           role="tab"
-          >Department 2</a
+          >CC Department</a
+        >
+      </li>
+      <li class="nav-item nav-bg" role="presentation">
+        <a
+          class="nav-link"
+          data-bs-toggle="tab"
+          href="#d3"
+          aria-selected="false"
+          tabindex="-1"
+          role="tab"
+          >OAS Department</a
+        >
+      </li>
+      <li class="nav-item nav-bg" role="presentation">
+        <a
+          class="nav-link"
+          data-bs-toggle="tab"
+          href="#d4"
+          aria-selected="false"
+          tabindex="-1"
+          role="tab"
+          >BTM Department</a
+        >
+      </li>
+      <li class="nav-item nav-bg" role="presentation">
+        <a
+          class="nav-link"
+          data-bs-toggle="tab"
+          href="#d5"
+          aria-selected="false"
+          tabindex="-1"
+          role="tab"
+          >BPL Department</a
+        >
+      </li>
+      <li class="nav-item nav-bg" role="presentation">
+        <a
+          class="nav-link"
+          data-bs-toggle="tab"
+          href="#d6"
+          aria-selected="false"
+          tabindex="-1"
+          role="tab"
+          >CAD Department</a
         >
       </li>
     </ul>
     <% const HRdp = logincollections.filter((row) => row.department === 'HR Department'); %>
     <% const DP1 = logincollections.filter((row) => row.department === 'Department 1'); %>
     <% const DP2 = logincollections.filter((row) => row.department === 'Department 2'); %>
+    <% const DP3 = logincollections.filter((row) => row.department === 'Department 3'); %>
+    <% const DP4 = logincollections.filter((row) => row.department === 'Department 4'); %>
+    <% const DP5 = logincollections.filter((row) => row.department === 'Department 5'); %>
+    <% const DP6 = logincollections.filter((row) => row.department === 'Department 6'); %>
     <div id="myTabContent" class="tab-content mt-4">
       <div class="tab-pane fade show active" id="allD" role="tabpanel">
         <div class="hris-container">
@@ -134,12 +215,12 @@
             <tbody>
               <% logincollections.forEach((row, index) => { %>
               <tr>
-                <td><%= row.name %></td>
+                <td class="fw-bold mb-1" ><%= row.name %></td>
                 <td><%= row.email %></td>
                 <td><%= row.contact %></td>
                 <td><%= row.department %></td>
                 <td class="action-buttons">
-                  <a href="/view_emp_data/<%= row._id %>" class="icon-square"
+                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
                   ></a>
                   <a
@@ -176,12 +257,12 @@
               <tbody>
                 <% HRdp.forEach((row, index) => { %>
                 <tr>
-                  <td><%= row.name %></td>
+                  <td class="fw-bold mb-1" ><%= row.name %></td>
                   <td><%= row.email %></td>
                   <td><%= row.contact %></td>
                   <td><%= row.department %></td>
                   <td class="action-buttons">
-                    <a href="/view_emp_data/<%= row._id %>" class="icon-square"
+                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
                     ></a>
                     <a
@@ -218,12 +299,12 @@
               <tbody>
                 <% DP1.forEach((row, index) => { %>
                 <tr>
-                  <td><%= row.name %></td>
+                  <td class="fw-bold mb-1" ><%= row.name %></td>
                   <td><%= row.email %></td>
                   <td><%= row.contact %></td>
                   <td><%= row.department %></td>
                   <td class="action-buttons">
-                    <a href="/view_emp_data/<%= row._id %>" class="icon-square"
+                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
                     ></a>
                     <a
@@ -259,12 +340,12 @@
             <tbody>
               <% DP2.forEach((row, index) => { %>
               <tr>
-                <td><%= row.name %></td>
+                <td class="fw-bold mb-1" ><%= row.name %></td>
                 <td><%= row.email %></td>
                 <td><%= row.contact %></td>
                 <td><%= row.department %></td>
                 <td class="action-buttons">
-                  <a href="/view_emp_data/<%= row._id %>" class="icon-square"
+                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
                   ></a>
                   <a
@@ -285,8 +366,171 @@
           <% } %>
         </div>
       </div>
+      <div class="tab-pane fade" id="d3" role="tabpanel">
+        <div class="hris-container">
+          <% if (DP3 != '') { %>          <table id="table" class="table table-hover table-striped">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 150px">Name</th>
+                <th style="width: 250px">Email</th>
+                <th style="width: 200px">Contact No.</th>
+                <th style="width: 200px">Department</th>
+                <th style="width: 10px; padding-left: 40px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% DP3.forEach((row, index) => { %>
+              <tr>
+                <td class="fw-bold mb-1" ><%= row.name %></td>
+                <td><%= row.email %></td>
+                <td><%= row.contact %></td>
+                <td><%= row.department %></td>
+                <td class="action-buttons">
+                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
+                    ><i class="fa-solid fa-eye"></i
+                  ></a>
+                  <a
+                    href="/delete/<%= row._id %>"
+                    class="icon-square text-danger"
+                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                    ><i class="fa-solid fa-trash"></i
+                  ></a>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          <% } else { %>
+          <h1 class="text-center text-secondary mt-5">
+            No Users found in Department 3
+          </h1>
+          <% } %>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="d4" role="tabpanel">
+        <div class="hris-container">
+          <% if (DP4 != '') { %>          <table id="table" class="table table-hover table-striped">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 150px">Name</th>
+                <th style="width: 250px">Email</th>
+                <th style="width: 200px">Contact No.</th>
+                <th style="width: 200px">Department</th>
+                <th style="width: 10px; padding-left: 40px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% DP4.forEach((row, index) => { %>
+              <tr>
+                <td class="fw-bold mb-1" ><%= row.name %></td>
+                <td><%= row.email %></td>
+                <td><%= row.contact %></td>
+                <td><%= row.department %></td>
+                <td class="action-buttons">
+                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
+                    ><i class="fa-solid fa-eye"></i
+                  ></a>
+                  <a
+                    href="/delete/<%= row._id %>"
+                    class="icon-square text-danger"
+                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                    ><i class="fa-solid fa-trash"></i
+                  ></a>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          <% } else { %>
+          <h1 class="text-center text-secondary mt-5">
+            No Users found in Department 4
+          </h1>
+          <% } %>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="d5" role="tabpanel">
+        <div class="hris-container">
+          <% if (DP5 != '') { %>          <table id="table" class="table table-hover table-striped">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 150px">Name</th>
+                <th style="width: 250px">Email</th>
+                <th style="width: 200px">Contact No.</th>
+                <th style="width: 200px">Department</th>
+                <th style="width: 10px; padding-left: 40px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% DP5.forEach((row, index) => { %>
+              <tr>
+                <td class="fw-bold mb-1" ><%= row.name %></td>
+                <td><%= row.email %></td>
+                <td><%= row.contact %></td>
+                <td><%= row.department %></td>
+                <td class="action-buttons">
+                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
+                    ><i class="fa-solid fa-eye"></i
+                  ></a>
+                  <a
+                    href="/delete/<%= row._id %>"
+                    class="icon-square text-danger"
+                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                    ><i class="fa-solid fa-trash"></i
+                  ></a>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          <% } else { %>
+          <h1 class="text-center text-secondary mt-5">
+            No Users found in Department 5
+          </h1>
+          <% } %>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="d6" role="tabpanel">
+        <div class="hris-container">
+          <% if (DP6 != '') { %>          <table id="table" class="table table-hover table-striped">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 150px">Name</th>
+                <th style="width: 250px">Email</th>
+                <th style="width: 200px">Contact No.</th>
+                <th style="width: 200px">Department</th>
+                <th style="width: 10px; padding-left: 40px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% DP6.forEach((row, index) => { %>
+              <tr>
+                <td class="fw-bold mb-1" ><%= row.name %></td>
+                <td><%= row.email %></td>
+                <td><%= row.contact %></td>
+                <td><%= row.department %></td>
+                <td class="action-buttons">
+                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
+                    ><i class="fa-solid fa-eye"></i
+                  ></a>
+                  <a
+                    href="/delete/<%= row._id %>"
+                    class="icon-square text-danger"
+                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                    ><i class="fa-solid fa-trash"></i
+                  ></a>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          <% } else { %>
+          <h1 class="text-center text-secondary mt-5">
+            No Users found in Department 6
+          </h1>
+          <% } %>
+        </div>
+      </div>
     </div>
   </div>
 </body>
-
 <%- include('../layouts/footer') %>

@@ -1,11 +1,19 @@
 <%- include('../layouts/user_hris/hris_user_header') -%>
 <body>
-  <%- include('../layouts/navhris') -%> <%-
-  include('../layouts/user_hris/sidenavhris_user') %>
+  <%- include('../layouts/navhris') -%> 
+  <% if (user.hrrole === "ADMIN") { -%>
+      <%- include('../layouts/sidenavhris') %>
+    <% } else { %>
+      <%- include('../layouts/user_hris/sidenavhris_user') %>
+    <% } %>
   <div class="page-body">
     <div class="page-name">
       <h1><%= pageName %></h1>
-      <a href="/view_profile/<%= user.email %>" class="btn btn-secondary">Go Back</a>
+      <% if (email === user.email) { -%>
+        <a href="/view_profile/<%= user.email %>" class="btn btn-secondary">Go Back</a>
+      <% } else { %>
+        <a href="/view_emp_data/<%= email %>" class="btn btn-secondary">Go Back</a>
+      <% } %>
     </div>
     <div id="alertContainer" class="bottom-right">
         <% if (message) { %>
@@ -21,10 +29,14 @@
         </div>
         <% } %>
       </div>
-      <div class="file-code">
-        <button id="submitButton" class="btn btn-secondary">Submit <%= pageName %></button>
-    </div>
-    <div id="submitPaper" class="submission hidden mt-4 mb-4">
+      <% if (email === user.email) { -%>
+        <div class="file-code">
+          <button id="submitButton" class="btn btn-secondary">Submit <%= pageName %></button>
+      </div>
+      <% } else { %>
+          <h3 class="text-muted"><%= email %>'s Papers</h3>
+    <% } %>
+    <div id="submitPaper" class="submission hidden mb-4">
         <form action="/file-submit" method="POST" enctype="multipart/form-data">
             <fieldset>
                 <legend>Upload <%= pageName %></legend>

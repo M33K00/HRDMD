@@ -11,6 +11,11 @@ const hrSettingsSchema = new mongooose.Schema({
     required: false,
     default: "30",
   },
+  hoursPerDay: {
+    type: String,
+    required: false,
+    default: "8",
+  }
 });
 
 const hrSettings = mongooose.model("hrSettings", hrSettingsSchema);

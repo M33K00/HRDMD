@@ -818,7 +818,7 @@ router.get("/oathO/:email", async (req, res) => {
     const fileType = await OathO.find({email: email});
     const pageName = "Oath of Office";
     const docuType = "oathO";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -835,7 +835,7 @@ router.get("/certATD/:email", async (req, res) => {
     const fileType = await CertATD.find({email: email});
     const pageName = "Certificate of Attendance";
     const docuType = "certATD";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -852,7 +852,7 @@ router.get("/certBL/:email", async (req, res) => {
     const fileType = await CertBL.find({email: email});
     const pageName = "Certificate of Budgetary Limitation";
     const docuType = "certBL";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -869,7 +869,7 @@ router.get("/posDF/:email", async (req, res) => {
     const fileType = await PosDF.find({email: email});
     const pageName = "Position Description Form";
     const docuType = "posDF";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -886,7 +886,7 @@ router.get("/medCert/:email", async (req, res) => {
     const fileType = await MedCert.find({email: email});
     const pageName = "Medical Certificate";
     const docuType = "medCert";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -903,7 +903,7 @@ router.get("/certLB/:email", async (req, res) => {
     const fileType = await CertLB.find({email: email});
     const pageName = "Certificate of Live Birth";
     const docuType = "certLB";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -920,7 +920,7 @@ router.get("/marriageCont/:email", async (req, res) => {
     const fileType = await MarriageCont.find({email: email});
     const pageName = "Marriage Contract";
     const docuType = "marriageCont";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -937,7 +937,7 @@ router.get("/clearances/:email", async (req, res) => {
     const fileType = await Clearances.find({email: email});
     const pageName = "Clearances";
     const docuType = "clearances";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -954,7 +954,7 @@ router.get("/schol/:email", async (req, res) => {
     const fileType = await Schol.find({email: email});
     const pageName = "Scholastic Record/Academic Record";
     const docuType = "schol";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -971,7 +971,7 @@ router.get("/certLeaveB/:email", async (req, res) => {
     const fileType = await CertLeaveB.find({email: email});
     const pageName = "Certificate of Leave Balances";
     const docuType = "certLeaveB";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -988,7 +988,7 @@ router.get("/copyReso/:email", async (req, res) => {
     const fileType = await CopyReso.find({email: email});
     const pageName = "Copy of Resolution";
     const docuType = "copyReso";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -1005,7 +1005,7 @@ router.get("/commendations/:email", async (req, res) => {
     const fileType = await Commendations.find({email: email});
     const pageName = "Commendations";
     const docuType = "commendations";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -1022,7 +1022,7 @@ router.get("/disAct/:email", async (req, res) => {
     const fileType = await DisAct.find({email: email});
     const pageName = "Disciplinary Action Documents";
     const docuType = "disAct";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -1039,7 +1039,7 @@ router.get("/cos/:email", async (req, res) => {
     const fileType = await Cos.find({email: email});
     const pageName = "Contract of Service";
     const docuType = "cos";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -1056,7 +1056,7 @@ router.get("/swornS/:email", async (req, res) => {
     const fileType = await SwornS.find({email: email});
     const pageName = "Sworn Statement of Assets";
     const docuType = "swornS";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -1073,7 +1073,7 @@ router.get("/officeOrder/:email", async (req, res) => {
     const fileType = await OfficeOrder.find({email: email});
     const pageName = "Office Order";
     const docuType = "officeOrder";
-    res.render("HRIS/201Single", {fileType, pageName, docuType});
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {

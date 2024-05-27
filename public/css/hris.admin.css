@@ -108,7 +108,7 @@
 
 .hris-header h1 {
   position: absolute;
-  top: -200;
+  top: -255;
   left: 0;
   width: 100%;
   height: 100%;
@@ -596,6 +596,17 @@
   margin-left: auto;
 }
 
+.settings-div-dtr {
+
+  border: #414141 solid 1px;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 1%;
+  height: 62%;
+  backdrop-filter: blur(5px); /* Blur effect */
+}
+
 .settings-div {
   display: flex;
   justify-content: center;
@@ -605,7 +616,7 @@
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   padding: 1%;
-  height: 62%;
+  height: 65%;
   backdrop-filter: blur(5px); /* Blur effect */
 }
 
@@ -663,6 +674,16 @@
 }
 
 .btn-print {
+  width: 500px;
+  margin-bottom: 12px;
+}
+
+.btn-save {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  right: 10px;
+  bottom: 0;
   width: 500px;
   margin-bottom: 12px;
 }
@@ -748,4 +769,14 @@
 .dropdown-menu .dropdown-item:hover,
 .dropdown-menu .dropdown-item:focus {
   color: #5c5c5c; /* Change this to your desired hover/active color */
+}
+
+.disabled-link {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.6; /* This makes the link appear disabled */
+}
+
+.nav-bg {
+  backdrop-filter: blur(5px);
 }
