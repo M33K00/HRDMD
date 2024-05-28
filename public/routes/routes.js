@@ -1051,6 +1051,8 @@ router.get("/hrSettings", checkHRSettings, async (req, res) => {
         startDate: "",
         endDate: "",
         hoursPerDay: "",
+        startTime: "7:00",
+        endTime: "19:00",
       });
     }
 
@@ -1073,8 +1075,15 @@ router.post("/hrSettings", checkHRSettings, async (req, res) => {
       // Update the existing settings with the new values from req.body
       existingSettings.startDate = req.body.startDate;
       existingSettings.endDate = req.body.endDate;
-      existingSettings.hoursPerDay = req.body.hoursPerDay;
+      existingSettings.hoursPerDay = (
+        new Date(`1970-01-01T${req.body.endTime}:00`) - 
+        new Date(`1970-01-01T${req.body.startTime}:00`)
+      ) / (1000 * 60 * 60); // Convert milliseconds to hours      
+      existingSettings.startTime = req.body.startTime;
+      existingSettings.endTime = req.body.endTime;
     }
+
+    console.log(existingSettings);
 
     // Save the settings (either new or updated)
     await existingSettings.save();

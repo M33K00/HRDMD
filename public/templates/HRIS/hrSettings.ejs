@@ -152,20 +152,33 @@
             <small>Adjust the second day of the Cutoff.</small>
           </div>
         </div>
-        <h3 class="mt-4">Hours Per Day:</h3>
+        <h3 class="mt-4">Start and End of shift hours:</h3>
         <div class="form-group flex-container">
           <div class="form-item">
-            <label for="hoursPerDay" class="form-label mt-2 text-muted">Work Hours:</label>
+            <label for="startTime" class="form-label mt-2 text-muted">Shift Start:</label>
             <input
-              type="number"
-              id="hoursPerDay"
-              name="hoursPerDay"
+              type="time"
+              id="startTime"
+              name="startTime"
               class="form-control"
               placeholder="8"
-              value="<%= hrSettings.hoursPerDay %>"
+              value="<%= hrSettings.startTime %>"
               required
             />
-            <small>Adjust the required hours worked per day.</small>
+            <small>Adjust the start time of the shift</small>
+          </div>
+          <div class="form-item">
+            <label for="endTime" class="form-label mt-2 text-muted">Shift End:</label>
+            <input
+              type="time"
+              id="endTime"
+              name="endTime"
+              class="form-control"
+              placeholder="17"
+              value="<%= hrSettings.endTime %>"
+              required
+            />
+            <small>Adjust the end time of the shift</small>
           </div>
         </div>
         <input type="submit" value="SAVE CHANGES" class="btn btn-primary btn-save"></button> 

@@ -88,7 +88,7 @@ const attendanceSchema = new mongoose.Schema({
   creditPoints: {
     type: Number,
     required: false,
-    default: 1.25,
+    default: 125,
   },
 });
 

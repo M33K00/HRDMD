@@ -18,6 +18,11 @@ const daysPresentSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
+  timeLate: {
+    type: String,
+    required: false,
+    default: "",
+  },
   totalTime: {
     type: Number,
     required: false,

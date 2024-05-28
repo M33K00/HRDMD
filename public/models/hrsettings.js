@@ -1,4 +1,5 @@
 const mongooose = require("mongoose");
+const { validate } = require("./logincollections");
 
 const hrSettingsSchema = new mongooose.Schema({
   startDate: {
@@ -15,6 +16,16 @@ const hrSettingsSchema = new mongooose.Schema({
     type: String,
     required: false,
     default: "8",
+  },
+  startTime: {
+    type: String,
+    required: false,
+    default: "09:00",
+  },
+  endTime: {
+    type: String,
+    required: false,
+    default: "17:00",
   }
 });
 
