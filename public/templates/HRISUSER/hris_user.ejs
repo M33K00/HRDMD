@@ -24,7 +24,7 @@
         <a class="clickable-link" href="/view_leave/<%= user.email %>">
           <div class="pending-count">
             <p class="display-label">Pending Leave:</p>
-            <p class="display-count"><%= leaveapplications.length %></p>
+            <p class="display-count"><%= leaveapplications.filter((row) => row.status === 'PENDING').length %></p>
           </div>
         </a>
       </div>

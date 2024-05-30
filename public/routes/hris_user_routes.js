@@ -2,6 +2,7 @@ const router = require("./routes");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const { checkHRSettings } = require("../middleware/HRSettingsMiddleware");
 
 // Models
 const LogInCollection = require("../models/logincollections");
@@ -229,9 +230,10 @@ router.get("/HRFiles", async (req, res) => {
   res.render("HRISUSER/HRFiles");
 });
 
-router.get("/dtr_user/:id", async (req, res) => {
+router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
   try {
     let id = req.params.id;
+    let hrSettings = await req.models.HRSettings.findOne();
 
     // Fetch user's login information
     let logincollections = await LogInCollection.findById(id);
@@ -271,6 +273,7 @@ router.get("/dtr_user/:id", async (req, res) => {
 
     res.render("HRISUSER/dtr_user", {
       title: "View Account",
+      hrSettings: hrSettings,
       logincollections: logincollections,
       attendance: attendance,
       dayspresent: dayspresent,

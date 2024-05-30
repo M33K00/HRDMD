@@ -33,14 +33,19 @@
                 <p><b>Days Present:</b> <%= attendance.daysPresent %></p></p>
                 <p><b>Days Absent:</b> <%= attendance.daysAbsent %></p>
                 <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
+                <p class="<% if (attendance.creditPoints === 125) { %>
+                 text-success
+                <% } else if (attendance.creditPoints <= 120 ) { %>
+                text-warning
+                <% } else if (attendance.creditPoints <= 115 ) { %>
+                text-danger
+                <% } %>"><b style="color: rgb(0, 0, 0);">Credit Points:</b> <%= attendance.creditPoints %></p></p>
             </div>
         </div>
         <div class="account-stat mt-3">
           <div class="account-stat-item">
               <p><b>Dayoffs:</b> <%= attendance.dayOff %></p></p>
-              <p><b>Pay Sched:</b> <%= attendance.paySched %></p>
-              <p><b>Current Cut-off:</b> April 15</p>
-              <p><b>Next Cut-off:</b> March 2</p>
+              <p><b>Cut-off Dates:</b> Every <%= hrSettings.startDate %> and <%= hrSettings.endDate %></p>
           </div>
       </div>
       </div>
@@ -108,7 +113,8 @@
               </div>
               <div class="div-view-count"><%= attendance.hoursWorked.toFixed(2) %> Hour(s)</div>
             </div>
-            <div class="dtr-cut-div">
+            
+            <!-- <div class="dtr-cut-div">
               <div class="div-cut-title">
                 <p class="dtr-view-title text-uppercase">Cut-off:</p>
               </div>
@@ -121,7 +127,7 @@
               </div>
               <div class="div-cut-count"><%= attendance.nextCutoffDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="tab-pane fade" id="dp" role="tabpanel">
