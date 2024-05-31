@@ -50,6 +50,11 @@ const attendanceSchema = new mongoose.Schema({
     required: false,
     default: 0,
   },
+  allTimeRecord: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
   paySched: {
     type: Array,
     required: false,

@@ -29,7 +29,15 @@
         <p><b>Name:</b> <%= logincollections.name %></p>
         <p><b>Email:</b> <%= logincollections.email %></p>
         <p><b>Contact:</b> <%= logincollections.contact %></p>
-        <p><b>Department:</b> <%= logincollections.department %></p>
+        <p><b>Department:</b> <% if (logincollections.department === 'HR Department') { %>
+         HR Department <% } else if (logincollections.department === 'Department 1') { %>
+         PESO Department <% } else if (logincollections.department === 'Department 2') { %>
+         CCD Office <% } else if (logincollections.department === 'Department 3') { %>
+         OAS Department <% } else if (logincollections.department === 'Department 4') { %>
+         BTM Department <% } else if (logincollections.department === 'Department 5') { %>
+         BPL Department <% } else if (logincollections.department === 'Department 6') { %>
+          CAD Department
+        <% } %></p>
         <p><b>Position:</b> <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
           else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
           else if (logincollections.hrrole === "ROLE 3") { %> Admin Officer <% } else if
@@ -42,15 +50,18 @@
             <p><b>Days Present:</b> <%= attendance.daysPresent %></p></p>
             <p><b>Days Absent:</b> <%= attendance.daysAbsent %></p>
             <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
-            <p><b>Credit Points:</b> <%= attendance.creditPoints %></p>
+            <p class="<% if (attendance.creditPoints === 125) { %>
+                 text-success
+                <% } else if (attendance.creditPoints <= 120 ) { %>
+                text-warning
+                <% } else if (attendance.creditPoints <= 115 ) { %>
+                text-danger
+                <% } %>"><b style="color: rgb(0, 0, 0);">Credit Points:</b> <%= attendance.creditPoints %></p></p>
         </div>
     </div>
     <div class="account-stat mt-3">
       <div class="account-stat-item">
           <p><b>Dayoffs:</b> <%= attendance.dayOff %></p></p>
-          <p><b>Pay Sched:</b> <%= attendance.paySched %></p>
-          <p><b>Current Cut-off:</b> <%= attendance.cutoffDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) %></p>
-          <p><b>Next Cut-off:</b> <%= attendance.nextCutoffDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) %></p>
       </div>
     </div>
   </div>
@@ -85,7 +96,10 @@
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#dol" aria-selected="false" tabindex="-1" role="tab">Days on Leave</a>
-          </li>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" data-bs-toggle="tab" href="#dpA" aria-selected="false" tabindex="-1" role="tab">Attendance History</a>
+        </li>
       </ul>
       <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade show active" id="hw" role="tabpanel">
@@ -117,34 +131,26 @@
               <% } %></div>
             </div>
           </div>
-          <h4 class="mt-4">Record Before Cutoff:</h4>
-          <p class="text-muted">This is the total hours worked before the cutoff.</p>
-          <div class="dtr-cut-container">
+          <h4 class="mt-4">Total Hours Worked:</h4>
+          <p class="text-muted">This is the total hours worked before the cutoff and all time record.</p>
+          <div class="dtr-view-container">
             <div class="dtr-view-div">
               <div class="div-title">
                 <p class="dtr-view-title">Total Hours Worked:</p>
               </div>
               <div class="div-view-count"><%= attendance.hoursWorked.toFixed(2) %> Hour(s)</div>
             </div>
-            <div class="dtr-cut-div">
-              <div class="div-cut-title">
-                <p class="dtr-view-title text-uppercase">Cut-off:</p>
+            <div class="dtr-view-div">
+              <div class="div-title">
+                <p class="dtr-view-title">All Time Record:</p>
               </div>
-              <div class="div-cut-count"><%= attendance.cutoffDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
-              </div>
-            </div>
-            <div class="dtr-cut-div">
-              <div class="div-cut-title">
-                <p class="dtr-view-title text-uppercase">Next Cut-off:</p>
-              </div>
-              <div class="div-cut-count"><%= attendance.nextCutoffDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
-              </div>
+              <div class="div-view-count"><%= (attendance.hoursWorked + attendance.allTimeRecord).toFixed(2) %> Hour(s)</div>
             </div>
           </div>
         </div>
         <div class="tab-pane fade" id="dp" role="tabpanel">
-          <h4 class="mt-4">Days Present:</h4>
-          <p class="text-muted">This table shows the days present.</p>
+          <h4 class="mt-4">Days Present (BEFORE CUTOFF):</h4>
+          <p class="text-muted">This table shows the days present before the cutoff.</p>
           <table id="table" class="table table-hover table-striped table-bordered mt-4">
             <thead>
               <% if (dayspresent != '') { %>
@@ -175,7 +181,7 @@
               </tbody>
               <% } else { %>
                 <h1 class="text-center text-secondary mt-5">
-                  No Days Present Found
+                  No record found before cutoff
                 </h1>
               <% } %>
           </table>
@@ -236,6 +242,41 @@
               <% } else { %>
                 <h1 class="text-center text-secondary mt-5">
                   No Days on Leave Found
+                </h1>
+              <% } %>
+          </table>
+        </div>
+        <div class="tab-pane fade" id="dpA" role="tabpanel">
+          <h4 class="mt-4">Attendance History:</h4>
+          <p class="text-muted">This table shows the attendance history.</p>
+          <table id="table" class="table table-hover table-striped table-bordered mt-4">
+            <thead>
+              <% if (dayspresentA != '') { %>
+                <tr class="table-dark text-center text-uppercase">
+                  <th>Date</th>
+                  <th>Time In</th>
+                  <th>Time Out</th>
+                  <th>Total Time</th>
+                  <th>Under Time</th>
+                  <th>Over Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% // Sort attendancehistory array by date (from latest to oldest)
+                dayspresentA.sort((a, b) => new Date(b.date) - new Date(a.date));
+                dayspresentA.forEach((row, index) => { %>
+                  <tr>
+                    <td><%= row.date.toISOString().slice(0, 10) %></td>
+                <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %><% } else { %>Ongoing<% } %></td>
+                <td><%= row.totalTime.toFixed(2) %></td>
+                <td><%= row.underTime.toFixed(2) %></td>
+                <td><%= row.overTime.toFixed(2) %></td>
+              </tr>
+                  <% }) %>
+              <% } else { %>
+                <h1 class="text-center text-secondary mt-5">
+                  No Attendance History Found
                 </h1>
               <% } %>
           </table>

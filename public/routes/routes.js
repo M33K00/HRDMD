@@ -18,6 +18,8 @@ const DaysPresent = require("../models/dayspresent");
 const DaysAbsent = require("../models/daysabsent");
 const daysAbsent = require("../models/daysabsent");
 const HRSettings = require("../models/hrsettings");
+const DaysPresentA = require("../models/dayspresentA");
+const DaysAbsentA = require("../models/daysabsentA");
 
 // 201 File Models
 const UserDocuments = require("../models/userdocuments");
@@ -939,6 +941,8 @@ router.get("/view-dtr/:id", async (req, res) => {
       email: email,
     });
 
+    
+
     const timeIn = new Date(attendance.timeIn);
     const currentTime = new Date();
     const dateA = new Date(new Date().setHours(0, 0, 0, 0));
@@ -959,6 +963,10 @@ router.get("/view-dtr/:id", async (req, res) => {
     });
 
     let daysabsent = await DaysAbsent.find({
+      email: email,
+    });
+
+    let dayspresentA = await DaysPresentA.find({
       email: email,
     });
 
@@ -986,6 +994,7 @@ router.get("/view-dtr/:id", async (req, res) => {
       attendance: attendance,
       dayspresent: dayspresent,
       daysabsent: daysabsent,
+      dayspresentA: dayspresentA,
       leaveapplications: leaveapplications,
       status: status,
       totalHours: totalHours,
@@ -1156,6 +1165,55 @@ router.get("/print-hr-dtr/:department", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+router.get("/closeDTR/:department", async (req, res) => {
+  try {
+    const department = req.params.department;
+
+    const employeeDetails = await LogInCollection.find({
+      department: department,
+    });
+
+    console.log("Found employees: ", employeeDetails);
+
+    const employeeEmails = employeeDetails.map(employee => employee.email);
+
+    const employees = await DaysPresent.find({
+      email: { $in: employeeEmails }
+    });
+
+    console.log("Found Employee Records: ", employees);
+
+    const moveDaysPresent = employees.map((employee) => {
+      const docObject = employee.toObject();
+      docObject.dateArchived = new Date();
+      return docObject;
+    });
+
+    await DaysPresentA.insertMany(moveDaysPresent);
+    await DaysPresent.deleteMany({ email: { $in: employeeDetails.map((employee) => employee.email) } });
+
+    // Update Attendance record of employees
+    const attendances = await Attendance.find({ email: { $in: employeeEmails } });
+
+    for (let attendance of attendances) {
+      attendance.allTimeRecord += attendance.hoursWorked;
+      attendance.hoursWorked = 0;
+      await attendance.save();
+    }
+
+    req.session.message = {
+      type: "success",
+      message: "DTR closed successfully",
+    };
+
+    res.redirect("/hrSettings");
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+})
 
 
 router.get("/addacc", (req, res) => {

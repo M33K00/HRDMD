@@ -7,8 +7,11 @@
     <h1>DTR Report</h1>
     <a href="/hrSettings" class="btn btn-secondary">GO BACK</a>
   </div>
-  <button id="download" class="btn btn-primary mb-2">Download as PDF</button>
-  <div class="page-content" id="page-content">
+  <div class="printBTNS">
+    <button id="download" class="btn btn-primary">Download as PDF</button>
+    <button id="closeDTR" class="btn btn-danger closeBTN mb-2" data-toggle="modal" data-target="#confirmModal">CLOSE REPORT</button>
+  </div>
+  <div class="page-content mt-4 p-4 bg-light" id="page-content">
     <h3><%= department %> DTR Report:</h3>
     <table id="table" class="table table-hover table-striped table-bordered">
       <thead>
@@ -36,6 +39,29 @@
     </table>
   </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Confirm Report Closure</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to close DTR for the department? <strong class="text-danger">This action cannot be undone.</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmCloseDTR">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script src="../../scripts/html2pdf.bundle.min.js"></script>
 <script>
   document.getElementById("download").addEventListener("click", () => {
@@ -45,14 +71,20 @@
     // Configure the options for the PDF
     var opt = {
       margin: 0.5,
-      filename: "Report.pdf",
+      filename: "DTRReport.pdf",
       image: { type: "jpeg", quality: 1.0 },
-      html2canvas: { scale: 1 },
+      html2canvas: { scale: 5.0 },
       jsPDF: { unit: "in", format: "letter", orientation: "landscape" },
     };
 
     // Use html2pdf to create and download the PDF
     html2pdf().from(element).set(opt).save();
+  });
+</script>
+<script>
+  document.getElementById('confirmCloseDTR').addEventListener('click', function() {
+    const department = '<%= department %>'; // Make sure to use the correct server-side templating variable
+    window.location.href = `/closeDTR/${department}`;
   });
 </script>
 <%- include('../../layouts/footer') %>

@@ -861,3 +861,13 @@
 .nav-bg {
   backdrop-filter: blur(5px);
 }
+
+.printBTNS {
+  display: flex;
+  margin-top: 10px;
+}
+
+.closeBTN {
+  margin-left: auto;
+  margin-right: 0;
+}
