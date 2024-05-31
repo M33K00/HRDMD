@@ -4,10 +4,37 @@
   include('../layouts/user_hris/sidenavhris_user') %>
   <%- include('../layouts/footer') %>
     <div class="page-body">
+      <div id="alertContainer" class="bottom-right">
+        <% if (message) { %>
+        <div
+          class="alert alert-dismissible alert-<%= message.type %> fade show"
+          role="alert"
+          id="autoDismissAlert"
+        >
+          <strong>Attention!</strong> <%= message.message %><a
+            href="#"
+            class="alert-link"
+          ></a>
+        </div>
+        <% } %>
+      </div>
         <div class="page-name">
           <h1>Attendance Record:</h1>
           <button class="btn btn-secondary" onclick="window.location.href='/printDTR/<%= user.email %>'">Print DTR REPORT</button>
         </div>
+        <% if (attendance.creditPoints < 125) { %>
+          <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <h4 class="alert-heading">Warning!</h4>
+            <p class="mb-0">Your credit points are below the threshold. Please ensure you clock in on time to maintain your credit points.</p>
+          </div>
+        <% } else if (attendance.creditPoints < 115) { %>
+          <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <h4 class="alert-heading">Warning!</h4>
+            <p class="mb-0">Your credit points is low. Please ensure you clock in on time to maintain your credit points.</p>
+          </div>
+        <% } %>
         <div class="account-at">
           <div class="account-img">
             <img src="../<%= logincollections.image %>" />
