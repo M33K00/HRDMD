@@ -43,7 +43,7 @@
                 <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
                 <p class="<% if (attendance.creditPoints === 125) { %>
                  text-success
-                <% } else if (attendance.creditPoints <= 120 ) { %>
+                <% } else if (attendance.creditPoints <= 124 ) { %>
                 text-warning
                 <% } else if (attendance.creditPoints <= 115 ) { %>
                 text-danger
@@ -52,8 +52,26 @@
         </div>
         <div class="account-stat mt-3">
           <div class="account-stat-item">
+              <%
+              const startTimeParts = hrSettings.startTime.split(":");
+              const endTimeParts = hrSettings.endTime.split(":");
+              const startHour = parseInt(startTimeParts[0]);
+              const endHour = parseInt(endTimeParts[0]);
+              const startMinutes = parseInt(startTimeParts[1]);
+              const endMinutes = parseInt(endTimeParts[1]);
+
+              // Create Date objects with dummy date (since we only care about time)
+              const startDate = new Date(2000, 0, 1, startHour, startMinutes);
+              const endDate = new Date(2000, 0, 1, endHour, endMinutes);
+
+              // Format the times in AM/PM format
+              const formattedStartTime = startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+              const formattedEndTime = endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+              %>
               <p><b>Dayoffs:</b> <%= attendance.dayOff %></p></p>
               <p><b>Cut-off Dates:</b> Every <%= hrSettings.startDate %> and <%= hrSettings.endDate %></p>
+              <p><b>Shift Start:</b> <%= formattedStartTime %></p>
+              <p><b>Shift End:</b> <%= formattedEndTime %></p>
           </div>
       </div>
       </div>
@@ -145,6 +163,7 @@
               <% if (dayspresent != '') { %>
                 <tr class="table-dark text-center text-uppercase">
                   <th>Date</th>
+                  <th>Time Late</th>
                   <th>Time In</th>
                   <th>Time Out</th>
                   <th>Total Time</th>
@@ -160,6 +179,7 @@
                 dayspresent.forEach((row, index) => { %>
                   <tr>
                     <td><%= row.date.toISOString().slice(0, 10) %></td>
+                <td><%= row.timeLate.split(":")[0] %>h and <%= row.timeLate.split(":")[1] %>m</td>
                 <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
                 <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %><% } else { %>Ongoing<% } %></td>
                 <td><%= row.totalTime.toFixed(2) %></td>

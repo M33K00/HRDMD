@@ -287,9 +287,30 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
   }
 });
 
-router.get("/clockin/:email", async (req, res) => {
+router.get("/clockin/:email", checkHRSettings, async (req, res) => {
+  const hrSettings = await req.models.HRSettings.findOne();
   try {
     const email = req.params.email;
+    const [startHours, startMinutes] = hrSettings.startTime.split(":").map(Number);
+
+    // Create a Date object for the startTime with today's date
+    const startTime = new Date();
+    startTime.setHours(startHours);
+    startTime.setMinutes(startMinutes);
+    startTime.setSeconds(0); // Optional: Set seconds and milliseconds to 0
+
+    // Create a Date object for the current time
+    const currentTime = new Date();
+
+    // Calculate the time difference in milliseconds
+    const timeDifferenceMs = currentTime.getTime() - startTime.getTime();
+
+    // Calculate timeLate in hours and minutes
+    const hoursLate = Math.floor(timeDifferenceMs / (1000 * 60 * 60));
+    const minutesLate = Math.floor((timeDifferenceMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    // Log the timeLate message
+    console.log(`Employee is ${hoursLate} hours and ${minutesLate} minutes late`);
 
     // Find the user's _id from Logincollections using the email
     const userLogin = await LogInCollection.findOne({ email: email });
@@ -323,6 +344,7 @@ router.get("/clockin/:email", async (req, res) => {
     const dpData = {
       email: email,
       timeIn: new Date(),
+      timeLate: `${hoursLate}:${minutesLate}`,
       date: new Date(new Date().setHours(0, 0, 0, 0)),
     };
     await DaysPresent.create(dpData);
@@ -340,6 +362,23 @@ router.get("/clockin/:email", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+function calculateDeductionPoints(hoursLate, minutesLate) {
+  // Calculate total lateness in minutes
+  const totalMinutesLate = hoursLate * 60 + minutesLate;
+
+  // Deduct points based on lateness rules
+  let deductionPoints = 0;
+  if (totalMinutesLate > 0 && totalMinutesLate <= 10) {
+    deductionPoints = 1;
+  } else if (totalMinutesLate > 10 && totalMinutesLate <= 20) {
+    deductionPoints = 2;
+  } else if (totalMinutesLate > 20) {
+    deductionPoints = 3;
+  }
+
+  return deductionPoints;
+}
 
 router.get("/clockout/:email", async (req, res) => {
   try {
@@ -363,6 +402,56 @@ router.get("/clockout/:email", async (req, res) => {
 
     const totalHoursDecimal = timeDifference / 3600000;
 
+     // Get today's date
+     const today = new Date();
+     today.setHours(0, 0, 0, 0);
+ 
+     // Find record for today
+     const dp = await DaysPresent.findOne({ email: email, date: today });
+
+     const hoursLate = dp.timeLate.split(":")[0];
+     const minutesLate = dp.timeLate.split(":")[1];
+     const deductionPoints = calculateDeductionPoints(hoursLate, minutesLate);
+ 
+     if (!dp) {
+       console.log("DP not found for today");
+ 
+       // Get yesterday's date
+       const yesterday = new Date(today);
+       yesterday.setDate(today.getDate() - 1);
+ 
+       // Find record for yesterday
+       const dpYesterday = await DaysPresent.findOne({
+         email: email,
+         date: yesterday,
+       });
+ 
+       if (!dpYesterday) {
+         console.log("DP not found for yesterday as well");
+         return;
+       }
+       console.log("Record found for yesterday:", dpYesterday.date);
+       dp.timeOut = new Date();
+       dp.totalTime = totalHoursDecimal;
+       if (totalHoursDecimal > 8) {
+         dp.overTime = totalHoursDecimal - 8;
+       }
+     } else {
+       dp.timeOut = new Date();
+       dp.totalTime = totalHoursDecimal;
+       if (totalHoursDecimal < 8) {
+         dp.underTime = 8 - totalHoursDecimal;
+       } else {
+         dp.underTime = 0;
+       }
+       if (totalHoursDecimal > 8) {
+         dp.overTime = totalHoursDecimal - 8;
+       } else {
+         dp.overTime = 0;
+       }
+       await dp.save();
+     }
+
     if (!user) {
       console.log("User not found");
       return;
@@ -370,54 +459,10 @@ router.get("/clockout/:email", async (req, res) => {
       user.timeIn = null; // Update timeIn to current date and time
       user.status = "OUT";
       user.hoursWorked += totalHoursDecimal;
+      user.creditPoints -= deductionPoints;
       await user.save();
     }
 
-    // Get today's date
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // Find record for today
-    const dp = await DaysPresent.findOne({ email: email, date: today });
-
-    if (!dp) {
-      console.log("DP not found for today");
-
-      // Get yesterday's date
-      const yesterday = new Date(today);
-      yesterday.setDate(today.getDate() - 1);
-
-      // Find record for yesterday
-      const dpYesterday = await DaysPresent.findOne({
-        email: email,
-        date: yesterday,
-      });
-
-      if (!dpYesterday) {
-        console.log("DP not found for yesterday as well");
-        return;
-      }
-      console.log("Record found for yesterday:", dpYesterday.date);
-      dp.timeOut = new Date();
-      dp.totalTime = totalHoursDecimal;
-      if (totalHoursDecimal > 8) {
-        dp.overTime = totalHoursDecimal - 8;
-      }
-    } else {
-      dp.timeOut = new Date();
-      dp.totalTime = totalHoursDecimal;
-      if (totalHoursDecimal < 8) {
-        dp.underTime = 8 - totalHoursDecimal;
-      } else {
-        dp.underTime = 0;
-      }
-      if (totalHoursDecimal > 8) {
-        dp.overTime = totalHoursDecimal - 8;
-      } else {
-        dp.overTime = 0;
-      }
-      await dp.save();
-    }
     req.session.message = {
       type: "success",
       message: "Clock-in successful.",
