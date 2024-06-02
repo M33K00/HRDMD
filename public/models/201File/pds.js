@@ -3,12 +3,10 @@ const mongoose = require("mongoose");
 const PersonalDataSheetsSchema = new mongoose.Schema({
   name: {
     type: String,
-    unique: true,
     required: true,
   },
   email: {
     type: String,
-    unique: true,
     required: true,
   },
   files: {
@@ -20,6 +18,10 @@ const PersonalDataSheetsSchema = new mongoose.Schema({
     type: String,
     required: false,
     default: "",
+  },
+  dateSubmitted: {
+    type: Date,
+    default: null,
   },
 });
 

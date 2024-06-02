@@ -549,15 +549,10 @@ router.get("/view-201/:type/:email" , async (req, res) => {
 router.get("/appPaper/:email" , async (req, res) => {
   try {
     const email = req.params.email;
-    const appPaper = await AppPaper.findOne({email: email});
-
-    if (!appPaper) {
-      await AppPaper.create({
-        email: email,
-      })
-    };
-
-    res.render("HRIS/appPaper", {appPaper});
+    const fileType = await AppPaper.find({email: email});
+    const pageName = "Application Paper";
+    const docuType = "appPaper";
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -568,176 +563,18 @@ router.get("/appPaper/:email" , async (req, res) => {
   }
 })
 
-router.post("/submit_paper", employeeUpload.fields([
-  { name: 'origFile', maxCount: 1 },
-  { name: 'reappointFile', maxCount: 1 },
-  { name: 'reemployFile', maxCount: 1 },
-  { name: 'promFile', maxCount: 1 },
-  { name: 'transferFile', maxCount: 1 },
-  { name: 'transPromFile', maxCount: 1 }
-]), async (req, res) => {
-  console.log(req.body);
-  try {
-      const email = req.body.email;
-      const files = req.files;
-
-      const existingData = await AppPaper.findOne({ email: email });
-
-      const updateData = {};
-
-      if (files.origFile) {
-        if (existingData.origFile && existingData.origFile !== files.origFile[0].path) {
-            // Delete old file
-            fs.unlinkSync(existingData.origFile);
-        }
-        updateData['origFile'] = files.origFile[0].path;
-      }
-      if (files.reappointFile) {
-          if (existingData.reappointFile && existingData.reappointFile !== files.reappointFile[0].path) {
-              // Delete old file
-              fs.unlinkSync(existingData.reappointFile);
-          }
-          updateData['reappointFile'] = files.reappointFile[0].path;
-      }
-      if (files.reemployFile) {
-          if (existingData.reemployFile && existingData.reemployFile !== files.reemployFile[0].path) {
-              // Delete old file
-              fs.unlinkSync(existingData.reemployFile);
-          }
-          updateData['reemployFile'] = files.reemployFile[0].path;
-      }
-      if (files.promFile) {
-          if (existingData.promFile && existingData.promFile !== files.promFile[0].path) {
-              // Delete old file
-              fs.unlinkSync(existingData.promFile);
-          }
-          updateData['promFile'] = files.promFile[0].path;
-      }
-      if (files.transferFile) {
-          if (existingData.transferFile && existingData.transferFile !== files.transferFile[0].path) {
-              // Delete old file
-              fs.unlinkSync(existingData.transferFile);
-          }
-          updateData['transferFile'] = files.transferFile[0].path;
-      }
-      if (files.transPromFile) {
-          if (existingData.transPromFile && existingData.transPromFile !== files.transPromFile[0].path) {
-              // Delete old file
-              fs.unlinkSync(existingData.transPromFile);
-          }
-          updateData['transPromFile'] = files.transPromFile[0].path;
-      }
-
-      if (req.body.orig && req.body.orig !== existingData.orig) {
-        updateData['orig'] = req.body.orig;
-      }
-      if (req.body.reappoint && req.body.reappoint !== existingData.reappoint) {
-        updateData['reappoint'] = req.body.reappoint;
-      }
-      if (req.body.reemploy && req.body.reemploy !== existingData.reemploy) {
-        updateData['reemploy'] = req.body.reemploy;
-      }
-      if (req.body.prom && req.body.prom !== existingData.prom) {
-        updateData['prom'] = req.body.prom;
-      }
-      if (req.body.transfer && req.body.transfer !== existingData.transfer) {
-        updateData['transfer'] = req.body.transfer;
-      }
-      if (req.body.transProm && req.body.transProm !== existingData.transProm) {
-        updateData['transProm'] = req.body.transProm;
-      }
-
-      if (!existingData) {
-        // No existing record, create a new one
-        await AppPaper.create({
-          email: email,
-          name: req.body.name,
-          ...updateData,
-        });
-      } else {
-        // Update existing record
-        await AppPaper.findOneAndUpdate(
-          { email: email }, // filter
-          { $set: updateData }, // update data
-          { new: true } // options
-        );
-      }
-      
-      req.session.message = {
-          type: "success",
-          message: "Paper submitted successfully",
-      };
-      res.redirect("/appPaper/" + email);
-  } catch (err) {
-      console.error(err);
-      req.session.message = {
-          type: "danger",
-          message: "Error submitting paper",
-      };
-      res.redirect("/hris");
-  }
-});
-
 router.get("/pds/:email", async (req, res) => {
   try {
     const email = req.params.email;
-    const pds = await PDS.findOne({email: email});
+    const fileType = await PDS.find({email: email});
     const pageName = "Personal Data Sheet";
-    res.render("HRIS/201S", {pds, pageName});
+    const docuType = "pds";
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
       type: "danger",
       message: "Error fetching data",
-    };
-    res.redirect("/hris");
-  }
-});
-
-router.post("/pds-submit/:email", employeeUpload.single("files"), async (req, res) => {
-  try {
-    const email = req.params.email;
-    const file = req.file;
-
-    // Validate the email and file
-    if (!email || !file) {
-      throw new Error('Email or file is missing');
-    }
-
-    const filename = path.basename(file.path);
-
-    const existingData = await PDS.findOne({ email: email });
-    if (existingData && existingData.files) {
-      const oldFilePath = path.join(__dirname, "../../files/employeedocument", existingData.files);
-      fs.unlink(oldFilePath, (unlinkErr) => { // Use fs.unlink with a callback
-        if (unlinkErr) {
-          console.error(`Error deleting old file: ${unlinkErr}`);
-          throw new Error('Error deleting old file');
-        }
-      });
-    }
-
-    const updateData = {
-      files: filename,
-      fileYear: req.body.fileYear,
-    };
-
-    await PDS.findOneAndUpdate(
-      { email: email }, // filter
-      { $set: updateData }, // update data
-      { upsert: true, new: true, setDefaultsOnInsert: true } // options
-    );
-
-    req.session.message = {
-      type: "success",
-      message: "Personal Data Sheet submitted successfully",
-    };
-    res.redirect(`/pds/${email}`);
-  } catch (err) {
-    console.error(err);
-    req.session.message = {
-      type: "danger",
-      message: "Error submitting PDS",
     };
     res.redirect("/hris");
   }
@@ -746,115 +583,15 @@ router.post("/pds-submit/:email", employeeUpload.single("files"), async (req, re
 router.get("/certERL/:email", async (req, res) => {
   try {
     const email = req.params.email;
-    const certERL = await CertERL.findOne({email: email});
-
-    if (!certERL) {
-      await CertERL.create({
-        email: email,
-      })
-    }; 
-
-    res.render("HRIS/certERL", {certERL});
+    const fileType = await CertERL.find({email: email});
+    const pageName = "Certificate of ERL"
+    const docuType = "certERL";
+    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
       type: "danger",
       message: "Error fetching data",
-    };
-    res.redirect("/hris");
-  }
-});
-
-router.post("/certERL-submit", employeeUpload.fields([
-  { name: 'CSC', maxCount: 1 },
-  { name: 'NPC', maxCount: 1 },
-  { name: 'CESB', maxCount: 1 },
-  { name: 'PRC', maxCount: 1 },
-  { name: 'SC', maxCount: 1 },
-]), async (req, res) => {
-  console.log(req.body);
-
-  try {
-    const email = req.body.email;
-    const files = req.files;
-
-    const updateData = {};
-
-    let existingData = await CertERL.findOne({ email: email });
-
-    if (files.CSC) {
-      if (existingData && existingData.CSC && existingData.CSC !== files.CSC[0].path) {
-        fs.unlinkSync(existingData.CSC);
-      }
-      updateData['CSC'] = files.CSC[0].path;
-    }
-    if (files.NPC) {
-      if (existingData && existingData.NPC && existingData.NPC !== files.NPC[0].path) {
-        fs.unlinkSync(existingData.NPC);
-      }
-      updateData['NPC'] = files.NPC[0].path;
-    }
-    if (files.CESB) {
-      if (existingData && existingData.CESB && existingData.CESB !== files.CESB[0].path) {
-        fs.unlinkSync(existingData.CESB);
-      }
-      updateData['CESB'] = files.CESB[0].path;
-    }
-    if (files.PRC) {
-      if (existingData && existingData.PRC && existingData.PRC !== files.PRC[0].path) {
-        fs.unlinkSync(existingData.PRC);
-      }
-      updateData['PRC'] = files.PRC[0].path;
-    }
-    if (files.SC) {
-      if (existingData && existingData.SC && existingData.SC !== files.SC[0].path) {
-        fs.unlinkSync(existingData.SC);
-      }
-      updateData['SC'] = files.SC[0].path;
-    }
-
-    if (req.body.CSCYear && req.body.CSCYear !== existingData.CSCYear) {
-      updateData['CSCYear'] = req.body.CSCYear;
-    }
-    if (req.body.NPCYear && req.body.NPCYear !== existingData.NPCYear) {
-      updateData['NPCYear'] = req.body.NPCYear;
-    }
-    if (req.body.CESBYear && req.body.CESBYear !== existingData.CESBYear) {
-      updateData['CESBYear'] = req.body.CESBYear;
-    }
-    if (req.body.PRCYear && req.body.PRCYear !== existingData.PRCYear) {
-      updateData['PRCYear'] = req.body.PRCYear;
-    }
-    if (req.body.SCYear && req.body.SCYear !== existingData.SCYear) {
-      updateData['SCYear'] = req.body.SCYear;
-    }
-
-    if (!existingData) {
-      // No existing record, create a new one
-      await CertERL.create({
-        email: email,
-        name: req.body.name,
-        ...updateData,
-      });
-    } else {
-      // Update existing record
-      await CertERL.findOneAndUpdate(
-        { email: email }, // filter
-        { $set: updateData }, // update data
-        { new: true } // options
-      );
-    }
-
-    req.session.message = {
-      type: "success",
-      message: "Paper submitted successfully",
-    };
-    res.redirect("/certERL/" + email);
-  } catch (err) {
-    console.error(err);
-    req.session.message = {
-      type: "danger",
-      message: "Error submitting paper",
     };
     res.redirect("/hris");
   }
@@ -1139,7 +876,88 @@ router.post("/file-submit", employeeUpload.single("files"), async (req, res) => 
     const docuType = req.body.docuType;
     const file = req.file;
 
-    if (docuType === "oathO") {
+    if (docuType === "appPaper") {
+      const appPaper = await AppPaper.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (appPaper) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/appPaper/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await AppPaper.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/appPaper/" + email);
+    } else if (docuType === "pds") {
+      const pds = await Pds.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (pds) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/pds/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await Pds.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/pds/" + email);
+    } else if (docuType === "certERL") {
+      const certERL = await CertERL.findOne({
+        email: email,
+        files: file.originalname
+      });
+      if (certERL) {
+        req.session.message = {
+          type: "danger",
+          message: "File already exists",
+        };
+        res.redirect("/certERL/" + email);
+        return;
+      };
+      const filename = path.basename(file.path);
+      const data = {
+        name: req.body.name,
+        email: email,
+        files: filename,
+        fileYear: req.body.fileYear,
+        dateSubmitted: new Date(),
+      };
+      await CertERL.create(data);
+      req.session.message = {
+        type: "success",
+        message: "Paper submitted successfully",
+      };
+      res.redirect("/certERL/" + email);
+    } else if (docuType === "oathO") {
       const oatho = await OathO.findOne({
         email: email,
         files: file.originalname
@@ -1590,7 +1408,52 @@ router.post("/delete-201/:docuType/:fileName/:email", async (req, res) => {
     const email = req.params.email;
     const filePath = path.join(__dirname, "../../files/employeedocument", fileName);
 
-    if (docuType === "oathO") {
+    if (docuType === "appPaper") {
+      const result = await AppPaper.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/appPaper/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/appPaper/" + email);
+    } else if (docuType === "pds") {
+      const result = await PDS.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/pds/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/pds/" + email);
+    } else if (docuType === "certERL") {
+      const result = await CertERL.deleteOne({ email: email, files: fileName });
+      if (result.deletedCount === 0) {
+        req.session.message = {
+          type: "danger",
+          message: "No document found to delete",
+        };
+        return res.redirect("/certERL/" + email);
+      }
+      fs.unlinkSync(filePath);
+      req.session.message = {
+        type: "danger",
+        message: "File deleted successfully",
+      };
+      res.redirect("/certERL/" + email);
+    } else if (docuType === "oathO") {
     const result = await OathO.deleteOne({ email: email, files: fileName });
     if (result.deletedCount === 0) {
       req.session.message = {
