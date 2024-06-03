@@ -228,6 +228,14 @@
   width: 100px;
   height: 100px;
 }
+
+.page-extra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
 .page-container {
   position: relative;
   z-index: 1;

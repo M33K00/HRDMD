@@ -7,9 +7,12 @@
       <h1>Daily Time Record</h1>
       <h3><%= getCurrentDateInWords() %></h3>
     </div>
-    <p class="page-description text-muted">
-      View employee's daily time record here
-    </p>
+    <div class="page-extra">
+      <p class="page-description text-muted">
+        View employee's daily time record here
+      </p>
+      <a href="/DTRSettings" class="btn btn-secondary"><i class="fa-solid fa-gear"></i> Settings</a>
+    </div>
     <div class="dtr-container">
       <% let inCount = 0; %> <% mergedData.forEach(employee => { %> <%
       employee.attendanceData.forEach(attendance => { %> <% if

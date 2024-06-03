@@ -1,0 +1,141 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
+  <div class="page-body">
+    <div class="page-name text-uppercase">
+      <h1>PRINT REPORTS:</h1>
+      <a href="/dtr" class="btn btn-secondary">RETURN TO DTR</a>
+    </div>
+    <div id="alertContainer" class="bottom-right">
+      <% if (message) { %>
+      <div
+        class="alert alert-dismissible alert-<%= message.type %> fade show"
+        role="alert"
+        id="autoDismissAlert"
+      >
+        <strong>Attention! </strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
+    </div>
+    <div id="dtrSettings" class="content-div active">
+      <div class="settings-title">
+        <h4>DTR Settings:</h4>
+        <p>Manage department paydates and other HRIS settings</p>
+      </div>
+      <div class="settings-div-dtr">
+        <h3>Cutoff Dates:</h3>
+        <form action="/hrSettings" method="POST">
+        <div class="form-group flex-container">
+          <div class="form-item">
+            <label for="startDate" class="form-label mt-2 text-muted">First Day:</label>
+            <input
+              type="number"
+              id="startDate"
+              name="startDate"
+              class="form-control"
+              placeholder="DD"
+              min="1"
+              max="31"
+              value="<%= hrSettings.startDate %>"
+              required
+            />
+            <small>Adjust the first day of the Cutoff.</small>
+          </div>
+          <div class="form-item">
+            <label for="endDate" class="form-label mt-2 text-muted">Second Day:</label>
+            <input
+              type="number"
+              id="endDate"
+              name="endDate"
+              class="form-control"
+              placeholder="DD"
+              min="1"
+              max="31"
+              value="<%= hrSettings.endDate %>"
+              required
+            />
+            <small>Adjust the second day of the Cutoff.</small>
+          </div>
+        </div>
+        <h3 class="mt-4">Start and End of shift hours:</h3>
+        <div class="form-group flex-container">
+          <div class="form-item">
+            <label for="startTime" class="form-label mt-2 text-muted">Shift Start:</label>
+            <input
+              type="time"
+              id="startTime"
+              name="startTime"
+              class="form-control"
+              placeholder="8"
+              value="<%= hrSettings.startTime %>"
+              required
+            />
+            <small>Adjust the start time of the shift</small>
+          </div>
+          <div class="form-item">
+            <label for="endTime" class="form-label mt-2 text-muted">Shift End:</label>
+            <input
+              type="time"
+              id="endTime"
+              name="endTime"
+              class="form-control"
+              placeholder="17"
+              value="<%= hrSettings.endTime %>"
+              required
+            />
+            <small>Adjust the end time of the shift</small>
+          </div>
+        </div>
+        <input type="submit" value="SAVE CHANGES" class="btn btn-primary btn-save"></button> 
+      </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<%- include('../layouts/footer') %>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll(".settings-container a");
+    const contentDivs = document.querySelectorAll(".content-div");
+
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const targetId = link.getAttribute("data-target");
+
+        // Remove active class from all rolefolder items
+        links.forEach((l) =>
+          l.querySelector(".settings-item").classList.remove("active")
+        );
+
+        // Add active class to the clicked rolefolder item
+        link.querySelector(".settings-item").classList.add("active");
+
+        // Hide all content divs and show the targeted one
+        contentDivs.forEach((div) => {
+          div.classList.remove("active");
+          if (div.id === targetId) {
+            div.classList.add("active");
+          }
+        });
+      });
+    });
+  });
+</script>
+<script>
+  document.getElementById("startDay").addEventListener("input", function () {
+    const value = this.value;
+    if (value < 1) this.value = 1;
+    if (value > 31) this.value = 31;
+  });
+
+  document.getElementById("endDay").addEventListener("input", function () {
+    const value = this.value;
+    if (value < 1) this.value = 1;
+    if (value > 31) this.value = 31;
+  });
+</script>

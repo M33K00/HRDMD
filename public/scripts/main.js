@@ -13,6 +13,7 @@ function createWindow() {
     maxWidth: 1600,
     width: 1600,
     height: 900,
+    icon: path.join(__dirname, "../images/logo.ico"),
     center: true,
     autoHideMenuBar: true,
     webPreferences: {

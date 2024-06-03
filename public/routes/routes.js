@@ -1074,6 +1074,27 @@ router.get("/hrSettings", checkHRSettings, async (req, res) => {
   }
 });
 
+router.get("/DTRSettings", checkHRSettings, async (req, res) => {
+  try {
+    let hrSettings = await req.models.HRSettings.findOne();
+
+    if (!hrSettings) {
+      hrSettings = await req.models.HRSettings.create({
+        startDate: "",
+        endDate: "",
+        hoursPerDay: "",
+        startTime: "7:00",
+        endTime: "19:00",
+      });
+    }
+
+    res.render("HRIS/DTRSettings", { hrSettings });
+  } catch (err) {
+    console.error("Error fetching HR settings:", err);
+    res.status(500).send("Error fetching HR settings.");
+  }
+});
+
 router.post("/hrSettings", checkHRSettings, async (req, res) => {
   try {
     // Find the existing HR settings (assuming only one document exists)
@@ -1104,10 +1125,14 @@ router.post("/hrSettings", checkHRSettings, async (req, res) => {
       message: "HR settings updated successfully",
     };
 
-    res.redirect("/hrSettings"); // Redirect to the settings page or another page as needed
+    res.redirect("/DTRSettings"); // Redirect to the settings page or another page as needed
   } catch (err) {
-    console.error("Error updating/creating HR settings:", err);
-    res.status(500).send("Internal Server Error");
+    req.session.message = {
+      type: "danger",
+      message: "Failed to update DTR settings",
+    };
+    console.error("Error updating HR settings:", err);
+    res.redirect("/DTRSettings");
   }
 });
 
