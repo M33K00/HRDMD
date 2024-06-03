@@ -5,6 +5,20 @@
     <div class="page-name">
       <h1>Archived Files:</h1>
     </div>
+    <div id="alertContainer" class="bottom-right">
+      <% if (message) { %>
+      <div
+        class="alert alert-dismissible alert-<%= message.type %> fade show"
+        role="alert"
+        id="autoDismissAlert"
+      >
+        <strong>Attention! </strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
+    </div>
     <div class="page-content">
       <% if (archivedFiles.length > 0) { %>
       <table id="table" class="table table-hover table-striped">
@@ -32,7 +46,7 @@
             <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
             <td><%= file.assignTo %></td>
             <td class="action-buttons">
-              <a href="view_file/<%= file.id %>" class="icon-square"
+              <a href="/view_archived/<%= file.id %>" class="icon-square"
                 ><i class="fa-solid fa-eye"></i
               ></a>
               <a
@@ -109,44 +123,44 @@
   </div>
   <%- include('../layouts/footer') -%>
   <script>
-    function showCustomConfirm(fileName, fileId) {
-      // Set the file name in the modal
-      document.getElementById("fileName").textContent = fileName;
+  function showCustomConfirm(fileName, fileId) {
+    // Set the file name in the modal
+    document.getElementById("fileName").textContent = fileName;
 
-      // Show the modal
-      var customConfirmModal = new bootstrap.Modal(
-        document.getElementById("customConfirmModal")
-      );
-      customConfirmModal.show();
+    // Show the modal
+    var customConfirmModal = new bootstrap.Modal(
+      document.getElementById("customConfirmModal")
+    );
+    customConfirmModal.show();
 
-      // Set up the confirm button action
-      document.getElementById("confirmDelete").onclick = function () {
-        deleteFile(fileId);
-        customConfirmModal.hide();
-      };
-    }
+    // Set up the confirm button action
+    document.getElementById("confirmDelete").onclick = function () {
+      deleteFile(fileId);
+      customConfirmModal.hide();
+    };
+  }
 
-    function deleteFile(fileId) {
-      // Perform the deletion action (e.g., making a request to the server)
-      fetch(`/delete_file/${fileId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
+  function deleteFile(fileId) {
+    // Perform the deletion action (e.g., making a request to the server)
+    fetch(`/delete_file/${fileId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          window.location.href = "/archive_files"; // Redirect or update the page as needed
+        } else {
+          response.json().then((data) => {
+            alert(data.message); // Show error message if deletion fails
+          });
+        }
       })
-        .then((response) => {
-          if (response.ok) {
-            window.location.href = "/home"; // Redirect or update the page as needed
-          } else {
-            response.json().then((data) => {
-              alert(data.message); // Show error message if deletion fails
-            });
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert("An error occurred while deleting the file.");
-        });
-    }
-  </script>
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while deleting the file.");
+      });
+  }
+</script>
 </body>

@@ -904,7 +904,7 @@ router.post("/file-submit", employeeUpload.single("files"), async (req, res) => 
       };
       res.redirect("/appPaper/" + email);
     } else if (docuType === "pds") {
-      const pds = await Pds.findOne({
+      const pds = await PDS.findOne({
         email: email,
         files: file.originalname
       });
@@ -924,7 +924,7 @@ router.post("/file-submit", employeeUpload.single("files"), async (req, res) => 
         fileYear: req.body.fileYear,
         dateSubmitted: new Date(),
       };
-      await Pds.create(data);
+      await PDS.create(data);
       req.session.message = {
         type: "success",
         message: "Paper submitted successfully",

@@ -75,9 +75,11 @@
                 id="exampleInputEmail1"
               >
                 <option value="">None</option>
-                <% users.forEach(user => { %>
-                <option value="<%= user.name %>"><%= user.name %></option>
-                <% }) %>
+                <% users.forEach(user => { 
+                  if (user.department === "HR Department") { %>
+                      <option value="<%= user.name %>"><%= user.name %></option>
+                  <% } 
+              }) %>
               </select>
               <small id="assignHelp" class="form-text text-muted"
                 >Assign the file to someone (Optional)</small

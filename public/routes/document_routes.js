@@ -329,72 +329,6 @@ router.get("/delete", (req, res) => {
   }
 });
 
-router.get("/delete_rolefile", (req, res) => {
-  const filename = req.query.file;
-
-  if (filename) {
-    // Array to store the paths of folders to check
-    const foldersToCheck = ["role1", "role2", "role3", "role4"];
-    let fileDeleted = false;
-
-    // Function to recursively check and delete file from each folder
-    const deleteFileFromFolders = (folders, callback) => {
-      if (folders.length === 0) {
-        // If no more folders to check, invoke the callback
-        callback();
-        return;
-      }
-
-      const currentFolder = folders.shift(); // Get and remove the first folder from the array
-      const filePath = path.join(
-        __dirname,
-        `../../files/${currentFolder}/`,
-        filename
-      );
-
-      fs.unlink(filePath, (err) => {
-        if (!err) {
-          console.log(`File ${filename} deleted from ${currentFolder}`);
-          fileDeleted = true; // Set flag indicating file was deleted
-          // Continue checking remaining folders
-          deleteFileFromFolders(folders, callback);
-
-          req.session.message = {
-            type: "info",
-            message: " File Deleted Successfully",
-          };
-        } else {
-          // File not found in current folder, check next folder
-          deleteFileFromFolders(folders, callback);
-        }
-      });
-    };
-
-    // Call the recursive function to delete file from folders
-    deleteFileFromFolders([...foldersToCheck], () => {
-      if (!fileDeleted) {
-        console.error(`File ${filename} not found in any folder`);
-        res.status(404).send("File not found");
-        return;
-      }
-
-      // File deleted successfully from at least one folder
-      // Get updated file list after deletion
-      getFileList((err, files) => {
-        if (err) {
-          // Handle error appropriately
-          res.status(500).send("Error retrieving file list");
-          return;
-        }
-        // Send the updated file list to the client
-        res.json({ files });
-      });
-    });
-  } else {
-    // Handle case where no file name is provided
-    res.status(400).send("No file specified for deletion");
-  }
-});
 
 router.get("/recyclebin", async (req, res) => {
   const fileName = req.query.file;
@@ -607,6 +541,51 @@ router.post("/deletefile/:filename", async (req, res) => {
   }
 });
 
+router.post("/delete_file/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const file = await ArchivedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "File not found",
+      };
+      if (req.headers['content-type'] === 'application/json') {
+        return res.status(404).json({ message: "File not found" });
+      } else {
+        return res.redirect("/archive_files");
+      }
+    }
+
+    // Remove the file from the filesystem
+    fs.unlinkSync("./files/documents/" + file.fileUpload);
+
+    // Remove the file from the database
+    await ArchivedFiles.findByIdAndDelete(id);
+    req.session.message = {
+      type: "success",
+      message: "File deleted successfully",
+    };
+
+    if (req.headers['content-type'] === 'application/json') {
+      return res.status(200).json({ message: "File deleted successfully" });
+    } else {
+      return res.redirect("/archive_files");
+    }
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+
+    if (req.headers['content-type'] === 'application/json') {
+      return res.status(500).json({ message: "Error: " + error });
+    } else {
+      return res.redirect("/archive_files");
+    }
+  }
+});
 // Submit File
 router.get("/submitfile", async (req, res) => {
   try {
@@ -680,13 +659,41 @@ router.get("/view_file/:id", async (req, res) => {
       return res.redirect("/home");
     }
 
-    res.render("DTRACKER/view_file", { file });
+    const fileDes = "Main"
+
+    res.render("DTRACKER/view_file", { file, fileDes });
   } catch (error) {
     req.session.message = {
       type: "danger",
       message: "Error: " + error,
     };
     res.redirect("/home");
+  }
+});
+
+router.get("/view_archived/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const file = await ArchivedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "File not found",
+      };
+      return res.redirect("/archive_files");
+    }
+
+    const fileDes = "Archive"
+
+    res.render("DTRACKER/view_file", { file, fileDes });
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/archive_files");
   }
 });
 

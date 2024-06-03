@@ -4,7 +4,11 @@
   <div class="page-body">
     <div class="page-name">
       <h1>VIEW FILE:</h1>
-      <a href="/home" class="btn btn-secondary">Go Back</a>
+      <% if (fileDes === "Archive") { %>
+        <a href="/archive_files" class="btn btn-secondary">RETURN TO ARCHIVE</a>
+      <% } else { %>
+        <a href="/home" class="btn btn-secondary">RETURN TO TRACKER</a>
+      <% } %>
     </div>
     <div id="alertContainer" class="bottom-right">
       <% if (message) { %>
@@ -35,7 +39,12 @@
             <strong>Date Submitted:</strong> <%=
             file.dateSubmitted.toISOString().split('T')[0] %>
           </p>
-          <p><strong>Status:</strong> <%= file.status %></p>
+          <p <% if (file.status === 'REJECTED') { %> class="text-danger" <% } %>
+            <% if (file.status === 'APPROVED') { %> class="text-success" <% } %> 
+            <% if (file.status === 'PENDING') { %> class="text-warning" <% } %>
+            <% if (file.status === 'REVISION') { %> class="text-dark" <% } %>
+            style="font-weight: 800"
+          ><strong>Status:</strong> <%= file.status %></p>
           <p><strong>Assigned To:</strong> <%= file.assignTo %></p>
         </div>
         <div class="file-item text-uppercase">
@@ -57,21 +66,23 @@
           >Download File</a
         >
       </div>
-      <div class="file-option">
-        <div class="file-dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Actions
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#" onclick="showConfirmationModal('Archive', '<%= file.id %>')"><img src="../images/svg/box-archive-solid.svg" class="icon" /> Archive</a>
-            <a class="dropdown-item" href="#" onclick="showConfirmationModal('Reject', '<%= file.id %>')"><img src="../images/svg/xmark-solid.svg" class="icon" /> Reject</a>
-            <a class="dropdown-item" href="#" onclick="showConfirmationModal('Pending', '<%= file.id %>')"><img src="../images/svg/hourglass-start-solid.svg" class="icon" /> Pending</a>
-            <a class="dropdown-item" href="#" onclick="showConfirmationModal('Revision', '<%= file.id %>')"><img src="../images/svg/rotate-right-solid.svg" class="icon" /> Revision</a>
-            <a class="dropdown-item" href="#" onclick="showConfirmationModal('Approve', '<%= file.id %>')"><img src="../images/svg/check-solid.svg" class="icon" /> Approve</a>
+      <% if (fileDes != "Archive") { %>
+        <div class="file-option">
+          <div class="file-dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Actions
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#" onclick="showConfirmationModal('Archive', '<%= file.id %>')"><img src="../images/svg/box-archive-solid.svg" class="icon" /> Archive</a>
+              <a class="dropdown-item" href="#" onclick="showConfirmationModal('Reject', '<%= file.id %>')"><img src="../images/svg/xmark-solid.svg" class="icon" /> Reject</a>
+              <a class="dropdown-item" href="#" onclick="showConfirmationModal('Pending', '<%= file.id %>')"><img src="../images/svg/hourglass-start-solid.svg" class="icon" /> Pending</a>
+              <a class="dropdown-item" href="#" onclick="showConfirmationModal('Revision', '<%= file.id %>')"><img src="../images/svg/rotate-right-solid.svg" class="icon" /> Revision</a>
+              <a class="dropdown-item" href="#" onclick="showConfirmationModal('Approve', '<%= file.id %>')"><img src="../images/svg/check-solid.svg" class="icon" /> Approve</a>
+            </div>
+          </div>
           </div>
         </div>
-        </div>
-      </div>
+      <% } %>
     </div>
   </div>
   <%- include('../layouts/modals/confirm') %>

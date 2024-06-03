@@ -159,12 +159,18 @@
           </div>
           <h4 class="mt-4">Record Before Cutoff:</h4>
           <p class="text-muted">This is the total hours worked before the cutoff.</p>
-          <div class="dtr-cut-container">
+          <div class="dtr-view-container">
             <div class="dtr-view-div">
               <div class="div-title">
                 <p class="dtr-view-title">Total Hours Worked:</p>
               </div>
               <div class="div-view-count"><%= attendance.hoursWorked.toFixed(2) %> Hour(s)</div>
+            </div>
+            <div class="dtr-view-div">
+              <div class="div-title">
+                <p class="dtr-view-title">All Time Record:</p>
+              </div>
+              <div class="div-view-count"><%= (attendance.hoursWorked + attendance.allTimeRecord).toFixed(2) %> Hour(s)</div>
             </div>
             <!-- <div class="dtr-cut-div">
               <div class="div-cut-title">

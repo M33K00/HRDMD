@@ -923,7 +923,8 @@ router.get("/dtr", async (req, res) => {
   }
 });
 
-router.get("/view-dtr/:id", async (req, res) => {
+router.get("/view-dtr/:id", checkHRSettings, async (req, res) => {
+  let hrSettings = await req.models.HRSettings.findOne();
   try {
     let id = req.params.id;
 
@@ -991,6 +992,7 @@ router.get("/view-dtr/:id", async (req, res) => {
     res.render("HRIS/view-dtr", {
       title: "View Account",
       logincollections: logincollections,
+      hrSettings: hrSettings,
       attendance: attendance,
       dayspresent: dayspresent,
       daysabsent: daysabsent,

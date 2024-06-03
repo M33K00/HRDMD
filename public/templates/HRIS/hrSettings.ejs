@@ -3,7 +3,7 @@
   <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
   <div class="page-body">
     <div class="page-name text-uppercase">
-      <h1>HRIS Settings</h1>
+      <h1>PRINT REPORTS:</h1>
     </div>
     <div id="alertContainer" class="bottom-right">
       <% if (message) { %>
@@ -19,23 +19,8 @@
       </div>
       <% } %>
     </div>
-    <div class="settings-container">
-      <a href="#" data-target="hrSettings"
-        ><div class="btn btn-lg btn-primary settings-item active">
-          <i class="fa-solid fa-print"></i>
-          <p>Print Reports</p>
-        </div></a
-      >
-      <a href="#" data-target="dtrSettings"
-        ><div class="btn btn-lg btn-primary settings-item">
-          <i class="fa-solid fa-clock"></i>
-          <p>DTR Settings</p>
-        </div></a
-      >
-    </div>
     <div id="hrSettings" class="content-div active">
       <div class="settings-title">
-        <h4>Print Reports:</h4>
         <p>Print reports for employees</p>
       </div>
       <div class="settings-div">
