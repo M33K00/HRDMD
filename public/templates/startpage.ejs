@@ -5,7 +5,11 @@
     <div class="startbar">
       <p class="startbar-title">City Hall of Bacoor</p>
       <a href="#" id="toggleSidebar" class="nav-link right-content">
-      <img class="nav-img" src="../<%= user.image %>" />
+        <% if (user.image === "") { %>
+          <img class="nav-img" src="../images/user.jpg" />
+          <% } else { %>
+          <img class="nav-img" src="../<%= user.image %>" />
+        <% } %>
     </a></div>
     <div class="row">
       <% if (user.department === "HR Department") { %>
@@ -20,15 +24,22 @@
 <div class="sidebar" id="sidebar">
   <div class="sidebar-body">
     <div class="sidebar-image">
-      <div class="profile-image"><img src="../<%= user.image %>" /></div>
+      <div class="profile-image">
+        <% if (user.image === "") { %>
+          <img class="nav-img" src="../images/user.jpg" />
+          <% } else { %>
+          <img class="nav-img" src="../<%= user.image %>" />
+        <% } %>
+      </div>
       <div class="user-details">
         <a><%= user.name %></a>
         <a class="user-role"
-          ><% if (user.hrrole === "ROLE 1") { %> Entry-level <% } else if
-          (user.hrrole === "ROLE 2") { %> Individual Contributors <% } else if
-          (user.hrrole === "ROLE 3") { %> HR Manager <% } else if (user.hrrole
-          === "ROLE 4") { %> HR Director <% } else if (user.hrrole === "ADMIN")
-          { %> ADMIN <% } %></a
+          ><% if (user.hrrole === "ROLE 1") { %> Administrative Officer <% }
+          else if (user.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+          else if (user.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+          (user.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+          (user.hrrole === "ROLE 5") { %> Admin Aide <% } else if (user.hrrole
+          === "ADMIN") { %> Department Head <% } %></a
         >
       </div>
     </div>

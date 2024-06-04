@@ -20,6 +20,20 @@
         >
       <% } %>
     </div>
+    <div id="alertContainer" class="bottom-right">
+      <% if (message) { %>
+      <div
+        class="alert alert-dismissible alert-<%= message.type %> fade show"
+        role="alert"
+        id="autoDismissAlert"
+      >
+        <strong>Attention! </strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
+    </div>
     <p class="text-muted mt-4">Manage your account details here.</p>
     <div class="border mt-4"></div>
     <div class="rounded-box">
@@ -33,6 +47,11 @@
       >
         <fieldset>
           <div class="form-group">
+            <input
+              type="hidden"
+              name="userInput"
+              value="<%= user.id %>"
+            />
             <label for="InputName" class="form-label mt-4">Name</label>
             <input
               type="text"

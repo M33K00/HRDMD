@@ -414,28 +414,7 @@ router.get("/clockout/:email", async (req, res) => {
      const deductionPoints = calculateDeductionPoints(hoursLate, minutesLate);
  
      if (!dp) {
-       console.log("DP not found for today");
- 
-       // Get yesterday's date
-       const yesterday = new Date(today);
-       yesterday.setDate(today.getDate() - 1);
- 
-       // Find record for yesterday
-       const dpYesterday = await DaysPresent.findOne({
-         email: email,
-         date: yesterday,
-       });
- 
-       if (!dpYesterday) {
-         console.log("DP not found for yesterday as well");
-         return;
-       }
-       console.log("Record found for yesterday:", dpYesterday.date);
-       dp.timeOut = new Date();
-       dp.totalTime = totalHoursDecimal;
-       if (totalHoursDecimal > 8) {
-         dp.overTime = totalHoursDecimal - 8;
-       }
+      
      } else {
        dp.timeOut = new Date();
        dp.totalTime = totalHoursDecimal;
@@ -465,12 +444,12 @@ router.get("/clockout/:email", async (req, res) => {
 
     req.session.message = {
       type: "success",
-      message: "Clock-in successful.",
+      message: "Clock-out successful.",
     };
     res.redirect("/dtr_user/" + userLogin._id);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("CLOCKOUT SERVER ERROR");
   }
 });
 

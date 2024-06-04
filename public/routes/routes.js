@@ -343,70 +343,13 @@ router.post("/update/:id", upload, async (req, res) => {
       ? req.body.dayOff
       : [req.body.dayOff];
 
-    // Calculate Next Cutoff Date// Parse inputs from request body
-    let nextCutoffDate;
-
-    if (req.body.paySched) {
-      // Parse inputs from request body
-      const cutoffDate = new Date(req.body.cutoffDate);
-      const dayOff = req.body.dayOff; // Array of day off strings like ["Sunday", "Monday"]
-
-      // Function to check if a date is a day off
-      const isDayOff = (date) => {
-        const day = date.toLocaleString("en-US", { weekday: "long" });
-        return dayOff.includes(day);
-      };
-
-      // Calculate the next cutoff date based on pay schedule
-      const calculateNextCutoffDate = (initialDate, workingDaysRequired) => {
-        let date = new Date(initialDate);
-        let workingDaysCount = 0;
-
-        while (workingDaysCount < workingDaysRequired) {
-          date.setDate(date.getDate() + 1); // Move to the next day
-          if (!isDayOff(date)) {
-            workingDaysCount++; // Increment the working days count only if it's not a day off
-          }
-        }
-        return date;
-      };
-
-      if (req.body.paySched === "Bi-Weekly") {
-        nextCutoffDate = calculateNextCutoffDate(cutoffDate, 15);
-      } else if (req.body.paySched === "Monthly") {
-        nextCutoffDate = calculateNextCutoffDate(cutoffDate, 31);
-      } else if (req.body.paySched === "Weekly") {
-        nextCutoffDate = calculateNextCutoffDate(cutoffDate, 7);
-      }
-      // Create the adata object
-      const adata = {
-        paySched: req.body.paySched,
-        dayOff: dayOffArray,
-        cutoffDate: req.body.cutoffDate,
-        nextCutoffDate: nextCutoffDate,
-      };
-
-      // Update the user's document with the new data from adata
-      const updateAttendance = await Attendance.findOneAndUpdate(
-        { email: userLogin.email }, // Find the document to update
-        { $set: adata }, // Set the new data
-        { new: true } // Return the updated document
-      );
-
-      if (!updateAttendance) {
-        throw new Error("Attendance document not found");
-      }
-
-      console.log("adata object:", adata); // Log the adata object
-    } else {
-      console.log("No pay schedule provided in request.");
-    }
-
     if (req.file) {
       new_image = req.file.filename;
       try {
         // Delete old image if a new image is uploaded
-        fs.unlinkSync("./files/images/" + req.body.old_image);
+        if (req.body.old_image != "") {
+          fs.unlinkSync("./files/images/" + req.body.old_image);
+        }
       } catch (err) {
         console.error(err);
         // If an error occurs during file deletion, it shouldn't affect the update process
@@ -453,12 +396,12 @@ router.post("/update/:id", upload, async (req, res) => {
     }
 
     req.session.message = {
-      type: "SUCCESS",
-      message: " User updated successfully",
+      type: "success",
+      message: "User updated successfully",
     };
     // Redirect after successful update
-    if (userLogin.hrrole === "ROLE 1") {
-      return res.redirect("/view/" + userLogin._id);
+    if (req.body.userInput) {
+      return res.redirect("/view_profile/" + userLogin.email);
     } else {
       return res.redirect("/manage_accounts");
     }
@@ -526,8 +469,13 @@ router.post("/update-user/:id", upload, async (req, res) => {
 router.get("/delete/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const result = await LogInCollection.findByIdAndDelete(id);
+    const logincollection = await LogInCollection.findById(id);
 
+    await Attendance.findOneAndDelete({ email: logincollection.email });
+    await DaysPresent.deleteMany({ email: logincollection.email });
+    await DaysAbsent.deleteMany({ email: logincollection.email });
+
+    const result = await LogInCollection.findByIdAndDelete(id);
     if (result && result.image !== "") {
       try {
         fs.unlinkSync("./files/images/" + result.image);
@@ -535,7 +483,7 @@ router.get("/delete/:id", async (req, res) => {
         console.error(err);
       }
     }
-
+    
     req.session.message = {
       type: "danger",
       message: " User deleted successfully",
@@ -577,18 +525,11 @@ router.get("/document_tracker/:hrrole", async (req, res) => {
 
     console.log("hrrole:", hrrole);
 
-    // Check if hrrole is not provided or invalid
-    if (!hrrole || !["ADMIN", "ROLE 1", "ROLE 2"].includes(hrrole)) {
-      return res.status(400).send("Invalid hrrole");
-    }
-
     // Based on the hrrole, render the appropriate template
     if (hrrole === "ADMIN") {
       res.redirect("/home");
-    } else if (hrrole === "ROLE 1") {
+    } else {
       res.redirect("/role1");
-    } else if (hrrole === "ROLE 2") {
-      res.redirect("/role2");
     }
   } catch (err) {
     console.log("Error loading pages: ", err);
@@ -601,20 +542,11 @@ router.get("/manage_account/:hrrole/:name", async (req, res) => {
     const hrrole = req.params.hrrole;
     const name = req.params.name;
 
-    console.log("hrrole:", hrrole, "name:", name);
-
-    // Check if hrrole is not provided or invalid
-    if (!hrrole || !["ADMIN", "ROLE 1", "ROLE 2"].includes(hrrole)) {
-      return res.status(400).send("Invalid hrrole");
-    }
-
     // Based on the hrrole, render the appropriate template
     if (hrrole === "ADMIN") {
       res.redirect("/manage_accounts");
-    } else if (hrrole === "ROLE 1") {
+    } else {
       res.redirect(`/editacc/${encodeURIComponent(name)}`);
-    } else if (hrrole === "ROLE 2") {
-      res.redirect("/role2");
     }
   } catch (err) {
     console.log("Error loading pages: ", err);

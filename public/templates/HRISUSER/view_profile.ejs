@@ -14,7 +14,11 @@
     </p>
     <div class="account-basic1">
       <div class="account-image">
-        <img src="../<%= logincollections.image %>" />
+        <% if (user.image === "") { %>
+            <img src="../images/user.jpg" />
+            <% } else { %>
+            <img src="../<%= user.image %>" />
+        <% } %>
       </div>
       <div class="account-info mt-3">
         <p><b>Name:</b> <%= logincollections.name %></p>

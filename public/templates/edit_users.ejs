@@ -150,32 +150,6 @@
             <option value="Saturday">Saturday</option>
           </select>
         </div>
-        <div class="form-item-2">
-          <label for="paySched" class="form-label mt-4">Pay Schedule</label>
-          <select
-            type="text"
-            name="paySched"
-            class="form-select"
-            id="paySched"
-          >
-            <option value="Weekly" <% if (attendance.paySched === 'Weekly') { %> selected <% } %>>Weekly</option>
-            <option value="Bi-Weekly" <% if (attendance.paySched === 'Bi-Weekly') { %> selected <% } %>>Bi-Weekly</option>
-            <option value="Monthly" <% if (attendance.paySched === 'Monthly') { %> selected <% } %>>Monthly</option>
-          </select>
-        </div>
-        <div class="form-item-2">
-          <label for="cutoffDate" class="form-label mt-4">Cut-off Date</label>
-          <input
-            type="date"
-            name="cutoffDate"
-            class="form-control"
-            value="<% if (attendance.cutoffDate !== null) { %>
-              <%= attendance.cutoffDate ? attendance.cutoffDate.toISOString().slice(0,10) : '' %>
-            <% } else { %>
-              ''
-            <% } %>"
-          />
-        </div>
     </fieldset>
       <input type="submit" value="Update User" class="btn btn-success btn mt-4" />
       <a

@@ -21,7 +21,11 @@
         <% if (user) { %>
         <li class="nav-item">
           <a href="#" id="toggleSidebar" class="nav-link">
+            <% if (user.image === "") { %>
+            <img class="nav-img" src="../images/user.jpg" />
+            <% } else { %>
             <img class="nav-img" src="../<%= user.image %>" />
+            <% } %>
           </a>
         </li>
         <% } %>
@@ -34,7 +38,13 @@
 <div class="sidebar" id="sidebar">
   <div class="sidebar-body">
     <div class="sidebar-image">
-      <div class="profile-image"><img src="../<%= user.image %>" /></div>
+      <div class="profile-image">
+        <% if (user.image === "") { %>
+          <img class="nav-img" src="../images/user.jpg" />
+          <% } else { %>
+          <img class="nav-img" src="../<%= user.image %>" />
+          <% } %>
+      </div>
       <div class="user-details">
         <a><%= user.name %></a>
         <a class="user-role"

@@ -55,25 +55,10 @@ const attendanceSchema = new mongoose.Schema({
     required: false,
     default: 0,
   },
-  paySched: {
-    type: Array,
-    required: false,
-    default: [],
-  },
   dayOff: {
     type: Array,
     required: false,
     default: [],
-  },
-  cutoffDate: {
-    type: Date,
-    required: false,
-    default: null,
-  },
-  nextCutoffDate: {
-    type: Date,
-    required: false,
-    default: null,
   },
   availableSL: {
     type: Number,

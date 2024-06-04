@@ -31,7 +31,7 @@ const logInSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: "../images/migu.jpg",
+    default: "",
   },
   department: {
     type: String,
