@@ -559,7 +559,9 @@ router.post("/delete_file/:id", async (req, res) => {
     }
 
     // Remove the file from the filesystem
-    fs.unlinkSync("./files/documents/" + file.fileUpload);
+    if (file.fileUpload != null) {
+      fs.unlinkSync("./files/documents/" + file.fileUpload);
+    }
 
     // Remove the file from the database
     await ArchivedFiles.findByIdAndDelete(id);

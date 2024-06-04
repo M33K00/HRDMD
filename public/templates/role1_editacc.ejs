@@ -1,9 +1,24 @@
-<%- include('./layouts/header') -%>
+<% if (user.department === 'HR Department') { %>
+  <%- include('./layouts/header') -%>
+<% } else { %>
+  <%- include('./layouts/user_hris/hris_user_header') -%>
+<% } %>
 <body>
-  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenavR1') %>
+  <% if (user.department === 'HR Department') { %>
+    <%- include('./layouts/nav') -%> <%- include('./layouts/sidenavR1') %>
+  <% } else { %>
+    <%- include('./layouts/navhris') -%> <%- include('./layouts/user_hris/sidenavhris_user') %>
+  <% } %>
   <div class="page-body">
     <div class="page-name">
       <h1 class="text-uppercase">Manage Account</h1>
+      <% if (user.department != 'HR Department') { %>
+        <a
+          href="/view_profile/<%= user.email %>"
+          class="btn btn-primary"
+          >RETURN TO PROFILE</a
+        >
+      <% } %>
     </div>
     <p class="text-muted mt-4">Manage your account details here.</p>
     <div class="border mt-4"></div>
