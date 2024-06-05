@@ -125,9 +125,7 @@ router.get("/view_profile/:email", async (req, res) => {
     }
 
     const results = await findDocumentsByEmail(email);
-    console.log(results);
     const unsubmitted = countArraysWithNull(results);
-    console.log(unsubmitted);
 
     res.render("HRISUSER/view_profile", {
       title: "View Account",

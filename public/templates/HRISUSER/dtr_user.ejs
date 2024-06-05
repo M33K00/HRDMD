@@ -37,7 +37,11 @@
         <% } %>
         <div class="account-at">
           <div class="account-img">
-            <img src="../<%= logincollections.image %>" />
+            <% if (logincollections.image === "") { %>
+              <img src="../images/user.jpg" />
+              <% } else { %>
+              <img src="../<%= logincollections.image %>" />
+          <% } %>
           </div>
           <div class="account-in mt-3 text">
             <p><b>Name:</b> <%= logincollections.name %></p>

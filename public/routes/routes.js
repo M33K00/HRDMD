@@ -367,7 +367,6 @@ router.post("/update/:id", upload, async (req, res) => {
     }
 
     // Update the user
-
     if (req.body.birthday) {
       const datePartOnly = req.body.birthday.split("T")[0];
       parsedBirthday = new Date(datePartOnly); // Assign a value if req.body.birthday exists
@@ -393,6 +392,18 @@ router.post("/update/:id", upload, async (req, res) => {
 
     if (!result) {
       return res.json({ message: "User not found", type: "DANGER" });
+    }
+
+    const adata = await Attendance.findOneAndUpdate(
+      { email: userLogin.email },
+      {
+        dayOff: dayOffArray,
+      },
+      { new: true } // Return the modified document after update
+    );
+
+    if (!adata) {
+      return res.json({ message: "Attendance Data not found", type: "DANGER" });
     }
 
     req.session.message = {

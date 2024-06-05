@@ -147,6 +147,7 @@ router.get("/confidential", checkRole, async (request, response) => {
   }
 });
 
+// Archive Files
 router.get("/archive_files", async (req, res) => {
   const currentPage = parseInt(req.query.page) || 1;
   const pageSize = 10;
@@ -197,40 +198,6 @@ router.get("/statusboard", async (req, res) => {
   } catch (error) {
     console.error("Error reading directory:", error);
     res.status(500).send("Internal Server Error");
-  }
-});
-
-// Archive Route
-router.get("/archive", (request, response) => {
-  const filesDirectory = "./files/archive";
-
-  try {
-    const fileNames = fs.readdirSync(filesDirectory);
-    const files = fileNames.map((fileName) => {
-      const filePath = path.join(filesDirectory, fileName);
-      const stats = fs.statSync(filePath);
-      const sizeInBytes = stats.size;
-      const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
-      // Convert mtime to desired format
-      const mtime = stats.mtime.toLocaleString("en-US", {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-        hour: "numeric",
-        minute: "numeric",
-      });
-      return {
-        name: fileName,
-        size: sizeInMB + " MB",
-        mtime: mtime,
-      };
-    });
-
-    // Pass the files data to the "/home" route
-    response.render("archive", { files });
-  } catch (error) {
-    console.error("Error reading directory:", error);
   }
 });
 

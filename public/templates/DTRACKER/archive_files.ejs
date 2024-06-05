@@ -1,10 +1,17 @@
 <%- include('../layouts/header') -%>
 <body>
-  <%- include('../layouts/nav') -%> <%- include('../layouts/sidenav') %>
+  <% if (user.hrrole != "ADMIN") { %>
+    <%- include('../layouts/nav') -%> <%- include('../layouts/sidenavR1') %>
+  <% } else { %>
+    <%- include('../layouts/nav') -%> <%- include('../layouts/sidenav') %>
+  <% } %>
   <div class="page-body">
     <div class="page-name">
       <h1>Archived Files:</h1>
     </div>
+    <% if (user.hrrole != "ADMIN") { %>
+      <p class="text-muted text-center mt-3 mb-4">These are files that are closed by the Department Head or Admin</p>
+    <% } %>
     <div id="alertContainer" class="bottom-right">
       <% if (message) { %>
       <div
@@ -21,14 +28,16 @@
     </div>
     <div class="page-content">
       <% if (archivedFiles.length > 0) { %>
-      <table id="table" class="table table-hover table-striped">
+      <table id="table" class="table table-hover table-striped mb-5 text-center ">
         <thead>
           <tr class="table-dark">
             <th style="width: 250px">File Code</th>
             <th style="width: 250px">File Name</th>
             <th style="width: 200px">Date Submitted</th>
             <th style="width: 200px">Last Handler</th>
-            <th style="width: 10px; padding-left: 30px">Action</th>
+            <% if (user.hrrole === "ADMIN") { %>
+              <th style="width: 10px; padding-left: 30px">Action</th>
+            <% } %>
           </tr>
         </thead>
         <tbody>
@@ -45,7 +54,8 @@
             </td>
             <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
             <td><%= file.assignTo %></td>
-            <td class="action-buttons">
+            <% if (user.hrrole === "ADMIN") { %>
+              <td class="action-buttons">
               <a href="/view_archived/<%= file.id %>" class="icon-square"
                 ><i class="fa-solid fa-eye"></i
               ></a>
@@ -56,6 +66,7 @@
                 ><i class="fa-solid fa-trash"></i
               ></a>
             </td>
+            <% } %>
           </tr>
           <% }); %>
         </tbody>
