@@ -2,7 +2,7 @@
 <%-include('./layouts/sidenav') -%>
 <div class="page-body">
   <div class="page-name">
-    <h1>Edit Account (<%= logincollections.name %>)</h1>
+    <h1>Manage Account (<%= logincollections.name %>)</h1>
   </div>
   <div class="rounded-box">
     <form
@@ -111,9 +111,13 @@
             class="form-select"
             id="department"
           >
-            <option value="Department 1" <% if (logincollections.department === 'Department 1') { %> selected <% } %>>Department 1</option>
-            <option value="Department 2" <% if (logincollections.department === 'Department 2') { %> selected <% } %>>Department 2</option>
-            <option value="HR Department" <% if (logincollections.department === 'HR Department') { %> selected <% } %>>HR Department</option>
+          <option value="HR Department" <% if (logincollections.department === 'HR Department') { %> selected <% } %>>HR Department</option>
+            <option value="Department 1" <% if (logincollections.department === 'Department 1') { %> selected <% } %>>PESO Department</option>
+            <option value="Department 2" <% if (logincollections.department === 'Department 2') { %> selected <% } %>>CC Development Office</option>
+            <option value="Department 3" <% if (logincollections.department === 'Department 3') { %> selected <% } %>>OAS Department</option>
+            <option value="Department 4" <% if (logincollections.department === 'Department 4') { %> selected <% } %>>BTM Department</option>
+            <option value="Department 5" <% if (logincollections.department === 'Department 5') { %> selected <% } %>>BPL Department</option>
+            <option value="Department 6" <% if (logincollections.department === 'Department 6') { %> selected <% } %>>CAD Department</option>
           </select>
         </div>
         <div class="form-item">
@@ -153,7 +157,7 @@
     </fieldset>
       <input type="submit" value="Update User" class="btn btn-success btn mt-4" />
       <a
-        href="/manage_accounts"
+        href="/view_emp_data/<%= logincollections.email %>"
         class="btn btn-secondary mt-4"
         style="margin-left: 10px"
         >CANCEL</a

@@ -185,52 +185,18 @@ router.post("/add_employee", upload, async (req, res) => {
 
     const dayOff = req.body.dayOff; // Array of day off strings like ["Sunday", "Monday"]
 
-    const isDayOff = (date) => {
-      const day = date.toLocaleString("en-US", { weekday: "long" });
-      return dayOff.includes(day);
-    };
-
-    // Calculate the next cutoff date based on pay schedule
-    const calculateNextCutoffDate = (initialDate, workingDaysRequired) => {
-      let date = new Date(initialDate);
-      let workingDaysCount = 0;
-
-      while (workingDaysCount < workingDaysRequired) {
-        date.setDate(date.getDate() + 1); // Move to the next day
-        if (!isDayOff(date)) {
-          workingDaysCount++; // Increment the working days count only if it's not a day off
-        }
-      }
-      return date;
-    };
-
-    let nextCutoffDate;
-    const cutoffDate = new Date(req.body.cutoffDate); // Assuming cutoffDate comes from req.body
-    if (req.body.paySched === "Bi-Weekly") {
-      nextCutoffDate = calculateNextCutoffDate(cutoffDate, 15);
-    } else if (req.body.paySched === "Monthly") {
-      nextCutoffDate = calculateNextCutoffDate(cutoffDate, 31);
-    } else if (req.body.paySched === "Weekly") {
-      nextCutoffDate = calculateNextCutoffDate(cutoffDate, 7);
-    }
-
     const adata = {
       name: req.body.name,
+      email: req.body.email,
       paySched: req.body.paySched,
       dayOff: dayOff,
-      cutoffDate: cutoffDate,
-      nextCutoffDate: nextCutoffDate,
     };
 
     // Insert data into the LogInCollection
     await LogInCollection.insertMany([data]);
 
-    // Update the user's document with the new data from adata
-    await Attendance.updateOne(
-      { email: req.body.email }, // Find the document to update
-      { $set: adata }, // Set the new data
-      { new: true, upsert: true } // Ensure document is created if it doesn't exist
-    );
+    // Create a new attendance document
+    await Attendance.insertMany([adata]);
 
     // Set success message in session
     req.session.message = {
@@ -414,7 +380,7 @@ router.post("/update/:id", upload, async (req, res) => {
     if (req.body.userInput) {
       return res.redirect("/view_profile/" + userLogin.email);
     } else {
-      return res.redirect("/manage_accounts");
+      return res.redirect("/view_emp_data/" + userLogin.email);
     }
   } catch (err) {
     console.error(err);

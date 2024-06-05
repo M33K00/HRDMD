@@ -100,6 +100,8 @@ module.exports.signup_post = async (req, res) => {
     await userdocuments.insertOne(userData);
     await Attendance.create(adata);
 
+    res.status(201).json({ logincollection });
+
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });

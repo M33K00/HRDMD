@@ -219,7 +219,23 @@
                 <td class="fw-bold mb-1" ><%= row.name %></td>
                 <td><%= row.email %></td>
                 <td><%= row.contact %></td>
-                <td><%= row.department %></td>
+                <td>
+                  <% if (row.department === 'HR Department') { %>
+                    HR Department
+                  <% } else if (row.department === 'Department 1') { %>
+                    PESO Department
+                  <% } else if (row.department === 'Department 2') { %>
+                    CC Department
+                  <% } else if (row.department === 'Department 3') { %>
+                    OAS Department
+                  <% } else if (row.department === 'Department 4') { %>
+                    BTM Department
+                  <% } else if (row.department === 'Department 5') { %>
+                    BPL Department
+                  <% } else if (row.department === 'Department 6') { %>
+                    CAD Department
+                  <% } %>
+                </td>
                 <td class="action-buttons">
                   <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
@@ -252,7 +268,6 @@
                   <th style="width: 150px">Name</th>
                   <th style="width: 250px">Email</th>
                   <th style="width: 200px">Contact No.</th>
-                  <th style="width: 200px">Department</th>
                   <th style="width: 10px; padding-left: 40px">Action</th>
                 </tr>
               </thead>
@@ -262,7 +277,6 @@
                   <td class="fw-bold mb-1" ><%= row.name %></td>
                   <td><%= row.email %></td>
                   <td><%= row.contact %></td>
-                  <td><%= row.department %></td>
                   <td class="action-buttons">
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
@@ -280,7 +294,7 @@
             </table>
           <% } else { %>
           <h1 class="text-center text-secondary mt-5">
-            No Users found in database
+            No Users found in HR Department.
           </h1>
           <% } %>
         </div>
@@ -295,7 +309,6 @@
                   <th style="width: 150px">Name</th>
                   <th style="width: 250px">Email</th>
                   <th style="width: 200px">Contact No.</th>
-                  <th style="width: 200px">Department</th>
                   <th style="width: 10px; padding-left: 40px">Action</th>
                 </tr>
               </thead>
@@ -305,7 +318,6 @@
                   <td class="fw-bold mb-1" ><%= row.name %></td>
                   <td><%= row.email %></td>
                   <td><%= row.contact %></td>
-                  <td><%= row.department %></td>
                   <td class="action-buttons">
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
@@ -338,7 +350,6 @@
                 <th style="width: 150px">Name</th>
                 <th style="width: 250px">Email</th>
                 <th style="width: 200px">Contact No.</th>
-                <th style="width: 200px">Department</th>
                 <th style="width: 10px; padding-left: 40px">Action</th>
               </tr>
             </thead>
@@ -348,7 +359,6 @@
                 <td class="fw-bold mb-1" ><%= row.name %></td>
                 <td><%= row.email %></td>
                 <td><%= row.contact %></td>
-                <td><%= row.department %></td>
                 <td class="action-buttons">
                   <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
@@ -366,7 +376,7 @@
           </table>
           <% } else { %>
           <h1 class="text-center text-secondary mt-5">
-            No Users found in database
+            No Users found in CC Development Office.
           </h1>
           <% } %>
         </div>
@@ -381,7 +391,6 @@
                 <th style="width: 150px">Name</th>
                 <th style="width: 250px">Email</th>
                 <th style="width: 200px">Contact No.</th>
-                <th style="width: 200px">Department</th>
                 <th style="width: 10px; padding-left: 40px">Action</th>
               </tr>
             </thead>
@@ -391,7 +400,6 @@
                 <td class="fw-bold mb-1" ><%= row.name %></td>
                 <td><%= row.email %></td>
                 <td><%= row.contact %></td>
-                <td><%= row.department %></td>
                 <td class="action-buttons">
                   <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
@@ -409,7 +417,7 @@
           </table>
           <% } else { %>
           <h1 class="text-center text-secondary mt-5">
-            No Users found in Department 3
+            No Users found in OAS Department.
           </h1>
           <% } %>
         </div>
@@ -424,7 +432,6 @@
                 <th style="width: 150px">Name</th>
                 <th style="width: 250px">Email</th>
                 <th style="width: 200px">Contact No.</th>
-                <th style="width: 200px">Department</th>
                 <th style="width: 10px; padding-left: 40px">Action</th>
               </tr>
             </thead>
@@ -434,7 +441,6 @@
                 <td class="fw-bold mb-1" ><%= row.name %></td>
                 <td><%= row.email %></td>
                 <td><%= row.contact %></td>
-                <td><%= row.department %></td>
                 <td class="action-buttons">
                   <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
@@ -452,7 +458,7 @@
           </table>
           <% } else { %>
           <h1 class="text-center text-secondary mt-5">
-            No Users found in Department 4
+            No Users found in BTM Department.
           </h1>
           <% } %>
         </div>
@@ -467,7 +473,6 @@
                 <th style="width: 150px">Name</th>
                 <th style="width: 250px">Email</th>
                 <th style="width: 200px">Contact No.</th>
-                <th style="width: 200px">Department</th>
                 <th style="width: 10px; padding-left: 40px">Action</th>
               </tr>
             </thead>
@@ -477,7 +482,6 @@
                 <td class="fw-bold mb-1" ><%= row.name %></td>
                 <td><%= row.email %></td>
                 <td><%= row.contact %></td>
-                <td><%= row.department %></td>
                 <td class="action-buttons">
                   <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
@@ -495,7 +499,7 @@
           </table>
           <% } else { %>
           <h1 class="text-center text-secondary mt-5">
-            No Users found in Department 5
+            No Users found in BPL Department.
           </h1>
           <% } %>
         </div>
@@ -510,7 +514,6 @@
                 <th style="width: 150px">Name</th>
                 <th style="width: 250px">Email</th>
                 <th style="width: 200px">Contact No.</th>
-                <th style="width: 200px">Department</th>
                 <th style="width: 10px; padding-left: 40px">Action</th>
               </tr>
             </thead>
@@ -520,7 +523,6 @@
                 <td class="fw-bold mb-1" ><%= row.name %></td>
                 <td><%= row.email %></td>
                 <td><%= row.contact %></td>
-                <td><%= row.department %></td>
                 <td class="action-buttons">
                   <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
@@ -538,7 +540,7 @@
           </table>
           <% } else { %>
           <h1 class="text-center text-secondary mt-5">
-            No Users found in Department 6
+            No Users found in CAD Department.
           </h1>
           <% } %>
         </div>
