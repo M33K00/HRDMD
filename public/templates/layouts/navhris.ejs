@@ -4,7 +4,23 @@
   style="padding-top: 0px; padding-bottom: 0px"
 >
   <div class="container-fluid">
-    <a class="navbar-brand" id="sidebarCollapse">Human Resources Department</a>
+    <a class="navbar-brand" style="font-weight: 700;" id="sidebarCollapse">
+      <% if (user.department === "Department 1") { %>
+        PESO Department 
+      <% } else if (user.department === "Department 2") { %> 
+        CC Development Office 
+      <% } else if (user.department === "Department 3") { %> 
+        OAS Department 
+      <% } else if (user.department === "Department 4") { %> 
+        BTM Department 
+      <% } else if (user.department === "Department 5") { %> 
+        BPL Department 
+      <% } else if (user.department === "Department 6") { %> 
+        City Assessor's Office 
+      <% } else if (user.department === "HR Department") { %> 
+        HR DEPARTMENT 
+      <% } %>
+    </a>
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav ms-auto">
         <% if (user.department === "HR Department") { %>

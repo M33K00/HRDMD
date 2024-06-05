@@ -28,7 +28,15 @@
           <b>Birthday:</b> <%=
           logincollections.birthday.toISOString().split('T')[0] %>
         </p>
-        <p><b>Department:</b> <%= logincollections.department %></p>
+        <p><b>Department:</b> 
+          <% if (logincollections.department === "Department 1") { %> PESO Department <% }
+          else if (logincollections.department === "Department 2") { %> CC Development Office <% }
+          else if (logincollections.department === "Department 3") { %> OAS Department <% }
+          else if (logincollections.department === "Department 4") { %> BTM Department <% }
+          else if (logincollections.department === "Department 5") { %> BPL Department <% } %>
+          else if (logincollections.department === "Department 6") { %> City Assessor's Office <% } %>
+          else if (logincollections.department === "HR Department") { %> HR DEPARTMENT <% } %>
+        </p>
         <p>
           <b>Position:</b>
           <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }

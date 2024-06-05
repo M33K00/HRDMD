@@ -28,7 +28,23 @@
           <b>Birthday:</b> <%=
           logincollections.birthday.toISOString().split('T')[0] %>
         </p>
-        <p><b>Department:</b> <%= logincollections.department %></p>
+        <p><b>Department:</b>
+          <% if (logincollections.department === "Department 1") { %>
+            PESO Department 
+          <% } else if (logincollections.department === "Department 2") { %> 
+            CC Development Office 
+          <% } else if (logincollections.department === "Department 3") { %> 
+            OAS Department 
+          <% } else if (logincollections.department === "Department 4") { %> 
+            BTM Department 
+          <% } else if (logincollections.department === "Department 5") { %> 
+            BPL Department 
+          <% } else if (logincollections.department === "Department 6") { %> 
+            City Assessor's Office 
+          <% } else if (logincollections.department === "HR Department") { %> 
+            HR DEPARTMENT 
+          <% } %>
+        </p>        
         <p><b>Position:</b>
           <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
           else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
@@ -40,10 +56,10 @@
       </div>
     </div>
     <h4 class="mt-4">201 Files:</h4>
-    <% if (results.length < 0) { %>
+    <% if (unsubmitted === 0) { %>
       <p>You have not submitted any 201 files</p>
-    <% } else if (results.length < 15) { %>
-      <p>You have submitted <strong><%= results.length %></strong> 201 files</p>
+    <% } else if (unsubmitted < 19) { %>
+      <p>You have only submitted <strong><%= unsubmitted %> </strong> required 201 files</p>
     <% } else { %>
       <p class="text-muted">You have submitted all required 201 files</p>
     <% } %>

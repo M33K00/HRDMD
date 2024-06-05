@@ -6,7 +6,23 @@
     <div class="hris-container">
       <div class="hris-header-user">
         <div class="hris-title"></div>
-        <h1>Human Resources Information System</h1>
+        <h1 class="text-uppercase">
+          <% if (user.department === "Department 1") { %>
+            PESO Department 
+          <% } else if (user.department === "Department 2") { %> 
+            CC Development Office 
+          <% } else if (user.department === "Department 3") { %> 
+            OAS Department 
+          <% } else if (user.department === "Department 4") { %> 
+            BTM Department 
+          <% } else if (user.department === "Department 5") { %> 
+            BPL Department 
+          <% } else if (user.department === "Department 6") { %> 
+            City Assessor's Office 
+          <% } else if (user.department === "HR Department") { %> 
+            HR DEPARTMENT 
+          <% } %>
+        </h1>
       </div>
     </div>
     <div class="hris-container-status">

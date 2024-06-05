@@ -85,6 +85,32 @@ const findDocumentsByEmail = async (email, batchSize = 5) => {
   return results;
 };
 
+// Function to count arrays with null values
+function countArraysWithNull(arr) {
+  let arrayWithNullCount = 0;
+
+  function traverse(array) {
+    let hasNull = false;
+    
+    array.forEach(item => {
+      if (item === null) {
+        hasNull = true;
+      } else if (Array.isArray(item)) {
+        if (traverse(item)) {
+          hasNull = true;
+        }
+      }
+    });
+
+    if (hasNull) {
+      arrayWithNullCount++;
+    }
+    return hasNull;
+  }
+
+  traverse(arr);
+  return arrayWithNullCount;
+}
 // Routes
 router.get("/view_profile/:email", async (req, res) => {
   try {
@@ -99,11 +125,15 @@ router.get("/view_profile/:email", async (req, res) => {
     }
 
     const results = await findDocumentsByEmail(email);
+    console.log(results);
+    const unsubmitted = countArraysWithNull(results);
+    console.log(unsubmitted);
 
     res.render("HRISUSER/view_profile", {
       title: "View Account",
       logincollections: logincollections,
       results: results,
+      unsubmitted: unsubmitted,
     });
   } catch (err) {
     // Log and handle errors gracefully
@@ -409,12 +439,28 @@ router.get("/clockout/:email", async (req, res) => {
      // Find record for today
      const dp = await DaysPresent.findOne({ email: email, date: today });
 
+     // Find record for yesterday
+     const yesterday = new Date();
+     yesterday.setDate(yesterday.getDate() - 1);
+     yesterday.setHours(0, 0, 0, 0);
+
      const hoursLate = dp.timeLate.split(":")[0];
      const minutesLate = dp.timeLate.split(":")[1];
      const deductionPoints = calculateDeductionPoints(hoursLate, minutesLate);
  
      if (!dp) {
-      
+      user.timeIn = null; // Update timeIn to current date and time
+      user.status = "OUT";
+      user.creditPoints -= 3;
+      user.daysPresent -= 1;
+      await user.save();
+      await DaysPresent.findOneAndDelete({ email: email, date: yesterday });
+      req.session.message = {
+        type: "danger",
+        message: "You did not clock-out properly in your previous clock-in. Please remember to clock-out in time properly.",
+      }
+      res.redirect("/dtr_user/" + userLogin._id);
+      return;
      } else {
        dp.timeOut = new Date();
        dp.totalTime = totalHoursDecimal;
