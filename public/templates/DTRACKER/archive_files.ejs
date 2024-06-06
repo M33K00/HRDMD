@@ -26,9 +26,17 @@
       </div>
       <% } %>
     </div>
-    <div class="page-content">
+    <input
+      class="form-control me-sm-2"
+      type="text"
+      id="accInput"
+      placeholder="Search"
+      style="margin-bottom: 20px"
+      oninput="searchArchive()"
+    />
+    <div id="myTabContent" class="tab-content mt-4"> 
       <% if (archivedFiles.length > 0) { %>
-      <table id="table" class="table table-hover table-striped mb-5 text-center ">
+        <table id="table" class="table table-hover table-striped text-center">
         <thead>
           <tr class="table-dark">
             <th style="width: 250px">File Code</th>
@@ -40,7 +48,7 @@
             <% } %>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="fileTableBody">
           <% archivedFiles.sort((a, b) => new Date(b.dateSubmitted) - new
           Date(a.dateSubmitted)).forEach((file, index) => { %>
           <tr>
@@ -71,6 +79,7 @@
           <% }); %>
         </tbody>
       </table>
+    </div>
       <!-- Pagination Links -->
       <div class="pagination justify-content-center">
         <% if (totalPages > 1) { %>
@@ -173,5 +182,43 @@
         alert("An error occurred while deleting the file.");
       });
   }
+</script>
+<script>
+function searchArchive() {
+  // Get the input field and its value
+  var input = document.getElementById('accInput');
+  var filter = input.value.toLowerCase();
+
+  // Get the table body and rows
+  var tableBody = document.getElementById('fileTableBody');
+  var rows = tableBody.getElementsByTagName('tr');
+
+  // Loop through all table rows
+  for (var i = 0; i < rows.length; i++) {
+    // Get the cells in the current row
+    var cells = rows[i].getElementsByTagName('td');
+    
+    // Assume the row does not match the search query
+    var rowMatches = false;
+    
+    // Loop through the cells to check if any cell matches the query
+    for (var j = 0; j < cells.length; j++) {
+      if (cells[j]) {
+        var cellValue = cells[j].textContent || cells[j].innerText;
+        if (cellValue.toLowerCase().indexOf(filter) > -1) {
+          rowMatches = true;
+          break;
+        }
+      }
+    }
+
+    // Show or hide the row based on the search query
+    if (rowMatches) {
+      rows[i].style.display = '';
+    } else {
+      rows[i].style.display = 'none';
+    }
+  }
+}
 </script>
 </body>
