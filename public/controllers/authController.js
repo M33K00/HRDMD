@@ -18,9 +18,14 @@ const handleErrors = (err) => {
     errors.password = "That password is incorrect";
   }
 
-  // incorrect password
+  // No roles
   if (err.message === "Your account has no assigned roles yet") {
     errors.password = "No roles assigned to this account";
+  }
+
+  // Account closed
+  if (err.message === "This account is closed.") {
+    errors.password = "Your account has been closed";
   }
 
   // Duplicate email error
@@ -56,14 +61,20 @@ module.exports.signup_get = (req, res) => {
 };
 
 module.exports.login_post = async (req, res) => {
-  const { email, password, hrrole } = req.body;
+  const { email, password, hrrole, accountClosed } = req.body;
 
   try {
     const logincollection = await LogInCollection.login(
       email,
       password,
-      hrrole
+      hrrole,
+      accountClosed
     );
+
+    if (logincollection.accountClosed) {
+      throw new Error("This account is closed.");
+    }
+
     const token = createToken(logincollection._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
 

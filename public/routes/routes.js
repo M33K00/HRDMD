@@ -442,6 +442,66 @@ router.post("/update-user/:id", upload, async (req, res) => {
   }
 });
 
+// Close a user account
+router.get("/close-account/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const logincollection = await LogInCollection.findById(id);
+
+    if (!logincollection) {
+      return res.json({ message: "User not found", type: "DANGER" });
+    }
+
+    const result = await LogInCollection.findByIdAndUpdate(
+      id,
+      { accountClosed: true },
+      { new: true } // Return the modified document after update
+    );
+    if (!result) {
+      return res.json({ message: "User not found", type: "DANGER" });
+    }
+
+    req.session.message = {
+      type: "danger",
+      message: " User closed successfully",
+    };
+    res.redirect("/view_emp_data/" + logincollection.email);
+  } catch (err) {
+    console.error(err);
+    res.json({ message: err.message, type: "danger" });
+  }
+});
+
+// Reopem a user account
+router.get("/reopen-account/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const logincollection = await LogInCollection.findById(id);
+
+    if (!logincollection) {
+      return res.json({ message: "User not found", type: "DANGER" });
+    }
+
+    const result = await LogInCollection.findByIdAndUpdate(
+      id,
+      { accountClosed: false },
+      { new: true } // Return the modified document after update
+    );
+    if (!result) {
+      return res.json({ message: "User not found", type: "DANGER" });
+    }
+
+    req.session.message = {
+      type: "success",
+      message: " User reopened successfully",
+    };
+    res.redirect("/view_emp_data/" + logincollection.email);
+  } catch (err) {
+    console.error(err);
+    res.json({ message: err.message, type: "danger" });
+  }
+});
+
 // Delete a user
 router.get("/delete/:id", async (req, res) => {
   try {
@@ -466,9 +526,7 @@ router.get("/delete/:id", async (req, res) => {
       message: " User deleted successfully",
     };
 
-    const refererUrl = req.headers.referer;
-
-    res.redirect(refererUrl);
+    res.redirect("/view_employees");
   } catch (err) {
     console.error(err);
     res.json({ message: err.message, type: "danger" });
@@ -777,10 +835,12 @@ router.post("/manage-leave/:id", async (req, res) => {
   }
 });
 
-router.get("/view_emp_data/:email", async (req, res) => {
+router.get("/view_emp_data/:email", checkHRSettings, async (req, res) => {
   try {
     let email = req.params.email;
+    let hrSettings = await req.models.HRSettings.findOne();
     let logincollections = await LogInCollection.findOne({ email: email });
+    let attendance = await Attendance.findOne({ email: email });
 
     if (!logincollections) {
       // If the user account doesn't exist, redirect to manage_accounts page
@@ -793,6 +853,8 @@ router.get("/view_emp_data/:email", async (req, res) => {
     res.render("HRIS/view_emp_data", {
       title: "View Account",
       logincollections: logincollections,
+      hrSettings: hrSettings,
+      attendance: attendance,
       results: results,
     });
   } catch (err) {

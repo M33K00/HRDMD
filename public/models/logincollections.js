@@ -64,6 +64,10 @@ const logInSchema = new mongoose.Schema({
     type: String,
     default: "INCOMPLETE",
   },
+  accountClosed: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Fire a function before doc is saved to db

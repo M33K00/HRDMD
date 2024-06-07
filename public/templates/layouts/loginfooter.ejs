@@ -1,3 +1,5 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0/js/bootstrap.bundle.min.js"></script>
 <script>
   const form = document.querySelector("form");
   const emailError = document.querySelector(".email-error");
@@ -26,6 +28,14 @@
       if (data.errors) {
         emailError.textContent = data.errors.email;
         passwordError.textContent = data.errors.password;
+
+        // Check if the account is closed
+        if (data.errors.password === "Your account has been closed") {
+          var myModal = new bootstrap.Modal(document.getElementById('accountClosedModal'), {
+            keyboard: false
+          });
+          myModal.show();
+        }
       }
 
       if (data.redirect) {

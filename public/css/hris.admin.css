@@ -379,7 +379,30 @@
   z-index: 1;
   display: grid;
   grid-template-columns: 250px 380px 300px 1fr; /* Grid with 3 columns */
+  backdrop-filter: blur(5px); /* Blur effect */
   gap: 5px; /* Gap between grid items */
+}
+
+.account-at-closed {
+  border: #ff0000 solid 2px;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(255, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 250px 380px 300px 1fr; /* Grid with 3 columns */
+  backdrop-filter: blur(5px); /* Blur effect */
+  gap: 5px; /* Gap between grid items */
+  animation: glow 1.5s infinite alternate; /* Applying the animation */
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 2px 8px rgba(255, 0, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 2px 20px rgba(255, 0, 0, 0.8);
+  }
 }
 
 .account-img {
@@ -755,7 +778,7 @@
 }
 
 .btn-print {
-  width: 500px;
+  width: 200px;
   margin-bottom: 12px;
 }
 
@@ -809,7 +832,6 @@
 
 .file-container-hrSet {
   display: flex;
-  background-color: white;
   border-radius: 5px;
   position: relative;
   display: grid;

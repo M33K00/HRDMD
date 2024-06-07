@@ -111,7 +111,7 @@
             class="form-select"
             id="department"
           >
-          <option value="HR Department" <% if (logincollections.department === 'HR Department') { %> selected <% } %>>HR Department</option>
+            <option value="HR Department" <% if (logincollections.department === 'HR Department') { %> selected <% } %>>HR Department</option>
             <option value="Department 1" <% if (logincollections.department === 'Department 1') { %> selected <% } %>>PESO Department</option>
             <option value="Department 2" <% if (logincollections.department === 'Department 2') { %> selected <% } %>>CC Development Office</option>
             <option value="Department 3" <% if (logincollections.department === 'Department 3') { %> selected <% } %>>OAS Department</option>
@@ -128,6 +128,7 @@
             class="form-select"
             id="hrrole"
           >
+            <option class="text-warning" value="ADMIN" <% if (logincollections.hrrole === 'ADMIN') { %> selected <% } %>>Department Head</option>
             <option value="ROLE 1" <% if (logincollections.hrrole === 'ROLE 1') { %> selected <% } %>>Administrative Officer</option>
             <option value="ROLE 2" <% if (logincollections.hrrole === 'ROLE 2') { %> selected <% } %>>Senior Admin Assistant</option>
             <option value="ROLE 3" <% if (logincollections.hrrole === 'ROLE 3') { %> selected <% } %>>Admin Officer</option>
@@ -164,5 +165,36 @@
       >
     </form>
   </div>
+  <!-- Modal -->
+  <div class="modal fade" id="adminWarningModal" tabindex="-1" aria-labelledby="adminWarningLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-warning" id="adminWarningLabel" style="font-weight: 800;">Warning!!</h5>
+        </div>
+        <div class="modal-body">
+          You have selected the <strong>Department Head</strong> position. This will give the user access to employee management functions.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">I understand</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const hrRoleSelect = document.getElementById('hrrole');
+
+    hrRoleSelect.addEventListener('change', function() {
+      if (this.value === 'ADMIN') {
+        var myModal = new bootstrap.Modal(document.getElementById('adminWarningModal'), {
+          keyboard: false
+        });
+        myModal.show();
+      }
+    });
+  });
+</script>
+
 <%- include('./layouts/footer') -%>

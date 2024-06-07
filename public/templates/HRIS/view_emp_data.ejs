@@ -3,51 +3,121 @@
   <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
   <div class="page-body">
     <div class="page-name">
-      <h1><%= logincollections.name %></h1>
+      <h1>View Employee Details:</h1>
       <div class="account-options">
         <a href="/view_employees" class="btn btn-secondary">Go Back</a>
       </div>
     </div>
-    <div class="page-extra">
-      <h4>HRIS Profile Information:</h4>
-      <a href="/edit/<%= logincollections._id %>" class="btn btn-primary">MANAGE ACCOUNT</a>
+    <div id="alertContainer" class="bottom-right">
+      <% if (message) { %>
+      <div
+        class="alert alert-dismissible alert-<%= message.type %> fade show"
+        role="alert"
+        id="autoDismissAlert"
+      >
+        <strong>Attention!</strong> <%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
     </div>
-    <div class="account-basic1">
-      <div class="account-image">
+    <% if (logincollections.accountClosed === true) { %>
+      <div class="alert alert-danger">
+        <strong>ATTENTION!</strong> This account has been closed and cannot be accessed by the user.
+      </div>
+    <% } %>
+    <div class="page-extra">
+      <h4 class="text-muted">HRIS Profile Information:</h4>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          Actions
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="/edit/<%= logincollections._id %>">Manage Account</a></li>
+          <li><a class="dropdown-item mt-1" href="/view-dtr/<%= logincollections._id %>">View DTR</a></li>
+          <% if (logincollections.accountClosed === false) { %>
+            <li><a id="closeAccountLink" class="dropdown-item text-danger mt-1" href="#">Close Account</a></li>
+          <% } else { %>
+            <li><a id="reopenAccountLink" class="dropdown-item text-success mt-1" href="#">Reopen Account</a></li>
+          <% } %>
+        </ul>
+      </div>
+      <script>
+        const dropdown = new bootstrap.Dropdown(document.querySelector('.btn-group'))
+      </script>
+    </div>
+    <% if (logincollections.accountClosed === false) { %>
+      <div class="account-at">
+    <% } else { %>
+      <div class="account-at-closed">
+    <% } %>
+      <div class="account-img">
         <% if (logincollections.image === "") { %>
           <img src="../images/user.jpg" />
           <% } else { %>
           <img src="../<%= logincollections.image %>" />
       <% } %>
       </div>
-      <div class="account-info mt-3">
+      <div class="account-in mt-3 text">
         <p><b>Name:</b> <%= logincollections.name %></p>
         <p><b>Email:</b> <%= logincollections.email %></p>
         <p><b>Contact:</b> <%= logincollections.contact %></p>
-        <p>
-          <b>Birthday:</b> <%=
-          logincollections.birthday.toISOString().split('T')[0] %>
-        </p>
         <p><b>Department:</b> <% if (logincollections.department === 'HR Department') { %>
-          HR Department <% } else if (logincollections.department === 'Department 1') { %>
-          PESO Department <% } else if (logincollections.department === 'Department 2') { %>
-          CCD Office <% } else if (logincollections.department === 'Department 3') { %>
-          OAS Department <% } else if (logincollections.department === 'Department 4') { %>
-          BTM Department <% } else if (logincollections.department === 'Department 5') { %>
-          BPL Department <% } else if (logincollections.department === 'Department 6') { %>
-           CAD Department
-         <% } %></p>
-        <p>
-          <b>Position:</b>
-          <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
+         HR Department <% } else if (logincollections.department === 'Department 1') { %>
+         PESO Department <% } else if (logincollections.department === 'Department 2') { %>
+         CCD Office <% } else if (logincollections.department === 'Department 3') { %>
+         OAS Department <% } else if (logincollections.department === 'Department 4') { %>
+         BTM Department <% } else if (logincollections.department === 'Department 5') { %>
+         BPL Department <% } else if (logincollections.department === 'Department 6') { %>
+          CAD Department
+        <% } %></p>
+        <p><b>Position:</b> <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
           else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
           else if (logincollections.hrrole === "ROLE 3") { %> Admin Officer <% } else if
           (logincollections.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
           (logincollections.hrrole === "ROLE 5") { %> Admin Aide <% } else if (logincollections.hrrole
-          === "ADMIN") { %> Department Head <% } %>
-        </p>
+          === "ADMIN") { %> Department Head <% } %></p>
+      </div>
+      <div class="account-stat mt-3">
+        <div class="account-stat-item">
+            <p><b>Days Present:</b> <%= attendance.daysPresent %></p></p>
+            <p><b>Days Absent:</b> <%= attendance.daysAbsent %></p>
+            <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
+            <p class="<% if (attendance.creditPoints === 125) { %>
+                 text-success
+                <% } else if (attendance.creditPoints <= 124 ) { %>
+                text-warning
+                <% } else if (attendance.creditPoints <= 115 ) { %>
+                text-danger
+                <% } %>"><b style="color: rgb(0, 0, 0);">Credit Points:</b> <%= attendance.creditPoints %></p></p>
+        </div>
+    </div>
+    <div class="account-stat mt-3">
+      <div class="account-stat-item">
+        <%
+              const startTimeParts = hrSettings.startTime.split(":");
+              const endTimeParts = hrSettings.endTime.split(":");
+              const startHour = parseInt(startTimeParts[0]);
+              const endHour = parseInt(endTimeParts[0]);
+              const startMinutes = parseInt(startTimeParts[1]);
+              const endMinutes = parseInt(endTimeParts[1]);
+
+              // Create Date objects with dummy date (since we only care about time)
+              const startDate = new Date(2000, 0, 1, startHour, startMinutes);
+              const endDate = new Date(2000, 0, 1, endHour, endMinutes);
+
+              // Format the times in AM/PM format
+              const formattedStartTime = startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+              const formattedEndTime = endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+              %>
+          <p><b>Dayoffs:</b> <%= attendance.dayOff %></p></p>
+          <p><b>Cut-off Dates:</b> Every <%= hrSettings.startDate %> and <%= hrSettings.endDate %></p>
+          <p><b>Shift Start:</b> <%= formattedStartTime %></p>
+          <p><b>Shift End:</b> <%= formattedEndTime %></p>
       </div>
     </div>
+  </div>
   </div>
   <div class="emp-files">
     <div class="page-name cont-divider">
@@ -56,5 +126,82 @@
     <p class="text-muted">These are the files submitted by the employee</p>
     <%- include('../layouts/tables/201TableAdmin.ejs') -%>
   </div>
+  <!-- Close Confirmation Modal -->
+  <div class="modal fade" id="closeAccountModal" tabindex="-1" aria-labelledby="closeAccountLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="closeAccountLabel">Confirm Account Closure</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to close <strong><%= logincollections.name %></strong>'s account? This action cannot be undone.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="confirmCloseAccount" class="btn btn-danger">Close Account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Reopen Confirmation Modal -->
+  <div class="modal fade" id="reopenAccountModal" tabindex="-1" aria-labelledby="closeAccountLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="closeAccountLabel">Confirm Account Reopen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to reopen <strong><%= logincollections.name %></strong>'s account?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="confirmReopenAccount" class="btn btn-success">Reopen Account</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <%- include('../layouts/footer') %>
+  // Reopen Confirmation Modal
+  <script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const reopenAccountLink = document.getElementById('reopenAccountLink');
+    const confirmReopenAccountButton = document.getElementById('confirmReopenAccount');
+
+    reopenAccountLink.addEventListener('click', function(event) {
+      event.preventDefault();
+      var myModal = new bootstrap.Modal(document.getElementById('reopenAccountModal'), {
+        keyboard: false
+      });
+      myModal.show();
+    });
+
+    confirmReopenAccountButton.addEventListener('click', function() {
+      const userId = '<%= logincollections._id %>';
+      window.location.href = `/reopen-account/${userId}`;
+    });
+  });
+  </script>
+  // Close Confirmation Modal
+  <script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const closeAccountLink = document.getElementById('closeAccountLink');
+    const confirmCloseAccountButton = document.getElementById('confirmCloseAccount');
+
+    closeAccountLink.addEventListener('click', function(event) {
+      event.preventDefault();
+      var myModal = new bootstrap.Modal(document.getElementById('closeAccountModal'), {
+        keyboard: false
+      });
+      myModal.show();
+    });
+
+    confirmCloseAccountButton.addEventListener('click', function() {
+      const userId = '<%= logincollections._id %>';
+      window.location.href = `/close-account/${userId}`;
+    });
+  });
+  </script>
+
 </body>
