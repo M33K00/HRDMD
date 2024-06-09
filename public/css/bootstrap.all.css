@@ -856,3 +856,9 @@ body {
 .hidden {
   padding: 0;
 }
+
+.float-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}

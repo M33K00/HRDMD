@@ -21,7 +21,17 @@
                 (user.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
                 (user.hrrole === "ROLE 5") { %> Admin Aide <% } else if (user.hrrole
                 === "ADMIN") { %> Department Head <% } %></td>
-              <td><strong>Department:</strong> <%= user.department %></td>
+              <td><strong>Department:</strong> 
+                <% if (user.department === 'HR Department') { %>
+              HR Department <% } else if (user.department === 'Department 1') { %>
+              PESO Department <% } else if (user.department === 'Department 2') { %>
+              CCD Office <% } else if (user.department === 'Department 3') { %>
+              OAS Department <% } else if (user.department === 'Department 4') { %>
+              BTM Department <% } else if (user.department === 'Department 5') { %>
+              BPL Department <% } else if (user.department === 'Department 6') { %>
+              CAD Department
+             <% } %>
+              </td>
             </tr>
           </table>
         <table id="table" class="table table-bordered">

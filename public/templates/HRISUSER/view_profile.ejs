@@ -56,15 +56,8 @@
       </div>
     </div>
     <h4 class="mt-4">201 Files:</h4>
-    <% if (unsubmitted === 0) { %>
-      <p>You have not submitted any 201 files</p>
-    <% } else if (unsubmitted < 19) { %>
-      <p>You have only submitted <strong><%= unsubmitted %> </strong> required 201 files</p>
-    <% } else { %>
-      <p class="text-muted">You have submitted all required 201 files</p>
-    <% } %>
+    <p class="text-muted mb-4">These are the files that have been submitted by you.</p>
     <div class="profile-stats">
-      
     </div>
     <div class="div-table"><%- include('../layouts/tables/201Table') %></div>
   </div>

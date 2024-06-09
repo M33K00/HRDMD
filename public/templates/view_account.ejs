@@ -4,9 +4,6 @@
   <div class="page-name">
     <h1>View Account (<%= logincollections.name %>)</h1>
     <div class="account-options">
-      <a href="/edit/<%= logincollections._id %>" class="btn btn-primary"
-        >manage</a
-      >
       <a href="/manage_accounts" class="btn btn-secondary">Go Back</a>
     </div>
   </div>
@@ -44,29 +41,21 @@
       <p><b>HR Role:</b> <%= logincollections.hrrole %></p>
     </div>
   </div>
-  <div class="account-delete">
-    <a
-      href="/delete/<%= logincollections._id %>"
-      class="btn btn-danger"
-      onclick="return confirm('Are you sure you want to delete employee <%= logincollections.name %>?')"
-      >DELETE ACCOUNT</a
-    >
-  </div>
   <div class="account-container mt-4">
     <div class="account-item">
       <div class="account-content">
-        <p>Documents Approved</p>
+        <p>Documents Currently Handling:</p>
       </div>
       <div class="account-count">
-        <p>420</p>
+        <p><%= submittedfiles.length %></p>
       </div>
     </div>
     <div class="account-item" style="background-color: rgb(112, 28, 28)">
       <div class="account-content">
-        <p>Documents Rejected</p>
+        <p>Documents Revising:</p>
       </div>
       <div class="account-count">
-        <p><%= rejectedDocuments.length %></p>
+        <p><%= submittedfiles.filter((row) => row.status === 'REVISION').length %></p>
       </div>
     </div>
   </div>

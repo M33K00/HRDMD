@@ -52,7 +52,7 @@ router.get("/role1", passUserToRoute, async (request, response) => {
     // Fetch all submitted files and sort by dateSubmitted in descending order
     const submittedFiles = await SubmittedFiles.find({
       fileType: "non-confidential",
-      assignTo: user.name,
+      $or: [{ assignTo: user.name }, { assignTo: "None" }],
     })
       .sort({
         dateSubmitted: -1,

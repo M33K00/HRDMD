@@ -13,6 +13,10 @@ const daysAbsentASchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  dateArchived: {
+    type: Date,
+    default: null,
+  },
 });
 
 const daysAbsentA = mongoose.model("daysAbsentA", daysAbsentASchema);

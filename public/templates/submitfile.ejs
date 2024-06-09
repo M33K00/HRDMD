@@ -74,7 +74,7 @@
                 class="form-control"
                 id="exampleInputEmail1"
               >
-                <option value="">None</option>
+                <option value="None">None</option>
                 <% users.forEach(user => { 
                   if (user.department === "HR Department") { %>
                       <option value="<%= user.name %>"><%= user.name %></option>

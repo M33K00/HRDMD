@@ -20,7 +20,15 @@
       </div>
         <div class="page-name">
           <h1>Attendance Record:</h1>
-          <button class="btn btn-secondary" onclick="window.location.href='/printDTR/<%= user.email %>'">Print DTR REPORT</button>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              Print Current DTR REPORT
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" href="/printDTR/<%= user.email %>">Print Current DTR REPORT</a></li>
+              <li><a class="dropdown-item" href="/printHistory/<%= user.email %>">Print DTR History</a></li>
+            </ul>
+          </div>
         </div>
         <% if (attendance.creditPoints < 125) { %>
           <div class="alert alert-dismissible alert-warning">
@@ -140,10 +148,13 @@
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" data-bs-toggle="tab" href="#dol" aria-selected="false" tabindex="-1" role="tab">Days on Leave</a>
-              </li>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-bs-toggle="tab" href="#aH" aria-selected="false" tabindex="-1" role="tab">Attendance History</a>
+            </li>
           </ul>
           <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade show active" id="hw" role="tabpanel">
+        <div class="tab-pane fade show active" style="max-height: 10px;" id="hw" role="tabpanel">
           <h4 class="mt-4">Record Today:</h4>
           <p class="text-muted">This is the total hours worked today.</p>
           <div class="dtr-view-container">
@@ -185,7 +196,7 @@
             </div>
           </div>
         </div>
-        <div class="tab-pane fade" id="dp" role="tabpanel">
+        <div class="tab-pane fade" style="max-height: 10px;" id="dp" role="tabpanel">
           <h4 class="mt-4">Days Present:</h4>
           <p class="text-muted">This table shows the days present.</p>
           <table id="table" class="table table-hover table-striped table-bordered mt-4">
@@ -225,7 +236,7 @@
               <% } %>
           </table>
         </div>
-        <div class="tab-pane fade" id="da" role="tabpanel">
+        <div class="tab-pane fade" style="max-height: 10px;" id="da" role="tabpanel">
           <h4 class="mt-4">Days Absent:</h4>
           <p class="text-muted">This table shows the days absent.</p>
           <table id="table" class="table table-hover table-striped table-bordered mt-4">
@@ -258,9 +269,137 @@
         <div class="tab-pane fade" id="dol" role="tabpanel">
           <h4 class="mt-4">Days on Leave:</h4>
           <p class="text-muted">This table shows the days on leave.</p>
-          
+          <table id="table" class="table table-hover table-striped table-bordered mt-4">
+            <thead>
+              <% if (leaveapplications != '') { %>
+                <tr class="table-dark text-center text-uppercase">
+                  <th>Appproved Date</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% // Sort leaveapplications array by date (from latest to oldest)
+                leaveapplications.sort((a, b) => new Date(b.approvedDate) - new Date(a.approvedDate));
+                leaveapplications.forEach((row, index) => { %>
+                  <tr>
+                    <td><%= row.approvedDate.toISOString().slice(0, 10) %></td>
+                    <td><%= row.startDate.toISOString().slice(0, 10) %></td>
+                    <td><%= row.endDate.toISOString().slice(0, 10) %></td>
+                  </tr>
+                  <% }) %>
+              <% } else { %>
+                <h1 class="text-center text-secondary mt-5">
+                  No Days on Leave Found
+                </h1>
+              <% } %>
+          </table>
         </div>
       </div>
+      <div class="tab-pane fade" id="aH" role="tabpanel">
+        <h4 class="mt-4">Present History:</h4>
+        <p class="text-muted">This table shows the attendance history.</p>
+        <div style="max-height: 400px; overflow: auto;">
+          <table id="table" class="table table-hover table-striped table-bordered mt-4">
+            <thead>
+              <% if (dayspresentA != '') { %>
+              <tr class="table-dark text-center text-uppercase">
+                <th>Date</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Total Time</th>
+                <th>Over Time</th>
+                <th>Under Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% // Sort attendancehistory array by date (from latest to oldest)
+              dayspresentA.sort((a, b) => new Date(b.date) - new Date(a.date));
+              dayspresentA.slice(0, 10).forEach((row, index) => { %>
+              <tr>
+                <td><%= row.date.toISOString().slice(0, 10) %></td>
+                <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                <td><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                <td><%= row.totalTime.toFixed(2) %></td>
+                <td><%= row.overTime.toFixed(2) %></td>
+                <td><%= row.underTime.toFixed(2) %></td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center text-secondary">
+                  No Attendance History Found
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+        <h4 class="mt-4">Absent History:</h4>
+        <p class="text-muted">This table shows the attendance history.</p>
+        <div style="max-height: 400px; overflow: auto;">
+          <table id="table" class="table table-hover table-striped table-bordered mt-4">
+            <thead>
+              <% if (daysabsentA != '') { %>
+              <tr class="table-dark text-center text-uppercase">
+                <th>Date</th>
+                <th>Day</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% // Sort attendancehistory array by date (from latest to oldest)
+              daysabsentA.sort((a, b) => new Date(b.date) - new Date(a.date));
+              daysabsentA.slice(0, 10).forEach((row, index) => { %>
+              <tr class="text-center">
+                <td><%= row.date.toISOString().slice(0, 10) %></td>
+                <td><%= row.day %></td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center text-secondary">
+                  No Attendance History Found
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+        <h4 class="mt-4">Leave History:</h4>
+        <p class="text-muted">This table shows the leave history.</p>
+        <div style="max-height: 400px; overflow: auto;">
+          <table id="table" class="table table-hover table-striped table-bordered mt-4">
+            <thead>
+              <% if (leaveA != '') { %>
+              <tr class="table-dark text-center text-uppercase">
+                <th>Date</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% // Sort leaveapplications array by date (from latest to oldest)
+              leaveA.sort((a, b) => new Date(b.approvedDate) - new Date(a.approvedDate));
+              leaveA.slice(0, 10).forEach((row, index) => { %>
+              <tr>
+                <td><%= row.approvedDate.toISOString().slice(0, 10) %></td>
+                <td><%= row.startDate.toISOString().slice(0, 10) %></td>
+                <td><%= row.endDate.toISOString().slice(0, 10) %></td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center text-secondary">
+                  No Leave History Found
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 <% function getCurrentDateInWords() { const months = ['January', 'February',
   'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',

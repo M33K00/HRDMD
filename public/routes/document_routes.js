@@ -828,28 +828,11 @@ router.get("/archive_file/:id", async (req, res) => {
   }
 });
 
-/*
-router.get("/convertFromOffice/:fileName", (req, res) => {
-  const fileName = req.params.fileName;
-  const filePath = path.join(__dirname, "../../files/documents/", fileName);
-  const outPath = path.resolve(
-    __dirname,
-    `../../files/documents/${fileName}_convert.pdf`
+router.get("/printStatusboard", async (req, res) => {
+  const files = await SubmittedFiles.find(
+    { fileType: "non-confidential" },
   );
-
-  docxConverter(filePath, outPath, function (err, result) {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error converting file.");
-    }
-    console.log("PDF file converted successfully!");
-    const fileContent = fs.readFileSync(outPath);
-    const base64data = fileContent.toString("base64");
-    const pdfSrc = `data:application/pdf;base64,${base64data}`;
-    const iframeHtml = `<iframe src="${pdfSrc}" width="100%" height="100%" frameborder="0"></iframe>`;
-    res.send(iframeHtml);
-  });
-});
-*/
+  res.render("HRIS/PRINT/statusboardprint", { files });
+})
 
 module.exports = router;

@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="col-md-4 hover-div-sp">
-    <a href="<% if (user.hrrole === 'ADMIN') { %>
+    <a href="<% if (user.hrrole === 'ADMIN' && user.department === 'HR Department') { %>
       /hris <% } else { %>
        /hris_user/<%= user.email %>
      <% } %>">

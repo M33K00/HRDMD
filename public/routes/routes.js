@@ -20,6 +20,7 @@ const daysAbsent = require("../models/daysabsent");
 const HRSettings = require("../models/hrsettings");
 const DaysPresentA = require("../models/dayspresentA");
 const DaysAbsentA = require("../models/daysabsentA");
+const SubmittedFiles = require("../models/submitted_files");
 
 // 201 File Models
 const UserDocuments = require("../models/userdocuments");
@@ -235,15 +236,15 @@ router.get("/view/:id", async (req, res) => {
 
     let name = logincollections.name;
     // Fetch rejected documents associated with the user's name
-    let rejectedDocuments = await RejectedDocument.find({
-      name: name,
+    let submittedfiles = await SubmittedFiles.find({
+      assignTo: name,
     });
 
     // Render the view_account template with the retrieved add
     res.render("view_account", {
       title: "View Account",
       logincollections: logincollections,
-      rejectedDocuments: rejectedDocuments,
+      submittedfiles: submittedfiles,
     });
   } catch (err) {
     // Log and handle errors gracefully
@@ -364,6 +365,7 @@ router.post("/update/:id", upload, async (req, res) => {
       { email: userLogin.email },
       {
         dayOff: dayOffArray,
+        email: req.body.email,
       },
       { new: true } // Return the modified document after update
     );
@@ -378,7 +380,11 @@ router.post("/update/:id", upload, async (req, res) => {
     };
     // Redirect after successful update
     if (req.body.userInput) {
-      return res.redirect("/view_profile/" + userLogin.email);
+      if (req.body.email) {
+        return res.redirect("/view_profile/" + req.body.email);
+      } else {
+        return res.redirect("/view_profile/" + userLogin.email);
+      }
     } else {
       return res.redirect("/view_emp_data/" + userLogin.email);
     }
@@ -942,6 +948,15 @@ router.get("/view-dtr/:id", checkHRSettings, async (req, res) => {
       email: email,
     });
 
+    let daysabsentA = await DaysAbsentA.find({
+      email: email,
+    });
+
+    let leaveA = await LeaveApplications.find({
+      email: email,
+      Status: "CLOSED",
+    });
+
     let absentStatus = await DaysAbsent.findOne({
       email: email,
       date: dateA,
@@ -968,6 +983,8 @@ router.get("/view-dtr/:id", checkHRSettings, async (req, res) => {
       dayspresent: dayspresent,
       daysabsent: daysabsent,
       dayspresentA: dayspresentA,
+      daysabsentA: daysabsentA,
+      leaveA: leaveA,
       leaveapplications: leaveapplications,
       status: status,
       totalHours: totalHours,
@@ -1157,6 +1174,8 @@ router.get("/print-hr-dtr/:department", async (req, res) => {
       return;
     }
 
+
+
     res.render("HRIS/PRINT/hrprint", { attendance, department });
   } catch (error) {
     console.error(error);
@@ -1188,8 +1207,26 @@ router.get("/closeDTR/:department", async (req, res) => {
       return docObject;
     });
 
+    const moveDaysAbsent = employees.map((employee) => {
+      const docObject = employee.toObject();
+      docObject.dateArchived = new Date();
+      return docObject;
+    });
+
+    const leaveapplications = await LeaveApplications.find({
+      email: { $in: employeeEmails }
+    });
+
+    for (let leaveapplication of leaveapplications) {
+      leaveapplication.dateArchived = new Date();
+      leaveapplication.Status = "CLOSED";
+      await leaveapplication.save();
+    }
+
     await DaysPresentA.insertMany(moveDaysPresent);
+    await DaysAbsentA.insertMany(moveDaysAbsent);
     await DaysPresent.deleteMany({ email: { $in: employeeDetails.map((employee) => employee.email) } });
+    await DaysAbsent.deleteMany({ email: { $in: employeeDetails.map((employee) => employee.email) } });
 
     // Update Attendance record of employees
     const attendances = await Attendance.find({ email: { $in: employeeEmails } });

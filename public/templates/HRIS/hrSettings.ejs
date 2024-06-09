@@ -1,9 +1,21 @@
 <%- include('../layouts/hrislayout') -%>
 <body>
-  <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
+  <%- include('../layouts/navhris') -%>
+  <% if (user.hrrole === "ROLE 5") { %>
+    <%- include('../layouts/user_hris/sidenavhris_user') %>
+  <% } else { %>
+    <%- include('../layouts/sidenavhris') %>
+  <% } %>
   <div class="page-body">
     <div class="page-name text-uppercase">
       <h1>PRINT REPORTS:</h1>
+      <% if (user.hrrole === "ROLE 5") { %>
+        <a
+          class="btn btn-secondary btn-print"
+          onclick="window.location.href='/dtr'"
+          >BACK TO DTR</a
+        >
+      <% } %>
     </div>
     <div id="alertContainer" class="bottom-right">
       <% if (message) { %>

@@ -95,6 +95,10 @@ const LeaveApplicationsSchema = new mongoose.Schema({
     required: true,
     default: "Pending",
   },
+  dateArchived: {
+    type: Date,
+    default: null,
+  },
 });
 
 const LeaveApplication = mongoose.model(

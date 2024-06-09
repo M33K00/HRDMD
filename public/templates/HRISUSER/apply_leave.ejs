@@ -20,7 +20,27 @@
       </div>
       <% } %>
     </div>
-    <p class="mb-4 text-uppercase text-danger">
+    <div class="leave-count-div">
+      <div class="leave-count">
+        <p class="leave-label">Available Sick Leave:</p>
+        <p class="leave-countin <% if (attendance.availableSL == 0) { %>
+         text-danger
+        <% } %>"><%= attendance.availableSL %></p>
+      </div>
+      <div class="leave-count">
+        <p class="leave-label">Available Vacation Leave:</p>
+        <p class="leave-countin <% if (attendance.availableVL == 0) { %>
+         text-danger
+        <% } %>"><%= attendance.availableVL %></p>
+      </div>
+      <div class="leave-count">
+        <p class="leave-label">Available Special Leave:</p>
+        <p class="leave-countin <% if (attendance.availableSPL == 0) { %>
+         text-danger
+        <% } %>"><%= attendance.availableSPL %></p>
+      </div>
+    </div>
+    <p class="mb-4 mt-4 text-uppercase text-danger">
       Please file application 5 days in advance, whenever possible, of the
       effictive date of the application
     </p>

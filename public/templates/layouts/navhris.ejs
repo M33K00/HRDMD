@@ -94,12 +94,20 @@
             >
           </li>
           <% } %>
+          <% if (user.hrrole === "ROLE 5" && user.department === "HR Department") { %>
           <li>
-            <a
-              href="<%= user.hrrole === 'ADMIN' ? '/view_emp_data/' + user._id : '#' %>"
-              ><i class="fa-regular fa-file"></i>HR File</a
+            <a href="/dtr">
+              <i class="fa-solid fa-clock"></i>Employee DTR
+            </a>
+          </li>
+          <% } %>
+          <% if (user.hrrole === "ADMIN" && user.department === "HR Department") { %>
+          <li>
+            <a href="/hris_user/<%= user.email %>"
+              ><i class="fa-solid fa-clock"></i>Personal HRIS</a
             >
           </li>
+          <% } %>
           <li class="logout-button">
             <a href="/logout"
               ><i class="fa-solid fa-arrow-right-from-bracket"></i>Log Out</a

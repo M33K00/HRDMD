@@ -228,7 +228,21 @@
   width: 100px;
   height: 100px;
 }
-
+.print-body {
+  position: relative;
+  overflow: visible;
+  margin-top: 80px;
+  padding: 20px;
+  flex: 1;
+}
+.printBTNS {
+  display: flex;
+  margin-top: 10px;
+}
+.closeBTN {
+  margin-left: auto;
+  margin-right: 0;
+}
 .page-extra {
   display: flex;
   align-items: center;
@@ -664,3 +678,12 @@
   opacity: 1;
   transform: translate(-50%, -50%);
 }
+
+.tab-name {
+  display: flex;
+}
+
+.file-option-history {
+  margin-left: auto;
+}
+

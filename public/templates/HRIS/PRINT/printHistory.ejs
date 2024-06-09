@@ -1,0 +1,151 @@
+<%- include('../../layouts/hrislayout') -%>
+<body>
+  <%- include('../../layouts/navhris') -%>
+  <div class="print-body">
+    <div class="page-name">
+      <h1 class="text-center">Attendance History</h1>
+      <a href="/dtr_user/<%= user.id %>" class="btn btn-secondary">GO BACK</a>
+    </div>
+    <div class="printBTNS">
+        <button id="download" class="btn btn-primary">Download as PDF</button>
+        <button id="closeDTR" class="btn btn-danger closeBTN mb-2" data-toggle="modal" data-target="#confirmModal">CLOSE REPORT</button>
+    </div>
+    <div class="page-content mt-4 p-4 bg-light" id="page-content">
+        <h3>Attendance History:</h3>
+        <table id="table" class="table table-bordered">
+            <tr>
+              <td style="width: 50%"><strong>Name:</strong> <%= user.name %></td>
+              <td><strong>Email:</strong> <%= user.email %></td>
+            </tr>
+            <tr>
+              <td><strong>Position:</strong> <% if (user.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                else if (user.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                else if (user.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                (user.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                (user.hrrole === "ROLE 5") { %> Admin Aide <% } else if (user.hrrole
+                === "ADMIN") { %> Department Head <% } %></td>
+              <td><strong>Department:</strong> <% if (logincollections.department === 'HR Department') { %>
+              HR Department <% } else if (logincollections.department === 'Department 1') { %>
+              PESO Department <% } else if (logincollections.department === 'Department 2') { %>
+              CCD Office <% } else if (logincollections.department === 'Department 3') { %>
+              OAS Department <% } else if (logincollections.department === 'Department 4') { %>
+              BTM Department <% } else if (logincollections.department === 'Department 5') { %>
+              BPL Department <% } else if (logincollections.department === 'Department 6') { %>
+               CAD Department
+             <% } %></td>
+            </tr>
+        </table>
+        <h3 class="mt-4">Days Present:</h3>
+        <table id="table" class="table table-hover table-striped table-bordered">
+          <thead>
+            <tr class="table-dark text-center text-uppercase">
+              <th>Date</th>
+              <th>Time Late</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Under Time</th>
+              <th>Over Time</th>
+              <th>Total Time</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <% daysPresentA.forEach((row) => { -%>
+            <tr>
+              <td><%- row.date.toISOString().slice(0, 10) %></td>
+              <td><%- row.timeLate %></td>
+              <td><%= new Date(row.timeIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+              <td><%- new Date(row.timeOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+              <td><%- row.underTime.toFixed(2) %></td>
+              <td><%- row.overTime.toFixed(2) %></td> 
+              <td><%- row.totalTime.toFixed(2) %></td>
+            </tr>
+            <% }) -%>
+          </tbody>
+        </table>
+        <h3 class="mt-4">Days Absent:</h3>
+        <table id="table" class="table table-hover table-striped table-bordered">
+        <% if (daysAbsentA.length > 0) { %>
+            <thead>
+            <tr class="table-dark text-center text-uppercase">
+                <th>Date</th>
+                <th>Time Late</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Under Time</th>
+                <th>Over Time</th>
+                <th>Total Time</th>
+            </tr>
+            </thead>
+            <tbody class="text-center">
+            <% daysAbsentA.forEach((row) => { -%>
+                <tr>
+                <td><%- row.date.toISOString().slice(0, 10) %></td>
+                <td><%- row.timeLate %></td>
+                <td><%= new Date(row.timeIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                <td><%- new Date(row.timeOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                <td><%- row.underTime.toFixed(2) %></td>
+                <td><%- row.overTime.toFixed(2) %></td> 
+                <td><%- row.totalTime.toFixed(2) %></td>
+                </tr>
+            <% }) -%>
+            </tbody>
+        <% } else { %>
+            <tbody>
+            <tr>
+                <td class="text-center" colspan="7">No Absent Records Found.</td>
+            </tr>
+            </tbody>
+        <% } %>
+        </table>
+
+        <h3 class="mt-4">Days on Leave:</h3>
+        <table id="table" class="table table-hover table-striped table-bordered">
+            <% if (leaveapplications.length > 0) { %>
+                <thead>
+                <tr class="table-dark text-center text-uppercase">
+                    <th>Approved Date</th>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+                </thead>
+                <tbody class="text-center">
+                <% leaveapplications.forEach((row) => { -%>
+                    <tr>
+                    <td><%- row.AppliedDate.toISOString().slice(0, 10) %></td>
+                    <td><%- row.Type %></td>
+                    <td><%- row.StartDate.toISOString().slice(0, 10) %></td>
+                    <td><%- row.EndDate.toISOString().slice(0, 10) %></td>
+                    </tr>
+                <% }) -%>
+                </tbody>
+            <% } else { %>
+                <tbody>
+                <tr>
+                    <td class="text-center" colspan="4">No Leave Records Found.</td>
+                </tr>
+                </tbody>
+            <% } %>
+            </table>
+      </div>
+  </div>
+  <script src="../scripts/html2pdf.bundle.min.js"></script>
+    <script>
+        document.getElementById("download").addEventListener("click", () => {
+        // Select the content of the div
+        var element = document.getElementById("page-content");
+    
+        // Configure the options for the PDF
+        var opt = {
+            margin: 0.5,
+            filename: "DTRHISTORYReport.pdf",
+            image: { type: "jpeg", quality: 1.0 },
+            html2canvas: { scale: 5.0 },
+            jsPDF: { unit: "in", format: "legal", orientation: "landscape" },
+        };
+    
+        // Use html2pdf to create and download the PDF
+        html2pdf().from(element).set(opt).save();
+        });
+    </script>
+  <%- include('../../layouts/footer') %>

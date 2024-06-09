@@ -68,7 +68,7 @@ const attendanceSchema = new mongoose.Schema({
   availableVL: {
     type: Number,
     required: false,
-    default: 10,
+    default: 15,
   },
   availableSPL: {
     type: Number,

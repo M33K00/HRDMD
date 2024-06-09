@@ -1,6 +1,11 @@
 <%- include('../layouts/hrislayout') -%>
 <body>
-  <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
+  <%- include('../layouts/navhris') -%>
+  <% if (user.hrrole === "ROLE 5") { %>
+    <%- include('../layouts/user_hris/sidenavhris_user') %>
+  <% } else { %>
+    <%- include('../layouts/sidenavhris') %>
+  <% } %>
   <%- include('../layouts/footer') %>
   <div class="page-body">
     <div class="page-name">
@@ -11,7 +16,11 @@
       <p class="page-description text-muted">
         View employee's daily time record here
       </p>
+    <% if (user.hrrole === "ADMIN") { %>
       <a href="/DTRSettings" class="btn btn-secondary"><i class="fa-solid fa-gear"></i> Settings</a>
+    <% } else if (user.hrrole === "ROLE 5") { %>
+      <a href="/hrSettings" class="btn btn-secondary"><i class="fa-solid fa-print"></i> PRINT REPORTS</a>
+    <% } %>
     </div>
     <div class="dtr-container">
       <% let inCount = 0; %> <% mergedData.forEach(employee => { %> <%

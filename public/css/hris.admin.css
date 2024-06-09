@@ -893,3 +893,101 @@
   margin-left: auto;
   margin-right: 0;
 }
+
+.history-tab {
+  display: flex;
+}
+
+.button-history {
+  width: 200px;
+  justify-content: center;
+  align-items: center;
+}
+
+.history-container {
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px; /* Gap between grid items */
+  grid-auto-rows: 50px; /* Default height for each row */
+}
+.history-container a {
+  text-decoration: inherit;
+}
+
+.history-item {
+  color: #1f1f1f;
+  display: flex;
+  align-items: center; /* Center vertically */
+  width: 400px;
+  height: 50px;
+  background-color: #f2f2f2;
+  border: 1px solid #313131;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease; /* Smooth transition effect */
+  justify-content: center;
+
+}
+
+.history-item:hover {
+  background-color: #c9c9c9; /* Change background color on hover */
+}
+
+.history-item i {
+  font-size: 25px;
+  margin-left: 10px;
+  margin-right: 10px; /* Space between icon and text */
+}
+
+.history-item p {
+  margin: 0; /* Remove default margin for <p> */
+}
+
+.history-item span {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.content-divH {
+  display: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.content-divH.active {
+  display: block;
+  opacity: 1;
+}
+
+.leave-count-div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px; /* Gap between grid items */
+  grid-auto-rows: 100px; /* Default height for each row */
+}
+
+.leave-count {
+  display: flex;
+  border: #000000 solid 1px;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.leave-label {
+  font-size: 20px;
+  font-weight: 300;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.leave-countin {
+  font-weight: 600;
+  font-size: 30px;
+  margin-top: auto;
+}

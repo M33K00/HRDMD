@@ -10,6 +10,10 @@ const LeaveApplications = require("../models/leaveapplications");
 const Attendance = require("../models/attendance");
 const DaysPresent = require("../models/dayspresent");
 const DaysAbsent = require("../models/daysabsent");
+const DaysAbsentA = require("../models/daysabsentA");
+const DaysPresentA = require("../models/dayspresentA");
+
+
 
 // Multer Config
 const EmployeeStorage = multer.diskStorage({
@@ -45,6 +49,7 @@ const Schol = require("../models/201File/schol");
 const SwornS = require("../models/201File/swornS");
 const CertLeaveB = require("../models/201File/certLeaveB");
 const DisAct = require("../models/201File/disAct");
+const logincollections = require("../models/logincollections");
 
 // 201 File Model Array
 const userDocumentsArray = [
@@ -158,8 +163,10 @@ router.get("/hris_user/:email", async (req, res) => {
   }
 });
 
-router.get("/apply_leave", async (req, res) => {
-  res.render("HRISUSER/apply_leave");
+router.get("/apply_leave/:email", async (req, res) => {
+  const userEmail = req.params.email;
+  const attendance = await Attendance.findOne({ email: userEmail });
+  res.render("HRISUSER/apply_leave", { attendance });
 });
 
 router.get("/view_leave/:email", async (req, res) => {
@@ -202,22 +209,32 @@ router.post("/apply_leave", async (req, res) => {
       throw new Error("Account not found.");
     }
 
+    console.log(data.Type);
+
     const availableSL = parseInt(account.availableSL, 10) || 0;
     const availableVL = parseInt(account.availableVL, 10) || 0;
+    const availableSPL = parseInt(account.availableSPL, 3) || 0;
 
     // Check if there's sufficient leave balance
-    if (data.Type === "sick leave" && availableSL < daysDiff) {
+    if (data.Type === "Sick Leave" && availableSL <= 0) {
       req.session.message = {
         type: "danger",
         message: "You used up all your sick leave.",
       };
-      res.redirect("/apply_leave");
-    } else if (data.Type === "vacation leave" && availableVL < daysDiff) {
+      res.redirect("/apply_leave/" + data.email);
+    } else if (data.Type === "vacation leave" && availableVL <= 0) {
       req.session.message = {
         type: "danger",
         message: "You used up all your vacation leave.",
       };
-      res.redirect("/apply_leave");
+      res.redirect("/apply_leave/" + data.email);
+      return;
+    } else if (data.Type === "Special Privilege Leave" && availableSPL <= 0) {
+      req.session.message = {
+        type: "danger",
+        message: "You used up all your Special Privilege Leave.",
+      };
+      res.redirect("/apply_leave/" + data.email);
       return;
     }
 
@@ -250,7 +267,7 @@ router.post("/apply_leave", async (req, res) => {
         err.message ||
         "An error occurred while processing your request. Please try again later.",
     };
-    res.redirect("/apply_leave");
+    res.redirect("/apply_leave/" + data.email);
   }
 });
 
@@ -299,6 +316,24 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
       email: email,
     });
 
+    let leaveapplications = await LeaveApplications.find({
+      email: email,
+      Status: "Approved",
+    });
+
+    let dayspresentA = await DaysPresentA.find({
+      email: email,
+    });
+
+    let daysabsentA = await DaysAbsentA.find({
+      email: email,
+    });
+
+    let leaveA = await LeaveApplications.find({
+      email: email,
+      Status: "CLOSED",
+    });
+
     res.render("HRISUSER/dtr_user", {
       title: "View Account",
       hrSettings: hrSettings,
@@ -306,6 +341,10 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
       attendance: attendance,
       dayspresent: dayspresent,
       daysabsent: daysabsent,
+      leaveapplications: leaveapplications,
+      dayspresentA: dayspresentA,
+      daysabsentA: daysabsentA,
+      leaveA: leaveA,
       totalHours: totalHours,
       totalMinutes: totalMinutes,
     });
@@ -1792,6 +1831,61 @@ router.get("/printDTR/:email", async (req, res) => {
       message: "Error fetching data",
     };
     res.redirect("/hrSettingsUser");
+  }
+});
+
+router.get("/printHistory/:email", async (req, res) => {
+  const email = req.params.email;
+  const logincollections = await LogInCollection.findOne({
+    email: email,
+  });
+
+  if (!logincollections) {
+    req.session.message = {
+      type: "danger",
+      message: "No data found",
+    };
+    return res.redirect("/dtr_user" + logincollections.id);
+  }
+  try {
+    const daysPresentA = await DaysPresentA.find({ email: email });
+    if (!daysPresentA) {
+      req.session.message = {
+        type: "danger",
+        message: "No data found (Days Present Data)",
+      };
+      return res.redirect("/dtr_user" + logincollections.id);
+    }
+
+    const daysAbsentA = await DaysAbsentA.find({ email: email });
+    if (!daysAbsentA) {
+      req.session.message = {
+        type: "danger",
+        message: "No data found (Days Absent Data)",
+      };
+      return res.redirect("/dtr_user" + logincollections.id);
+    }
+
+    const leaveapplications = await LeaveApplications.find({ 
+      email: email,
+      status: "CLOSED"
+    });
+    if (!leaveapplications) {
+      req.session.message = {
+        type: "danger",
+        message: "No data found (Leave Application Data)",
+      };
+      return res.redirect("/dtr_user" + logincollections.id);
+    }
+
+    res.render("HRIS/PRINT/printHistory", {logincollections, daysPresentA, daysAbsentA, leaveapplications});
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/dtr_user" + logincollections.id);
   }
 })
 
