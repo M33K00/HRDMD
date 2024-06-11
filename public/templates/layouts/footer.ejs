@@ -609,9 +609,9 @@
 
     // Customize confirm button based on the action
     switch (action) {
-      case "Archive":
-        confirmActionBtn.textContent = "Archive";
-        confirmActionBtn.className = "btn btn-secondary";
+      case "move this task to archive":
+        confirmActionBtn.textContent = "Move to Archive";
+        confirmActionBtn.className = "btn btn-warning";
         break;
       case "Reject":
         confirmActionBtn.textContent = "Reject";
@@ -621,12 +621,12 @@
         confirmActionBtn.textContent = "Mark as Pending";
         confirmActionBtn.className = "btn btn-warning";
         break;
-      case "Revision":
-        confirmActionBtn.textContent = "Send for Revision";
-        confirmActionBtn.className = "btn btn-dark";
+      case "mark this task for approval":
+        confirmActionBtn.textContent = "Mark for Approval";
+        confirmActionBtn.className = "btn btn-primary";
         break;
-      case "Approve":
-        confirmActionBtn.textContent = "Approve";
+      case "set this task as approved":
+        confirmActionBtn.textContent = "Mark as approved";
         confirmActionBtn.className = "btn btn-success";
         break;
       default:
@@ -649,7 +649,7 @@
   function performAction(action, fileId) {
     // Perform the action based on the button clicked
     switch (action) {
-      case "Archive":
+      case "move this task to archive":
         window.location.href = `/archive_file/${fileId}`;
         break;
       case "Reject":
@@ -658,10 +658,10 @@
       case "Pending":
         window.location.href = `/pending-file/${fileId}`;
         break;
-      case "Revision":
-        window.location.href = `/revision-file/${fileId}`;
+      case "mark this task for approval":
+        window.location.href = `/for-approval-file/${fileId}`;
         break;
-      case "Approve":
+      case "set this task as approved":
         window.location.href = `/approve-file/${fileId}`;
         break;
       default:
@@ -686,3 +686,5 @@
       });
   });
   </script>
+
+    

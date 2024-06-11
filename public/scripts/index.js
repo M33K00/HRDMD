@@ -44,6 +44,7 @@ app.use((req, res, next) => {
   next();
 });
 
+
 // Route prefix
 app.get("*", checkUser);
 app.use("", require("../routes/routes"));

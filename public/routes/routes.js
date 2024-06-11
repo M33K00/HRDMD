@@ -43,6 +43,7 @@ const Schol = require("../models/201File/schol");
 const SwornS = require("../models/201File/swornS");
 const CertLeaveB = require("../models/201File/certLeaveB");
 const DisAct = require("../models/201File/disAct");
+const { default: isEmail } = require("validator/lib/isEmail.js");
 
 // 201 File Model Array
 const userDocumentsArray = [  
@@ -260,9 +261,9 @@ router.get("/edit/:id", async (req, res) => {
     let id = req.params.id;
     let logincollections = await LogInCollection.findById(id);
 
-    let name = logincollections.name;
+    let email = logincollections.email;
 
-    const attendance = await Attendance.findOne({ name: name });
+    const attendance = await Attendance.findOne({ email: email });
 
     if (!attendance) {
       // Handle the case where the user's _id is not found
@@ -345,6 +346,7 @@ router.post("/update/:id", upload, async (req, res) => {
       id,
       {
         name: req.body.name,
+        lastname: req.body.lastname,
         birthday: parsedBirthday,
         contact: req.body.contact,
         email: req.body.email,
@@ -352,6 +354,7 @@ router.post("/update/:id", upload, async (req, res) => {
         department: req.body.department,
         position: req.body.position,
         hrrole: req.body.hrrole,
+        empStatus: req.body.empStatus,
         image: new_image,
       },
       { new: true } // Return the modified document after update
@@ -996,6 +999,8 @@ router.get("/view-dtr/:id", checkHRSettings, async (req, res) => {
   }
 });
 
+
+
 router.get("/m-absent/:id", async (req, res) => {
   try {
     let id = req.params.id;
@@ -1016,6 +1021,7 @@ router.get("/m-absent/:id", async (req, res) => {
       res.redirect("/view-dtr/" + logincollections._id);
     } else {
       attendance.daysAbsent += 1;
+      attendance.VLPoints -= 1;
       await attendance.save();
     }
 
@@ -1028,6 +1034,8 @@ router.get("/m-absent/:id", async (req, res) => {
     };
 
     await daysAbsent.create(mAbsent);
+
+    
 
     req.session.message = {
       type: "warning",

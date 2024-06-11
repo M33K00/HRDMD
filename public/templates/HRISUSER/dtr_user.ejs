@@ -30,17 +30,17 @@
             </ul>
           </div>
         </div>
-        <% if (attendance.creditPoints < 125) { %>
+        <% if (attendance.VLPoints <= 1.24 && attendance.VLPoints >= 1.00 && logincollections.empStatus != 'Job Order') { %>
           <div class="alert alert-dismissible alert-warning">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             <h4 class="alert-heading">Warning!</h4>
-            <p class="mb-0">Your credit points are below the threshold. Please ensure you clock in on time to maintain your credit points.</p>
+            <p class="mb-0">Your VL points are below the threshold. Please ensure you clock in on time to maintain your points.</p>
           </div>
-        <% } else if (attendance.creditPoints < 115) { %>
+          <% } else if (attendance.VLPoints > 0.01 && attendance.VLPoints <= 0.99 && logincollections.empStatus != 'Job Order') { %>
           <div class="alert alert-dismissible alert-danger">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             <h4 class="alert-heading">Warning!</h4>
-            <p class="mb-0">Your credit points is low. Please ensure you clock in on time to maintain your credit points.</p>
+            <p class="mb-0">Your VL points is low. Please ensure you clock in on time to maintain your points.</p>
           </div>
         <% } %>
         <div class="account-at">
@@ -54,7 +54,7 @@
           <div class="account-in mt-3 text">
             <p><b>Name:</b> <%= logincollections.name %></p>
             <p><b>Email:</b> <%= logincollections.email %></p>
-            <p><b>Contact:</b> <%= logincollections.contact %></p>
+            <p><b>Emp. Status:</b> <%= logincollections.empStatus %></p>
             <p><b>Department:</b> <% if (logincollections.department === 'HR Department') { %>
               HR Department <% } else if (logincollections.department === 'Department 1') { %>
               PESO Department <% } else if (logincollections.department === 'Department 2') { %>
@@ -75,25 +75,29 @@
           </div>
           <div class="account-stat mt-3">
             <div class="account-stat-item">
-              <p>
-                <b>Status:</b> <% if (attendance.status === 'IN') { %>
-                <span class="green-dot"></span>
-                <% } else if (attendance.status === 'OUT') { %>
-                <span class="red-dot"></span>
-                <% } %><%= attendance.status %>
-              </p>
-            </div>
-            <div class="account-stat-item">
                 <p><b>Days Present:</b> <%= attendance.daysPresent %></p></p>
                 <p><b>Days Absent:</b> <%= attendance.daysAbsent %></p>
                 <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
-                <p class="<% if (attendance.creditPoints === 125) { %>
+                <% if (logincollections.empStatus != 'Job Order') { %>
+                  <p class="<% if (attendance.VLPoints === 1.25) { %>
+                      text-success
+                  <% } else if (attendance.VLPoints <= 1.24 && attendance.VLPoints >= 1.00) { %>
+                      text-warning
+                  <% } else if (attendance.VLPoints > 0.01 && attendance.VLPoints <= 0.99) { %>
+                      text-danger
+                  <% } else { %>
+                      text-danger
+                <% } %>"><b style="color: rgb(0, 0, 0);">VL Points:</b> <%= attendance.VLPoints %></p>
+                <p class="<% if (attendance.SLPoints === 1.25) { %>
                  text-success
-                <% } else if (attendance.creditPoints <= 124 ) { %>
+                <% } else if (attendance.SLPoints <= 1.24 && attendance.SLPoints >= 1.00 ) { %>
                 text-warning
-                <% } else if (attendance.creditPoints <= 115 ) { %>
+                <% } else if (attendance.SLPoints <= 0.01 && attendance.SLPoints >= 0.99 ) { %>
                 text-danger
-                <% } %>"><b style="color: rgb(0, 0, 0);">Credit Points:</b> <%= attendance.creditPoints %></p></p>
+                <% } else { %>
+                text-danger
+                <% } %>"><b style="color: rgb(0, 0, 0);">SL Points:</b> <%= attendance.SLPoints %></p>
+                <% } %>   
             </div>
         </div>
         <div class="account-stat mt-3">
@@ -114,7 +118,6 @@
               const formattedStartTime = startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
               const formattedEndTime = endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
               %>
-              <p><b>Dayoffs:</b> <%= attendance.dayOff %></p></p>
               <p><b>Cut-off Dates:</b> Every <%= hrSettings.startDate %> and <%= hrSettings.endDate %></p>
               <p><b>Shift Start:</b> <%= formattedStartTime %></p>
               <p><b>Shift End:</b> <%= formattedEndTime %></p>
@@ -122,13 +125,20 @@
       </div>
       </div>
       <div class="mt-4">
-        <div class="account-column-2">
+          <div class="account-column-2">
             <h3>Daily Time Record:</h3>
+            <div class="status-icon">
+            <b>STATUS:</b> <% if (attendance.status === 'IN') { %>
+              <span class="green-dot"></span>
+              <% } else if (attendance.status === 'OUT') { %>
+              <span class="red-dot"></span>
+              <% } %><%= attendance.status %>
+          </div>
         </div>
         <div class="clockin-tab">
           <p><%= getCurrentDateInWords() %></p>
           <div class="clockin-btn">
-            <a href="/clockin/<%= logincollections.email %>" class="btn btn-primary <% if (attendance.status === 'IN') { %>
+            <a href="/clockin/<%= logincollections.email %>" class="btn btn-primary <% if (attendance.status === 'IN' || status === 'Absent' || pStatus === 'Present') { %>
              disabled
             <% } %>" >TIME In</a>
             <a href="/clockout/<%= logincollections.email %>" class="btn btn-secondary <% if (attendance.status === 'OUT') { %>
@@ -170,12 +180,12 @@
             </div>
             <div class="dtr-view-div">
               <div class="div-title">
-                <p class="dtr-view-title">Clocked In:</p>
+                <p class="dtr-view-title">Time In:</p>
               </div>
               <div class="div-view-count"><% if (attendance.timeIn !== null) { %>
                 <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
                 <% } else { %>
-                Not Clocked In
+                N/A
               <% } %></div>
             </div>
           </div>
@@ -295,6 +305,7 @@
               <% } %>
           </table>
         </div>
+      </div>
       </div>
       <div class="tab-pane fade" id="aH" role="tabpanel">
         <h4 class="mt-4">Present History:</h4>

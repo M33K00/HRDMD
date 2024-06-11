@@ -1,6 +1,5 @@
 require("dotenv").config();
 const LogInCollection = require("../models/logincollections");
-const userdocuments = require("../models/userdocuments");
 const Attendance = require("../models/attendance");
 const jwt = require("jsonwebtoken");
 
@@ -89,26 +88,22 @@ module.exports.login_post = async (req, res) => {
 };
 
 module.exports.signup_post = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, lastname, email, password, employeeID } = req.body;
+
+  console.log("name:", name, "lastname:", lastname, "email:", email, "password:", password, "employeeID:", employeeID);
 
   try {
     const logincollection = await LogInCollection.create({
       name,
+      lastname,
       email,
       password,
+      employeeID,
     });
-    // Insert data into "userdocuments" collection
-    const userData = {
-      userId: logincollection._id,
-      name,
-      email,
-      // Add other data as needed
-    };
     const adata = {
       name,
       email,
     }
-    await userdocuments.insertOne(userData);
     await Attendance.create(adata);
 
     res.status(201).json({ logincollection });

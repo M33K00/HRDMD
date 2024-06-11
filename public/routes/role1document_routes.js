@@ -60,6 +60,37 @@ router.get("/role1", passUserToRoute, async (request, response) => {
       .skip((currentPage - 1) * pageSize)
       .limit(pageSize);
 
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set time to beginning of the day
+  
+      // Get end of today
+      const endOfToday = new Date();
+      endOfToday.setHours(23, 59, 59, 999); // Set time to end of the day
+  
+      const todayFiles = await SubmittedFiles.find({
+        fileType: "non-confidential",
+        assignTo: user.name,
+        dueDate: { $gte: today, $lte: endOfToday },
+      }).sort({ dateSubmitted: -1 });
+  
+      const todayFilesIds = todayFiles.map((file) => file._id);
+  
+      // Calculate the start and end of the current week
+      const startOfWeek = new Date();
+      startOfWeek.setHours(0, 0, 0, 0); // Set time to beginning of the day
+      startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Move to start of the week (Sunday)
+  
+      const endOfWeek = new Date();
+      endOfWeek.setHours(23, 59, 59, 999); // Set time to end of the day
+      endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay())); // Move to end of the week (Saturday)
+  
+      const currentWeekFiles = await SubmittedFiles.find({
+        fileType: "non-confidential",
+        assignTo: user.name,
+        dueDate: { $gte: startOfWeek, $lte: endOfWeek },
+        _id: { $nin: todayFilesIds },
+      }).sort({ dateSubmitted: -1 });
+
     // Fetch pending files and sort by dateSubmitted in descending order
     const pendingFiles = await SubmittedFiles.find({
       status: "PENDING",
@@ -74,26 +105,20 @@ router.get("/role1", passUserToRoute, async (request, response) => {
       assignTo: user.name,
     }).sort({ dateSubmitted: -1 });
 
-    // Fetch rejected files and sort by dateSubmitted in descending order
-    const rejectedFiles = await SubmittedFiles.find({
-      status: "REJECTED",
-      assignTo: user.name,
-    }).sort({ dateSubmitted: -1 });
-
-    // Fetch revision files and sort by dateSubmitted in descending order
-    const revisionFiles = await SubmittedFiles.find({
-      status: "REVISION",
+    const forApproval = await SubmittedFiles.find({
+      status: "FOR APPROVAL",
       assignTo: user.name,
     }).sort({ dateSubmitted: -1 });
 
     response.render("role/role1_temps/role1", {
       submittedFiles,
+      todayFiles,
+      currentWeekFiles,
       currentPage,
       totalPages,
       pendingFiles,
       approvedFiles,
-      rejectedFiles,
-      revisionFiles,
+      forApproval,
     });
   } catch (error) {
     console.error("Error reading directory:", error);

@@ -46,22 +46,35 @@
         enctype="multipart/form-data"
       >
         <fieldset>
-          <div class="form-group">
+          <div class="form-group flex-container">
             <input
               type="hidden"
               name="userInput"
               value="<%= user.id %>"
             />
-            <label for="InputName" class="form-label mt-4">Name</label>
-            <input
-              type="text"
-              name="name"
-              class="form-control"
-              aria-describedby="emailHelp"
-              placeholder="Enter name"
-              value="<%= logincollections.name  %>"
-              required
-            />
+            <div class="form-item">
+              <label for="InputName" class="form-label mt-4">First Name</label>
+              <input
+                type="text"
+                name="name"
+                class="form-control"
+                aria-describedby="emailHelp"
+                placeholder="Enter name"
+                value="<%= logincollections.name  %>"
+                required
+              />
+            </div>
+            <div class="form-item">
+              <label for="lastname" class="form-label mt-4">Last Name</label>
+              <input
+                type="text"
+                name="lastname"
+                class="form-control"
+                placeholder="Enter Last Name"
+                value="<%= logincollections.lastname %>"
+                required
+              />
+            </div>
           </div>
           <div class="form-group">
             <label for="InputName" class="form-label mt-4">Birthday</label>

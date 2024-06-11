@@ -334,6 +334,32 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
       Status: "CLOSED",
     });
 
+    let absentStatus = await DaysAbsent.findOne({
+      email: email,
+      date: new Date(new Date().setHours(0, 0, 0, 0)),
+    });
+
+    let presentStatus = await DaysPresent.findOne({
+      email: email,
+      date: new Date(new Date().setHours(0, 0, 0, 0)),
+    });
+
+    let pStatus;
+
+    if (presentStatus) {
+      pStatus = "Present";
+    } else {
+      pStatus = "Absent";
+    }
+
+    let status;
+
+    if (absentStatus) {
+      status = "Absent";
+    } else {
+      status = "Present";
+    }
+
     res.render("HRISUSER/dtr_user", {
       title: "View Account",
       hrSettings: hrSettings,
@@ -347,6 +373,8 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
       leaveA: leaveA,
       totalHours: totalHours,
       totalMinutes: totalMinutes,
+      status: status,
+      pStatus: pStatus
     });
   } catch (err) {
     console.error("Error:", err);
@@ -436,14 +464,81 @@ function calculateDeductionPoints(hoursLate, minutesLate) {
 
   // Deduct points based on lateness rules
   let deductionPoints = 0;
-  if (totalMinutesLate > 0 && totalMinutesLate <= 10) {
-    deductionPoints = 1;
-  } else if (totalMinutesLate > 10 && totalMinutesLate <= 20) {
-    deductionPoints = 2;
-  } else if (totalMinutesLate > 20) {
-    deductionPoints = 3;
+  if (totalMinutesLate > 0 && totalMinutesLate <= 31) {
+    deductionPoints = 0.065;
+  } else if (totalMinutesLate > 31 && totalMinutesLate <= 32) {
+    deductionPoints = 0.067;
+  } else if (totalMinutesLate > 32 && totalMinutesLate <= 33) {
+    deductionPoints = 0.069;
+  } else if (totalMinutesLate > 33 && totalMinutesLate <= 34) {
+    deductionPoints = 0.071;
+  } else if (totalMinutesLate > 34 && totalMinutesLate <= 35) {
+    deductionPoints = 0.073;
+  } else if (totalMinutesLate > 35 && totalMinutesLate <= 36) {
+    deductionPoints = 0.075;
+  } else if (totalMinutesLate > 36 && totalMinutesLate <= 37) {
+    deductionPoints = 0.077;
+  } else if (totalMinutesLate > 37 && totalMinutesLate <= 38) {
+    deductionPoints = 0.079;
+  } else if (totalMinutesLate > 38 && totalMinutesLate <= 39) {
+    deductionPoints = 0.081;
+  } else if (totalMinutesLate > 39 && totalMinutesLate <= 40) {
+    deductionPoints = 0.083;
+  } else if (totalMinutesLate > 40 && totalMinutesLate <= 41) {
+    deductionPoints = 0.085;
+  } else if (totalMinutesLate > 41 && totalMinutesLate <= 42) {
+    deductionPoints = 0.087;
+  } else if (totalMinutesLate > 42 && totalMinutesLate <= 43) {
+    deductionPoints = 0.090;
+  } else if (totalMinutesLate > 43 && totalMinutesLate <= 44) {
+    deductionPoints = 0.092;
+  } else if (totalMinutesLate > 44 && totalMinutesLate <= 45) {
+    deductionPoints = 0.094;
+  } else if (totalMinutesLate > 45 && totalMinutesLate <= 46) {
+    deductionPoints = 0.096;
+  } else if (totalMinutesLate > 46 && totalMinutesLate <= 47) {
+    deductionPoints = 0.098;
+  } else if (totalMinutesLate > 47 && totalMinutesLate <= 48) {
+    deductionPoints = 0.100;
+  } else if (totalMinutesLate > 48 && totalMinutesLate <= 49) {
+    deductionPoints = 0.102;
+  } else if (totalMinutesLate > 49 && totalMinutesLate <= 50) {
+    deductionPoints = 0.104;
+  } else if (totalMinutesLate > 50 && totalMinutesLate <= 51) {
+    deductionPoints = 0.106;
+  } else if (totalMinutesLate > 51 && totalMinutesLate <= 52) {
+    deductionPoints = 0.108;
+  } else if (totalMinutesLate > 52 && totalMinutesLate <= 53) {
+    deductionPoints = 0.110;
+  } else if (totalMinutesLate > 53 && totalMinutesLate <= 54) {
+    deductionPoints = 0.112;
+  } else if (totalMinutesLate > 54 && totalMinutesLate <= 55) {
+    deductionPoints = 0.115;
+  } else if (totalMinutesLate > 55 && totalMinutesLate <= 56) {
+    deductionPoints = 0.117;
+  } else if (totalMinutesLate > 56 && totalMinutesLate <= 57) {
+    deductionPoints = 0.119;
+  } else if (totalMinutesLate > 57 && totalMinutesLate <= 58) {
+    deductionPoints = 0.121;
+  } else if (totalMinutesLate > 58 && totalMinutesLate <= 59) {
+    deductionPoints = 0.123;
+  } else if (totalMinutesLate > 59 && totalMinutesLate <= 60) {
+    deductionPoints = 0.125;
+  } else if (totalMinutesLate > 60 && totalMinutesLate <= 120) {
+    deductionPoints = 0.250;
+  } else if (totalMinutesLate > 120 && totalMinutesLate <= 180) {
+    deductionPoints = 0.375;
+  } else if (totalMinutesLate > 180 && totalMinutesLate <= 240) {
+    deductionPoints = 0.500;
+  } else if (totalMinutesLate > 240 && totalMinutesLate <= 300) {
+    deductionPoints = 0.625;
+  } else if (totalMinutesLate > 300 && totalMinutesLate <= 360) {
+    deductionPoints = 0.750;
+  } else if (totalMinutesLate > 360 && totalMinutesLate <= 420) {
+    deductionPoints = 0.875;
+  } else {
+    deductionPoints = 1.000;
   }
-
   return deductionPoints;
 }
 

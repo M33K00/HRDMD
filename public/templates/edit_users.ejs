@@ -3,6 +3,7 @@
 <div class="page-body">
   <div class="page-name">
     <h1>Manage Account (<%= logincollections.name %>)</h1>
+    <a href="/delete/<%= logincollections.id %>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete account?')">Delete Account</a>
   </div>
   <div class="rounded-box">
     <form
@@ -11,29 +12,58 @@
       enctype="multipart/form-data"
     >
     <fieldset>
-      <div class="form-group">
-        <label for="InputName" class="form-label mt-4">Name</label>
-        <input
-          type="text"
-          name="name"
-          class="form-control"
-          aria-describedby="emailHelp"
-          placeholder="Enter name"
-          value="<%= logincollections.name  %>"
-          required
-          disabled
-        />
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label for="InputName" class="form-label mt-4">First Name</label>
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            aria-describedby="emailHelp"
+            placeholder="Enter name"
+            value="<%= logincollections.name  %>"
+            required
+            disabled
+          />
+        </div>
+        <div class="form-item">
+          <label for="InputName" class="form-label mt-4">Last Name</label>
+          <input
+            type="text"
+            name="lastname"
+            class="form-control"
+            aria-describedby="emailHelp"
+            value="<%= logincollections.lastname  %>"
+            required
+            disabled
+          />
+        </div>
       </div>
-      <div class="form-group">
-        <label for="InputName" class="form-label mt-4">Birthday</label>
-        <input
-          type="date"
-          name="birthday"
-          class="form-control"
-          value="<%= logincollections.birthday ? logincollections.birthday.toISOString().slice(0,10) : '' %>"
-          required
-          disabled
-        />
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label for="InputName" class="form-label mt-4">Birthday</label>
+          <input
+            type="date"
+            name="birthday"
+            class="form-control"
+            value="<%= logincollections.birthday ? logincollections.birthday.toISOString().slice(0,10) : '' %>"
+            required
+            disabled
+          />
+        </div>
+        <div class="form-item">
+          <label for="InputName" class="form-label mt-4">Contact Number</label>
+          <input
+            type="text"
+            name="contact"
+            class="form-control"
+            placeholder="(+639) 123 456 7890"
+            value="+<%= logincollections.contact  %>"
+            maxlength="12"
+            required
+            disabled
+          />
+        </div>
       </div>
       <div class="form-group flex-container">
         <div class="form-item">
@@ -51,14 +81,14 @@
           <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-item">
-          <label for="InputName" class="form-label mt-4">Contact Number</label>
+          <label for="employeeID" class="form-label mt-4">Employee ID</label>
           <input
             type="text"
-            name="contact"
+            name="employeeID"
             class="form-control"
-            placeholder="(+639) 123 456 7890"
-            value="+<%= logincollections.contact  %>"
-            maxlength="12"
+            id="employeeID"
+            placeholder="Enter employee ID"
+            value="<%= logincollections.employeeID  %>"
             required
             disabled
           />
@@ -121,7 +151,7 @@
           </select>
         </div>
         <div class="form-item">
-          <label for="hrrole" class="form-label mt-4">HR Role</label>
+          <label for="hrrole" class="form-label mt-4">Position</label>
           <select
             type="text"
             name="hrrole"
@@ -134,11 +164,12 @@
             <option value="ROLE 3" <% if (logincollections.hrrole === 'ROLE 3') { %> selected <% } %>>Admin Officer</option>
             <option value="ROLE 4" <% if (logincollections.hrrole === 'ROLE 4') { %> selected <% } %>>Admin Assistant</option>
             <option value="ROLE 5" <% if (logincollections.hrrole === 'ROLE 5') { %> selected <% } %>>Admin Aide</option>
+            <option value="ROLE 6" <% if (logincollections.hrrole === 'ROLE 6') { %> selected <% } %>>Helper</option>
           </select>
         </div>
       </div>
       <div class="form-group flex-container">
-        <div class="form-item-2">
+        <div class="form-item">
           <label for="dayOff" class="form-label mt-4">Day Offs:</label>
           <select
             name="dayOff"
@@ -155,6 +186,21 @@
             <option value="Saturday">Saturday</option>
           </select>
         </div>
+        <div class="form-item">
+          <label for="empStatus" class="form-label mt-4">Employment Type</label>
+          <select
+            type="text"
+            name="empStatus"
+            class="form-select"
+            id="empStatus"
+          >
+            <option value="Permanent" <% if (logincollections.empStatus === 'Full-Time') { %> selected <% } %>>Permanent</option>
+            <option value="Coterminous" <% if (logincollections.empStatus === 'Part-Time') { %> selected <% } %>>Coterminous</option>
+            <option value="Casual" <% if (logincollections.empStatus === 'Casual') { %> selected <% } %>>Casual</option>
+            <option value="Job Order" <% if (logincollections.empStatus === 'Job Order') { %> selected <% } %>>Job Order</option>
+          </select>
+        </div>
+      </div>
     </fieldset>
       <input type="submit" value="Update User" class="btn btn-success btn mt-4" />
       <a

@@ -4,7 +4,7 @@
 
   <div class="page-body">
     <div class="page-name">
-      <h1>Submit File:</h1>
+      <h1>Assign a Task:</h1>
       <a class="btn btn-secondary" href="/home">GO BACK</a>
     </div>
     <div id="alertContainer" class="bottom-right">
@@ -21,10 +21,6 @@
       </div>
       <% } %>
     </div>
-    <p class="text-muted">
-      This will send the file to the "PENDING" section. If the file is
-      CONFIDENTIAL, it will be sent to the "CONFIDENTIAL" section.
-    </p>
     <div class="page-content">
       <form action="/submitfile" method="post" enctype="multipart/form-data">
         <fieldset>
@@ -84,6 +80,17 @@
               <small id="assignHelp" class="form-text text-muted"
                 >Assign the file to someone (Optional)</small
               >
+            </div>
+          </div>
+          <div class="form-group flex-container">
+            <div class="form-item">
+              <label for="dueDate" class="form-label mt-4">Task Due Date:</label>
+              <input
+                type="date"
+                name="dueDate"
+                class="form-control"
+                required
+              />
             </div>
           </div>
           <div class="form-group">

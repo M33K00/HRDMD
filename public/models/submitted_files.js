@@ -34,6 +34,11 @@ const submittedFilesSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  dueDate: {
+    type: Date,
+    required: true,
+    default: null,
+  },
   status: {
     type: String,
     required: true,

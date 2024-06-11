@@ -146,7 +146,7 @@
             <tbody>
               <% logincollections.forEach((row, index) => { %>
               <tr>
-                <td class="fw-bold mb-1" ><%= row.name %></td>
+                <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                 <td><%= row.email %></td>
                 <td><%= row.contact %></td>
                 <td>
@@ -204,7 +204,7 @@
               <tbody>
                 <% HRdp.forEach((row, index) => { %>
                 <tr>
-                  <td class="fw-bold mb-1" ><%= row.name %></td>
+                  <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                   <td><%= row.email %></td>
                   <td><%= row.contact %></td>
                   <td class="action-buttons">
@@ -245,7 +245,7 @@
               <tbody>
                 <% DP1.forEach((row, index) => { %>
                 <tr>
-                  <td class="fw-bold mb-1" ><%= row.name %></td>
+                  <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                   <td><%= row.email %></td>
                   <td><%= row.contact %></td>
                   <td class="action-buttons">

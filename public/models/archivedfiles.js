@@ -34,6 +34,10 @@ const archivedFilesSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  dueDate: {
+    type: Date,
+    default: null,
+  },
   status: {
     type: String,
     required: true,

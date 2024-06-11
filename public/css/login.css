@@ -188,3 +188,25 @@ video {
     transform: rotate(360deg);
   }
 }
+.flex-container {
+  display: flex;
+  gap: 10px; /* Optional: adds space between the input fields */
+}
+.flex-container input {
+  flex: 1; /* Optional: makes the input fields take equal width */
+}
+
+.alert {
+  display: none;
+  position: absolute;
+  top: 25px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Ensure it appears on top */
+  width: 90%; /* Adjust width as needed */
+  max-width: 600px; /* Maximum width */
+}
+.flex-container {
+  display: flex;
+  gap: 10px; /* Adds space between the input fields */
+}

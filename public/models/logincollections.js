@@ -7,6 +7,10 @@ const logInSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please add a name"],
   },
+  lastname: {
+    type: String,
+    required: [true, "Please add a lastname"],
+  },
   email: {
     type: String,
     required: [true, "Please add an email"],
@@ -28,6 +32,16 @@ const logInSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please add a password"],
     minlength: [8, "Password must be at least 8 characters"],
+  },
+  employeeID: {
+    type: String,
+    required: true,
+    default: "",
+  },
+  empStatus: {
+    type: String,
+    required: false,
+    default: "",
   },
   image: {
     type: String,

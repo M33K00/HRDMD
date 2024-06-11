@@ -47,6 +47,36 @@ router.get("/home", checkRole, async (request, response) => {
       .skip((currentPage - 1) * pageSize)
       .limit(pageSize);
 
+    // Get today's date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to beginning of the day
+
+    // Get end of today
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999); // Set time to end of the day
+
+    const todayFiles = await SubmittedFiles.find({
+      fileType: "non-confidential",
+      dueDate: { $gte: today, $lte: endOfToday },
+    }).sort({ dateSubmitted: -1 });
+
+    const todayFilesIds = todayFiles.map((file) => file._id);
+
+    // Calculate the start and end of the current week
+    const startOfWeek = new Date();
+    startOfWeek.setHours(0, 0, 0, 0); // Set time to beginning of the day
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Move to start of the week (Sunday)
+
+    const endOfWeek = new Date();
+    endOfWeek.setHours(23, 59, 59, 999); // Set time to end of the day
+    endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay())); // Move to end of the week (Saturday)
+
+    const currentWeekFiles = await SubmittedFiles.find({
+      fileType: "non-confidential",
+      dueDate: { $gte: startOfWeek, $lte: endOfWeek },
+      _id: { $nin: todayFilesIds },
+    }).sort({ dateSubmitted: -1 });
+
     // Fetch pending files and sort by dateSubmitted in descending order
     const pendingFiles = await SubmittedFiles.find({
       status: "PENDING",
@@ -61,26 +91,21 @@ router.get("/home", checkRole, async (request, response) => {
       fileType: "non-confidential",
     }).sort({ dateSubmitted: -1 });
 
-    // Fetch rejected files and sort by dateSubmitted in descending order
-    const rejectedFiles = await SubmittedFiles.find({
-      status: "REJECTED",
+    const forApproval = await SubmittedFiles.find({
+      status: "FOR APPROVAL",
       fileType: "non-confidential",
     }).sort({ dateSubmitted: -1 });
 
-    // Fetch revision files and sort by dateSubmitted in descending order
-    const revisionFiles = await SubmittedFiles.find({
-      status: "REVISION",
-      fileType: "non-confidential",
-    }).sort({ dateSubmitted: -1 });
 
     response.render("home", {
       submittedFiles,
+      currentWeekFiles,
+      todayFiles,
       currentPage,
       totalPages,
       pendingFiles,
       approvedFiles,
-      rejectedFiles,
-      revisionFiles,
+      forApproval,
     });
   } catch (error) {
     console.error("Error reading directory:", error);
@@ -594,6 +619,7 @@ router.post("/submitfile", documentUpload.single("file"), async (req, res) => {
       email: req.body.email,
       fileInstruction: req.body.fileInstruction,
       dateSubmitted: new Date(),
+      dueDate: req.body.dueDate,
       fileUpload: req.file ? req.file.filename : null,
     };
 
@@ -789,6 +815,38 @@ router.get("/pending-file/:id", async (req, res) => {
     res.redirect("/home");
   }
 });
+
+router.get("/for-approval-file/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const file = await SubmittedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "File not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
+
+    file.status = "FOR APPROVAL";
+    await file.save();
+
+    req.session.message = {
+      type: "success",
+      message: "Task marked for approval.",
+    };
+    res.redirect("/view_file/" + id);
+
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+})
 
 router.get("/archive_file/:id", async (req, res) => {
   try {

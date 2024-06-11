@@ -2,24 +2,28 @@
   const form = document.querySelector("form");
   const emailError = document.querySelector(".email-error");
   const passwordError = document.querySelector(".password-error");
+  const successAlert = document.getElementById("success-alert");
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    // reset errors
+    // reset errors and hide success alert
     emailError.textContent = "";
     passwordError.textContent = "";
+    successAlert.style.display = "none";
 
     // get values
     const name = form.name.value;
+    const lastname = form.lastname.value;
     const email = form.email.value;
     const password = form.password.value;
+    const employeeID = form.employeeID.value;
     const hrrole = form.hrrole.value;
 
     try {
       const result = await fetch("/signup", {
         method: "POST",
-        body: JSON.stringify({ name, email, password, hrrole }),
+        body: JSON.stringify({ name, lastname, email, password, employeeID, hrrole }),
         headers: { "Content-Type": "application/json" },
       });
       const data = await result.json();
@@ -29,7 +33,10 @@
         passwordError.textContent = data.errors.password;
       }
       if (data.logincollection) {
-        window.location = "/login";
+        successAlert.style.display = "block"; // Show success alert
+        setTimeout(() => {
+          window.location = "/login";
+        }, 2000); // Redirect after 3 seconds
       }
     } catch (err) {
       console.log(err);

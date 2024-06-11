@@ -29,6 +29,14 @@
         emailError.textContent = data.errors.email;
         passwordError.textContent = data.errors.password;
 
+        // Check if account has roles
+        if (data.errors.password === "No roles assigned to this account") {
+          var myModal = new bootstrap.Modal(document.getElementById('noRolesModal'), {
+            keyboard: false
+          });
+          myModal.show();
+        }
+
         // Check if the account is closed
         if (data.errors.password === "Your account has been closed") {
           var myModal = new bootstrap.Modal(document.getElementById('accountClosedModal'), {

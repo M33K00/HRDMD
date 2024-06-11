@@ -60,9 +60,9 @@
       <% } %>
       </div>
       <div class="account-in mt-3 text">
-        <p><b>Name:</b> <%= logincollections.name %></p>
+        <p><b>Name:</b> <%= logincollections.name %> <%= logincollections.lastname %></p>
         <p><b>Email:</b> <%= logincollections.email %></p>
-        <p><b>Contact:</b> <%= logincollections.contact %></p>
+        <p><b>Emp. Status:</b> <%= logincollections.empStatus %></p>
         <p><b>Department:</b> <% if (logincollections.department === 'HR Department') { %>
          HR Department <% } else if (logincollections.department === 'Department 1') { %>
          PESO Department <% } else if (logincollections.department === 'Department 2') { %>
@@ -84,13 +84,20 @@
             <p><b>Days Present:</b> <%= attendance.daysPresent %></p></p>
             <p><b>Days Absent:</b> <%= attendance.daysAbsent %></p>
             <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
-            <p class="<% if (attendance.creditPoints === 125) { %>
+            <p class="<% if (attendance.VLPoints === 1.25) { %>
                  text-success
-                <% } else if (attendance.creditPoints <= 124 ) { %>
+                <% } else if (attendance.VLPoints <= 1.24 ) { %>
                 text-warning
-                <% } else if (attendance.creditPoints <= 115 ) { %>
+                <% } else if (attendance.VLPoints <= 1.15 ) { %>
                 text-danger
-                <% } %>"><b style="color: rgb(0, 0, 0);">Credit Points:</b> <%= attendance.creditPoints %></p></p>
+                <% } %>"><b style="color: rgb(0, 0, 0);">VL Points:</b> <%= attendance.VLPoints %></p>
+            <p class="<% if (attendance.SLPoints === 1.25) { %>
+                 text-success
+                <% } else if (attendance.SLPoints <= 1.24 ) { %>
+                text-warning
+                <% } else if (attendance.SLPoints <= 1.15 ) { %>
+                text-danger
+                <% } %>"><b style="color: rgb(0, 0, 0);">SL Points:</b> <%= attendance.SLPoints %></p>
         </div>
     </div>
     <div class="account-stat mt-3">

@@ -20,7 +20,7 @@
           <div class="email-error mb-3"></div>
           <input type="password" name="password" placeholder="Password" required />
           <div class="password-error mb-3"></div>
-          <input type="submit" class="button"/>
+          <input type="submit" class="button" value="LOGIN"/>
         </form>
         <div class="forgot-password mb-3">
           <a href="#" id="forgot-password-link" data-bs-toggle="modal" data-bs-target="#forgot-password-modal">Forgot Password?</a>
@@ -44,7 +44,7 @@
       </div>
     </div>
   </div>
-  <!-- Modal -->
+  <!-- Account ClosedModal -->
   <div class="modal fade" id="accountClosedModal" tabindex="-1" aria-labelledby="accountClosedLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
@@ -54,6 +54,23 @@
         </div>
         <div class="modal-body">
           Your account has been closed. Please contact your Department Head for further assistance.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- No Roles Modal -->
+  <div class="modal fade" id="noRolesModal" tabindex="-1" aria-labelledby="noRolesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger" id="noRolesLabel">Not Authorized</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Your account is not yet verified. Please contact the HR Department for further assistance.
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

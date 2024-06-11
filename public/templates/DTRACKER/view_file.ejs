@@ -1,13 +1,18 @@
 <%- include('../layouts/header') -%>
 <body>
-  <%- include('../layouts/nav') -%> <%- include('../layouts/sidenav') %>
+  <%- include('../layouts/nav') -%>
+  <% if (user.hrrole !== "ADMIN") { %>
+    <%- include('../layouts/sidenavR1') %>
+  <% } else { %>
+    <%- include('../layouts/sidenav') %>
+  <% } %>
   <div class="page-body">
     <div class="page-name">
-      <h1>VIEW FILE:</h1>
+      <h1>VIEW TASK:</h1>
       <% if (fileDes === "Archive") { %>
         <a href="/archive_files" class="btn btn-secondary">RETURN TO ARCHIVE</a>
       <% } else { %>
-        <a href="/home" class="btn btn-secondary">RETURN TO TRACKER</a>
+        <a href="/home" class="btn btn-secondary">RETURN TO MANAGER</a>
       <% } %>
     </div>
     <div id="alertContainer" class="bottom-right">
@@ -36,13 +41,12 @@
            class="text-danger" style="font-weight: 800"
           <% } %>><strong>File Type:</strong> <%= file.fileType %></p>
           <p>
-            <strong>Date Submitted:</strong> <%=
-            file.dateSubmitted.toISOString().split('T')[0] %>
+            <strong>TASK DUE DATE:</strong> <%=
+            file.dueDate.toISOString().split('T')[0] %>
           </p>
           <p <% if (file.status === 'REJECTED') { %> class="text-danger" <% } %>
             <% if (file.status === 'APPROVED') { %> class="text-success" <% } %> 
-            <% if (file.status === 'PENDING') { %> class="text-warning" <% } %>
-            <% if (file.status === 'REVISION') { %> class="text-dark" <% } %>
+            <% if (file.status === 'PENDING' || file.status === 'FOR APPROVAL') { %> class="text-warning" <% } %>
             style="font-weight: 800"
           ><strong>Status:</strong> <%= file.status %></p>
           <p><strong>Assigned To:</strong> <%= file.assignTo %></p>
@@ -73,11 +77,15 @@
               Actions
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#" onclick="showConfirmationModal('Archive', '<%= file.id %>')"><img src="../images/svg/box-archive-solid.svg" class="icon" /> Archive</a>
-              <a class="dropdown-item" href="#" onclick="showConfirmationModal('Reject', '<%= file.id %>')"><img src="../images/svg/xmark-solid.svg" class="icon" /> Reject</a>
-              <a class="dropdown-item" href="#" onclick="showConfirmationModal('Pending', '<%= file.id %>')"><img src="../images/svg/hourglass-start-solid.svg" class="icon" /> Pending</a>
-              <a class="dropdown-item" href="#" onclick="showConfirmationModal('Revision', '<%= file.id %>')"><img src="../images/svg/rotate-right-solid.svg" class="icon" /> Revision</a>
-              <a class="dropdown-item" href="#" onclick="showConfirmationModal('Approve', '<%= file.id %>')"><img src="../images/svg/check-solid.svg" class="icon" /> Approve</a>
+              <% if (user.hrrole !== "ADMIN" && file.status === "PENDING") { %>
+                <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for approval', '<%= file.id %>')"><i class="fa-solid fa-file-circle-check mr-2"></i> For Approval</a>
+              <% } %>
+              <% if (user.hrrole === "ADMIN" && file.status === "FOR APPROVAL") { %>
+                <a class="dropdown-item" href="#" onclick="showConfirmationModal('set this task as approved', '<%= file.id %>')"><i class="fa-solid fa-check"></i> Approve</a>
+              <% } %>
+              <% if (user.hrrole === "ADMIN" && file.status === "APPROVED") { %>
+                <a class="dropdown-item" href="#" onclick="showConfirmationModal('move this task to archive', '<%= file.id %>')"><i class="fa-solid fa-box-archive"></i> Archive</a>
+              <% } %>
             </div>
           </div>
           </div>

@@ -3,8 +3,8 @@
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
   <div class="page-body">
     <div class="page-name">
-      <h2>Document Tracker</h2>
-      <a class="btn btn-primary" href="/submitfile">ADD Document</a>
+      <h1 class="text-uppercase">Task Manager</h1>
+      <a class="btn btn-primary" href="/submitfile">Assign Task</a>
     </div>
     <div id="alertContainer" class="bottom-right">
       <% if (message) { %>
@@ -21,17 +21,17 @@
       <% } %>
     </div>
     <%# Folder Buttons %>
-    <h5 class="folder-title">Folders:</h5>
+    <h5 class="folder-title">Tabs:</h5>
     <div class="rolefolder-container">
       <a href="#" data-target="all-files"
         ><div class="rolefolder-item active">
-          <i class="fa-regular fa-folder"></i>
-          <p>All Files</p>
+          <i class="fa-solid fa-list-check"></i>
+          <p>All Tasks</p>
         </div></a
       >
       <a href="#" data-target="approved"
         ><div class="rolefolder-item">
-          <i class="fa-regular fa-folder"></i>
+          <i class="fa-solid fa-check"></i>
           <p>Approved</p>
           <% if (approvedFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
@@ -40,35 +40,24 @@
           <% } %>
         </div></a
       >
+      <a href="#" data-target="forApproval"
+        ><div class="rolefolder-item">
+          <i class="fa-solid fa-file-circle-check"></i>
+          <p>For Approval</p>
+          <% if (forApproval.length > 0) { %>
+            <span class="badge rounded-pill bg-danger"
+              ><%= forApproval.length %></span
+            >
+            <% } %>
+        </div></a
+      >
       <a href="#" data-target="pending"
         ><div class="rolefolder-item">
-          <i class="fa-regular fa-folder"></i>
+          <i class="fa-solid fa-hourglass-start"></i>
           <p>Pending</p>
           <% if (pendingFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
             ><%= pendingFiles.length %></span
-          >
-          <% } %>
-        </div></a
-      >
-      <a href="#" data-target="revision"
-        ><div class="rolefolder-item">
-          <i class="fa-regular fa-folder"></i>
-          <p>Revision</p>
-          <% if (revisionFiles.length > 0) { %>
-          <span class="badge rounded-pill bg-danger"
-            ><%= revisionFiles.length %></span
-          >
-          <% } %>
-        </div></a
-      >
-      <a href="#" data-target="rejected"
-        ><div class="rolefolder-item">
-          <box-icon type="solid" name="x-square"></box-icon>
-          <p>Rejected Files</p>
-          <% if (rejectedFiles.length > 0) { %>
-          <span class="badge rounded-pill bg-danger"
-            ><%= rejectedFiles.length %></span
           >
           <% } %>
         </div></a
@@ -83,11 +72,8 @@
     <div id="pending" class="content-div">
       <%- include('./layouts/tables/pendingTable') -%>
     </div>
-    <div id="revision" class="content-div">
-      <%- include('./layouts/tables/revisionTable') -%>
-    </div>
-    <div id="rejected" class="content-div">
-      <%- include('./layouts/tables/rejectedTable') %>
+    <div id="forApproval" class="content-div">
+      <%- include('./layouts/tables/forApprovalTable') -%>
     </div>
   </div>
 </body>
