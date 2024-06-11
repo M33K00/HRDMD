@@ -98,6 +98,65 @@ var upload = multer({
   storage: storage,
 }).single("image");
 
+const vlPointsAdditions = [
+  0.042, 0.063, 0.125, 0.167, 0.208, 0.250, 0.292, 0.333, 0.375, 0.417, 
+  0.458, 0.500, 0.542, 0.583, 0.625, 0.667, 0.708, 0.750, 0.792, 0.833, 
+  0.875, 0.917, 0.958, 1.000, 1.042, 1.083, 1.125, 1.167, 1.208, 1.250
+];
+
+async function calculateCurrentVLPoints(email) {
+
+  var presentStreak = 0
+  var vlPoints = 1.25
+  
+  const dates = []
+  const attendances = {}
+  
+  function getDateOnly(date) {
+      return (
+          date.getYear().toString().padStart(4,0) + '/' +
+          date.getMonth().toString().padStart(2,0) + '/' +
+          date.getDate().toString().padStart(2,0)
+      )
+  }
+  
+  const daysPresent = await DaysPresent.find({ email: email }).sort({ date: -1 })
+  daysPresent.forEach((presentRecord) => {
+      const dateOnly = getDateOnly(presentRecord.date)
+      if (!attendances[dateOnly]) {
+          dates.push(dateOnly)
+          attendances[dateOnly] = 'present'
+      }
+  });
+  
+  const daysAbsent = await DaysAbsent.find({ email: email }).sort({ date: -1 })
+  daysAbsent.forEach((presentRecord) => {
+      const dateOnly = getDateOnly(presentRecord.date)
+      if (!attendances[dateOnly]) {
+          dates.push(dateOnly)
+          attendances[dateOnly] = 'absent'
+      }
+  });
+  
+  dates.sort()
+  
+  for (const dateOnly of dates) {
+      
+      if ( attendances[dateOnly] === 'present' ) {
+          presentStreak++
+          vlPoints += vlPointsAdditions[presentStreak > 30 ? 30 : presentStreak]
+      } else if ( attendances[dateOnly] === 'absent' ) {
+          presentStreak = 0
+          vlPoints -= 1
+      }
+      
+  }
+
+  return vlPoints
+}
+
+
+
 // Login Page Routes
 router.get("/login", authController.login_get);
 
@@ -921,7 +980,6 @@ router.get("/view-dtr/:id", checkHRSettings, async (req, res) => {
     let attendance = await Attendance.findOne({
       email: email,
     });
-
     
 
     const timeIn = new Date(attendance.timeIn);
@@ -977,6 +1035,10 @@ router.get("/view-dtr/:id", checkHRSettings, async (req, res) => {
     } else {
       status = "Present";
     }
+
+    const leave = await calculateCurrentVLPoints(logincollections.email);
+    
+    console.log("leave:", leave);
 
     res.render("HRIS/view-dtr", {
       title: "View Account",
