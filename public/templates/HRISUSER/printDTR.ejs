@@ -1,4 +1,41 @@
 <%- include('../layouts/user_hris/hris_user_header') -%>
+<style>
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: inherit;
+  height: 200px;
+}
+
+.header .logo {
+  position: absolute;
+  left: 310;
+  top: 35%;
+  transform: translateY(-50%);
+  width: 100px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+.header h5 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.header h3 {
+  margin-top: 30px;
+}
+
+</style>
 <body>
   <%- include('../layouts/navhris') -%>
   <div class="print-body">
@@ -6,10 +43,19 @@
       <h1>Daily Time Record:</h1>
       <a href="/dtr_user/<%= user._id %>" class="btn btn-secondary">GO BACK</a>
     </div>
-    <button id="download" class="btn btn-primary mb-2">Download as PDF</button>
-    <div class="page-content mt-4 p-4 bg-light" id="page-content">
-        <h3>DTR Report for <strong><%= user.name %></strong>:</h3>
-        <table id="table" class="table table-bordered">
+    <button id="download" class="btn btn-primary mb-5">Download as PDF</button>
+    <div class="page-content p-4 bg-white" id="page-content">
+      <div class="header">
+        <img src="../images/logo.png" class="logo">
+        <div class="text-container">
+          <h5 class="text-center">Republic of the Philippines</h5>
+          <h5 class="text-center">City Government of Bacoor</h5>
+          <h5 class="text-center">Bacoor Government Center, Brgy. Bayanan,</h5>
+          <h5 class="text-center">Bacoor Blvd., City of Bacoor, Cavite</h5>
+          <h3 class="text-center">DAILY TIME RECORD</h3>
+        </div>
+      </div>      
+        <table id="table" class="table table-bordered" style="width: 100%">
             <tr>
               <td style="width: 50%"><strong>Name:</strong> <%= user.name %></td>
               <td><strong>Email:</strong> <%= user.email %></td>
@@ -42,7 +88,8 @@
               <th>Days Absent</th>
               <th>Days on Leave</th>
               <th>Total Hours Worked</th>
-              <th>Leave Points</th>
+              <th>VL Points</th>
+              <th>SL Points</th>
             </tr>
           </thead>
           <tbody>
@@ -51,7 +98,8 @@
               <td><%- attendance.daysAbsent %></td>
               <td><%- attendance.daysOnLeave %></td>
               <td class="fw-bold"><%- attendance.hoursWorked.toFixed(2) %></td>
-              <td><%- attendance.creditPoints %></td>
+              <td><%- VLPoints %></td>
+              <td><%- SLPoints %></td>
             </tr>
           </tbody>
         </table>
@@ -89,21 +137,27 @@
 </div>
 <script src="../scripts/html2pdf.bundle.min.js"></script>
 <script>
-    document.getElementById("download").addEventListener("click", () => {
-      // Select the content of the div
-      var element = document.getElementById("page-content");
-  
-      // Configure the options for the PDF
-      var opt = {
-        margin: 0.5,
-        filename: "DTRReport.pdf",
-        image: { type: "jpeg", quality: 1.0 },
-        html2canvas: { scale: 5.0 },
-        jsPDF: { unit: "in", format: "legal", orientation: "portrait" },
-      };
-  
-      // Use html2pdf to create and download the PDF
-      html2pdf().from(element).set(opt).save();
-    });
+  document.getElementById("download").addEventListener("click", () => {
+  // Select the content of the div
+  var element = document.getElementById("page-content");
+
+  // Configure the options for the PDF
+  var opt = {
+    filename: "DTRReport.pdf",
+    image: { type: "jpeg", quality: 1.0 },
+    html2canvas: {
+      margin: 1,
+      scale: 5.0,
+      dpi: 144,
+      letterRendering: true,
+      useCORS: true // Use this option if you have cross-origin images
+    },
+    jsPDF: { unit: "in", format: "legal", orientation: "landscape" },
+  };
+
+  // Use html2pdf to create and download the PDF
+  html2pdf().from(element).set(opt).save();
+});
+
 </script>
 <%- include('../layouts/footer') %>

@@ -83,17 +83,6 @@
             >
             <% } %>
           </li>
-          <% if (user.hrrole === "ADMIN") { %>
-          <li>
-            <a
-              href="<%= user.hrrole === 'ADMIN' ? '/view_emp_data/' + user._id : '#' %>"
-              ><img
-                src="../images/svg/lock-solid.svg"
-                class="img-icon"
-              />Confidential Files</a
-            >
-          </li>
-          <% } %>
           <% if (user.hrrole === "ROLE 5" && user.department === "HR Department") { %>
           <li>
             <a href="/dtr">

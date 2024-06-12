@@ -48,18 +48,13 @@
               />
             </div>
             <div class="form-item">
-              <label for="fileType" class="form-label mt-4">File Type:</label>
-              <select
-                name="fileType"
-                id="fileTypeSelect"
-                class="form-select"
+              <label for="dueDate" class="form-label mt-4">Task Due Date:</label>
+              <input
+                type="date"
+                name="dueDate"
+                class="form-control"
                 required
-              >
-                <option value="non-confidential" selected>
-                  NON-CONFIDENTIAL
-                </option>
-                <option value="confidential">CONFIDENTIAL</option>
-              </select>
+              />
             </div>
           </div>
           <div id="non-con" class="form-group">
@@ -69,28 +64,25 @@
                 name="assignTo"
                 class="form-control"
                 id="exampleInputEmail1"
+                required
               >
-                <option value="None">None</option>
+              <option value="" disabled selected>Select a user</option>
                 <% users.forEach(user => { 
-                  if (user.department === "HR Department") { %>
-                      <option value="<%= user.name %>"><%= user.name %></option>
+                  if (user.department === "HR Department" && user.hrrole !== "ADMIN" && !user.accountClosed) { %>
+                      <option value="<%= user.hrrole %>"><strong><%= user.name %></strong> - 
+                          <% if (user.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                          else if (user.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                          else if (user.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                          (user.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                          (user.hrrole === "ROLE 5") { %> Admin Aide <% } %>
+                      </option>
                   <% } 
               }) %>
+              
               </select>
               <small id="assignHelp" class="form-text text-muted"
                 >Assign the file to someone (Optional)</small
               >
-            </div>
-          </div>
-          <div class="form-group flex-container">
-            <div class="form-item">
-              <label for="dueDate" class="form-label mt-4">Task Due Date:</label>
-              <input
-                type="date"
-                name="dueDate"
-                class="form-control"
-                required
-              />
             </div>
           </div>
           <div class="form-group">

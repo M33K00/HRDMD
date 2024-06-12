@@ -23,7 +23,9 @@
             placeholder="Enter name"
             value="<%= logincollections.name  %>"
             required
-            disabled
+            <% if (user.name !== logincollections.name) { %>
+              disabled
+            <% } %>
           />
         </div>
         <div class="form-item">
@@ -35,7 +37,9 @@
             aria-describedby="emailHelp"
             value="<%= logincollections.lastname  %>"
             required
-            disabled
+            <% if (user.lastname !== logincollections.lastname) { %>
+              disabled
+            <% } %>
           />
         </div>
       </div>

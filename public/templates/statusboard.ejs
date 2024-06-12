@@ -3,10 +3,9 @@
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
   <div class="page-body">
     <div class="page-name">
-      <h2>STATUS BOARD</h2>
-      <a href="/printStatusboard" class="btn btn-primary">PRINT REPORT</a>
+      <h1>STATUS BOARD</h1>
     </div>
-    <p class="text-muted mb-4 ">Track the approval status of documents submitted in the system</p>
+    <p class="text-muted mb-4 ">Track the status of all tasks across all employees.</p>
     <% const rejected = submittedFiles.filter((row) => row.status === 'REJECTED') %>
     <% const pending = submittedFiles.filter((row) => row.status === 'PENDING') %>
     <% const revision = submittedFiles.filter((row) => row.status === 'REVISION') %>
@@ -18,23 +17,17 @@
         </div>
         <div class="stat-count"><%= approved.length %></div>
       </div>
+      <div class="stat-div div-revision">
+        <div class="stat-title">
+          <p>For Approval:</p>
+        </div>
+        <div class="stat-count"><%= revision.length %></div>
+      </div>
       <div class="stat-div div-pending">
         <div class="stat-title">
           <p>Pending:</p>
         </div>
         <div class="stat-count"><%= pending.length %></div>
-      </div>
-      <div class="stat-div div-revision">
-        <div class="stat-title">
-          <p>Revision:</p>
-        </div>
-        <div class="stat-count"><%= revision.length %></div>
-      </div>
-      <div class="stat-div div-reject">
-        <div class="stat-title">
-          <p>Rejected:</p>
-        </div>
-        <div class="stat-count"><%= rejected.length %></div>
       </div>
     </div>
     <%# Search bar %>
@@ -62,7 +55,6 @@
         <% } %>        
       </div>
           <% if (submittedFiles != '') { %>
-            <p class="text-muted mb-4 ">This table <strong>DOES NOT</strong> include <strong class="text-danger">CONFIDENTIAL</strong> files.</p>
             <table id="table" class="table table-hover table-striped text-center">
               <thead>
                 <tr class="table-primary text-uppercase">
@@ -78,7 +70,7 @@
                     <td><%= row.fileCode %></td>
                     <td><%= row.fileName %></td>
                     <td><%= row.dateSubmitted.toISOString().split('T')[0] %></td>
-                    <td><%= row.assignTo %></td>
+                    <td style="font-weight: 700;"><%= row.assignTo %></td>
                     <td><% if (row.status === 'APPROVED') { %>
                       <span class="badge bg-success">APPROVED</span>
                     <% } else if (row.status === 'REJECTED') { %>

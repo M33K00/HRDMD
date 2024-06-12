@@ -59,24 +59,24 @@
             <p><b>Days Present:</b> <%= attendance.daysPresent %></p></p>
             <p><b>Days Absent:</b> <%= attendance.daysAbsent %></p>
             <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
-            <p class="<% if (attendance.VLPoints === 1.25) { %>
+            <p class="<% if (VLPoints >= 1.25) { %>
                       text-success
-                  <% } else if (attendance.VLPoints <= 1.24 && attendance.VLPoints >= 1.00) { %>
+                  <% } else if (VLPoints <= 1.24 && VLPoints >= 1.00) { %>
                       text-warning
-                  <% } else if (attendance.VLPoints > 0.01 && attendance.VLPoints <= 0.99) { %>
+                  <% } else if (VLPoints > 0.01 && VLPoints <= 0.99) { %>
                       text-danger
                   <% } else { %>
                       text-danger
-                <% } %>"><b style="color: rgb(0, 0, 0);">VL Points:</b> <%= attendance.VLPoints %></p>
-            <p class="<% if (attendance.SLPoints === 1.25) { %>
+                <% } %>"><b style="color: rgb(0, 0, 0);">VL Points:</b> <%= VLPoints %></p>
+            <p class="<% if (SLPoints >= 1.25) { %>
                  text-success
-                <% } else if (attendance.SLPoints <= 1.24 && attendance.SLPoints >= 1.00 ) { %>
+                <% } else if (SLPoints <= 1.24 && SLPoints >= 1.00 ) { %>
                 text-warning
-                <% } else if (attendance.SLPoints <= 0.01 && attendance.SLPoints >= 0.99 ) { %>
+                <% } else if (SLPoints <= 0.01 && SLPoints >= 0.99 ) { %>
                 text-danger
                 <% } else { %>
                 text-danger
-                <% } %>"><b style="color: rgb(0, 0, 0);">SL Points:</b> <%= attendance.SLPoints %></p>
+                <% } %>"><b style="color: rgb(0, 0, 0);">SL Points:</b> <%= SLPoints %></p>
         </div>
     </div>
     <div class="account-stat mt-3">

@@ -639,34 +639,25 @@ body {
 
 .stat-container {
   display: grid;
-  grid-template-columns: 315px 315px 315px 315px;
+  grid-template-columns: 420px 420px 420px;
   gap: 10px;
   justify-content: center;
   align-items: center;
   width: 100%;
 }
 
-.div-reject {
-  background-color: brown;
-  background-image: url("../images/cross.png");
-  border: rgb(233, 72, 72) 2px solid;
-}
-
 .div-pending {
   background-color: orange;
-  background-image: url("../images/pending.png");
   border: rgb(233, 136, 72) 2px solid;
 }
 
 .div-revision {
-  background-color: #4d4d4d;
-  background-image: url("../images/rev.png");
-  border: rgb(116, 116, 116) 2px solid;
+  background-color: #ff6600;
+  border: rgb(255, 60, 0) 2px solid;
 }
 
 .div-approved {
   background-color: green;
-  background-image: url("../images/approved.png");
   border: rgb(52, 173, 52) 2px solid;
 }
 

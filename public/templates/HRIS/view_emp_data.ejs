@@ -84,20 +84,22 @@
             <p><b>Days Present:</b> <%= attendance.daysPresent %></p></p>
             <p><b>Days Absent:</b> <%= attendance.daysAbsent %></p>
             <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
-            <p class="<% if (attendance.VLPoints === 1.25) { %>
+            <p class="<% if (VLPoints >= 1.25) { %>
                  text-success
-                <% } else if (attendance.VLPoints <= 1.24 ) { %>
+                <% } else if (VLPoints <= 1.24 && VLPoints >= 1.15 ) { %>
                 text-warning
-                <% } else if (attendance.VLPoints <= 1.15 ) { %>
+                <% } else if (VLPoints <= 1.15 && VLPoints >= 1.00 ) { %>
                 text-danger
-                <% } %>"><b style="color: rgb(0, 0, 0);">VL Points:</b> <%= attendance.VLPoints %></p>
-            <p class="<% if (attendance.SLPoints === 1.25) { %>
+                <% } else if (VLPoints <= 1.00 ) { %>
+                text-danger
+                <% } %>"><b style="color: rgb(0, 0, 0);">VL Points:</b> <%= VLPoints %></p>
+            <p class="<% if (SLPoints >= 1.25) { %>
                  text-success
-                <% } else if (attendance.SLPoints <= 1.24 ) { %>
+                <% } else if (SLPoints <= 1.24 ) { %>
                 text-warning
-                <% } else if (attendance.SLPoints <= 1.15 ) { %>
+                <% } else if (SLPoints <= 1.15 ) { %>
                 text-danger
-                <% } %>"><b style="color: rgb(0, 0, 0);">SL Points:</b> <%= attendance.SLPoints %></p>
+                <% } %>"><b style="color: rgb(0, 0, 0);">SL Points:</b> <%= SLPoints %></p>
         </div>
     </div>
     <div class="account-stat mt-3">
@@ -118,7 +120,6 @@
               const formattedStartTime = startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
               const formattedEndTime = endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
               %>
-          <p><b>Dayoffs:</b> <%= attendance.dayOff %></p></p>
           <p><b>Cut-off Dates:</b> Every <%= hrSettings.startDate %> and <%= hrSettings.endDate %></p>
           <p><b>Shift Start:</b> <%= formattedStartTime %></p>
           <p><b>Shift End:</b> <%= formattedEndTime %></p>

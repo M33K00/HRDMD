@@ -155,7 +155,54 @@ async function calculateCurrentVLPoints(email) {
   return vlPoints
 }
 
+async function calculateCurrentSLPoints(email) {
 
+  var presentStreak = 0;
+  var slPoints = 1.25;
+
+  const dates = [];
+  const attendances = {};
+
+  function getDateOnly(date) {
+      return (
+          date.getYear().toString().padStart(4, 0) + '/' +
+          (date.getMonth() + 1).toString().padStart(2, 0) + '/' + // corrected getMonth() to return the month in 1-12 format
+          date.getDate().toString().padStart(2, 0)
+      );
+  }
+
+  const daysPresent = await DaysPresent.find({ email: email }).sort({ date: -1 });
+  daysPresent.forEach((presentRecord) => {
+      const dateOnly = getDateOnly(presentRecord.date);
+      if (!attendances[dateOnly]) {
+          dates.push(dateOnly);
+          attendances[dateOnly] = 'present';
+      }
+  });
+
+  const daysAbsent = await DaysAbsent.find({ email: email }).sort({ date: -1 });
+  daysAbsent.forEach((absentRecord) => {
+      const dateOnly = getDateOnly(absentRecord.date);
+      if (!attendances[dateOnly]) {
+          dates.push(dateOnly);
+          attendances[dateOnly] = 'absent';
+      }
+  });
+
+  dates.sort();
+
+  for (const dateOnly of dates) {
+      if (attendances[dateOnly] === 'present') {
+          presentStreak++;
+          slPoints += vlPointsAdditions[presentStreak > 30 ? 30 : presentStreak];
+      } else if (attendances[dateOnly] === 'absent') {
+          presentStreak = 0;
+          // No decrement of slPoints
+      }
+  }
+
+  return slPoints;
+}
 
 // Login Page Routes
 router.get("/login", authController.login_get);
@@ -917,6 +964,9 @@ router.get("/view_emp_data/:email", checkHRSettings, async (req, res) => {
 
     const results = await findDocumentsByEmail(logincollections.email);
 
+    const VLPoints = await calculateCurrentVLPoints(logincollections.email);
+    const SLPoints = await calculateCurrentSLPoints(logincollections.email);
+
     // Render the edit_users template with the retrieved user data
     res.render("HRIS/view_emp_data", {
       title: "View Account",
@@ -924,6 +974,8 @@ router.get("/view_emp_data/:email", checkHRSettings, async (req, res) => {
       hrSettings: hrSettings,
       attendance: attendance,
       results: results,
+      VLPoints: VLPoints,
+      SLPoints: SLPoints,
     });
   } catch (err) {
     // Log and handle errors gracefully
@@ -1036,9 +1088,8 @@ router.get("/view-dtr/:id", checkHRSettings, async (req, res) => {
       status = "Present";
     }
 
-    const leave = await calculateCurrentVLPoints(logincollections.email);
-    
-    console.log("leave:", leave);
+    const VLPoints = await calculateCurrentVLPoints(logincollections.email);
+    const SLPoints = await calculateCurrentSLPoints(logincollections.email);
 
     res.render("HRIS/view-dtr", {
       title: "View Account",
@@ -1054,6 +1105,8 @@ router.get("/view-dtr/:id", checkHRSettings, async (req, res) => {
       status: status,
       totalHours: totalHours,
       totalMinutes: totalMinutes,
+      VLPoints: VLPoints,
+      SLPoints: SLPoints,
     });
   } catch (err) {
     console.error("Error:", err);
@@ -1083,7 +1136,6 @@ router.get("/m-absent/:id", async (req, res) => {
       res.redirect("/view-dtr/" + logincollections._id);
     } else {
       attendance.daysAbsent += 1;
-      attendance.VLPoints -= 1;
       await attendance.save();
     }
 
@@ -1097,8 +1149,7 @@ router.get("/m-absent/:id", async (req, res) => {
 
     await daysAbsent.create(mAbsent);
 
-    
-
+  
     req.session.message = {
       type: "warning",
       message: "Marked as absent successfully",
