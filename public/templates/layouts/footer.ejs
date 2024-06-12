@@ -686,5 +686,44 @@
       });
   });
   </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var timeElapsedSpan = document.getElementById('time-elapsed');
+    
+    // Function to extract initial hours and minutes from the span text
+    function extractTime(text) {
+      var match = text.match(/(\d+) hours and (\d+) minutes/);
+      if (match) {
+        return {
+          hours: parseInt(match[1], 10),
+          minutes: parseInt(match[2], 10)
+        };
+      }
+      return { hours: 0, minutes: 0 };
+    }
+
+    // Extract initial values
+    var time = extractTime(timeElapsedSpan.innerText);
+    var totalHours = time.hours;
+    var totalMinutes = time.minutes;
+
+    function updateTime() {
+      totalMinutes++;
+      if (totalMinutes >= 60) {
+        totalMinutes = 0;
+        totalHours++;
+      }
+
+      // Update the displayed time
+      timeElapsedSpan.innerText = totalHours + ' hours and ' + totalMinutes + ' minutes';
+    }
+
+    // Update the time every minute (60000 milliseconds)
+    setInterval(updateTime, 60000);
+
+    // Optionally, update every second if you want more frequent updates
+    // setInterval(updateTime, 1000);
+  });
+</script>
 
     

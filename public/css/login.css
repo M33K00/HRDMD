@@ -23,7 +23,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #158cba;
+  background: #ffffff;
   padding: 30px;
 }
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
@@ -37,7 +37,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #158cba;
+  background: #ffffff;
 }
 .container {
   position: fixed; /* Position the container */
@@ -209,4 +209,17 @@ video {
 .flex-container {
   display: flex;
   gap: 10px; /* Adds space between the input fields */
+}
+
+.fade-in {
+  animation: fadeInAnimation 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeInAnimation {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
 }

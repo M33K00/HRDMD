@@ -7,18 +7,19 @@
     <%- include('../layouts/sidenavhris') %>
   <% } %>
   <%- include('../layouts/footer') %>
-  <div class="page-body">
+  <div class="page-body fade-in">
     <div class="page-name">
       <h1>Attendance Record:</h1>
       <a href="/dtr" class="btn btn-secondary">Go Back</a>
     </div>
-    <div id="alertContainer" class="bottom-right">
+    <div id="alertContainer" class="bottom-right slide-up">
       <% if (message) { %>
       <div
         class="alert alert-dismissible alert-<%= message.type %> fade show"
         role="alert"
         id="autoDismissAlert"
       >
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         <strong>Attention!</strong> <%= message.message %><a
           href="#"
           class="alert-link"
@@ -149,13 +150,17 @@
               <div class="div-title">
                 <p class="dtr-view-title">Total Today:</p>
               </div>
-              <div class="div-view-count"><% if (attendance.status === 'OUT' && status === 'Absent') { %>
-                ABSENT
-              <% } else if (attendance.timeIn !== null && status === 'Present') { %>
-                <%= totalHours %> hours and <%= totalMinutes %> minutes
-              <% } else { %>
-                N/A
-              <% } %></div>
+              <div class="div-view-count" id="attendance-status">
+                <% if (attendance.status === 'OUT' && status === 'Absent') { %>
+                  ABSENT
+                <% } else if (attendance.timeIn !== null && status === 'Present') { %>
+                  <span id="time-elapsed">
+                    <%= totalHours %> hours and <%= totalMinutes %> minutes
+                  </span>
+                <% } else { %>
+                  N/A
+                <% } %>
+              </div>
             </div>
             <div class="dtr-view-div">
               <div class="div-title">

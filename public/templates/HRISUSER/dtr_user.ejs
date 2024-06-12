@@ -3,8 +3,8 @@
   <%- include('../layouts/navhris') -%> <%-
   include('../layouts/user_hris/sidenavhris_user') %>
   <%- include('../layouts/footer') %>
-    <div class="page-body">
-      <div id="alertContainer" class="bottom-right">
+    <div class="page-body fade-in">
+      <div id="alertContainer" class="bottom-right slide-up">
         <% if (message) { %>
         <div
           class="alert alert-dismissible alert-<%= message.type %> fade show"
@@ -31,13 +31,13 @@
           </div>
         </div>
         <% if (VLPoints <= 1.24 && VLPoints >= 1.00 && logincollections.empStatus != 'Job Order') { %>
-          <div class="alert alert-dismissible alert-warning">
+          <div class="alert alert-dismissible alert-warning fade show">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             <h4 class="alert-heading">Warning!</h4>
             <p class="mb-0">Your VL points are below the threshold. Please ensure you clock in on time to maintain your points.</p>
           </div>
-          <% } else if (VLPoints > 0.01 && VLPoints <= 0.99 && logincollections.empStatus != 'Job Order') { %>
-          <div class="alert alert-dismissible alert-danger">
+          <% } else if (VLPoints <= 0.00 && VLPoints && logincollections.empStatus != 'Job Order') { %>
+          <div class="alert alert-dismissible alert-danger fade show">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             <h4 class="alert-heading">Warning!</h4>
             <p class="mb-0">Your VL points is low. Please ensure you clock in on time to maintain your points.</p>
@@ -172,11 +172,17 @@
               <div class="div-title">
                 <p class="dtr-view-title">Total Today:</p>
               </div>
-              <div class="div-view-count"><% if (attendance.timeIn !== null) { %>
-                <%= totalHours %> hours and <%= totalMinutes %> minutes
-              <% } else { %>
-                N/A
-              <% } %></div>
+              <div class="div-view-count" id="attendance-status">
+                <% if (attendance.status === 'OUT' && status === 'Absent') { %>
+                  ABSENT
+                <% } else if (attendance.timeIn !== null && status === 'Present') { %>
+                  <span id="time-elapsed">
+                    <%= totalHours %> hours and <%= totalMinutes %> minutes
+                  </span>
+                <% } else { %>
+                  N/A
+                <% } %>
+              </div>
             </div>
             <div class="dtr-view-div">
               <div class="div-title">

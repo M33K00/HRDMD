@@ -10,8 +10,8 @@
     </div>
     <% const unverified = employeecount.filter((employee) => !employee.verified); %>
     <% if (unverified.length > 0) { %>
-    <div id="alertContainer" class="bottom-right">
-      <div class="alert alert-dismissible alert-warning">
+    <div id="alertContainer" class="bottom-right slide-up">
+      <div class="alert alert-dismissible alert-warning fade show">
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         <h4 class="alert-heading mb-0" style="font-size: 20px;">Attention!</h4>
         <p class="mb-0" style="font-size: 15px;">There are currently <%= unverified.length %> accounts that needs verification. <a href="/view_employees" class="alert-link">Click here</a> to view and verify them.</p>
@@ -109,25 +109,6 @@
         </div>
       </div>
     </div>
-    <!--
-    <div class="hris-container-status">
-      <div class="container-div">
-        <a class="clickable-link" href="/view_employees">
-          <div class="employee-count">
-            <p class="display-label">Employee Count:</p>
-            <p class="display-count"><%= employeecount %></p>
-          </div>
-        </a>
-      </div>
-      <div class="container-div">
-        <a class="clickable-link" href="/leave_applications">
-          <div class="pending-count">
-            <p class="display-label">Pending Leave:</p>
-            <p class="display-count"><%= pendingleave %></p>
-          </div>
-        </a>
-      </div>
-    -->
     </div>
   </div>
 </body>

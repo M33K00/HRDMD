@@ -2,7 +2,7 @@
 <body>
   <%- include('../layouts/navhris') -%> <%-
   include('../layouts/user_hris/sidenavhris_user') %>
-  <div class="page-body">
+  <div class="page-body fade-in">
     <div class="page-name">
       <h1>Application Details</h1>
     </div>
@@ -44,7 +44,7 @@
       Please file application 5 days in advance, whenever possible, of the
       effictive date of the application
     </p>
-    <form action="/apply_leave" method="POST" class="app-form leave-form">
+    <form action="/apply_leave" method="POST" class="app-form leave-form slide-up">
       <div class="form-group flex-container">
         <div class="form-item">
           <input type="hidden" name="name" value="<%= user.name %>" />
