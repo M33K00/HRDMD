@@ -27,15 +27,20 @@
         ><div class="rolefolder-item active">
           <i class="fa-solid fa-list-check"></i>
           <p>All Tasks</p>
+          <% if (pendingFiles.length > 0) { %>
+            <span class="badge rounded-pill bg-dark"
+              ><%= submittedFiles.length %></span
+            >
+            <% } %>
         </div></a
       >
-      <a href="#" data-target="approved"
+      <a href="#" data-target="pending"
         ><div class="rolefolder-item">
-          <i class="fa-solid fa-check"></i>
-          <p>Approved</p>
-          <% if (approvedFiles.length > 0) { %>
+          <i class="fa-solid fa-hourglass-start"></i>
+          <p>Pending</p>
+          <% if (pendingFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
-            ><%= approvedFiles.length %></span
+            ><%= pendingFiles.length %></span
           >
           <% } %>
         </div></a
@@ -51,15 +56,10 @@
             <% } %>
         </div></a
       >
-      <a href="#" data-target="pending"
+      <a href="#" data-target="approved"
         ><div class="rolefolder-item">
-          <i class="fa-solid fa-hourglass-start"></i>
-          <p>Pending</p>
-          <% if (pendingFiles.length > 0) { %>
-          <span class="badge rounded-pill bg-danger"
-            ><%= pendingFiles.length %></span
-          >
-          <% } %>
+          <i class="fa-solid fa-check"></i>
+          <p>Approved</p>
         </div></a
       >
     </div>
@@ -79,6 +79,30 @@
 </body>
 <%- include('./layouts/modals/confirm') %>
 <%- include('./layouts/footer') -%>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const archiveButtons = document.querySelectorAll('.archive-button');
+
+    archiveButtons.forEach(button => {
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        const fileId = button.getAttribute('data-file-id');
+        const fileCode = button.getAttribute('data-file-code');
+
+        // Update modal content with file information
+        document.getElementById('archiveModalBody').innerHTML = `Are you sure you want to archive task with file code: ${fileCode}?`;
+
+        // Update archive button href with the correct file ID
+        const archiveConfirmButton = document.getElementById('archiveConfirmButton');
+        archiveConfirmButton.href = `/archive_file/${fileId}`;
+
+        // Show the modal
+        const archiveModal = new bootstrap.Modal(document.getElementById('archiveModalAll'));
+        archiveModal.show();
+      });
+    });
+  });
+</script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const links = document.querySelectorAll(".rolefolder-container a");

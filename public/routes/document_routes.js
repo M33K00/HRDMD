@@ -38,9 +38,7 @@ router.get("/home", checkRole, async (request, response) => {
     const totalSubmittedFiles = await SubmittedFiles.countDocuments();
     const totalPages = Math.ceil(totalSubmittedFiles / pageSize);
     // Fetch all submitted files and sort by dateSubmitted in descending order
-    const submittedFiles = await SubmittedFiles.find({
-      fileType: "non-confidential",
-    })
+    const submittedFiles = await SubmittedFiles.find({})
       .sort({
         dateSubmitted: -1,
       })
@@ -56,7 +54,6 @@ router.get("/home", checkRole, async (request, response) => {
     endOfToday.setHours(23, 59, 59, 999); // Set time to end of the day
 
     const todayFiles = await SubmittedFiles.find({
-      fileType: "non-confidential",
       dueDate: { $gte: today, $lte: endOfToday },
     }).sort({ dateSubmitted: -1 });
 
@@ -72,15 +69,22 @@ router.get("/home", checkRole, async (request, response) => {
     endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay())); // Move to end of the week (Saturday)
 
     const currentWeekFiles = await SubmittedFiles.find({
-      fileType: "non-confidential",
       dueDate: { $gte: startOfWeek, $lte: endOfWeek },
       _id: { $nin: todayFilesIds },
+    }).sort({ dateSubmitted: -1 });
+
+    const otherFiles = await SubmittedFiles.find({
+      dueDate: {
+        $not: {
+          $gte: today,
+          $lte: endOfWeek,
+        }
+      }
     }).sort({ dateSubmitted: -1 });
 
     // Fetch pending files and sort by dateSubmitted in descending order
     const pendingFiles = await SubmittedFiles.find({
       status: "PENDING",
-      fileType: "non-confidential",
     }).sort({
       dateSubmitted: -1,
     });
@@ -88,12 +92,10 @@ router.get("/home", checkRole, async (request, response) => {
     // Fetch approved files and sort by dateSubmitted in descending order
     const approvedFiles = await SubmittedFiles.find({
       status: "APPROVED",
-      fileType: "non-confidential",
     }).sort({ dateSubmitted: -1 });
 
     const forApproval = await SubmittedFiles.find({
       status: "FOR APPROVAL",
-      fileType: "non-confidential",
     }).sort({ dateSubmitted: -1 });
 
     const pageType = "non-confidential";
@@ -102,6 +104,7 @@ router.get("/home", checkRole, async (request, response) => {
       submittedFiles,
       currentWeekFiles,
       todayFiles,
+      otherFiles,
       currentPage,
       totalPages,
       pendingFiles,
@@ -228,9 +231,7 @@ router.get("/statusboard", async (req, res) => {
     const page = parseInt(req.query.page) || 1; // Current page number, default to 1
     const totalItems = await SubmittedFiles.countDocuments(); // Total number of items
 
-    const submittedFiles = await SubmittedFiles.find({
-      fileType: "non-confidential",
-    })
+    const submittedFiles = await SubmittedFiles.find({})
       .sort({ dateSubmitted: -1 }) // Sort by dateSubmitted in descending order
       .skip((page - 1) * ITEMS_PER_PAGE) // Skip items based on current page
       .limit(ITEMS_PER_PAGE); // Limit the number of items per page
@@ -636,7 +637,6 @@ router.post("/submitfile", documentUpload.single("file"), async (req, res) => {
       status: req.body.status,
       fileName: req.body.fileName,
       fileCode: req.body.fileCode,
-      fileType: req.body.fileType,
       assignTo: req.body.assignTo,
       email: req.body.email,
       fileInstruction: req.body.fileInstruction,
@@ -909,9 +909,7 @@ router.get("/archive_file/:id", async (req, res) => {
 });
 
 router.get("/printStatusboard", async (req, res) => {
-  const files = await SubmittedFiles.find(
-    { fileType: "non-confidential" },
-  );
+  const files = await SubmittedFiles.find({});
   res.render("HRIS/PRINT/statusboardprint", { files });
 })
 

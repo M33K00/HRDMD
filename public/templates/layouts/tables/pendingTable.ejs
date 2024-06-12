@@ -1,14 +1,15 @@
 <h2 class="mt-3">Pending Files:</h2>
-<% if (pendingFiles.length > 0) { %> <%# Search bar %>
+<% if (pendingFiles.length > 0) { %> 
+<!-- Search bar -->
 <input
-  class="form-control me-sm-2"
-  type="text"
-  id="filesInput"
-  placeholder="Search"
-  style="margin-bottom: 20px"
-  oninput="searchTable2()"
-/>
-<table id="table" class="table table-hover table-striped">
+      class="form-control me-sm-2"
+      type="text"
+      id="accInput"
+      placeholder="Search"
+      style="margin-bottom: 20px"
+      oninput="searchPending()"
+  />
+<table id="tablePending" class="table table-hover table-striped">
   <thead>
     <tr class="table-dark">
       <th style="width: 150px">File Code</th>
@@ -18,7 +19,7 @@
       <th style="width: 10px; padding-left: 30px">Action</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="fileTableBody">
     <% pendingFiles.forEach((file, index) => { %>
     <tr>
       <td><%= file.fileCode %></td>
@@ -32,32 +33,94 @@
         <a href="view_file/<%= file.id %>" class="icon-square text-dark"
           ><i class="fa-solid fa-eye"></i
         ></a>
-        <a href="#" class="icon-square text-warning" data-bs-toggle="modal" data-bs-target="#archiveModal3"
-          ><i class="fa-solid fa-box-archive"></i></a>
+        <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-buttonPending" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal"
+          ><i class="fa-solid fa-box-archive"></i>
+        </a>
       </td>
     </tr>
-    <!-- Modal for the "Archive" action -->
-    <div class="modal fade" id="archiveModal3" tabindex="-1" aria-labelledby="archiveModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="archiveModalLabel">Confirm Archive</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to archive this file?</p>
-          </div>
-          <div class="modal-footer">
-            <a href="/archive_file/<%= file.id %>" class="btn btn-warning">Archive</a>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
     <% }); %>
   </tbody>
 </table>
-
 <% } else { %>
-<p class="no-files">No pending tasks.</p>
+<p>No pending files.</p>
 <% } %>
+<!-- Modal HTML (outside of loop) -->
+<div class="modal fade" id="archiveModalPending" tabindex="-1" aria-labelledby="archiveModal2Label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="archiveModal2Label">Archive File</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="archiveModalBodyPending">
+        Are you sure you want to archive this file?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="#" id="archiveConfirmButtonPending" class="btn btn-warning">Archive</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const archiveButtons = document.querySelectorAll('.archive-buttonPending');
+
+    archiveButtons.forEach(button => {
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        const fileId = button.getAttribute('data-file-id');
+        const fileCode = button.getAttribute('data-file-code');
+
+        // Update modal content with file information
+        document.getElementById('archiveModalBodyPending').innerHTML = `Are you sure you want to archive task with file code: ${fileCode}?`;
+
+        // Update archive button href with the correct file ID
+        const archiveConfirmButton = document.getElementById('archiveConfirmButtonPending');
+        archiveConfirmButton.href = `/archive_file/${fileId}`;
+
+        // Show the modal
+        const archiveModal = new bootstrap.Modal(document.getElementById('archiveModalPending'));
+        archiveModal.show();
+      });
+    });
+  });
+</script>
+<script>
+  function searchPending() {
+    // Get the input field and its value
+    var input = document.getElementById('accInput');
+    var filter = input.value.toLowerCase();
+  
+    // Get the table body and rows
+    var tableBody = document.getElementById('fileTableBody');
+    var rows = tableBody.getElementsByTagName('tr');
+  
+    // Loop through all table rows
+    for (var i = 0; i < rows.length; i++) {
+      // Get the cells in the current row
+      var cells = rows[i].getElementsByTagName('td');
+      
+      // Assume the row does not match the search query
+      var rowMatches = false;
+      
+      // Loop through the cells to check if any cell matches the query
+      for (var j = 0; j < cells.length; j++) {
+        if (cells[j]) {
+          var cellValue = cells[j].textContent || cells[j].innerText;
+          if (cellValue.toLowerCase().indexOf(filter) > -1) {
+            rowMatches = true;
+            break;
+          }
+        }
+      }
+  
+      // Show or hide the row based on the search query
+      if (rowMatches) {
+        rows[i].style.display = '';
+      } else {
+        rows[i].style.display = 'none';
+      }
+    }
+  }
+  </script>

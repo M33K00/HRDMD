@@ -646,7 +646,7 @@
 }
 
 .nav-change-hris::after {
-  content: "Document Tracker";
+  content: "Task Manager";
   display: none;
   position: absolute;
   top: 49%;

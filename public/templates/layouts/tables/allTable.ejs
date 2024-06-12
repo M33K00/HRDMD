@@ -2,7 +2,7 @@
 <input
   class="form-control me-sm-2 mt-4"
   type="text"
-  id="filesInput"
+  id="filesInputAll"
   placeholder="Search"
   oninput="searchTable3()"
 />
@@ -49,7 +49,7 @@
         <a href="view_file/<%= file.id %>" class="icon-square text-dark"
           ><i class="fa-solid fa-eye"></i
         ></a>
-        <a href="/archive_file/<%= file.id %>" class="icon-square text-warning" data-bs-toggle="modal" data-bs-target="#archiveModal2"
+        <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal" data-bs-target="#archiveModal2"
           ><i class="fa-solid fa-box-archive"></i>
         </a>
       </td>
@@ -57,9 +57,10 @@
     <% }); %>
   </tbody>
 </table>
+<p id="noFiles2" style="display: none;" class="text-muted text-center">No Files Found</p>
 <% } %>
 <% if (currentWeekFiles.length > 0) { %>
-  <h3 id="weekLabel" class="mt-4">Later This Week:</h3>
+  <h3 id="weekLabel" class="mt-4">This Week:</h3>
   <table id="laterThisWeekTable" class="table table-hover table-striped mt-4">
     <thead>
       <tr class="table-dark">
@@ -103,7 +104,7 @@
           <a href="view_file/<%= file.id %>" class="icon-square text-dark"
             ><i class="fa-solid fa-eye"></i
           ></a>
-          <a href="/archive_file/<%= file.id %>" class="icon-square text-warning" data-bs-toggle="modal" data-bs-target="#archiveModal2"
+          <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal" data-bs-target="#archiveModal2"
             ><i class="fa-solid fa-box-archive"></i>
           </a>
         </td>
@@ -111,8 +112,62 @@
       <% }); %>
     </tbody>
   </table>
-  <p id="noFiles" style="display: none;" class="text-muted text-center">No Files Found</p>
-<!-- Pagination Links -->
+  <p id="noFiles2" style="display: none;" class="text-muted text-center">No Files Found</p>
+<% } %>
+<% if (otherFiles.length > 0) { %>
+  <h3 id="otherLabel" class="mt-4">Later:</h3>
+  <table id="otherTable" class="table table-hover table-striped mt-4">
+    <thead>
+      <tr class="table-dark">
+        <th style="width: 200px">File Code</th>
+        <th style="width: 200px">File Name</th>
+        <th style="width: 150px">Assigned To</th>
+        <th style="width: 170px">Date Assigned</th>
+        <th style="width: 170px">Due Date</th>
+        <th style="width: 90px">Status</th>
+        <th style="width: 10px; padding-left: 30px"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% otherFiles.forEach((file, index) => { %>
+      <tr>
+        <td>
+          <%= file.fileCode.length > 20 ? file.fileCode.substring(0, 20) + '...' :
+          file.fileCode %>
+        </td>
+        <td>
+          <%= file.fileName.length > 15 ? file.fileName.substring(0, 15) + '...' :
+          file.fileName %>
+        </td>
+        <td><%= file.assignTo %></td>
+        <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
+        <td><%= file.dueDate.toISOString().split('T')[0] %></td>
+        <td>
+          <% if (file.status === 'APPROVED') { %>
+          <span class="badge bg-success">APPROVED</span>
+          <% } else if (file.status === 'REJECTED') { %>
+          <span class="badge bg-danger">REJECTED</span>
+          <% } else if (file.status === 'PENDING') { %>
+          <span class="badge bg-warning">PENDING</span>
+          <% } else if (file.status === 'FOR APPROVAL') { %>
+          <span class="badge bg-warning">FOR APPROVAL</span>
+          <% } else { %>
+          <span class="badge bg-primary">UNKNOWN</span>
+          <% } %>
+        </td>
+        <td class="action-buttons">
+          <a href="view_file/<%= file.id %>" class="icon-square text-dark"
+            ><i class="fa-solid fa-eye"></i
+          ></a>
+          <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal">
+            <i class="fa-solid fa-box-archive"></i>
+          </a>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+<% } %>
 <div class="pagination justify-content-center">
   <% if (totalPages > 1) { %>
   <ul class="pagination justify-content-center">
@@ -124,62 +179,54 @@
   </ul>
   <% } %>
 </div>
-<% } %>
-
+<!-- Modal HTML (outside of loop) -->
+<div class="modal fade" id="archiveModalAll" tabindex="-1" aria-labelledby="archiveModal2Label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="archiveModal2Label">Archive File</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="archiveModalBody">
+        Are you sure you want to archive this file?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="#" id="archiveConfirmButton" class="btn btn-warning">Archive</a>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
-  function searchTable3() {
-    const input = document.getElementById('filesInput').value.toLowerCase();
+  function searchTable3(input, tableId, tableHeaderId, labelId, noFilesId) {
+    console.log('searchTable3 function called');
+    const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+    const table = document.getElementById(tableId);
+    const tableHeader = document.getElementById(tableHeaderId);
+    const label = document.getElementById(labelId);
+    const noFilesMessage = document.getElementById(noFilesId);
 
-    // Search in Today's Tasks table
-    const todayRows = document.querySelectorAll('#todayTasksTable tbody tr');
-    const todayTable = document.getElementById('todayTasksTable');
-    const todayTableHeader = todayTable.querySelector('thead');
-    const todayLabel = document.getElementById('todayLabel');
-
-    let todayMatch = false;
-    todayRows.forEach(row => {
+    let match = false;
+    rows.forEach(row => {
       const fileCode = row.cells[0].textContent.toLowerCase();
       const fileName = row.cells[1].textContent.toLowerCase();
 
       if (fileCode.includes(input) || fileName.includes(input)) {
         row.style.display = '';
-        todayMatch = true;
+        match = true;
       } else {
         row.style.display = 'none';
       }
     });
 
-    todayTableHeader.style.display = todayMatch ? '' : 'none';
-    todayLabel.style.display = todayMatch ? '' : 'none';
+    tableHeader.style.display = match ? '' : 'none';
+    label.style.display = match ? '' : 'none';
+    noFilesMessage.style.display = match ? 'none' : '';
+  }
 
-    // Search in Later This Week table
-    const laterRows = document.querySelectorAll('#laterThisWeekTable tbody tr');
-    const laterTable = document.getElementById('laterThisWeekTable');
-    const laterTableHeader = laterTable.querySelector('thead');
-    const weekLabel = document.getElementById('weekLabel');
-
-    let laterMatch = false;
-    laterRows.forEach(row => {
-      const fileCode = row.cells[0].textContent.toLowerCase();
-      const fileName = row.cells[1].textContent.toLowerCase();
-
-      if (fileCode.includes(input) || fileName.includes(input)) {
-        row.style.display = '';
-        laterMatch = true;
-      } else {
-        row.style.display = 'none';
-      }
-    });
-
-    laterTableHeader.style.display = laterMatch ? '' : 'none';
-    weekLabel.style.display = laterMatch ? '' : 'none';
-
-    const noFilesMessage = document.getElementById('noFiles');
-      if (!todayMatch && !laterMatch) {
-        noFilesMessage.style.display = '';
-      } else {
-        noFilesMessage.style.display = 'none';
-      }
+  function searchAllTables() {
+    const input = document.getElementById('filesInputAll').value.toLowerCase();
+    searchTable(input, 'todayTasksTable', 'todayLabel', 'noFiles1');
+    searchTable(input, 'laterThisWeekTable', 'weekLabel', 'noFiles2');
   }
 </script>
-  

@@ -10,11 +10,6 @@ const archivedFilesSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  fileType: {
-    type: String,
-    required: true,
-    default: "",
-  },
   assignTo: {
     type: String,
     required: false,

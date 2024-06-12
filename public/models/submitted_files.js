@@ -10,11 +10,6 @@ const submittedFilesSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  fileType: {
-    type: String,
-    required: true,
-    default: "",
-  },
   assignTo: {
     type: String,
     required: false,
@@ -37,6 +32,11 @@ const submittedFilesSchema = new mongoose.Schema({
   dueDate: {
     type: Date,
     required: true,
+    default: null,
+  },
+  dateApproved: {
+    type: Date,
+    required: false,
     default: null,
   },
   status: {

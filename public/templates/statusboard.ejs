@@ -1,33 +1,37 @@
 <%- include('./layouts/header') -%>
 <body>
-  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
+  <%- include('./layouts/nav') -%>
+  <% if (user.hrrole !== "ADMIN") { %>
+    <%- include('./layouts/sidenavR1') %>
+  <% } else { %>
+    <%- include('./layouts/sidenav') %>
+  <% } %>
   <div class="page-body fade-in">
     <div class="page-name">
       <h1>STATUS BOARD</h1>
     </div>
     <p class="text-muted mb-4 ">Track the status of all tasks across all employees.</p>
-    <% const rejected = submittedFiles.filter((row) => row.status === 'REJECTED') %>
     <% const pending = submittedFiles.filter((row) => row.status === 'PENDING') %>
-    <% const revision = submittedFiles.filter((row) => row.status === 'REVISION') %>
+    <% const forApproval = submittedFiles.filter((row) => row.status === 'FOR APPROVAL') %>
     <% const approved = submittedFiles.filter((row) => row.status === 'APPROVED') %>
     <div class="stat-container mb-4">
-      <div class="stat-div div-approved">
-        <div class="stat-title">
-          <p>Approved:</p>
-        </div>
-        <div class="stat-count"><%= approved.length %></div>
-      </div>
-      <div class="stat-div div-revision">
-        <div class="stat-title">
-          <p>For Approval:</p>
-        </div>
-        <div class="stat-count"><%= revision.length %></div>
-      </div>
       <div class="stat-div div-pending">
         <div class="stat-title">
           <p>Pending:</p>
         </div>
         <div class="stat-count"><%= pending.length %></div>
+      </div>
+      <div class="stat-div div-revision">
+        <div class="stat-title">
+          <p>For Approval:</p>
+        </div>
+        <div class="stat-count"><%= forApproval.length %></div>
+      </div>
+      <div class="stat-div div-approved">
+        <div class="stat-title">
+          <p>Approved:</p>
+        </div>
+        <div class="stat-count"><%= approved.length %></div>
       </div>
     </div>
     <%# Search bar %>
@@ -99,7 +103,7 @@
                 <% } %>
               </div>
           <% } else { %>
-            <h1 class="text-center text-secondary mt-5">No Users found in database</h1>
+            <h1 class="text-center text-secondary mt-5">No tasks currently assigned to all employees.</h1>
             <% } %>
         </div>
       </div>
