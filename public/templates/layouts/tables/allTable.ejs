@@ -4,12 +4,12 @@
   type="text"
   id="filesInputAll"
   placeholder="Search"
-  oninput="searchTable3()"
+  oninput="searchAllTasks()"
 />
 <% if (todayFiles.length > 0) { %>
-<h3 id="todayLabel" class="mt-3">Today's Tasks:</h3>
-<table id="todayTasksTable" class="table table-hover table-striped mt-4">
-  <thead>
+<h3 id="fileTableLabel1" class="mt-3">Today's Tasks:</h3>
+<table id="fileTable1" class="table table-hover table-striped mt-4">
+  <thead id="fileTableHead1">
     <tr class="table-dark">
       <th style="width: 200px">File Code</th>
       <th style="width: 200px">File Name</th>
@@ -20,7 +20,7 @@
       <th style="width: 10px; padding-left: 30px"></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="fileTableBody1">
     <% todayFiles.forEach((file, index) => { %>
     <tr>
       <td>
@@ -60,9 +60,9 @@
 <p id="noFiles2" style="display: none;" class="text-muted text-center">No Files Found</p>
 <% } %>
 <% if (currentWeekFiles.length > 0) { %>
-  <h3 id="weekLabel" class="mt-4">This Week:</h3>
-  <table id="laterThisWeekTable" class="table table-hover table-striped mt-4">
-    <thead>
+  <h3 id="fileTableLabel2" class="mt-4">This Week:</h3>
+  <table id="fileTable2" class="table table-hover table-striped mt-4">
+    <thead id="fileTableHead2">
       <tr class="table-dark">
         <th style="width: 200px">File Code</th>
         <th style="width: 200px">File Name</th>
@@ -73,7 +73,7 @@
         <th style="width: 10px; padding-left: 30px"></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="fileTableBody2">
       <% currentWeekFiles.forEach((file, index) => { %>
       <tr>
         <td>
@@ -112,12 +112,11 @@
       <% }); %>
     </tbody>
   </table>
-  <p id="noFiles2" style="display: none;" class="text-muted text-center">No Files Found</p>
 <% } %>
 <% if (otherFiles.length > 0) { %>
-  <h3 id="otherLabel" class="mt-4">Later:</h3>
-  <table id="otherTable" class="table table-hover table-striped mt-4">
-    <thead>
+  <h3 id="fileTableLabel3" class="mt-4">Later:</h3>
+  <table id="fileTable3" class="table table-hover table-striped mt-4">
+    <thead id="fileTableHead3">
       <tr class="table-dark">
         <th style="width: 200px">File Code</th>
         <th style="width: 200px">File Name</th>
@@ -128,7 +127,7 @@
         <th style="width: 10px; padding-left: 30px"></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="fileTableBody3">
       <% otherFiles.forEach((file, index) => { %>
       <tr>
         <td>
@@ -168,6 +167,7 @@
     </tbody>
   </table>
 <% } %>
+<p id="noFilesFoundMessage" style="display: none;" class="text-muted text-center mt-4">No Tasks Found</p>
 <div class="pagination justify-content-center">
   <% if (totalPages > 1) { %>
   <ul class="pagination justify-content-center">
@@ -198,35 +198,62 @@
   </div>
 </div>
 <script>
-  function searchTable3(input, tableId, tableHeaderId, labelId, noFilesId) {
-    console.log('searchTable3 function called');
-    const rows = document.querySelectorAll(`#${tableId} tbody tr`);
-    const table = document.getElementById(tableId);
-    const tableHeader = document.getElementById(tableHeaderId);
-    const label = document.getElementById(labelId);
-    const noFilesMessage = document.getElementById(noFilesId);
-
-    let match = false;
-    rows.forEach(row => {
-      const fileCode = row.cells[0].textContent.toLowerCase();
-      const fileName = row.cells[1].textContent.toLowerCase();
-
-      if (fileCode.includes(input) || fileName.includes(input)) {
-        row.style.display = '';
-        match = true;
-      } else {
-        row.style.display = 'none';
+  function searchAllTasks() {
+    // Get the input field and its value
+    var input = document.getElementById('filesInputAll');
+    var filter = input.value.toLowerCase();
+  
+    // Function to search and update display for a table
+    function searchAndUpdate(table, fileTableLabelId) {
+      if (!table) return; // Check if table is valid
+  
+      var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    
+      var tableMatches = false;
+  
+      // Loop through all table rows
+      for (var i = 0; i < rows.length; i++) {
+        // Get the cells in the current row
+        var cells = rows[i].getElementsByTagName('td');
+        
+        // Assume the row does not match the search query
+        var rowMatches = false;
+        
+        // Loop through the cells to check if any cell matches the query
+        for (var j = 0; j < cells.length; j++) {
+          if (cells[j]) {
+            var cellValue = cells[j].textContent || cells[j].innerText;
+            if (cellValue.toLowerCase().indexOf(filter) > -1) {
+              rowMatches = true;
+              break;
+            }
+          }
+        }
+    
+        // Show or hide the row based on the search query
+        if (rowMatches) {
+          rows[i].style.display = '';
+          tableMatches = true;
+        } else {
+          rows[i].style.display = 'none';
+        }
       }
-    });
-
-    tableHeader.style.display = match ? '' : 'none';
-    label.style.display = match ? '' : 'none';
-    noFilesMessage.style.display = match ? 'none' : '';
+  
+      // Show or hide the whole table based on whether any rows match
+      if (tableMatches) {
+        table.style.display = '';
+        document.getElementById('noFilesFoundMessage').style.display = 'none'; // Hide the "No Files Found" message
+        document.getElementById(fileTableLabelId).style.display = ''; // Show the corresponding h3 tag
+      } else {
+        table.style.display = 'none';
+        document.getElementById('noFilesFoundMessage').style.display = ''; // Show the "No Files Found" message
+        document.getElementById(fileTableLabelId).style.display = 'none'; // Hide the corresponding h3 tag
+      }
+    }
+  
+    // Call the search and update function for each table and h3 tag
+    searchAndUpdate(document.getElementById('fileTable1'), 'fileTableLabel1');
+    searchAndUpdate(document.getElementById('fileTable2'), 'fileTableLabel2');
+    searchAndUpdate(document.getElementById('fileTable3'), 'fileTableLabel3');
   }
-
-  function searchAllTables() {
-    const input = document.getElementById('filesInputAll').value.toLowerCase();
-    searchTable(input, 'todayTasksTable', 'todayLabel', 'noFiles1');
-    searchTable(input, 'laterThisWeekTable', 'weekLabel', 'noFiles2');
-  }
-</script>
+  </script>
