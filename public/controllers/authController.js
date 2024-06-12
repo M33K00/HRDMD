@@ -22,6 +22,11 @@ const handleErrors = (err) => {
     errors.password = "No roles assigned to this account";
   }
 
+  // Not Verified
+  if (err.message === "Your account is not verified") {
+    errors.password = "Your account is not verified";
+  }
+
   // Account closed
   if (err.message === "This account is closed.") {
     errors.password = "Your account has been closed";
@@ -74,6 +79,10 @@ module.exports.login_post = async (req, res) => {
       throw new Error("This account is closed.");
     }
 
+    if (!logincollection.verified) {
+      throw new Error("Your account is not verified");
+    }
+
     const token = createToken(logincollection._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
 
@@ -88,9 +97,9 @@ module.exports.login_post = async (req, res) => {
 };
 
 module.exports.signup_post = async (req, res) => {
-  const { name, lastname, email, password, employeeID } = req.body;
+  const { name, lastname, email, password, employeeID, birthday, department } = req.body;
 
-  console.log("name:", name, "lastname:", lastname, "email:", email, "password:", password, "employeeID:", employeeID);
+  console.log("name:", name, "lastname:", lastname, "email:", email, "password:", password, "employeeID:", employeeID, "birthday:", birthday, "department:", department);
 
   try {
     const logincollection = await LogInCollection.create({
@@ -99,6 +108,8 @@ module.exports.signup_post = async (req, res) => {
       email,
       password,
       employeeID,
+      birthday,
+      department,
     });
     const adata = {
       name,

@@ -3,7 +3,19 @@
 <div class="page-body">
   <div class="page-name">
     <h1>Manage Account (<%= logincollections.name %>)</h1>
-    <a href="/delete/<%= logincollections.id %>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete account?')">Delete Account</a>
+    <% if (!logincollections.verified) { %>
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Actions
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item text-danger" href="/delete/<%= logincollections.id %>" onclick="return confirm('Are you sure you want to delete account?')">Delete Account</a>
+        <a class="dropdown-item" href="/verify/<%= logincollections.id %>" onclick="return confirm('Are you sure you want to verify this account?')">Verify Account</a>
+      </div>
+    </div>
+    <% } else if (logincollections.email != user.email) { %>
+      <a class="btn btn-danger" href="/delete/<%= logincollections.id %>" onclick="return confirm('Are you sure you want to delete account?')">Delete Account</a>
+    <% } %>
   </div>
   <div class="rounded-box">
     <form
@@ -207,6 +219,7 @@
       </div>
     </fieldset>
       <input type="submit" value="Update User" class="btn btn-success btn mt-4" />
+  
       <a
         href="/view_emp_data/<%= logincollections.email %>"
         class="btn btn-secondary mt-4"
@@ -231,6 +244,22 @@
       </div>
     </div>
   </div>
+  <!-- Verify Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="adminWarningLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-warning" id="adminWarningLabel" style="font-weight: 800;">Warning!</h5>
+      </div>
+      <div class="modal-body">
+        Please check all information before verifying the account.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="confirmVerification">Confirm</button>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
   document.addEventListener('DOMContentLoaded', (event) => {
@@ -246,5 +275,4 @@
     });
   });
 </script>
-
 <%- include('./layouts/footer') -%>

@@ -72,13 +72,13 @@
     </div>
   </div>
   <div class="col-md-4 hover-div-sp">
-    <a href="/manage_account/<%= encodeURIComponent(user.hrrole) %>/<%= encodeURIComponent(user.name) %>">
+    <a href="/view_employees">
     <div class="card-start card border-primary mb-3 shadow startpage-font">
-      <h3 class="card-header">Manage Account</h3>
+      <h3 class="card-header">Manage Employees</h3>
       <div class="card-body">
         <% if (user.hrrole === 'ADMIN') { %>
           <h6 class="card-subtitle text-muted">
-            Manage accounts and edit users
+            Manage employee accounts
           </h6>
         <% } else { %>
           <h6 class="card-subtitle text-muted">

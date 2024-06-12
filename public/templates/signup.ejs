@@ -5,39 +5,50 @@
       <source src="/images/bacoorvid.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
-    <div class="bottom-left-div">
-      <image src="/images/westrikeasone.png">
-    </div>
   </div>
   <div class="container">
     <div class="alert alert-dismissible alert-success" id="success-alert" >
-      <strong>Account Created Successfully</strong>
+      <strong>Account Created Successfully </strong>Please wait for the HR Department to verify your account.
     </div>
     <div class="login form">
-      <div class="logo-container">
-        <img src="/images/logo.png" class="logo-login" />
-      </div>
-      <header>Human Resources Department</header>
       <form>
         <div class="flex-container">
           <input type="text" name="name" placeholder="First Name" required />
           <input type="text" name="lastname" placeholder="Last Name" required />
         </div>
-        <input type="text" name="email" placeholder="Email" required />
-        <input type="text" name="employeeID" placeholder="Employee ID" required />
-        <div class="email-error"></div>
+        <div class="flex-container">
+          <input type="text" name="email" placeholder="Email" required />
+          <input type="text" name="employeeID" placeholder="Employee ID" required />
+        </div>
+        <input type="date" name="birthday" placeholder="Birthday" required />
         <input
           type="password"
           name="password"
           placeholder="Password"
           required
         />
+          <select
+            type="text"
+            name="department"
+            class="form-select form-select-lg mb-3"
+            id="department"
+          >
+            <option value="" disabled selected>Department</option>
+            <option value="HR Department">HR Department</option>
+            <option value="Department 1">PESO Department</option>
+            <option value="Department 2">CC Development Office</option>
+            <option value="Department 3">OAS Department</option>
+            <option value="Department 4">BTM Department</option>
+            <option value="Department 5">BPL Department</option>
+            <option value="Department 6">CAD Department</option>
+          </select>
+        <div class="email-error" ></div>
         <div class="password-error"></div>
         <input type="hidden" name="hrrole" value="NO ROLE" />
-        <input type="submit" class="button" />
+        <input type="submit" class="button" value="SIGN UP" />
       </form>
       <div class="signup">
-        <a href="login">Login</a>
+        <a href="login">LOGIN</a>
       </div>
     </div>
   </div>

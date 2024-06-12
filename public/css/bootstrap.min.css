@@ -686,4 +686,15 @@
 .file-option-history {
   margin-left: auto;
 }
+.infade- {
+  animation: fadeInAnimation 1s ease-in-out forwards;
+}
 
+@keyframes fadeInAnimation {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}

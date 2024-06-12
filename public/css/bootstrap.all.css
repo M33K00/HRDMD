@@ -853,3 +853,31 @@ body {
   bottom: 20px;
   right: 20px;
 }
+
+.fade-in {
+  animation: fadeInAnimation 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeInAnimation {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+@keyframes slideUpAnimation {
+  0% {
+      transform: translateY(100%);
+      opacity: 0;
+  }
+  100% {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slideUpAnimation 1.0s ease-out forwards;
+}

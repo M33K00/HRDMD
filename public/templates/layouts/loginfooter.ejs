@@ -44,6 +44,14 @@
           });
           myModal.show();
         }
+
+        // Check if the account is not verified
+        if (data.errors.password === "Your account is not verified") {
+          var myModal = new bootstrap.Modal(document.getElementById('accountNotVerifiedModal'), {
+            keyboard: false
+          });
+          myModal.show();
+        }
       }
 
       if (data.redirect) {

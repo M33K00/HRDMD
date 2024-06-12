@@ -328,6 +328,37 @@ router.post("/add_employee", upload, async (req, res) => {
   }
 });
 
+// Verify account
+router.get("/verify/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const logincollection = await LogInCollection.findById(id);
+
+    if (!logincollection) {
+      // If the user account doesn't exist, redirect to manage_accounts page
+      return res.redirect("/manage_accounts");
+    }
+
+    const result = await LogInCollection.findByIdAndUpdate(
+      id,
+      { verified: true },
+      { new: true } // Return the modified document after update
+    );
+    if (!result) {
+      return res.json({ message: "User not found", type: "DANGER" });
+    }
+
+    req.session.message = {
+      type: "success",
+      message: " User verified successfully",
+    };
+    res.redirect("/view_emp_data/" + logincollection.email);
+  } catch (err) {
+    console.error(err);
+    res.json({ message: err.message, type: "danger" });
+  }
+})
+
 // View a user
 router.get("/view/:id", async (req, res) => {
   try {
@@ -672,8 +703,6 @@ router.get("/startpage", (req, res) => {
 router.get("/document_tracker/:hrrole", async (req, res) => {
   try {
     const hrrole = req.params.hrrole;
-
-    console.log("hrrole:", hrrole);
 
     // Based on the hrrole, render the appropriate template
     if (hrrole === "ADMIN") {

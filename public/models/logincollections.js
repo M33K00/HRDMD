@@ -82,6 +82,10 @@ const logInSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Fire a function before doc is saved to db

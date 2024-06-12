@@ -1,13 +1,23 @@
 <%- include('./layouts/hrislayout') -%>
 <body>
   <%- include('./layouts/navhris') -%> <%- include('./layouts/sidenavhris') %>
-  <div class="page-body">
+  <div class="page-body fade-in">
     <div class="hris-container">
       <div class="hris-header">
         <div class="hris-title"></div>
         <h1>Human Resources Information System</h1>
       </div>
     </div>
+    <% const unverified = employeecount.filter((employee) => !employee.verified); %>
+    <% if (unverified.length > 0) { %>
+    <div id="alertContainer" class="bottom-right">
+      <div class="alert alert-dismissible alert-warning">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <h4 class="alert-heading mb-0" style="font-size: 20px;">Attention!</h4>
+        <p class="mb-0" style="font-size: 15px;">There are currently <%= unverified.length %> accounts that needs verification. <a href="/view_employees" class="alert-link">Click here</a> to view and verify them.</p>
+      </div>
+    </div>
+    <% } %>
     <div class="dtr-status">
       <div id="bgTime" class="dtr-div div-time">
         <div class="div-title title-time">
