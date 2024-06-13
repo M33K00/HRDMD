@@ -49,6 +49,11 @@ const submittedFilesSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
+  remarks: {
+    type: String,
+    required: false,
+    default: "",
+  },
 });
 
 const submittedFiles = mongoose.model("submittedFiles", submittedFilesSchema);

@@ -3,10 +3,10 @@
 <input
   class="form-control me-sm-2"
   type="text"
-  id="filesInput"
+  id="FAInput"
   placeholder="Search"
   style="margin-bottom: 20px"
-  oninput="searchTable2()"
+  oninput="searchforApproval()"
 />
 <table id="table" class="table table-hover table-striped">
   <thead>
@@ -18,7 +18,7 @@
       <th style="width: 10px; padding-left: 30px"></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="FAtbody">
     <% forApproval.forEach((file, index) => { %>
     <tr>
       <td><%= file.fileCode %></td>
@@ -60,3 +60,41 @@
 <% } else { %>
 <p class="no-files">No tasks for approval.</p>
 <% } %>
+<script>
+  function searchforApproval() {
+    // Get the input field and its value
+    var input = document.getElementById('FAInput');
+    var filter = input.value.toLowerCase();
+  
+    // Get the table body and rows
+    var tableBody = document.getElementById('FAtbody');
+    var rows = tableBody.getElementsByTagName('tr');
+  
+    // Loop through all table rows
+    for (var i = 0; i < rows.length; i++) {
+      // Get the cells in the current row
+      var cells = rows[i].getElementsByTagName('td');
+      
+      // Assume the row does not match the search query
+      var rowMatches = false;
+      
+      // Loop through the cells to check if any cell matches the query
+      for (var j = 0; j < cells.length; j++) {
+        if (cells[j]) {
+          var cellValue = cells[j].textContent || cells[j].innerText;
+          if (cellValue.toLowerCase().indexOf(filter) > -1) {
+            rowMatches = true;
+            break;
+          }
+        }
+      }
+  
+      // Show or hide the row based on the search query
+      if (rowMatches) {
+        rows[i].style.display = '';
+      } else {
+        rows[i].style.display = 'none';
+      }
+    }
+  }
+  </script>

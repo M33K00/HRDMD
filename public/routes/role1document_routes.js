@@ -47,12 +47,14 @@ router.get("/role1", passUserToRoute, async (request, response) => {
   const user = request.user;
 
   try {
+
+    const userName = `${user.name} ${user.lastname}`;
+
     const totalSubmittedFiles = await SubmittedFiles.countDocuments();
     const totalPages = Math.ceil(totalSubmittedFiles / pageSize);
     // Fetch all submitted files and sort by dateSubmitted in descending order
     const submittedFiles = await SubmittedFiles.find({
-      fileType: "non-confidential",
-      $or: [{ assignTo: user.name }, { assignTo: "None" }],
+      $or: [{ assignTo: userName }, { assignTo: "None" }],
     })
       .sort({
         dateSubmitted: -1,
@@ -68,8 +70,7 @@ router.get("/role1", passUserToRoute, async (request, response) => {
       endOfToday.setHours(23, 59, 59, 999); // Set time to end of the day
   
       const todayFiles = await SubmittedFiles.find({
-        fileType: "non-confidential",
-        assignTo: user.name,
+        assignTo: userName,
         dueDate: { $gte: today, $lte: endOfToday },
       }).sort({ dateSubmitted: -1 });
   
@@ -85,16 +86,25 @@ router.get("/role1", passUserToRoute, async (request, response) => {
       endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay())); // Move to end of the week (Saturday)
   
       const currentWeekFiles = await SubmittedFiles.find({
-        fileType: "non-confidential",
-        assignTo: user.name,
+        assignTo: userName,
         dueDate: { $gte: startOfWeek, $lte: endOfWeek },
         _id: { $nin: todayFilesIds },
+      }).sort({ dateSubmitted: -1 });
+
+      const otherFiles = await SubmittedFiles.find({
+        assignTo: userName,
+        dueDate: {
+          $not: {
+            $gte: today,
+            $lte: endOfWeek,
+          }
+        }
       }).sort({ dateSubmitted: -1 });
 
     // Fetch pending files and sort by dateSubmitted in descending order
     const pendingFiles = await SubmittedFiles.find({
       status: "PENDING",
-      assignTo: user.name,
+      assignTo: userName,
     }).sort({
       dateSubmitted: -1,
     });
@@ -102,12 +112,12 @@ router.get("/role1", passUserToRoute, async (request, response) => {
     // Fetch approved files and sort by dateSubmitted in descending order
     const approvedFiles = await SubmittedFiles.find({
       status: "APPROVED",
-      assignTo: user.name,
+      assignTo: userName,
     }).sort({ dateSubmitted: -1 });
 
     const forApproval = await SubmittedFiles.find({
       status: "FOR APPROVAL",
-      assignTo: user.name,
+      assignTo: userName,
     }).sort({ dateSubmitted: -1 });
 
     response.render("role/role1_temps/role1", {
@@ -115,6 +125,7 @@ router.get("/role1", passUserToRoute, async (request, response) => {
       todayFiles,
       currentWeekFiles,
       currentPage,
+      otherFiles,
       totalPages,
       pendingFiles,
       approvedFiles,

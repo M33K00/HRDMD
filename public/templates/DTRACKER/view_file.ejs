@@ -6,7 +6,7 @@
   <% } else { %>
     <%- include('../layouts/sidenav') %>
   <% } %>
-  <div class="page-body">
+  <div class="page-body fade-in">
     <div class="page-name">
       <h1>VIEW TASK:</h1>
       <% if (fileDes === "Archive") { %>
@@ -37,9 +37,6 @@
         <div class="file-item text-uppercase">
           <h3>File Details:</h3>
           <p><strong>File Name:</strong> <%= file.fileName %></p>
-          <p <% if (file.fileType === 'confidential') { %>
-           class="text-danger" style="font-weight: 800"
-          <% } %>><strong>File Type:</strong> <%= file.fileType %></p>
           <p>
             <strong>TASK DUE DATE:</strong> <%=
             file.dueDate.toISOString().split('T')[0] %>
@@ -49,6 +46,9 @@
             <% if (file.status === 'PENDING' || file.status === 'FOR APPROVAL') { %> class="text-warning" <% } %>
             style="font-weight: 800"
           ><strong>Status:</strong> <%= file.status %></p>
+          <% if (file.dateApproved !== null) { %>
+            <p><strong>Date Approved:</strong> <%= file.dateApproved.toISOString().split('T')[0] %></p>
+          <% } %>
           <p><strong>Assigned To:</strong> <%= file.assignTo %></p>
         </div>
         <div class="file-item text-uppercase">
@@ -76,7 +76,7 @@
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Actions
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" id="fileDropdownMenu" aria-labelledby="dropdownMenuButton">
               <% if (user.hrrole !== "ADMIN" && file.status === "PENDING") { %>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for approval', '<%= file.id %>')"><i class="fa-solid fa-file-circle-check mr-2"></i> For Approval</a>
               <% } %>
@@ -89,6 +89,18 @@
             </div>
           </div>
           </div>
+        </div>
+      <% } %>
+      <% if (file.remarks !== "") { %>
+        <div class="remarks-div mt-3">
+          <h3 class="text-uppercase" style="font-weight: 700;">Task Remarks:</h3>
+          <textarea 
+            class="form-control"
+            id="fileComment"
+            placeholder="<%= file.remarks %>"
+            rows="4"
+            disabled
+          ></textarea>
         </div>
       <% } %>
     </div>

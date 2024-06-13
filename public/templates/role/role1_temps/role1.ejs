@@ -28,23 +28,6 @@
           <p>All Tasks</p>
         </div></a
       >
-      <a href="#" data-target="approved"
-        ><div class="rolefolder-item">
-          <i class="fa-solid fa-check"></i>
-          <p>Approved</p>
-          <% if (approvedFiles.length > 0) { %>
-          <span class="badge rounded-pill bg-danger"
-            ><%= approvedFiles.length %></span
-          >
-          <% } %>
-        </div></a
-      >
-      <a href="#" data-target="forApproval"
-        ><div class="rolefolder-item">
-          <i class="fa-solid fa-file-circle-check"></i>
-          <p>For Approval</p>
-        </div></a
-      >
       <a href="#" data-target="pending"
         ><div class="rolefolder-item">
           <i class="fa-solid fa-hourglass-start"></i>
@@ -56,6 +39,23 @@
           <% } %>
         </div></a
       >
+      <a href="#" data-target="forApproval"
+        ><div class="rolefolder-item">
+          <i class="fa-solid fa-file-circle-check"></i>
+          <p>For Approval</p>
+        </div></a
+      >
+      <a href="#" data-target="approved"
+        ><div class="rolefolder-item">
+          <i class="fa-solid fa-check"></i>
+          <p>Approved</p>
+          <% if (approvedFiles.length > 0) { %>
+          <span class="badge rounded-pill bg-danger"
+            ><%= approvedFiles.length %></span
+          >
+          <% } %>
+        </div></a
+      >   
     </div>
     <div id="modal" class="modal">
       <div class="modal-content">
@@ -73,16 +73,16 @@
         <span id="enlargeButton" class="enlargeButton">Enlarge</span>
       </div>
     </div>
-    <div id="all-files" class="content-div active">
+    <div id="all-files" class="content-div fade-in active">
       <%- include('../../layouts/tables/allTable') -%>
     </div>
-    <div id="approved" class="content-div">
+    <div id="approved" class="content-div fade-in">
       <%- include('../../layouts/tables/approvedTable') -%>
     </div>
-    <div id="forApproval" class="content-div">
+    <div id="forApproval" class="content-div fade-in">
       <%- include('../../layouts/tables/forApprovalTable') -%>
     </div>
-    <div id="pending" class="content-div">
+    <div id="pending" class="content-div fade-in">
       <%- include('../../layouts/tables/pendingTable') -%>
     </div>
   </div>

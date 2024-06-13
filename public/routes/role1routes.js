@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const LogInCollection = require("../models/logincollections");
-const RejectedDocument = require("../models/rejecteddocuments");
 const Attendance = require("../models/attendance");
+const SubmittedFiles = require("../models/submitted_files");
 
 // Edit Account
 router.get("/editacc/:name", async (req, res) => {
@@ -12,7 +12,7 @@ router.get("/editacc/:name", async (req, res) => {
     // Use findOne with a query object to find the user by name
     const logincollections = await LogInCollection.findOne({ name: name });
 
-    const attendance = await Attendance.findOne({ name: name });
+    const attendance = await Attendance.findOne({ email: logincollections.email });
 
     if (!attendance) {
       // Handle the case where the user's _id is not found
@@ -52,17 +52,16 @@ router.get("/view-user/:id", async (req, res) => {
       return res.redirect("/role1");
     }
 
-    let name = logincollections.name;
     // Fetch rejected documents associated with the user's name
-    let rejectedDocuments = await RejectedDocument.find({
-      name: name,
+    let submittedFiles = await SubmittedFiles.find({
+      assignTo: logincollections.email,
     });
 
     // Render the view_account template with the retrieved add
     res.render("role/view_user", {
       title: "View Account",
       logincollections: logincollections,
-      rejectedDocuments: rejectedDocuments,
+      submittedFiles: submittedFiles,
     });
   } catch (err) {
     // Log and handle errors gracefully

@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const logincollections = require("../models/logincollections");
+const nodemailer = require("nodemailer");
 const fs = require("fs");
 const path = require("path");
 const authController = require("../controllers/authController");
 const bcrypt = require("bcrypt");
 const { checkRoleHR } = require("../middleware/authMiddleware.js");
-const RejectedDocument = require("../models/rejecteddocuments");
 const { checkHRSettings } = require("../middleware/HRSettingsMiddleware");
 
 // Models
@@ -328,6 +327,14 @@ router.post("/add_employee", upload, async (req, res) => {
   }
 });
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'mikuosuzuya@gmail.com',
+    pass: 'uojo zrtz pjyy kohf',
+  },
+});
+
 // Verify account
 router.get("/verify/:id", async (req, res) => {
   try {
@@ -347,6 +354,28 @@ router.get("/verify/:id", async (req, res) => {
     if (!result) {
       return res.json({ message: "User not found", type: "DANGER" });
     }
+
+    const userName = logincollection.name;
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString();
+
+    const mailOptions = {
+      from: 'mikuosuzuya@gmail.com',               // Sender address
+      to: logincollection.email,                   // Receiver address (user's email)
+      subject: 'Account Verified',                 // Subject line
+      text: `Hello ${userName},\n\nThe account you created in the HRDMD Application has been successfully verified and you can now login.\n\nAccount verification date: ${formattedDate}`,
+      html: `<p>Hello ${userName},</p>
+             <p>The account you created in the HRDMD Application has been successfully verified and you can now login.</p>
+             <p>Account verification date: ${formattedDate}</p>`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
 
     req.session.message = {
       type: "success",
@@ -778,6 +807,7 @@ router.get("/add_employees", (req, res) => {
 router.get("/view_employees", async (req, res) => {
   try {
     const logincollections = await LogInCollection.find();
+    logincollections.sort((a, b) => a.verified - b.verified);
     res.render("HRIS/view_employees", { logincollections });
   } catch (error) {
     res.status(500).send("Internal Server Error");

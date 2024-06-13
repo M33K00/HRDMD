@@ -137,18 +137,26 @@
             <thead>
               <tr class="table-dark">
                 <th style="width: 150px">Name</th>
-                <th style="width: 250px">Email</th>
-                <th style="width: 200px">Contact No.</th>
-                <th style="width: 200px">Department</th>
-                <th style="width: 10px; padding-left: 40px">Action</th>
+                <th style="width: 100px">ID Number</th>
+                <th style="width: 150px">Position</th>
+                <th style="width: 150px">Department</th>
+                <th class="text-center" style="width: 100px">Account Status</th>
+                <th style="width: 10px; padding-left: 40px"></th>
               </tr>
             </thead>
             <tbody>
               <% logincollections.forEach((row, index) => { %>
               <tr>
                 <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
-                <td><%= row.email %></td>
-                <td><%= row.contact %></td>
+                <td><%= row.employeeID %></td>
+                <td>
+                  <% if (row.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                  else if (row.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                  else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                  (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                  (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
+                  === "ADMIN") { %> Department Head <% } %>
+                </td>
                 <td>
                   <% if (row.department === 'HR Department') { %>
                     HR Department
@@ -166,6 +174,11 @@
                     CAD Department
                   <% } %>
                 </td>
+                <% if (!row.verified) { %>
+                  <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
+                <% } else { %>
+                  <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
+                <% } %>
                 <td class="action-buttons">
                   <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
@@ -196,17 +209,30 @@
               <thead>
                 <tr class="table-dark">
                   <th style="width: 150px">Name</th>
-                  <th style="width: 250px">Email</th>
-                  <th style="width: 200px">Contact No.</th>
-                  <th style="width: 10px; padding-left: 40px">Action</th>
+                  <th style="width: 100px">ID Number</th>
+                  <th style="width: 100px">Position</th>
+                  <th class="text-center" style="width: 100px;">Account Status</th>
+                  <th style="width: 10px; padding-left: 40px"></th>
                 </tr>
               </thead>
               <tbody>
                 <% HRdp.forEach((row, index) => { %>
                 <tr>
                   <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
-                  <td><%= row.email %></td>
-                  <td><%= row.contact %></td>
+                  <td><%= row.employeeID %></td>
+                  <td>
+                    <% if (row.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                    else if (row.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                    else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                    (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                    (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
+                    === "ADMIN") { %> Department Head <% } %>
+                  </td>
+                  <% if (!row.verified) { %>
+                  <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
+                  <% } else { %>
+                    <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
+                  <% } %>
                   <td class="action-buttons">
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
@@ -237,17 +263,30 @@
               <thead>
                 <tr class="table-dark">
                   <th style="width: 150px">Name</th>
-                  <th style="width: 250px">Email</th>
-                  <th style="width: 200px">Contact No.</th>
-                  <th style="width: 10px; padding-left: 40px">Action</th>
+                  <th style="width: 100px">ID Number</th>
+                  <th style="width: 100px">Position</th>
+                  <th class="text-center" style="width: 100px;">Account Status</th>
+                  <th style="width: 10px; padding-left: 40px"></th>
                 </tr>
               </thead>
               <tbody>
                 <% DP1.forEach((row, index) => { %>
-                <tr>
+                  <tr>
                   <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
-                  <td><%= row.email %></td>
-                  <td><%= row.contact %></td>
+                  <td><%= row.employeeID %></td>
+                  <td>
+                    <% if (row.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                    else if (row.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                    else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                    (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                    (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
+                    === "ADMIN") { %> Department Head <% } %>
+                  </td>
+                  <% if (!row.verified) { %>
+                  <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
+                  <% } else { %>
+                    <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
+                  <% } %>
                   <td class="action-buttons">
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
@@ -264,9 +303,9 @@
               </tbody>
             </table>
           <% } else { %>
-          <h1 class="text-center text-secondary mt-5">
-            No Users found in database
-          </h1>
+          <h2 class="text-center text-secondary mt-5">
+            No Employees found in database
+          </h2>
           <% } %>
         </div>
       </div>
@@ -278,36 +317,49 @@
             <thead>
               <tr class="table-dark">
                 <th style="width: 150px">Name</th>
-                <th style="width: 250px">Email</th>
-                <th style="width: 200px">Contact No.</th>
-                <th style="width: 10px; padding-left: 40px">Action</th>
+                  <th style="width: 100px">ID Number</th>
+                  <th style="width: 100px">Position</th>
+                  <th class="text-center" style="width: 100px;">Account Status</th>
+                  <th style="width: 10px; padding-left: 40px"></th>
               </tr>
             </thead>
             <tbody>
               <% DP2.forEach((row, index) => { %>
-              <tr>
-                <td class="fw-bold mb-1" ><%= row.name %></td>
-                <td><%= row.email %></td>
-                <td><%= row.contact %></td>
-                <td class="action-buttons">
-                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                  <a
-                    href="/delete/<%= row._id %>"
-                    class="icon-square text-danger"
-                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-                </td>
-              </tr>
+                <tr>
+                  <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
+                  <td><%= row.employeeID %></td>
+                  <td>
+                    <% if (row.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                    else if (row.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                    else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                    (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                    (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
+                    === "ADMIN") { %> Department Head <% } %>
+                  </td>
+                  <% if (!row.verified) { %>
+                  <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
+                  <% } else { %>
+                    <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
+                  <% } %>
+                  <td class="action-buttons">
+                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
+                      ><i class="fa-solid fa-eye"></i
+                    ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
               <% }) %>
             </tbody>
           </table>
           <% } else { %>
-          <h1 class="text-center text-secondary mt-5">
-            No Users found in CC Development Office.
-          </h1>
+          <h2 class="text-center text-secondary mt-5">
+            No Employees found in CC Development Office.
+          </h2>
           <% } %>
         </div>
       </div>
@@ -319,36 +371,48 @@
             <thead>
               <tr class="table-dark">
                 <th style="width: 150px">Name</th>
-                <th style="width: 250px">Email</th>
-                <th style="width: 200px">Contact No.</th>
-                <th style="width: 10px; padding-left: 40px">Action</th>
+                <th style="width: 100px">ID Number</th>
+                <th style="width: 100px">Position</th>
+                <th class="text-center" style="width: 100px;">Account Status</th>
+                <th style="width: 10px; padding-left: 40px"></th>
               </tr>
             </thead>
             <tbody>
-              <% DP3.forEach((row, index) => { %>
-              <tr>
-                <td class="fw-bold mb-1" ><%= row.name %></td>
-                <td><%= row.email %></td>
-                <td><%= row.contact %></td>
-                <td class="action-buttons">
-                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                  <a
-                    href="/delete/<%= row._id %>"
-                    class="icon-square text-danger"
-                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-                </td>
-              </tr>
+              <% DP3.forEach((row, index) => { %><tr>
+                  <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
+                  <td><%= row.employeeID %></td>
+                  <td>
+                    <% if (row.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                    else if (row.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                    else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                    (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                    (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
+                    === "ADMIN") { %> Department Head <% } %>
+                  </td>
+                  <% if (!row.verified) { %>
+                  <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
+                  <% } else { %>
+                    <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
+                  <% } %>
+                  <td class="action-buttons">
+                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
+                      ><i class="fa-solid fa-eye"></i
+                    ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
               <% }) %>
             </tbody>
           </table>
           <% } else { %>
-          <h1 class="text-center text-secondary mt-5">
-            No Users found in OAS Department.
-          </h1>
+          <h2 class="text-center text-secondary mt-5">
+            No Employees found in OAS Department.
+          </h2>
           <% } %>
         </div>
       </div>
@@ -360,36 +424,49 @@
             <thead>
               <tr class="table-dark">
                 <th style="width: 150px">Name</th>
-                <th style="width: 250px">Email</th>
-                <th style="width: 200px">Contact No.</th>
-                <th style="width: 10px; padding-left: 40px">Action</th>
+                <th style="width: 100px">ID Number</th>
+                <th style="width: 100px">Position</th>
+                <th class="text-center" style="width: 100px;">Account Status</th>
+                <th style="width: 10px; padding-left: 40px"></th>
               </tr>
             </thead>
             <tbody>
               <% DP4.forEach((row, index) => { %>
-              <tr>
-                <td class="fw-bold mb-1" ><%= row.name %></td>
-                <td><%= row.email %></td>
-                <td><%= row.contact %></td>
-                <td class="action-buttons">
-                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                  <a
-                    href="/delete/<%= row._id %>"
-                    class="icon-square text-danger"
-                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-                </td>
-              </tr>
+                <tr>
+                  <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
+                  <td><%= row.employeeID %></td>
+                  <td>
+                    <% if (row.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                    else if (row.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                    else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                    (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                    (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
+                    === "ADMIN") { %> Department Head <% } %>
+                  </td>
+                  <% if (!row.verified) { %>
+                  <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
+                  <% } else { %>
+                    <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
+                  <% } %>
+                  <td class="action-buttons">
+                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
+                      ><i class="fa-solid fa-eye"></i
+                    ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
               <% }) %>
             </tbody>
           </table>
           <% } else { %>
-          <h1 class="text-center text-secondary mt-5">
-            No Users found in BTM Department.
-          </h1>
+          <h2 class="text-center text-secondary mt-5">
+            No Employees found in BTM Department.
+          </h2>
           <% } %>
         </div>
       </div>
@@ -401,36 +478,49 @@
             <thead>
               <tr class="table-dark">
                 <th style="width: 150px">Name</th>
-                <th style="width: 250px">Email</th>
-                <th style="width: 200px">Contact No.</th>
-                <th style="width: 10px; padding-left: 40px">Action</th>
+                <th style="width: 100px">ID Number</th>
+                <th style="width: 100px">Position</th>
+                <th class="text-center" style="width: 100px;">Account Status</th>
+                <th style="width: 10px; padding-left: 40px"></th>
               </tr>
             </thead>
             <tbody>
               <% DP5.forEach((row, index) => { %>
-              <tr>
-                <td class="fw-bold mb-1" ><%= row.name %></td>
-                <td><%= row.email %></td>
-                <td><%= row.contact %></td>
-                <td class="action-buttons">
-                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                  <a
-                    href="/delete/<%= row._id %>"
-                    class="icon-square text-danger"
-                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-                </td>
-              </tr>
+                <tr>
+                  <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
+                  <td><%= row.employeeID %></td>
+                  <td>
+                    <% if (row.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                    else if (row.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                    else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                    (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                    (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
+                    === "ADMIN") { %> Department Head <% } %>
+                  </td>
+                  <% if (!row.verified) { %>
+                  <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
+                  <% } else { %>
+                    <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
+                  <% } %>
+                  <td class="action-buttons">
+                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
+                      ><i class="fa-solid fa-eye"></i
+                    ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
               <% }) %>
             </tbody>
           </table>
           <% } else { %>
-          <h1 class="text-center text-secondary mt-5">
-            No Users found in BPL Department.
-          </h1>
+          <h2 class="text-center text-secondary mt-5">
+            No Employees found in BPL Department.
+          </h2>
           <% } %>
         </div>
       </div>
@@ -442,36 +532,49 @@
             <thead>
               <tr class="table-dark">
                 <th style="width: 150px">Name</th>
-                <th style="width: 250px">Email</th>
-                <th style="width: 200px">Contact No.</th>
-                <th style="width: 10px; padding-left: 40px">Action</th>
+                <th style="width: 100px">ID Number</th>
+                <th style="width: 100px">Position</th>
+                <th class="text-center" style="width: 100px;">Account Status</th>
+                 <th style="width: 10px; padding-left: 40px"></th>
               </tr>
             </thead>
             <tbody>
               <% DP6.forEach((row, index) => { %>
-              <tr>
-                <td class="fw-bold mb-1" ><%= row.name %></td>
-                <td><%= row.email %></td>
-                <td><%= row.contact %></td>
-                <td class="action-buttons">
-                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                  <a
-                    href="/delete/<%= row._id %>"
-                    class="icon-square text-danger"
-                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-                </td>
-              </tr>
+                <tr>
+                  <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
+                  <td><%= row.employeeID %></td>
+                  <td>
+                    <% if (row.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                    else if (row.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                    else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                    (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                    (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
+                    === "ADMIN") { %> Department Head <% } %>
+                  </td>
+                  <% if (!row.verified) { %>
+                  <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
+                  <% } else { %>
+                    <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
+                  <% } %>
+                  <td class="action-buttons">
+                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
+                      ><i class="fa-solid fa-eye"></i
+                    ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
               <% }) %>
             </tbody>
           </table>
           <% } else { %>
-          <h1 class="text-center text-secondary mt-5">
-            No Users found in CAD Department.
-          </h1>
+          <h2 class="text-center text-secondary mt-5">
+            No Employees found in CAD Department.
+          </h2>
           <% } %>
         </div>
       </div>

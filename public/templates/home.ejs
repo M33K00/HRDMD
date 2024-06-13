@@ -60,6 +60,11 @@
         ><div class="rolefolder-item">
           <i class="fa-solid fa-check"></i>
           <p>Approved</p>
+          <% if (approvedFiles.length > 0) { %>
+          <span class="badge rounded-pill bg-dark"
+            ><%= approvedFiles.length %></span
+          >
+          <% } %>
         </div></a
       >
     </div>

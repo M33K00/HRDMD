@@ -602,72 +602,83 @@
   updateClock();
 </script>
 <script>
-  function showConfirmationModal(action, fileId) {
-    // Set the action text and file ID in the modal
-    document.getElementById("actionText").textContent = action;
-    const confirmActionBtn = document.getElementById("confirmAction");
+function showConfirmationModal(action, fileId) {
+  // Set the action text and file ID in the modal
+  document.getElementById("actionText").textContent = action;
+  const confirmActionBtn = document.getElementById("confirmAction");
 
-    // Customize confirm button based on the action
-    switch (action) {
-      case "move this task to archive":
-        confirmActionBtn.textContent = "Move to Archive";
-        confirmActionBtn.className = "btn btn-warning";
-        break;
-      case "Reject":
-        confirmActionBtn.textContent = "Reject";
-        confirmActionBtn.className = "btn btn-danger";
-        break;
-      case "Pending":
-        confirmActionBtn.textContent = "Mark as Pending";
-        confirmActionBtn.className = "btn btn-warning";
-        break;
-      case "mark this task for approval":
-        confirmActionBtn.textContent = "Mark for Approval";
-        confirmActionBtn.className = "btn btn-primary";
-        break;
-      case "set this task as approved":
-        confirmActionBtn.textContent = "Mark as approved";
-        confirmActionBtn.className = "btn btn-success";
-        break;
-      default:
-        break;
-    }
-
-    // Show the modal
-    var confirmationModal = new bootstrap.Modal(
-      document.getElementById("confirmationModal")
-    );
-    confirmationModal.show();
-
-    // Set up the confirm button action
-    confirmActionBtn.onclick = function () {
-      performAction(action, fileId);
-      confirmationModal.hide();
-    };
+  // Show/hide remarks input based on the action
+  const remarksInputContainer = document.getElementById("remarksInputContainer");
+  if (action === "mark this task for approval") {
+    remarksInputContainer.style.display = "block";
+  } else {
+    remarksInputContainer.style.display = "none";
   }
 
-  function performAction(action, fileId) {
-    // Perform the action based on the button clicked
-    switch (action) {
-      case "move this task to archive":
-        window.location.href = `/archive_file/${fileId}`;
-        break;
-      case "Reject":
-        window.location.href = `/reject-file/${fileId}`;
-        break;
-      case "Pending":
-        window.location.href = `/pending-file/${fileId}`;
-        break;
-      case "mark this task for approval":
-        window.location.href = `/for-approval-file/${fileId}`;
-        break;
-      case "set this task as approved":
-        window.location.href = `/approve-file/${fileId}`;
-        break;
-      default:
-        break;
-    }
+  // Customize confirm button based on the action
+  switch (action) {
+    case "move this task to archive":
+      confirmActionBtn.textContent = "Move to Archive";
+      confirmActionBtn.className = "btn btn-warning";
+      break;
+    case "Reject":
+      confirmActionBtn.textContent = "Reject";
+      confirmActionBtn.className = "btn btn-danger";
+      break;
+    case "Pending":
+      confirmActionBtn.textContent = "Mark as Pending";
+      confirmActionBtn.className = "btn btn-warning";
+      break;
+    case "mark this task for approval":
+      confirmActionBtn.textContent = "Mark for Approval";
+      confirmActionBtn.className = "btn btn-primary";
+      break;
+    case "set this task as approved":
+      confirmActionBtn.textContent = "Mark as approved";
+      confirmActionBtn.className = "btn btn-success";
+      break;
+    default:
+      break;
   }
+
+  // Show the modal
+  var confirmationModal = new bootstrap.Modal(
+    document.getElementById("confirmationModal")
+  );
+  confirmationModal.show();
+
+  // Set up the confirm button action
+  confirmActionBtn.onclick = function () {
+    const remarksInput = document.getElementById("remarksInput").value;
+    performAction(action, fileId, remarksInput);
+    confirmationModal.hide();
+  };
+}
+
+function performAction(action, fileId, remarks) {
+  // Perform the action based on the button clicked
+  switch (action) {
+    case "move this task to archive":
+      window.location.href = `/archive_file/${fileId}`;
+      break;
+    case "Reject":
+      window.location.href = `/reject-file/${fileId}`;
+      break;
+    case "Pending":
+      window.location.href = `/pending-file/${fileId}`;
+      break;
+    case "mark this task for approval":
+      // Include remarks in the URL when marking for approval
+      window.location.href = `/for-approval-file/${fileId}?remarks=${encodeURIComponent(remarks)}`;
+      break;
+    case "set this task as approved":
+      window.location.href = `/approve-file/${fileId}`;
+      break;
+    default:
+      break;
+  }
+}
+
 </script>
 <script>
   // script.js

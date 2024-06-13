@@ -118,85 +118,6 @@ router.get("/home", checkRole, async (request, response) => {
   }
 });
 
-// Confidential Files
-router.get("/confidential", checkRole, async (request, response) => {
-  const currentPage = parseInt(request.query.page) || 1;
-  const pageSize = 10;
-
-  try {
-    const totalSubmittedFiles = await SubmittedFiles.countDocuments();
-    const totalPages = Math.ceil(totalSubmittedFiles / pageSize);
-    // Fetch all submitted files and sort by dateSubmitted in descending order
-    const submittedFiles = await SubmittedFiles.find({
-      fileType: "confidential",
-    })
-      .sort({
-        dateSubmitted: -1,
-      })
-      .skip((currentPage - 1) * pageSize)
-      .limit(pageSize);
-
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Set time to beginning of the day
-  
-      // Get end of today
-      const endOfToday = new Date();
-      endOfToday.setHours(23, 59, 59, 999); // Set time to end of the day
-  
-      const todayFiles = await SubmittedFiles.find({
-        fileType: "confidential",
-        dueDate: { $gte: today, $lte: endOfToday },
-      }).sort({ dateSubmitted: -1 });
-  
-      const todayFilesIds = todayFiles.map((file) => file._id);
-  
-      // Calculate the start and end of the current week
-      const startOfWeek = new Date();
-      startOfWeek.setHours(0, 0, 0, 0); // Set time to beginning of the day
-      startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Move to start of the week (Sunday)
-  
-      const endOfWeek = new Date();
-      endOfWeek.setHours(23, 59, 59, 999); // Set time to end of the day
-      endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay())); // Move to end of the week (Saturday)
-  
-      const currentWeekFiles = await SubmittedFiles.find({
-        fileType: "confidential",
-        dueDate: { $gte: startOfWeek, $lte: endOfWeek },
-        _id: { $nin: todayFilesIds },
-      }).sort({ dateSubmitted: -1 });
-
-    // Fetch pending files and sort by dateSubmitted in descending order
-    const pendingFiles = await SubmittedFiles.find({
-      status: "PENDING",
-      fileType: "confidential",
-    }).sort({
-      dateSubmitted: -1,
-    });
-
-    // Fetch approved files and sort by dateSubmitted in descending order
-    const approvedFiles = await SubmittedFiles.find({
-      status: "APPROVED",
-      fileType: "confidential",
-    }).sort({ dateSubmitted: -1 });
-
-    const pageType = "confidential";
-
-    response.render("home", {
-      submittedFiles,
-      currentWeekFiles,
-      todayFiles,
-      currentPage,
-      totalPages,
-      pendingFiles,
-      approvedFiles,
-      pageType,
-    });
-  } catch (error) {
-    console.error("Error reading directory:", error);
-    response.status(500).send("Internal Server Error");
-  }
-});
-
 // Archive Files
 router.get("/archive_files", async (req, res) => {
   const currentPage = parseInt(req.query.page) || 1;
@@ -632,13 +553,16 @@ router.post("/submitfile", documentUpload.single("file"), async (req, res) => {
       return res.redirect("/submitfile");
     }
 
+    const { assignTo } = req.body;
+    const [userName, userEmail] = assignTo.split(",");
+
     // Create fileData object if file code does not exist
     const fileData = {
       status: req.body.status,
       fileName: req.body.fileName,
       fileCode: req.body.fileCode,
-      assignTo: req.body.assignTo,
-      email: req.body.email,
+      assignTo: userName,
+      email: userEmail,
       fileInstruction: req.body.fileInstruction,
       dateSubmitted: new Date(),
       dueDate: req.body.dueDate,
@@ -729,11 +653,12 @@ router.get("/approve-file/:id", async (req, res) => {
     }
 
     file.status = "APPROVED";
+    file.dateApproved = new Date();
     await file.save();
 
     req.session.message = {
       type: "success",
-      message: "File Approved Successfully",
+      message: `File ${file.fileCode} Approved Successfully`,
     };
     res.redirect("/view_file/" + id);
   } catch (error) {
@@ -841,6 +766,7 @@ router.get("/pending-file/:id", async (req, res) => {
 router.get("/for-approval-file/:id", async (req, res) => {
   try {
     const id = req.params.id;
+    const remarks = req.query.remarks;
 
     const file = await SubmittedFiles.findById(id);
 
@@ -853,6 +779,7 @@ router.get("/for-approval-file/:id", async (req, res) => {
     }
 
     file.status = "FOR APPROVAL";
+    file.remarks = remarks;
     await file.save();
 
     req.session.message = {

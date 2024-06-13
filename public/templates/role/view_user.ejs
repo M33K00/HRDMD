@@ -31,18 +31,18 @@
     <div class="account-container mt-4">
       <div class="account-item">
         <div class="account-content">
-          <p>Documents Approved</p>
+          <p>Tasks Finished:</p>
         </div>
         <div class="account-count">
-          <p>420</p>
+          <p><%= submittedFiles.filter((file) => file.status === 'APPROVED').length %></p>
         </div>
       </div>
       <div class="account-item" style="background-color: rgb(112, 28, 28)">
         <div class="account-content">
-          <p>Documents Rejected</p>
+          <p>Tasks Pending:</p>
         </div>
         <div class="account-count">
-          <p><%= rejectedDocuments.length %></p>
+          <p><%= submittedFiles.filter((file) => file.status === 'PENDING').length %></p>
         </div>
       </div>
     </div>
