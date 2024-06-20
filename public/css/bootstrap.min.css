@@ -604,6 +604,20 @@
   transition: opacity 0.3s ease, transform 1.3s ease;
 }
 
+/* Media query for screens narrower than 1920px */
+@media (max-width: 1920px) {
+  .nav-change::after {
+    left: 94%;
+  }
+}
+
+@media (max-width: 1600px) {
+  .nav-change::after {
+    left: 93%;
+  }
+}
+
+
 .nav-change:hover {
   width: 100px;
   background-color: #ffffff;
@@ -646,7 +660,7 @@
 }
 
 .nav-change-hris::after {
-  content: "Task Manager";
+  content: "TASK MANAGER";
   display: none;
   position: absolute;
   top: 49%;
@@ -654,12 +668,26 @@
   transform: translateY(-50%);
   padding: 5px 10px;
   color: #137ea7;
-  font-weight: 700;
+  font-weight: 800;
   border-radius: 5px;
   font-size: 14px;
   transition: opacity 0.3s ease, transform 0.3s ease;
   white-space: nowrap;
 }
+
+/* Media query for screens narrower than 1920px */
+@media (max-width: 1920px) {
+  .nav-change-hris::after {
+    left: 91.5%;
+  }
+}
+
+@media (max-width: 1600px) {
+  .nav-change-hris::after {
+    left: 90%;
+  }
+}
+
 
 .nav-change-hris:hover {
   width: 200px;

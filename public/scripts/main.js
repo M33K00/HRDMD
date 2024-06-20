@@ -9,8 +9,8 @@ function createWindow() {
   });
 
   const win = new BrowserWindow({
-    maxHeight: 900,
-    maxWidth: 1600,
+    maxHeight: 1080,
+    maxWidth: 1920,
     width: 1600,
     height: 900,
     icon: path.join(__dirname, "../images/logo.ico"),
