@@ -785,6 +785,45 @@ router.get("/manage_accounts", async (req, res) => {
   }
 });
 
+// Manage Permission Routes
+
+router.get("/manage_permission/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const logincollections = await LogInCollection.findById(id);
+
+    if (!logincollections) {
+      return res.status(404).send("Not Found");
+    }
+
+    res.render("manage_permission", { logincollections });
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/update_permissions/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const update = {
+      mEmp: req.body.mEmp === 'on',
+      mLeave: req.body.mLeave === 'on',
+      mDTR: req.body.mDTR === 'on',
+      mPrint: req.body.mPrint === 'on',
+    };
+    await LogInCollection.findByIdAndUpdate(id, update);
+
+    req.session.message = {
+      type: "success",
+      message: "Permissions updated successfully",
+    };
+
+    res.redirect(`/manage_permission/${id}`);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 // HRIS Routes
 
 router.get("/hris", checkRoleHR, async (req, res) => {

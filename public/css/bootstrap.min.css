@@ -726,3 +726,22 @@
       opacity: 1;
   }
 }
+
+.rounded-box {
+  border-radius: 5px;
+  border: 1px solid #5a5a5a;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+.perm-info {
+  font-size: 20px;
+  margin-left: 20px;
+  margin-right: 20px
+}
+
+.form-check {
+  margin-left: 20px;
+  margin-right: 50px;
+  font-size: 20px;
+}
+

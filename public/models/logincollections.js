@@ -86,6 +86,24 @@ const logInSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  // Permission Fields
+  mEmp: {
+    type: Boolean,
+    default: false,
+  },
+  mLeave: {
+    type: Boolean,
+    default: false,
+  },
+  mDTR: {
+    type: Boolean,
+    default: false,
+  },
+  mPrint: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Fire a function before doc is saved to db

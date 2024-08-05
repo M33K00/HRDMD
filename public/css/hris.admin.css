@@ -378,7 +378,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 250px 380px 300px 1fr; /* Grid with 3 columns */
+  grid-template-columns: 250px 400px 300px 1fr; /* Grid with 3 columns */
   backdrop-filter: blur(5px); /* Blur effect */
   gap: 5px; /* Gap between grid items */
 }

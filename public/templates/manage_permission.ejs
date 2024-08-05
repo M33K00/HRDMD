@@ -1,0 +1,149 @@
+<%- include('./layouts/header') -%>
+<body>
+  <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
+    <div class="page-body fade-in">
+        <div class="page-name">
+            <h1>Manage Permissions</h1>
+            <div class="account-options">
+                <a href="/view_emp_data/<%= logincollections.email %>" class="btn btn-secondary">Go Back</a>
+            </div>
+        </div>
+        <p class="text-muted mt-4">Manage user permissions here.</p>
+        <div id="alertContainer" class="bottom-right">
+            <% if (message) { %>
+            <div
+              class="alert alert-dismissible alert-<%= message.type %> fade show"
+              role="alert"
+              id="autoDismissAlert"
+            >
+              <strong>Attention! </strong><%= message.message %><a
+                href="#"
+                class="alert-link"
+              ></a>
+            </div>
+            <% } %>
+          </div>
+        <div class="rounded-box d-flex justify-content-between p-3">
+            <div class="perm-info">
+                <strong>NAME:</strong> <%= logincollections.name %> <%= logincollections.lastname %>
+            </div>
+            <div class="perm-info">
+                <strong>DEPARTMENT:</strong>
+                <% if (logincollections.department === 'HR Department') { %>
+                    HR Department
+                  <% } else if (logincollections.department === 'Department 1') { %>
+                    PESO Department
+                  <% } else if (logincollections.department === 'Department 2') { %>
+                    CC Department
+                  <% } else if (logincollections.department === 'Department 3') { %>
+                    OAS Department
+                  <% } else if (logincollections.department === 'Department 4') { %>
+                    BTM Department
+                  <% } else if (logincollections.department === 'Department 5') { %>
+                    BPL Department
+                  <% } else if (logincollections.department === 'Department 6') { %>
+                    CAD Department
+                  <% } %>
+            </div>
+            <div class="perm-info">
+                <strong>POSITION:</strong>
+                <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                  else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                  else if (logincollections.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+                  (logincollections.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+                  (logincollections.hrrole === "ROLE 5") { %> Admin Aide <% } else if (logincollections.hrrole
+                  === "ADMIN") { %> Department Head <% } %>
+            </div>
+        </div>
+        <div class="border mt-4"></div>
+        <div class="form mt-3">
+            <form id="permissionsForm" action="/update_permissions/<%= logincollections._id %>" method="POST">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="mEmp" id="mEmp" <%= logincollections.mEmp ? 'checked' : '' %>>
+                            <label class="form-check-label" for="mEmp">
+                                Manage Employees
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="mLeave" id="mLeave" <%= logincollections.mLeave ? 'checked' : '' %>>
+                            <label class="form-check-label" for="mLeave">
+                                Manage Leave Applications
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="mDTR" id="mDTR" <%= logincollections.mDTR ? 'checked' : '' %>>
+                            <label class="form-check-label" for="mDTR">
+                                Manage Employee DTR
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="mPrint" id="mPrint" <%= logincollections.mPrint ? 'checked' : '' %>>
+                            <label class="form-check-label" for="mPrint">
+                                Print DTR Reports
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="border mt-4"></div>
+                <div class="text-center mt-3">
+                    <button type="button" class="btn btn-primary mt-3 w-25" data-bs-toggle="modal" data-bs-target="#confirmationModal">Update Permissions</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Permissions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You are about to give the following permissions to this Employee:</p>
+                    <ul id="permissionsList">
+                        <!-- Checked permissions will be inserted here -->
+                    </ul>
+                    <p>Do you want to continue?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmButton">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  <%- include('./layouts/footer') %>
+    <script>
+        document.querySelector('[data-bs-target="#confirmationModal"]').addEventListener('click', function () {
+    const permissions = {
+        'Manage Employees': document.getElementById('mEmp').checked,
+        'Manage Leave Applications': document.getElementById('mLeave').checked,
+        'Manage Employee DTR': document.getElementById('mDTR').checked,
+        'Print DTR Reports': document.getElementById('mPrint').checked
+    };
+
+    const permissionsList = document.getElementById('permissionsList');
+    permissionsList.innerHTML = '';
+
+    for (const [key, value] of Object.entries(permissions)) {
+        if (value) {
+            const li = document.createElement('li');
+            li.textContent = key;
+            permissionsList.appendChild(li);
+        }
+    }
+});
+
+        document.getElementById('confirmButton').addEventListener('click', function () {
+            document.getElementById('permissionsForm').submit();
+        });
+    </script>

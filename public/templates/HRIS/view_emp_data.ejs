@@ -42,6 +42,9 @@
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="/edit/<%= logincollections._id %>">Manage Account</a></li>
           <li><a class="dropdown-item mt-1" href="/view-dtr/<%= logincollections._id %>">View DTR</a></li>
+          <% if (logincollections.department === 'HR Department') { %>
+            <li><a class="dropdown-item mt-1" href="/manage_permission/<%= logincollections._id %>">Manage Permissions</a></li>
+          <% } %>
           <% if (logincollections.accountClosed === false) { %>
             <li><a id="closeAccountLink" class="dropdown-item text-danger mt-1" href="#">Close Account</a></li>
           <% } else { %>
@@ -110,25 +113,8 @@
     </div>
     <div class="account-stat mt-3">
       <div class="account-stat-item">
-        <%
-              const startTimeParts = hrSettings.startTime.split(":");
-              const endTimeParts = hrSettings.endTime.split(":");
-              const startHour = parseInt(startTimeParts[0]);
-              const endHour = parseInt(endTimeParts[0]);
-              const startMinutes = parseInt(startTimeParts[1]);
-              const endMinutes = parseInt(endTimeParts[1]);
-
-              // Create Date objects with dummy date (since we only care about time)
-              const startDate = new Date(2000, 0, 1, startHour, startMinutes);
-              const endDate = new Date(2000, 0, 1, endHour, endMinutes);
-
-              // Format the times in AM/PM format
-              const formattedStartTime = startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-              const formattedEndTime = endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-              %>
-          <p><b>Cut-off Dates:</b> Every <%= hrSettings.startDate %> and <%= hrSettings.endDate %></p>
-          <p><b>Shift Start:</b> <%= formattedStartTime %></p>
-          <p><b>Shift End:</b> <%= formattedEndTime %></p>
+        <p><b>Account Status:</b> <%if (logincollections.accountClosed === true) { %> <span style="color: red;">CLOSED</span> <% } else { %><span style="color: green;">ACTIVE</span><% } %></p>
+        <p><b>Verification Status:</b> <%if (logincollections.verified === true) { %> <span style="color: green;">VERIFIED</span> <% } else { %><span style="color: red;">NOT VERIFIED</span><% } %></p>
       </div>
     </div>
   </div>
@@ -177,7 +163,6 @@
     </div>
   </div>
   <%- include('../layouts/footer') %>
-  // Reopen Confirmation Modal
   <script>
   document.addEventListener('DOMContentLoaded', (event) => {
     const reopenAccountLink = document.getElementById('reopenAccountLink');
