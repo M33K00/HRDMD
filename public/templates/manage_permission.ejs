@@ -61,7 +61,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="mEmp" id="mEmp" <%= logincollections.mEmp ? 'checked' : '' %>>
+                            <input class="form-check-input" type="checkbox" name="mEmp" id="mEmp" <%if (logincollections.empStatus === "Job Order") { %> disabled <% } %> <%= logincollections.mEmp ? 'checked' : '' %>>
                             <label class="form-check-label" for="mEmp">
                                 Manage Employees
                             </label>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="mLeave" id="mLeave" <%= logincollections.mLeave ? 'checked' : '' %>>
+                            <input class="form-check-input" type="checkbox" name="mLeave" id="mLeave" <%if (logincollections.empStatus === "Job Order") { %> disabled <% } %> <%= logincollections.mLeave ? 'checked' : '' %>>
                             <label class="form-check-label" for="mLeave">
                                 Manage Leave Applications
                             </label>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="mDTR" id="mDTR" <%= logincollections.mDTR ? 'checked' : '' %>>
+                            <input class="form-check-input" type="checkbox" name="mDTR" id="mDTR" <%if (logincollections.empStatus === "Job Order") { %> disabled <% } %> <%= logincollections.mDTR ? 'checked' : '' %>>
                             <label class="form-check-label" for="mDTR">
                                 Manage Employee DTR
                             </label>
@@ -85,7 +85,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="mPrint" id="mPrint" <%= logincollections.mPrint ? 'checked' : '' %>>
+                            <input class="form-check-input" type="checkbox" name="mPrint" id="mPrint" <%if (logincollections.empStatus === "Job Order") { %> disabled <% } %> <%= logincollections.mPrint ? 'checked' : '' %>>
                             <label class="form-check-label" for="mPrint">
                                 Print DTR Reports
                             </label>
@@ -93,6 +93,9 @@
                     </div>
                 </div>
                 <div class="border mt-4"></div>
+                <% if (logincollections.empStatus === "Job Order") { %> 
+                    <p class="text-center text-danger mt-3">Employees that are J.O. (Job Order) cannot be granted permissions</p>
+                <% } %>
                 <div class="text-center mt-3">
                     <button type="button" class="btn btn-primary mt-3 w-25" data-bs-toggle="modal" data-bs-target="#confirmationModal">Update Permissions</button>
                 </div>
@@ -124,25 +127,24 @@
   <%- include('./layouts/footer') %>
     <script>
         document.querySelector('[data-bs-target="#confirmationModal"]').addEventListener('click', function () {
-    const permissions = {
-        'Manage Employees': document.getElementById('mEmp').checked,
-        'Manage Leave Applications': document.getElementById('mLeave').checked,
-        'Manage Employee DTR': document.getElementById('mDTR').checked,
-        'Print DTR Reports': document.getElementById('mPrint').checked
-    };
+            const permissions = {
+                'Manage Employees': document.getElementById('mEmp').checked,
+                'Manage Leave Applications': document.getElementById('mLeave').checked,
+                'Manage Employee DTR': document.getElementById('mDTR').checked,
+                'Print DTR Reports': document.getElementById('mPrint').checked
+            };
 
-    const permissionsList = document.getElementById('permissionsList');
-    permissionsList.innerHTML = '';
+            const permissionsList = document.getElementById('permissionsList');
+            permissionsList.innerHTML = '';
 
-    for (const [key, value] of Object.entries(permissions)) {
-        if (value) {
-            const li = document.createElement('li');
-            li.textContent = key;
-            permissionsList.appendChild(li);
-        }
-    }
-});
-
+            for (const [key, value] of Object.entries(permissions)) {
+                if (value) {
+                    const li = document.createElement('li');
+                    li.textContent = key;
+                    permissionsList.appendChild(li);
+                }
+            }
+        });
         document.getElementById('confirmButton').addEventListener('click', function () {
             document.getElementById('permissionsForm').submit();
         });

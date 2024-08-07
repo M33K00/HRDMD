@@ -1,6 +1,11 @@
 <%- include('../layouts/hrislayout') -%>
 <body>
-  <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
+  <%- include('../layouts/navhris') -%>
+  <% if (user.hrrole !== "ADMIN") { -%>
+    <%- include('../layouts/user_hris/sidenavhris_user') %>
+  <% } else { -%>
+    <%- include('../layouts/sidenavhris') %>
+  <% } -%>
   <%- include('../layouts/footer') %>
   <div class="page-body">
     <div class="page-name">

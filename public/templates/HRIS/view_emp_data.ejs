@@ -1,6 +1,11 @@
 <%- include('../layouts/hrislayout') -%>
 <body>
-  <%- include('../layouts/navhris') -%> <%- include('../layouts/sidenavhris') %>
+  <%- include('../layouts/navhris') -%>
+  <% if (user.hrrole !== "ADMIN") { -%>
+    <%- include('../layouts/user_hris/sidenavhris_user') %>
+  <% } else { -%>
+    <%- include('../layouts/sidenavhris') %>
+  <% } -%>
   <div class="page-body fade-in">
     <div class="page-name">
       <h1>View Employee Details:</h1>
@@ -35,23 +40,27 @@
     <% } %>
     <div class="page-extra">
       <h4 class="text-muted">HRIS Profile Information:</h4>
-      <div class="btn-group">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Actions
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/edit/<%= logincollections._id %>">Manage Account</a></li>
-          <li><a class="dropdown-item mt-1" href="/view-dtr/<%= logincollections._id %>">View DTR</a></li>
-          <% if (logincollections.department === 'HR Department') { %>
-            <li><a class="dropdown-item mt-1" href="/manage_permission/<%= logincollections._id %>">Manage Permissions</a></li>
-          <% } %>
-          <% if (logincollections.accountClosed === false) { %>
-            <li><a id="closeAccountLink" class="dropdown-item text-danger mt-1" href="#">Close Account</a></li>
-          <% } else { %>
-            <li><a id="reopenAccountLink" class="dropdown-item text-success mt-1" href="#">Reopen Account</a></li>
-          <% } %>
-        </ul>
-      </div>
+      <% if (logincollections.hrrole !== "ADMIN") { %>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Actions
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/edit/<%= logincollections._id %>">Manage Account</a></li>
+            <li><a class="dropdown-item mt-1" href="/view-dtr/<%= logincollections._id %>">View DTR</a></li>
+            <% if (logincollections.department === 'HR Department' && user.hrrole === "ADMIN") { %>
+              <li><a class="dropdown-item mt-1" href="/manage_permission/<%= logincollections._id %>">Manage Permissions</a></li>
+            <% } %>
+            <% if (user.email !== logincollections.email) { %>
+              <% if (logincollections.accountClosed === false) { %>
+                <li><a id="closeAccountLink" class="dropdown-item text-danger mt-1" href="#">Close Account</a></li>
+              <% } else { %>
+                <li><a id="reopenAccountLink" class="dropdown-item text-success mt-1" href="#">Reopen Account</a></li>
+              <% } %>
+            <% } %>
+          </ul>
+        </div>
+      <% } %>
       <script>
         const dropdown = new bootstrap.Dropdown(document.querySelector('.btn-group'))
       </script>

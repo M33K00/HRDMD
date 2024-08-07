@@ -83,10 +83,24 @@
             >
             <% } %>
           </li>
-          <% if (user.hrrole === "ROLE 5" && user.department === "HR Department") { %>
+          <% if (user.mEmp === true && user.department === "HR Department") { %>
+          <li>
+            <a href="/view_employees">
+              <i class="fa-solid fa-users"></i></i></i>Manage Employees
+            </a>
+          </li>
+          <% } %>
+          <% if (user.mLeave === true && user.department === "HR Department") { %>
+          <li>
+            <a href="/leave_applications">
+              <i class="fa-solid fa-envelope"></i>Manage Leave
+            </a>
+          </li>
+          <% } %>
+          <% if (user.mDTR === true && user.department === "HR Department") { %>
           <li>
             <a href="/dtr">
-              <i class="fa-solid fa-clock"></i>Employee DTR
+              <i class="fa-solid fa-clock"></i>Employees DTR
             </a>
           </li>
           <% } %>
