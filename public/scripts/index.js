@@ -6,6 +6,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const { checkUser } = require("../middleware/authMiddleware.js");
+const LeaveApplications = require("../models/leaveapplications");
 
 const PORT =  3939;
 const templatePath = path.join(__dirname, "../templates");
@@ -44,7 +45,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // Route prefix
 app.get("*", checkUser);
 app.use("", require("../routes/routes"));
@@ -76,6 +76,26 @@ mongoose.connect("mongodb://0.0.0.0:27017/HRDMD");
 const db = mongoose.connection;
 db.on("error", (error) => console.log(error));
 db.on("open", () => console.log("Connected to the Database"));
+
+// Function to update the collection
+async function updateLeaveApplications() {
+  try {
+    const currentDate = new Date();
+    const leaveApplications = await LeaveApplications.find({
+      EndDate: { $lt: currentDate },});
+
+    for (const leaveApplication of leaveApplications) {
+      leaveApplication.Status = "Done/Expired";
+      await leaveApplication.save();
+    }
+
+    console.log("Leave applications updated successfully");
+  } catch (error) {
+    console.error("Error updating leave applications:", error);
+  }
+}
+
+setInterval(updateLeaveApplications, 24 * 60 * 60 * 1000);
 
 app.listen(PORT, () => {
   console.log(`Server started at http://localhost:${PORT}`);

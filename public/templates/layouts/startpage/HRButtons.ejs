@@ -72,11 +72,19 @@
     </div>
   </div>
   <div class="col-md-4 hover-div-sp">
-    <a href="/view_employees">
+    <% if (user.mEmp === true || user.hrrole === 'ADMIN') { %>
+      <a href="/view_employees">
+    <% } else { %>
+      <a href="/view-user/<%= user._id %>">
+    <% } %>
     <div class="card-start card border-primary mb-3 shadow startpage-font">
-      <h3 class="card-header">Manage Employees</h3>
+      <% if (user.mEmp === true || user.hrrole === 'ADMIN') { %>
+        <h3 class="card-header">Manage Employees</h3>
+      <% } else { %>
+        <h3 class="card-header">My Account</h3>
+      <% } %>
       <div class="card-body">
-        <% if (user.hrrole === 'ADMIN') { %>
+        <% if (user.mEmp === true || user.hrrole === 'ADMIN') { %>
           <h6 class="card-subtitle text-muted">
             Manage employee accounts
           </h6>

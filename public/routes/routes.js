@@ -856,7 +856,8 @@ router.get("/view_employees", async (req, res) => {
 router.get("/leave_applications", async (req, res) => {
   try {
     const leaveapplications = await LeaveApplications.find();
-    res.render("HRIS/leave_applications", { leaveapplications });
+    const activeLeaveApplications = leaveapplications.filter(application => application.Status !== 'Done/Expired');
+    res.render("HRIS/leave_applications", { leaveapplications, activeLeaveApplications });
   } catch (err) {
     console.log("Error loading pages: ", err);
     res.status(500).send("Internal Server Error");

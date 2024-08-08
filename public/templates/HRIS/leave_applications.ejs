@@ -48,14 +48,15 @@
       oninput="searchTables()"
     />
     <div class="hris-container">
-      <% const pendingApplications = leaveapplications.filter(row => row.Status
-      === 'Pending'); %> <% const approvedApplications =
-      leaveapplications.filter(row => row.Status === 'Approved'); %> <% const
-      declinedApplications = leaveapplications.filter(row => row.Status ===
-      'Declined'); %> <% const totalApplications = leaveapplications.length; %>
-      <% const approvedCount = approvedApplications.length; %> <% const
-      declinedCount = declinedApplications.length; %> <% const pendingCount =
-      pendingApplications.length; %>
+      <% const pendingApplications = leaveapplications.filter(row => row.Status === 'Pending'); %> 
+      <% const approvedApplications = leaveapplications.filter(row => row.Status === 'Approved'); %> 
+      <% const declinedApplications = leaveapplications.filter(row => row.Status === 'Declined'); %>
+      <% const expiredApplications = leaveapplications.filter(row => row.Status === 'Done/Expired'); %> 
+      <% const totalApplications = activeLeaveApplications.length; %>
+      <% const approvedCount = approvedApplications.length; %>
+      <% const declinedCount = declinedApplications.length; %> 
+      <% const pendingCount = pendingApplications.length; %>
+      <% const expiredCount = expiredApplications.length; %>
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item" role="presentation">
           <a
@@ -100,6 +101,17 @@
             >Declined (<%= declinedCount %>)</a
           >
         </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link text-muted"
+            data-bs-toggle="tab"
+            href="#expired"
+            aria-selected="false"
+            role="tab"
+            tabindex="-1"
+            >Done/Expired (<%= expiredCount %>)</a
+          >
+        </li>
       </ul>
       <div id="myTabContent" class="tab-content">
         <div
@@ -137,16 +149,18 @@
                     row.AppliedDate.toISOString().split('T')[0] %> <% } %>
                   </td>
                   <td
-                    style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
+                    style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else if (row.Status === 'Pending') { %> color: orange; <% } else { %> color: gray; <% } %>"
                   >
                     <%= row.Status %>
                   </td>
                   <td class="action-buttons-leave">
-                    <a
+                    <% if (row.Status !== 'Done/Expired') { %>
+                      <a
                       href="/manage-leave/<%= row.id %>"
                       class="icon-square-leave"
                       ><i class="fa-solid fa-pen-to-square text-warning"></i
                     ></a>
+                    <% } %>
                     <a
                       href="/view-leave/<%= row.id %>"
                       class="icon-square-leave"
@@ -362,6 +376,66 @@
             <% } %>
           </div>
         </div>
+        <div class="tab-pane fade" id="expired" role="tabpanel">
+          <div
+            class="tab-pane fade show mb-4"
+            id="expired"
+            role="tabpanel"
+          >
+            <% if (expiredApplications.length > 0) { %>
+            <div class="table-responsive mt-3">
+              <table id="table" class="table table-hover">
+                <thead>
+                  <tr class="table-dark">
+                    <th>Applicant's Name</th>
+                    <th>Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Applied Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% expiredApplications.forEach((row, index) => { %>
+                  <tr
+                    class="popup-row"
+                    data-reason="<%= row.reason %>"
+                    data-declinereason="<%= row.declineReason %>"
+                  >
+                    <td><%= row.name %></td>
+                    <td><%= row.Type %></td>
+                    <td><%= row.StartDate.toISOString().split('T')[0] %></td>
+                    <td><%= row.EndDate.toISOString().split('T')[0] %></td>
+                    <td>
+                      <% if (row.AppliedDate === null) { %> N/A <% } else { %>
+                      <%= row.AppliedDate.toISOString().split('T')[0] %> <% } %>
+                    </td>
+                    <td
+                      style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: gray; <% } %>"
+                    >
+                      <%= row.Status %>
+                    </td>
+                    <td class="action-buttons-leave">
+                      <a
+                        href="/view-leave/<%= row.id %>"
+                        class="icon-square-leave"
+                      >
+                        <i class="fa-solid fa-eye text-dark"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+            <% } else { %>
+            <h2 class="text-center text-secondary mt-5">
+              No closed or expired leave applications.
+            </h2>
+            <% } %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -374,5 +448,4 @@
   const year = currentDate.getFullYear(); return `${dayOfWeek}, ${month}
   ${dayOfMonth}, ${year}`; } %>
 </body>
-
 <%- include('../layouts/footer') %>

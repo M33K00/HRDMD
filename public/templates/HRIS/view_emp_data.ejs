@@ -127,10 +127,56 @@
       </div>
     </div>
   </div>
+  <% if (user.hrrole === "ADMIN" && logincollections.empStatus !== "Job Order" && logincollections.email !== user.email && logincollections.department === 'HR Department') { %>
+  <div class="border mt-4"></div>
+  <div class="form mt-4">
+    <h3 class="mb-3" style="margin-left: 10px;">HR Permissions:</h3>
+            <form id="permissionsForm" action="/update_permissions/<%= logincollections._id %>" method="POST">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input form-no-click" type="checkbox" name="mEmp" id="mEmp" <%= logincollections.mEmp ? 'checked' : '' %> onclick="return false;">
+                            <label class="form-check-label" for="mEmp">
+                                Manage Employees
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input form-no-click" type="checkbox" name="mLeave" id="mLeave" <%= logincollections.mLeave ? 'checked' : '' %> onclick="return false;">
+                            <label class="form-check-label" for="mLeave">
+                                Manage Leave Applications
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input form-no-click" type="checkbox" name="mDTR" id="mDTR" <%= logincollections.mDTR ? 'checked' : '' %> onclick="return false;">
+                            <label class="form-check-label" for="mDTR">
+                                Manage Employee DTR
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input form-no-click" type="checkbox" name="mPrint" id="mPrint" <%= logincollections.mPrint ? 'checked' : '' %> onclick="return false;">
+                            <label class="form-check-label" for="mPrint">
+                                Print DTR Reports
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <% if (logincollections.empStatus === "Job Order") { %> 
+                    <p class="text-center text-danger mt-3">Employees that are J.O. (Job Order) cannot be granted permissions</p>
+                <% } %>
+            </form>
+        </div>
+        <div class="border mt-4"></div>
+      <% } %>
   </div>
   <div class="emp-files slide-up">
-    <div class="page-name cont-divider">
-      <h3 class="mt-4">Employee Files:</h3>
+    <div class="page-name">
+      <h3>Employee Files:</h3>
     </div>
     <p class="text-muted">These are the files submitted by the employee</p>
     <%- include('../layouts/tables/201TableAdmin.ejs') -%>
