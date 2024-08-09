@@ -1,7 +1,11 @@
 <%- include('./layouts/hrislayout') -%>
 <body>
-  <%- include('./layouts/navhrisP') -%>
+  <%- include('./layouts/navhris') -%>
+  <% if (user.hrrole === "ADMIN") { -%>
+    <%- include('./layouts/sidenavhris') %>
+  <% } else { -%>
     <%- include('./layouts/sidenavP') %>
+  <% } -%>
   <div class="page-body fade-in">
     <div class="hris-container">
       <div class="hris-header">
@@ -10,16 +14,14 @@
       </div>
     </div>
     <% const unverified = employeecount.filter((employee) => !employee.verified); %>
-    <% if (user.mEmp === true || user.hrrole === 'ADMIN') { %>
-      <% if (unverified.length > 0) { %>
-        <div id="alertContainer" class="bottom-right slide-up">
-          <div class="alert alert-dismissible alert-warning fade show">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <h4 class="alert-heading mb-0" style="font-size: 20px;">Attention!</h4>
-            <p class="mb-0" style="font-size: 15px;">There are currently <%= unverified.length %> accounts that needs verification. <a href="/view_employees" class="alert-link">Click here</a> to view and verify them.</p>
-          </div>
-        </div>
-        <% } %>
+    <% if (unverified.length > 0) { %>
+    <div id="alertContainer" class="bottom-right slide-up">
+      <div class="alert alert-dismissible alert-warning fade show">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <h4 class="alert-heading mb-0" style="font-size: 20px;">Attention!</h4>
+        <p class="mb-0" style="font-size: 15px;">There are currently <%= unverified.length %> accounts that needs verification. <a href="/view_employees" class="alert-link">Click here</a> to view and verify them.</p>
+      </div>
+    </div>
     <% } %>
     <div class="dtr-status">
       <div id="bgTime" class="dtr-div div-time">

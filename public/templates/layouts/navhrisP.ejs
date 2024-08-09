@@ -85,7 +85,7 @@
           </li>
           <% if (user.mEmp === true || user.mLeave === true || user.mDTR === true || user.hrrole === "ADMIN") { %>
           <li>
-            <a href="/hris"><i class="fa-solid fa-fingerprint"></i>HRIS Manager</a>
+            <a href="/hris_user/<%= user.email %>"><i class="fa-solid fa-fingerprint"></i>HRIS Personal</a>
           </li>
           <% } %>
           <li class="logout-button">

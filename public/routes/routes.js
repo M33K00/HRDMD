@@ -826,7 +826,7 @@ router.post("/update_permissions/:id", async (req, res) => {
 
 // HRIS Routes
 
-router.get("/hris", checkRoleHR, async (req, res) => {
+router.get("/hris", async (req, res) => {
   try {
     const employeecount = await LogInCollection.find();
     const pendingleave = await LeaveApplications.countDocuments({
