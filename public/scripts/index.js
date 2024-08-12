@@ -95,7 +95,7 @@ async function updateLeaveApplications() {
   }
 }
 
-setInterval(updateLeaveApplications, 24 * 60 * 60 * 1000);
+setInterval(updateLeaveApplications, 60 * 60 * 1000);
 
 app.listen(PORT, () => {
   console.log(`Server started at http://localhost:${PORT}`);

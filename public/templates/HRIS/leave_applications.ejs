@@ -118,7 +118,7 @@
           <% if (leaveapplications != '') { %>
           <div class="table-responsive mt-3">
             <table id="table" class="table table-hover">
-              <thead>
+              <thead id="tableHead">
                 <tr class="table-dark">
                   <th>Applicant's Name</th>
                   <th>Type</th>
@@ -129,7 +129,7 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="tableBody">
                 <% leaveapplications.forEach((row, index) => { %>
                 <tr
                   class="popup-row"
@@ -168,11 +168,10 @@
                 <% }) %>
               </tbody>
             </table>
-            <% } else { %>
-            <h2 class="text-center text-secondary mt-5">
+            <% } %>
+            <h2 id="noApplicationsMessage" class="text-center text-secondary mt-5">
               No leave applications
             </h2>
-            <% } %>
           </div>
         </div>
         <div class="tab-pane fade" id="pending" role="tabpanel">
@@ -444,4 +443,71 @@
   const year = currentDate.getFullYear(); return `${dayOfWeek}, ${month}
   ${dayOfMonth}, ${year}`; } %>
 </body>
+<script>
+  function updateTable(url, tableId, messageId,) {
+        console.log(`Fetching data from ${url}...`);
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // console.log('Data received:', data);
+
+                const tableBody = document.querySelector(`${tableId} tbody`);
+                const tableHead = document.querySelector(`${tableId} thead`);
+                const messageElement = document.getElementById(messageId);
+                tableBody.innerHTML = ''; // Clear existing rows
+
+                if (data.length > 0) {
+                    // Hide the "No leave applications" message if there are data rows
+                    tableHead.style.display = 'table-header-group';
+                    messageElement.style.display = 'none';
+
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.classList.add('popup-row');
+                        tr.dataset.reason = row.reason || '';
+                        tr.dataset.declinereason = row.declineReason || '';
+
+                        const statusStyle = {
+                            'Declined': 'color: red; font-weight: 600;',
+                            'Approved': 'color: green; font-weight: 600;',
+                            'Pending': 'color: orange; font-weight: 600;',
+                            'Default': 'color: gray; font-weight: 600;'
+                        }[row.Status] || statusStyle['Default'];
+
+                        tr.innerHTML = `
+                            <td>${row.name}</td>
+                            <td>${row.Type}</td>
+                            <td>${new Date(row.StartDate).toISOString().split('T')[0]}</td>
+                            <td>${new Date(row.EndDate).toISOString().split('T')[0]}</td>
+                            <td>${row.AppliedDate ? new Date(row.AppliedDate).toISOString().split('T')[0] : 'N/A'}</td>
+                            <td style="${statusStyle}">${row.Status}</td>
+                            <td class="action-buttons-leave">
+                                ${row.Status !== 'Done/Expired' ? `
+                                    <a href="/manage-leave/${row._id}" class="icon-square-leave">
+                                        <i class="fa-solid fa-pen-to-square text-warning"></i>
+                                    </a>` : ''}
+                                <a href="/view-leave/${row._id}" class="icon-square-leave">
+                                    <i class="fa-solid fa-eye text-dark"></i>
+                                </a>
+                            </td>
+                        `;
+
+                        tableBody.appendChild(tr);
+                    });
+                } else {
+                    // Show the "No leave applications" message if there are no data rows
+                    tableHead.style.display = 'none';
+                    messageElement.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+setInterval(() => updateTable('/leave_applicationsJSON', '#table', 'noApplicationsMessage'), 5000);
+updateTable('/leave_applicationsJSON', '#table', 'noApplicationsMessage', 'tableHeader'); // Initial call to populate the table
+</script>
+</script>
 <%- include('../layouts/footer') %>

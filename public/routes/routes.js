@@ -864,6 +864,18 @@ router.get("/leave_applications", async (req, res) => {
   }
 });
 
+// Get active leave applications
+router.get("/leave_applicationsJSON", async (req, res) => {
+  try {
+    const leaveApplications = await LeaveApplications.find();
+    const activeLeaveApplications = leaveApplications.filter(application => application.Status !== 'Done/Expired');
+    res.json(activeLeaveApplications); // Send JSON response
+  } catch (err) {
+    console.log("Error loading data: ", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/manage-leave/:id", async (req, res) => {
   try {
     const id = req.params.id;
