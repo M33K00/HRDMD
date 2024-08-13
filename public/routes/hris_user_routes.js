@@ -304,21 +304,17 @@ router.post("/apply_leave", async (req, res) => {
       ...req.body,
     };
 
-    console.log(data);
-
     // Calculate the number of days between StartDate and EndDate
     const timeDiff = Math.abs(data.EndDate - data.StartDate);
     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
 
-    // Get account by name
-    const account = await Attendance.findOne({ name: data.email });
-
+    // Get account by email
+    const account = await Attendance.findOne({ email: data.email });
+    
     // Check if account exists
     if (!account) {
       throw new Error("Account not found.");
     }
-
-    console.log(data.Type);
 
     const availableSL = parseInt(account.availableSL, 10) || 0;
     const availableVL = parseInt(account.availableVL, 10) || 0;
@@ -331,7 +327,7 @@ router.post("/apply_leave", async (req, res) => {
         message: "You used up all your sick leave.",
       };
       res.redirect("/apply_leave/" + data.email);
-    } else if (data.Type === "vacation leave" && availableVL <= 0) {
+    } else if (data.Type === "Vacation Leave" && availableVL <= 0) {
       req.session.message = {
         type: "danger",
         message: "You used up all your vacation leave.",
