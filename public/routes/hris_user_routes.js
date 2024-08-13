@@ -304,12 +304,14 @@ router.post("/apply_leave", async (req, res) => {
       ...req.body,
     };
 
+    console.log(data);
+
     // Calculate the number of days between StartDate and EndDate
     const timeDiff = Math.abs(data.EndDate - data.StartDate);
     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
 
     // Get account by name
-    const account = await Attendance.findOne({ name: data.name });
+    const account = await Attendance.findOne({ name: data.email });
 
     // Check if account exists
     if (!account) {
