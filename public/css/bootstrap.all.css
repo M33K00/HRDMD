@@ -6,6 +6,51 @@ body {
   -webkit-user-drag: none;
 }
 
+.titlebar {
+  width: 100%;
+  height: 25px;
+  background-color: #158cba;
+  position: fixed;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  -webkit-user-select: none;
+  border-bottom: 2px solid #1380aa;
+}
+
+.titlebar img {
+  width: 12px;
+  height: 12px;
+}
+
+.titlebar-drag-region {
+  -webkit-app-region: drag;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.titlebar-controls {
+  display: flex;
+}
+
+.titlebar-controls button {
+  width: 40px;
+  height: 25px;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.titlebar-controls button:hover {
+  background-color: #1380aa;
+}
+
+
 .hover-div {
   transition: filter 0.3s ease, opacity 0.3s ease;
   filter: brightness(100%);

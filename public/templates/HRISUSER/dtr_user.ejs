@@ -294,16 +294,22 @@
                   <th>End Date</th>
                 </tr>
               </thead>
-              <tbody>
-                <% // Sort leaveapplications array by date (from latest to oldest)
-                leaveapplications.sort((a, b) => new Date(b.approvedDate) - new Date(a.approvedDate));
-                leaveapplications.forEach((row, index) => { %>
-                  <tr>
-                    <td><%= row.approvedDate.toISOString().slice(0, 10) %></td>
-                    <td><%= row.startDate.toISOString().slice(0, 10) %></td>
-                    <td><%= row.endDate.toISOString().slice(0, 10) %></td>
-                  </tr>
-                  <% }) %>
+              <tbody class="text-center">
+                <% 
+                  leaveapplications.sort((a, b) => new Date(b.AppliedDate) - new Date(a.AppliedDate));
+                  leaveapplications.forEach((row, index) => { 
+                    const appliedDate = new Date(row.AppliedDate);
+                    const startDate = new Date(row.StartDate);
+                    const endDate = new Date(row.EndDate);
+                  %>
+                    <tr>
+                      <td><%= row.AppliedDate ? appliedDate.toISOString().slice(0, 10) : 'N/A' %></td>
+                      <td><%= row.StartDate ? startDate.toISOString().slice(0, 10) : 'N/A' %></td>
+                      <td><%= row.EndDate ? endDate.toISOString().slice(0, 10) : 'N/A' %></td>
+                    </tr>
+                  <% 
+                  }); 
+                  %>
               <% } else { %>
                 <h1 class="text-center text-secondary mt-5">
                   No Days on Leave Found
