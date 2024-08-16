@@ -3,6 +3,28 @@
   <%- include('../layouts/navhris') -%> <%-
   include('../layouts/user_hris/sidenavhris_user') %>
   <%- include('../layouts/footer') %>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const timeOutBtn = document.getElementById("timeOutBtn");
+    const confirmTimeOutBtn = document.getElementById("confirmTimeOut");
+    const cancelTimeOutBtn = document.getElementById("cancelTimeOut");
+
+    timeOutBtn.addEventListener("click", function (event) {
+      if (!timeOutBtn.classList.contains("disabled")) {
+        event.preventDefault();
+        $("#confirmTimeOutModal").modal("show");
+      }
+    });
+
+    confirmTimeOutBtn.addEventListener("click", function () {
+      window.location.href = timeOutBtn.href;
+    });
+
+    cancelTimeOutBtn.addEventListener("click", function () {
+      $("#confirmTimeOutModal").modal("hide");
+    });
+  });
+  </script>
     <div class="page-body fade-in">
       <div id="alertContainer" class="bottom-right slide-up">
         <% if (message) { %>
@@ -141,9 +163,10 @@
             <a href="/clockin/<%= logincollections.email %>" class="btn btn-primary <% if (attendance.status === 'IN' || status === 'Absent' || pStatus === 'Present') { %>
              disabled
             <% } %>" >TIME In</a>
-            <a href="/clockout/<%= logincollections.email %>" class="btn btn-secondary <% if (attendance.status === 'OUT') { %>
-             disabled"
-            <% } %>" style="margin-left: 10px; margin-right: 10px;">TIME Out</a>
+            <a href="/clockout/<%= logincollections.email %>" 
+              class="btn btn-secondary <% if (attendance.status === 'OUT') { %> disabled" <% } %>" 
+              style="margin-left: 10px; margin-right: 10px;"
+              id="timeOutBtn">TIME Out</a>
           </div>
         </div>
         <ul class="nav nav-tabs" role="tablist">
@@ -423,6 +446,23 @@
       </div>
     </div>
   </div>
+// Confirm Time Out Modal
+<div class="modal fade border-warning" id="confirmTimeOutModal" tabindex="-1" role="dialog" aria-labelledby="confirmTimeOutLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content border-warning">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmTimeOutLabel">Confirm TIME OUT</h5>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to time out?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelTimeOut">Cancel</button>
+        <button type="button" class="btn btn-warning" id="confirmTimeOut">Yes, Clock Out</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 <% function getCurrentDateInWords() { const months = ['January', 'February',
   'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
@@ -432,3 +472,4 @@
   months[currentDate.getMonth()]; const dayOfMonth = currentDate.getDate();
   const year = currentDate.getFullYear(); return `${dayOfWeek}, ${month}
   ${dayOfMonth}, ${year}`; } %>
+  

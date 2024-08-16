@@ -168,7 +168,7 @@
             <% mergedData.forEach(employee => { %> <%
             employee.attendanceData.forEach(attendance => { %>
             <tr>
-              <td><%= employee.name %></td>
+              <td><%= employee.name %> <%= employee.lastname %></td>
               <td><%= employee.department %></td>
               <td><%= attendance.daysAbsent %></td>
               <td>
@@ -229,7 +229,7 @@
                         employee.attendanceData.forEach(attendance => {
                 %>
                             <tr>
-                                <td><%= employee.name %></td>
+                                <td><%= employee.name %> <%= employee.lastname %></td>
                                 <td><%= attendance.daysAbsent %></td>
                                 <td>
                                     <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %>
@@ -291,7 +291,7 @@
                         employee.attendanceData.forEach(attendance => {
                 %>
                             <tr>
-                                <td><%= employee.name %></td>
+                                <td><%= employee.name %> <%= employee.lastname %></td>
                                 <td><%= attendance.daysAbsent %></td>
                                 <td>
                                     <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %>
@@ -353,7 +353,7 @@
                         employee.attendanceData.forEach(attendance => {
                 %>
                             <tr>
-                                <td><%= employee.name %></td>
+                                <td><%= employee.name %> <%= employee.lastname %></td>
                                 <td><%= attendance.daysAbsent %></td>
                                 <td>
                                     <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %>
@@ -415,7 +415,7 @@
                         employee.attendanceData.forEach(attendance => {
                 %>
                             <tr>
-                                <td><%= employee.name %></td>
+                                <td><%= employee.name %> <%= employee.lastname %></td>
                                 <td><%= attendance.daysAbsent %></td>
                                 <td>
                                     <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %>
@@ -477,7 +477,7 @@
                         employee.attendanceData.forEach(attendance => {
                 %>
                             <tr>
-                                <td><%= employee.name %></td>
+                                <td><%= employee.name %> <%= employee.lastname %></td>
                                 <td><%= attendance.daysAbsent %></td>
                                 <td>
                                     <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %>
@@ -539,7 +539,7 @@
                         employee.attendanceData.forEach(attendance => {
                 %>
                             <tr>
-                                <td><%= employee.name %></td>
+                                <td><%= employee.name %> <%= employee.lastname %></td>
                                 <td><%= attendance.daysAbsent %></td>
                                 <td>
                                     <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %>
@@ -601,7 +601,7 @@
                         employee.attendanceData.forEach(attendance => {
                 %>
                             <tr>
-                                <td><%= employee.name %></td>
+                                <td><%= employee.name %> <%= employee.lastname %></td>
                                 <td><%= attendance.daysAbsent %></td>
                                 <td>
                                     <% if (attendance.timeIn === null) { %> 00:00 <% } else { %> <%= attendance.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> <% } %>

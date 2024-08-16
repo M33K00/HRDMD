@@ -227,21 +227,44 @@ async function calculateCurrentSLPoints(email) {
 router.get("/view_profile/:email", async (req, res) => {
   try {
     let email = req.params.email;
+
     let logincollections = await LogInCollection.findOne({
       email: email,
     });
 
     if (!logincollections) {
-      // If the user account doesn't exist, redirect to manage_accounts page
+      req.session.message = {
+        type: "danger",
+        intro: "Error!",
+        message: "User account not found.",
+      }
+      return res.redirect("/hris");
+    }
+
+    let attendance = await Attendance.findOne({
+      email: email,
+    });
+
+    if (!attendance) {
+      req.session.message = {
+        type: "danger",
+        intro: "Error!",
+        message: "User attendance data not found.",
+      }
       return res.redirect("/hris");
     }
 
     const results = await findDocumentsByEmail(email);
     const unsubmitted = countArraysWithNull(results);
+    const VLPoints = await calculateCurrentVLPoints(logincollections.email);
+    const SLPoints = await calculateCurrentSLPoints(logincollections.email);
 
     res.render("HRISUSER/view_profile", {
       title: "View Account",
       logincollections: logincollections,
+      attendance: attendance,
+      VLPoints: VLPoints,
+      SLPoints: SLPoints,
       results: results,
       unsubmitted: unsubmitted,
     });
@@ -279,10 +302,16 @@ router.get("/apply_leave/:email", async (req, res) => {
 router.get("/view_leave/:email", async (req, res) => {
   try {
     const userEmail = req.params.email; // Retrieve email from URL parameter
+
     const leaveapplications = await LeaveApplications.find({
       email: userEmail,
     });
-    res.render("HRISUSER/view_leave", { leaveapplications });
+
+    const attendance = await Attendance.findOne({ 
+      email: userEmail 
+    });
+
+    res.render("HRISUSER/view_leave", { leaveapplications, attendance });
   } catch (err) {
     // Log and handle errors gracefully
     console.error("Error viewing leave applications:", err);
@@ -512,10 +541,10 @@ router.get("/clockin/:email", checkHRSettings, async (req, res) => {
     const timeDifferenceMs = currentTime.getTime() - startTime.getTime();
 
     // Calculate timeLate in hours and minutes
-    const hoursLate = Math.floor(timeDifferenceMs / (1000 * 60 * 60));
-    const minutesLate = Math.floor((timeDifferenceMs % (1000 * 60 * 60)) / (1000 * 60));
+    let hoursLate = Math.floor(timeDifferenceMs / (1000 * 60 * 60));
+    let minutesLate = Math.floor((timeDifferenceMs % (1000 * 60 * 60)) / (1000 * 60));
 
-    if (timeDifferenceMs < 0) {
+    if (timeDifferenceMs <= 0) {
       hoursLate = 0;
       minutesLate = 0;
     }

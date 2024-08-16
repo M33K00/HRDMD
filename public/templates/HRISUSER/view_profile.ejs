@@ -4,7 +4,7 @@
   include('../layouts/user_hris/sidenavhris_user') %>
   <div class="page-body fade-in">
     <div class="page-name">
-      <h1>View Account (<%= logincollections.name %>)</h1>
+      <h1>View Account</h1>
       <a href="/editacc/<%= encodeURIComponent(user.name) %>" class="btn btn-primary">ACCOUNT SETTINGS</a>
     </div>
     <h4>HRIS Profile Information</h4>
@@ -12,18 +12,18 @@
       If you want to edit your profile information, head to the edit profile
       page
     </p>
-    <div class="account-basic1">
-      <div class="account-image">
+    <div class="account-at">
+      <div class="account-img">
         <% if (user.image === "") { %>
             <img src="../images/user.jpg" />
             <% } else { %>
             <img src="../<%= user.image %>" />
         <% } %>
       </div>
-      <div class="account-info mt-3">
+      <div class="account-in mt-3 text">
         <p><b>Name:</b> <%= logincollections.name %> <%= logincollections.lastname %></p>
         <p><b>Email:</b> <%= logincollections.email %></p>
-        <p><b>Contact:</b> <%= logincollections.contact %></p>
+        
         <p>
           <b>Birthday:</b> <%=
           logincollections.birthday.toISOString().split('T')[0] %>
@@ -54,6 +54,42 @@
           === "ADMIN") { %> Department Head <% } %>
         </p>
       </div>
+        <div class="account-stat mt-3">
+            <div class="account-stat-item">
+                <p><b>Employee ID:</b> <%= logincollections.employeeID %></p>
+                <p><b>Employee Status:</b> <%= logincollections.empStatus %></p>
+                <p><b>Contact:</b> <%= logincollections.contact %></p>
+                <p><b>Verified:</b> <%if (logincollections.verified === true) { %> <span style="color: green;">VERIFIED</span> <% } else { %><span style="color: red;">NOT VERIFIED</span><% } %></p>
+                <p><b>Account Status:</b> <%if (logincollections.accountClosed === true) { %> <span style="color: red;">CLOSED</span> <% } else { %><span style="color: green;">ACTIVE</span><% } %></p>
+            </div>
+        </div>
+        <div class="account-stat mt-3">
+            <div class="account-stat-item" style="margin-left: 60px;">
+                <p><b>Days Present:</b> <%= attendance.daysPresent %></p></p>
+                <p><b>Days Absent:</b> <%= attendance.daysAbsent %></p>
+                <p><b>Days On Leave:</b> <%= attendance.daysOnLeave %></p>
+                <% if (logincollections.empStatus != 'Job Order') { %>
+                  <p class="<% if (VLPoints >= 1.25) { %>
+                      text-success
+                  <% } else if (VLPoints <= 1.24 && VLPoints >= 1.00) { %>
+                      text-warning
+                  <% } else if (VLPoints > 0.01 && VLPoints <= 0.99) { %>
+                      text-danger
+                  <% } else { %>
+                      text-danger
+                <% } %>"><b style="color: rgb(0, 0, 0);">VL Points:</b> <%= VLPoints %></p>
+                <p class="<% if (SLPoints >= 1.25) { %>
+                 text-success
+                <% } else if (SLPoints <= 1.24 && SLPoints >= 1.00 ) { %>
+                text-warning
+                <% } else if (SLPoints <= 0.01 && SLPoints >= 0.99 ) { %>
+                text-danger
+                <% } else { %>
+                text-danger
+                <% } %>"><b style="color: rgb(0, 0, 0);">SL Points:</b> <%= SLPoints %></p>
+                <% } %>   
+            </div>
+        </div>
     </div>
     <h4 class="mt-4">201 Files:</h4>
     <p class="text-muted mb-4">These are the files that have been submitted by you.</p>

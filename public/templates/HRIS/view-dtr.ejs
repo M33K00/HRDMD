@@ -32,7 +32,7 @@
       <% } %>
       </div>
       <div class="account-in mt-3 text">
-        <p><b>Name:</b> <%= logincollections.name %></p>
+        <p><b>Name:</b> <%= logincollections.name %> <%= logincollections.lastname %></p>
         <p><b>Email:</b> <%= logincollections.email %></p>
         <p><b>Emp. Status:</b> <%= logincollections.empStatus %></p>
         <p><b>Department:</b> <% if (logincollections.department === 'HR Department') { %>
@@ -94,7 +94,6 @@
               const formattedStartTime = startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
               const formattedEndTime = endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
               %>
-          <p><b>Dayoffs:</b> <%= attendance.dayOff %></p></p>
           <p><b>Cut-off Dates:</b> Every <%= hrSettings.startDate %> and <%= hrSettings.endDate %></p>
           <p><b>Shift Start:</b> <%= formattedStartTime %></p>
           <p><b>Shift End:</b> <%= formattedEndTime %></p>

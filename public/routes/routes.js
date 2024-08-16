@@ -1111,6 +1111,7 @@ router.get("/dtr", async (req, res) => {
         $project: {
           _id: 1,
           name: 1, // Include the 'name' field from logincollections
+          lastname: 1, // Include the 'lastname' field from logincollections
           email: 1, // Include the 'email' field from logincollections
           department: 1, // Include the 'department' field from logincollections
           image: 1, // Include the 'image' field from logincollections
