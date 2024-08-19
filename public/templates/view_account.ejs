@@ -52,7 +52,7 @@
         <p>Task Finished:</p>
       </div>
       <div class="account-count">
-        <p><%= submittedfiles.filter((row) => row.status === 'APPROVED').length %></p>
+        <p><%= approvedFiles.filter((row) => row.status === 'APPROVED').length %></p>
       </div>
     </div>
     <div class="account-item" style="background-color: rgb(112, 28, 28)">
@@ -60,7 +60,7 @@
         <p>Tasks Pending:</p>
       </div>
       <div class="account-count">
-        <p><%= submittedfiles.filter((row) => row.status === 'PENDING').length %></p>
+        <p><%= pendingFiles.filter((row) => row.status === 'PENDING').length %></p>
       </div>
     </div>
   </div>

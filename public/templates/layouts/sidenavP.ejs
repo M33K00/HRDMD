@@ -11,26 +11,12 @@
           >
         </li>
         <% if (user.mEmp === true || user.hrrole === "ADMIN") { %>
-            <li>
-                <div class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa-solid fa-people-group"></i>
-                    <p style="font-size: 13px">Employees</p>
-                  </a>
-                  <ul class="nav-links-hris dropdown-employee">
-                    <li class="dropdown-option">
-                      <a href="/view_employees"
-                        ><i class="fa-solid fa-eye"></i>View Employees</a
-                      >
-                    </li>
-                    <li class="dropdown-option mb-2">
-                      <a href="/add_employees"
-                        ><i class="fa-solid fa-plus"></i>Add Employees</a
-                      >
-                    </li>
-                  </ul>
-                </div>
-              </li>
+          <li>
+            <a href="/view_employees"
+              ><i class="fa-solid fa-people-group"></i>
+              <p style="font-size: 13px">Employees</p></a
+            >
+          </li>
         <% } else { %>
             <li>
                 <a href="#" class="disabled-link"

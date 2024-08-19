@@ -1,12 +1,42 @@
 <%- include('../layouts/hrislayout') -%>
 <body>
   <%- include('../layouts/navhrisP') -%>
-  <% if (user.hrrole === "ADMIN") { -%>
-    <%- include('../layouts/sidenavhris') %>
-  <% } else { -%>
-    <%- include('../layouts/sidenavP') %>
-  <% } -%>
+  <%- include('../layouts/sidenavP') %>
   <%- include('../layouts/footer') %>
+  <script>
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, "0");
+      let timeString = "";
+  
+      // Convert hours to 12-hour format and determine AM/PM
+      const amPm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12 || 12; // Convert midnight (0) to 12 AM
+  
+      timeString = `${hours}:${minutes} ${amPm}`;
+      document.getElementById("currentTime").textContent = timeString;
+  
+      // Change background based on time of day
+      const currentTime = document.getElementById("bgTime");
+      if (hours >= 5 && hours < 12 && amPm === "AM") {
+        // Morning background
+        currentTime.style.backgroundImage = "url('../images/morning.png')";
+      } else if (hours <= 12 && hours <= 6 && amPm === "PM") {
+        // Afternoon background
+        currentTime.style.backgroundImage = "url('../images/afternoon.png')";
+      } else {
+        // Evening/Night background
+        currentTime.style.backgroundImage = "url('../images/night.png')";
+      }
+    }
+  
+    // Update the clock and background every second
+    setInterval(updateClock, 1000);
+  
+    // Initial call to set the clock and background immediately when the page loads
+    updateClock();
+  </script>
   <div class="page-body fade-in">
     <div class="page-name">
       <h1>Daily Time Record</h1>

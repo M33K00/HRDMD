@@ -48,18 +48,20 @@
         <ul>
           <li>
             <% if (user.hrrole === "ADMIN") { %>
-              <a href="/view/<%= user._id %>"
+            <a href="/view/<%= user._id %>"
               ><i class="fa-solid fa-gear"></i>Account Settings</a
             >
             <% } else { %>
-              <a href="/view-user/<%= user._id %>"
+            <a href="/editacc/<%= encodeURIComponent(user.name) %>"
               ><i class="fa-solid fa-gear"></i>Account Settings</a
             >
             <% } %>
           </li>
+          <% if (user.mEmp === true || user.mLeave === true || user.mDTR === true || user.hrrole === "ADMIN") { %>
           <li>
-            <a href="#"><i class="fa-regular fa-file"></i>HR File</a>
+            <a href="/hris_user/<%= user.email %>"><i class="fa-solid fa-fingerprint"></i>HRIS Personal</a>
           </li>
+          <% } %>
           <li class="logout-button">
             <a href="/logout"
               ><i class="fa-solid fa-arrow-right-from-bracket"></i>Log Out</a

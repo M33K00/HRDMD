@@ -20,6 +20,7 @@ const HRSettings = require("../models/hrsettings");
 const DaysPresentA = require("../models/dayspresentA");
 const DaysAbsentA = require("../models/daysabsentA");
 const SubmittedFiles = require("../models/submitted_files");
+const ArchivedFiles = require("../models/archivedfiles");
 
 // 201 File Models
 const UserDocuments = require("../models/userdocuments");
@@ -401,17 +402,25 @@ router.get("/view/:id", async (req, res) => {
       return res.redirect("/manage_accounts");
     }
 
-    let name = logincollections.name;
+    let email = logincollections.email;
+    
     // Fetch rejected documents associated with the user's name
-    let submittedfiles = await SubmittedFiles.find({
-      assignTo: name,
-    });
+    let submittedfiles = await SubmittedFiles.find({ email: email });
+    let archivedfiles = await ArchivedFiles.find({ email: email });
 
-    // Render the view_account template with the retrieved add
+    // Combine submittedfiles and archivedfiles
+    let allFiles = [...submittedfiles, ...archivedfiles];
+
+    // Filter the combined array for PENDING and APPROVED files
+    let pendingFiles = allFiles.filter((file) => file.status === "PENDING");
+    let approvedFiles = allFiles.filter((file) => file.status === "APPROVED");
+
+    // Render the view_account template with the retrieved data
     res.render("view_account", {
       title: "View Account",
       logincollections: logincollections,
-      submittedfiles: submittedfiles,
+      pendingFiles: pendingFiles,
+      approvedFiles: approvedFiles,
     });
   } catch (err) {
     // Log and handle errors gracefully
@@ -420,6 +429,7 @@ router.get("/view/:id", async (req, res) => {
     res.redirect("/manage_accounts");
   }
 });
+
 
 // Edit a user
 router.get("/edit/:id", async (req, res) => {

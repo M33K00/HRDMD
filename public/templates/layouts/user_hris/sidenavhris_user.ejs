@@ -1,6 +1,6 @@
 <div class="header">
   <div class="side-nav">
-    <a href="startpage" class="logo">
+    <a href="#" class="logo">
       <img src="../images/logo.png" class="logo-img" />
     </a>
     <ul class="nav-links-user">
@@ -12,24 +12,10 @@
       </li>
       <% if (user.empStatus != "Job Order") { %>
         <li>
-          <div class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa-solid fa-envelope"></i>
-              <p style="font-size: 13px">Leave Application</p>
-            </a>
-            <ul class="nav-links-hris dropdown-employee">
-              <li class="dropdown-option">
-                <a href="/view_leave/<%= user.email %>"
-                  ><i class="fa-solid fa-eye"></i>View Leave</a
-                >
-              </li>
-              <li class="dropdown-option mb-2">
-                <a href="/apply_leave/<%= user.email %>"
-                  ><i class="fa-solid fa-plus"></i>Apply Leave</a
-                >
-              </li>
-            </ul>
-          </div>
+          <a href="/view_leave/<%= user.email %>"
+            ><i class="fa-solid fa-envelope"></i>
+            <p style="font-size: 13px">Leave Application</p></a
+          >
         </li>
         <% } else { %>
         <li>

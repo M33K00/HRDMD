@@ -127,29 +127,6 @@
   }
 }
 
-.dropdown-employee {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out; /* Add a transition for smooth appearance */
-}
-
-.dropdown:hover .dropdown-employee {
-  display: block;
-  background-color: aliceblue;
-  position: absolute;
-  width: 190px;
-  right: 0;
-  border-radius: 6px;
-  font-size: 14px;
-  opacity: 1; /* Show the dropdown with opacity */
-  transition-delay: 0.3s; /* Add a delay before the transition starts */
-}
-
-.dropdown-option:hover a {
-  background-color: #8a8a8a;
-  color: white;
-}
-
 .hris-title {
   color: white;
   background-color: #414141;

@@ -5,10 +5,8 @@
   <div class="page-body fade-in">
     <div class="page-name">
       <h1>All Employees (HRIS)</h1>
-      <% if (user.hrrole !== "ADMIN") { -%>
-        <a href="#" class="btn btn-secondary">Add Employee</a>
-      <% } else { %>
-        <a href="/manage_accounts" class="btn btn-primary">TASK MANAGER ACCOUNTS</a>
+      <% if (user.hrrole === "ADMIN" || user.mEmp === true) { %>
+        <a href="/add_employees" class="btn btn-secondary">Add Employee</a>
       <% } %>
     </div>
     <p class="text-muted mb-4">
