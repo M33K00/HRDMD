@@ -534,7 +534,6 @@
     }
   }
 </script>
-
 <script>
   function searchFunc() {
     const input = document.getElementById("accInput");
@@ -702,4 +701,52 @@ function performAction(action, fileId, remarks) {
     // setInterval(updateTime, 1000);
   });
 </script>
+<script>
+  $(document).ready(function() {
+      let lastChecked = new Date().toISOString();
+      const userEmail = '<%= user.email %>'; // Embed user email directly from server-side rendering
+
+      function checkForNewTasks() {
+          $.ajax({
+              url: 'http://localhost:3939/api/new-tasks',
+              method: 'GET',
+              data: {
+                  email: userEmail,
+                  lastChecked: lastChecked
+              },
+              success: function(tasks) {
+                  if (tasks.length > 0) {
+                      tasks.forEach(task => {
+                          showNotification(); // Call function to show notification
+                      });
+                      lastChecked = new Date().toISOString(); // Update lastChecked
+                  }
+              },
+              error: function(err) {
+                  console.error('Error fetching new tasks:', err);
+              }
+          });
+      }
+
+      function showNotification() {
+          // Create the notification HTML
+          const notificationHtml = `
+              <div class="top-middle slide-down">
+                  <div class="alert alert-dismissible notif-container alert-success">
+                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                      <strong>You have a new task!</strong> head to the Task Manager page.
+                  </div>
+              </div>
+          `;
+          // Append the notification to the body or a specific container
+          $('body').append(notificationHtml);
+      }
+
+      // Poll every 5 seconds (5000 milliseconds)
+      setInterval(checkForNewTasks, 5000);
+  });
+</script>
+
+
+
     

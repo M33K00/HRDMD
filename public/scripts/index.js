@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const session = require("express-session");
 const app = express();
 const fs = require("fs");
@@ -7,6 +8,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const { checkUser } = require("../middleware/authMiddleware.js");
 const LeaveApplications = require("../models/leaveapplications");
+const SubmittedFiles = require("../models/submitted_files");
 
 const PORT =  3939;
 const templatePath = path.join(__dirname, "../templates");
@@ -25,6 +27,7 @@ app.set("view engine", "ejs");
 app.set("views", templatePath);
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
@@ -71,11 +74,9 @@ app.use((err, req, res, next) => {
 
 mongoose.connect("mongodb://0.0.0.0:27017/HRDMD");
 
-// mongoose.connect("mongodb+srv://Meekoo:MXjxMUds0rFLchak@cluster0.lcpbw1e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
-
 const db = mongoose.connection;
 db.on("error", (error) => console.log(error));
-db.on("open", () => console.log("Connected to the Database"));
+db.once('open', () =>  console.log('Connected to MongoDB'));
 
 // Function to update the collection
 async function updateLeaveApplications() {
@@ -95,7 +96,24 @@ async function updateLeaveApplications() {
   }
 }
 
+
 setInterval(updateLeaveApplications, 60 * 60 * 1000);
+
+// New endpoint for polling
+app.get("/api/new-tasks", async (req, res) => {
+  try {
+      const { email } = req.query;
+      const lastChecked = new Date(req.query.lastChecked);
+      const newTasks = await SubmittedFiles.find({
+          dateSubmitted: { $gt: lastChecked },
+          email: email // Only return tasks for the specified email
+      });
+      res.json(newTasks);
+  } catch (error) {
+      console.error("Error fetching new tasks:", error);
+      res.status(500).send("Server error");
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server started at http://localhost:${PORT}`);

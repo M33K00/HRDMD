@@ -4,6 +4,7 @@ const multer = require("multer");
 const LogInCollection = require("../models/logincollections");
 const Attendance = require("../models/attendance");
 const SubmittedFiles = require("../models/submitted_files");
+const ArchivedFiles = require("../models/archivedfiles");
 
 // Edit Account
 router.get("/editacc/:name", async (req, res) => {
@@ -49,19 +50,28 @@ router.get("/view-user/:id", async (req, res) => {
 
     if (!logincollections) {
       // If the user account doesn't exist, redirect to manage_accounts page
-      return res.redirect("/role1");
+      return res.redirect("/manage_accounts");
     }
 
+    let email = logincollections.email;
+    
     // Fetch rejected documents associated with the user's name
-    let submittedFiles = await SubmittedFiles.find({
-      assignTo: logincollections.email,
-    });
+    let submittedfiles = await SubmittedFiles.find({ email: email });
+    let archivedfiles = await ArchivedFiles.find({ email: email });
 
-    // Render the view_account template with the retrieved add
+    // Combine submittedfiles and archivedfiles
+    let allFiles = [...submittedfiles, ...archivedfiles];
+
+    // Filter the combined array for PENDING and APPROVED files
+    let pendingFiles = allFiles.filter((file) => file.status === "PENDING");
+    let approvedFiles = allFiles.filter((file) => file.status === "APPROVED");
+
+    // Render the view_account template with the retrieved data
     res.render("role/view_user", {
       title: "View Account",
       logincollections: logincollections,
-      submittedFiles: submittedFiles,
+      pendingFiles: pendingFiles,
+      approvedFiles: approvedFiles,
     });
   } catch (err) {
     // Log and handle errors gracefully

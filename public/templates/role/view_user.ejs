@@ -3,7 +3,7 @@
   <%- include('../layouts/nav') -%> <%- include('../layouts/sidenavR1') %>
   <div class="page-body fade-in">
     <div class="page-name">
-      <h1>View Account (<%= logincollections.name %>)</h1>
+      <h1><%= logincollections.name %> <%= logincollections.lastname %></h1>
       <div class="account-options">
         <a
           href="/editacc/<%= encodeURIComponent(user.name) %>"
@@ -17,35 +17,40 @@
         <img src="../<%= logincollections.image %>" />
       </div>
       <div class="account-info mt-3">
-        <p><b>Name:</b> <%= logincollections.name %></p>
+        <p><b>Name:</b> <%= logincollections.name %> <%= logincollections.lastname %></p>
         <p><b>Email:</b> <%= logincollections.email %></p>
         <p><b>Contact:</b> <%= logincollections.contact %></p>
         <p>
           <b>Birthday:</b> <%=
           logincollections.birthday.toISOString().split('T')[0] %>
         </p>
-        <p><b>Department:</b> <%= logincollections.department %></p>
-        <p><b>HR Role:</b> <%= logincollections.hrrole %></p>
+        <p><b>Employee ID:</b> <%= logincollections.employeeID %></p>
+        <p><b>HR Position:</b> <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
+          else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+          else if (logincollections.hrrole === "ROLE 3") { %> Admin Officer <% } else if
+          (logincollections.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
+          (logincollections.hrrole === "ROLE 5") { %> Admin Aide <% } else if (logincollections.hrrole
+          === "ADMIN") { %> Department Head <% } %></p>
       </div>
     </div>
-    <div class="account-container mt-4">
-      <div class="account-item">
-        <div class="account-content">
-          <p>Tasks Finished:</p>
-        </div>
-        <div class="account-count">
-          <p><%= submittedFiles.filter((file) => file.status === 'APPROVED').length %></p>
-        </div>
+    <div class="account-container mt-4 slide-up">
+    <div class="account-item">
+      <div class="account-content">
+        <p>Task Finished:</p>
       </div>
-      <div class="account-item" style="background-color: rgb(112, 28, 28)">
-        <div class="account-content">
-          <p>Tasks Pending:</p>
-        </div>
-        <div class="account-count">
-          <p><%= submittedFiles.filter((file) => file.status === 'PENDING').length %></p>
-        </div>
+      <div class="account-count">
+        <p><%= approvedFiles.filter((row) => row.status === 'APPROVED').length %></p>
       </div>
     </div>
+    <div class="account-item" style="background-color: rgb(112, 28, 28)">
+      <div class="account-content">
+        <p>Tasks Pending:</p>
+      </div>
+      <div class="account-count">
+        <p><%= pendingFiles.filter((row) => row.status === 'PENDING').length %></p>
+      </div>
+    </div>
+  </div>
     <%- include('../layouts/footer') -%>
   </div>
 </body>
