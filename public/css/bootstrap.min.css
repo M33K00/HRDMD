@@ -748,3 +748,15 @@
 .form-no-click {
   pointer-events: none;
 }
+
+.tabs-container {
+  display: flex;
+  align-items: center;
+}
+
+.tabs-container button {
+  margin-left: auto;
+  margin-bottom: 15px;
+  margin-right: 5px;
+  font-size: 25px;
+}

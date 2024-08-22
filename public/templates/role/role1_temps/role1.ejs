@@ -21,7 +21,13 @@
       <% } %>
     </div>
     <%# Folder Buttons %>
-    <h5 class="folder-title">Folders:</h5><div class="rolefolder-container">
+    <div class="tabs-container">
+      <h5 class="folder-title">Tabs:</h5>
+      <button class="btn btn-secondary" onclick="window.location.reload();">
+        <i class="fa-solid fa-rotate-right"></i>
+      </button>
+    </div>
+    <div class="rolefolder-container">
       <a href="#" data-target="all-files"
         ><div class="rolefolder-item active">
           <i class="fa-solid fa-list-check"></i>

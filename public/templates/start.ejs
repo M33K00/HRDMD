@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HRDMD Document Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/lumen/bootstrap.min.css"
+        rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .page-bg-img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            background-image: url("../images/pagebg.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -9999;
+        }
+        .app-version {
+            display: flex;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally */
+            padding: 10px;
+            color: #000000;
+            font-size: 12px;
+            text-align: center; /* Center text within the element */
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center">Welcome to the HRDMD AIO Application</h1>
+    <button id="start-server" class="btn btn-primary mt-3">Start Server</button>
+    <div class="app-version">
+        <p>Version: 2.0.0 BETA (Build 24180)</p>
+        <p> Environment: Production </p>
+        <p>&copy; 2024 CVSU Bacoor. All rights reserved.</p>
+        <p>Contact: <a href="mailto:marklawrenzuy@outlook.ph">marklawrenzuy@outlook.ph</a></p>
+    </div>
+</body>
+<script>
+    document.getElementById('start-server').addEventListener('click', () => {
+        window.electronAPI.startServer();
+    });
+</script>
+</html>
+<div class="page-bg-img"></div>

@@ -708,7 +708,7 @@ function performAction(action, fileId, remarks) {
 
       function checkForNewTasks() {
           $.ajax({
-              url: 'http://localhost:3939/api/new-tasks',
+              url: 'http://172.23.9.142:3939/api/new-tasks',
               method: 'GET',
               data: {
                   email: userEmail,

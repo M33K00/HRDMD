@@ -1,7 +1,7 @@
-const { app, BrowserWindow, session, Tray, Menu } = require("electron");
-const server = require("./index");
+const { app, BrowserWindow, session, Tray, Menu, dialog, ipcMain } = require("electron");
 const path = require("path");
-const PORT = 3939;
+const ejs = require('ejs');
+const fs = require('fs');
 
 let mainWindow;
 let tray;
@@ -23,21 +23,46 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: true,
       devTools: true,
-      session: customSession, // Use the custom session with caching
+      session: customSession,
+      preload: path.join(__dirname, 'preload.js') // Preload script
     },
   });
 
   mainWindow.setMinimumSize(1600, 900);
-  mainWindow.loadURL(`http://localhost:${PORT}`);
 
-  // Minimize to tray on close
+  // Render the EJS template
+  const startPagePath = path.join(__dirname, "../templates/start.ejs");
+  ejs.renderFile(startPagePath, {}, {}, (err, str) => {
+    if (err) {
+      console.error('Error rendering EJS:', err);
+      return;
+    }
+    mainWindow.loadURL('data:text/html;charset=UTF-8,' + encodeURIComponent(str));
+  });
+
+  // Minimize to tray or quit on close
   mainWindow.on("close", function (event) {
     if (!app.isQuiting) {
-      event.preventDefault();
-      mainWindow.hide();
+      event.preventDefault(); // Prevent the default close action
+
+      const choice = dialog.showMessageBoxSync({
+        type: 'question',
+        buttons: ['Hide in Tray', 'Quit'],
+        defaultId: 0,
+        title: 'Confirm',
+        message: 'Do you want to quit the app or hide it in the tray?',
+      });
+
+      if (choice === 1) { // 'Quit' was selected
+        app.isQuiting = true;
+        app.quit();
+      } else { // 'Hide in Tray' was selected
+        mainWindow.hide();
+      }
     }
   });
 }
+
 
 function createTray() {
   tray = new Tray(path.join(__dirname, "../images/logo.ico")); // Replace with your tray icon
@@ -51,12 +76,24 @@ function createTray() {
     {
       label: "Quit",
       click: function () {
-        app.isQuiting = true;
-        app.quit();
+        const choice = dialog.showMessageBoxSync({
+          type: 'question',
+          buttons: ['Hide in Tray', 'Quit'],
+          defaultId: 0,
+          title: 'Confirm',
+          message: 'Do you want to quit the app or hide it in the tray?',
+        });
+
+        if (choice === 1) { // 'Quit' was selected
+          app.isQuiting = true;
+          app.quit();
+        } else { // 'Hide in Tray' was selected
+          mainWindow.hide();
+        }
       },
     },
   ]);
-  tray.setToolTip("Your Electron App");
+  tray.setToolTip("HRDMD AIO");
   tray.setContextMenu(contextMenu);
 
   tray.on("click", () => {
@@ -77,6 +114,12 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+});
+
+// Handle IPC event to start the server
+ipcMain.handle('start-server', async () => {
+  require("./index"); // Start the server here
+  mainWindow.loadURL(`http://localhost:3939`); // Load your app after the server starts
 });
 
 try {
