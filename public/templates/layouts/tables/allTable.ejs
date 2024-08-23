@@ -49,9 +49,11 @@
         <a href="view_file/<%= file.id %>" class="icon-square text-dark"
           ><i class="fa-solid fa-eye"></i
         ></a>
-        <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal" data-bs-target="#archiveModal2"
-          ><i class="fa-solid fa-box-archive"></i>
-        </a>
+        <% if (file.status === 'APPROVED') { %>
+          <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal">
+            <i class="fa-solid fa-box-archive"></i>
+          </a>
+        <% } %>
       </td>
     </tr>
     <% }); %>
@@ -104,9 +106,11 @@
           <a href="view_file/<%= file.id %>" class="icon-square text-dark"
             ><i class="fa-solid fa-eye"></i
           ></a>
-          <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal" data-bs-target="#archiveModal2"
-            ><i class="fa-solid fa-box-archive"></i>
-          </a>
+          <% if (file.status === 'APPROVED') { %>
+            <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal">
+              <i class="fa-solid fa-box-archive"></i>
+            </a>
+          <% } %>
         </td>
       </tr>
       <% }); %>
@@ -158,9 +162,11 @@
           <a href="view_file/<%= file.id %>" class="icon-square text-dark"
             ><i class="fa-solid fa-eye"></i
           ></a>
-          <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal">
-            <i class="fa-solid fa-box-archive"></i>
-          </a>
+          <% if (file.status === 'APPROVED') { %>
+            <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal">
+              <i class="fa-solid fa-box-archive"></i>
+            </a>
+          <% } %>
         </td>
       </tr>
       <% }); %>

@@ -40,11 +40,33 @@
             font-size: 12px;
             text-align: center; /* Center text within the element */
         }
+        /* CSS for the spinner */
+        .spinner-border {
+            width: 1.5rem;
+            height: 1.5rem;
+            border-width: 0.2em;
+            border-radius: 50%;
+            border: 0.2em solid transparent;
+            border-top-color: #fff;
+            animation: spinner-border 0.75s linear infinite;
+        }
+
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hide the spinner by default */
+        .spinner-border.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <h1 class="text-center">Welcome to the HRDMD AIO Application</h1>
-    <button id="start-server" class="btn btn-primary mt-3">Start Server</button>
+    <button id="start-server" class="btn btn-primary mt-3">
+        <span class="spinner-border hidden" id="spinner"></span>
+        <span id="startText">Start Server</span>
+    </button>
     <div class="app-version">
         <p>Version: 2.0.0 BETA (Build 24180)</p>
         <p> Environment: Production </p>
@@ -55,6 +77,24 @@
 <script>
     document.getElementById('start-server').addEventListener('click', () => {
         window.electronAPI.startServer();
+    });
+
+    document.getElementById('start-server').addEventListener('click', () => {
+        const startServer = document.getElementById('start-server');
+        const spinner = document.getElementById('spinner');
+        const startText = document.getElementById('startText');
+
+        // Show the spinner and hide the text
+        spinner.classList.remove('hidden');
+        retryText.style.display = 'none';
+
+        ipcRenderer.send('retry-connection');
+
+        ipcRenderer.once('retry-complete', (event, success) => {
+            // Hide the spinner and show the text
+            spinner.classList.add('hidden');
+            retryText.style.display = 'inline';
+        });
     });
 </script>
 </html>
