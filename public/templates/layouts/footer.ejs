@@ -574,7 +574,7 @@ function showConfirmationModal(action, fileId) {
 
   // Show/hide remarks input based on the action
   const remarksInputContainer = document.getElementById("remarksInputContainer");
-  if (action === "mark this task for approval") {
+  if (action === "mark this task for approval" || action === "mark this task for reassignment") {
     remarksInputContainer.style.display = "block";
   } else {
     remarksInputContainer.style.display = "none";
@@ -602,6 +602,9 @@ function showConfirmationModal(action, fileId) {
       confirmActionBtn.textContent = "Mark as approved";
       confirmActionBtn.className = "btn btn-success";
       break;
+    case "mark this task for reassignment":
+      confirmActionBtn.textContent = "Reassign";
+      confirmActionBtn.className = "btn btn-warning";
     default:
       break;
   }
@@ -638,6 +641,10 @@ function performAction(action, fileId, remarks) {
       break;
     case "set this task as approved":
       window.location.href = `/approve-file/${fileId}`;
+      break;
+    case "mark this task for reassignment":
+      // Include remarks in the URL when reassigning
+      window.location.href = `/reassign-file/${fileId}?remarks=${encodeURIComponent(remarks)}`;
       break;
     default:
       break;

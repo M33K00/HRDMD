@@ -701,9 +701,10 @@ router.get("/reject-file/:id", async (req, res) => {
   }
 });
 
-router.get("/revision-file/:id", async (req, res) => {
+router.get("/reassign-file/:id", async (req, res) => {
   try {
     const id = req.params.id;
+    const remarks = req.query.remarks;
 
     const file = await SubmittedFiles.findById(id);
 
@@ -715,14 +716,16 @@ router.get("/revision-file/:id", async (req, res) => {
       return res.redirect("/view_file/" + id);
     }
 
-    file.status = "REVISION";
+    file.status = "REASSIGNED";
+    file.remarks = remarks;
     await file.save();
 
     req.session.message = {
-      type: "dark",
-      message: "File Approved Successfully",
+      type: "success",
+      message: "Task reassigned successfully.",
     };
     res.redirect("/view_file/" + id);
+
   } catch (error) {
     req.session.message = {
       type: "danger",
@@ -730,7 +733,7 @@ router.get("/revision-file/:id", async (req, res) => {
     };
     res.redirect("/home");
   }
-});
+})
 
 router.get("/pending-file/:id", async (req, res) => {
   try {

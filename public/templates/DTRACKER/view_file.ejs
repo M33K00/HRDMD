@@ -43,7 +43,7 @@
           </p>
           <p <% if (file.status === 'REJECTED') { %> class="text-danger" <% } %>
             <% if (file.status === 'APPROVED') { %> class="text-success" <% } %> 
-            <% if (file.status === 'PENDING' || file.status === 'FOR APPROVAL') { %> class="text-warning" <% } %>
+            <% if (file.status === 'PENDING' || file.status === 'FOR APPROVAL' || file.status === 'REASSIGNED') { %> class="text-warning" <% } %>
             style="font-weight: 800"
           ><strong>Status:</strong> <%= file.status %></p>
           <% if (file.dateApproved !== null) { %>
@@ -77,13 +77,14 @@
               Actions
             </button>
             <div class="dropdown-menu" id="fileDropdownMenu" aria-labelledby="dropdownMenuButton">
-              <% if (user.hrrole !== "ADMIN" && file.status === "PENDING") { %>
+              <% if (user.hrrole !== "ADMIN" && file.status === "PENDING" || file.status === "REASSIGNED") { %>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for approval', '<%= file.id %>')"><i class="fa-solid fa-file-circle-check mr-2"></i> For Approval</a>
               <% } %>
               <% if (user.hrrole === "ADMIN" && file.status === "FOR APPROVAL") { %>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('set this task as approved', '<%= file.id %>')"><i class="fa-solid fa-check"></i> Approve</a>
+                <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for reassignment', '<%= file.id %>')"><i class="fa-solid fa-arrow-rotate-right"></i> Reassign</a>
               <% } %>
-              <% if (user.hrrole === "ADMIN") { %>
+              <% if (user.hrrole === "ADMIN" && file.status === "APPROVED") { %>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('move this task to archive', '<%= file.id %>')"><i class="fa-solid fa-box-archive"></i> Archive</a>
               <% } %>
             </div>
