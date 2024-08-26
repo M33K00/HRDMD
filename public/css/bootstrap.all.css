@@ -681,7 +681,7 @@ body {
 
 .dtr-home-container {
   display: grid;
-  grid-template-columns: 325px 325px 325px 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 5px;
   justify-content: center;
   align-items: center;
@@ -699,6 +699,11 @@ body {
   margin-bottom: 20px;
   height: 100px;
   align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.dtr-div:hover {
+  background-color: #cfcfcf; /* Change to your desired hover color */
 }
 
 .stat-container {

@@ -856,10 +856,54 @@ router.get("/add_employees", (req, res) => {
 router.get("/view_employees", async (req, res) => {
   try {
     const logincollections = await LogInCollection.find();
+    const departments = {
+      allD: "active",
+      HR: "inactive",
+      DP1: "inactive",
+      DP2: "inactive",
+      DP3: "inactive",
+      DP4: "inactive",
+      DP5: "inactive",
+      DP6: "inactive",
+    };
     logincollections.sort((a, b) => a.verified - b.verified);
-    res.render("HRIS/view_employees", { logincollections });
+    res.render("HRIS/view_employees", { logincollections, departments });
   } catch (error) {
     res.status(500).send("Internal Server Error");
+  }
+});
+
+// Department Buttons Routes
+router.get("/view_department/:department", async (req, res) => {
+  const department = req.params.department;
+  const logincollections = await LogInCollection.find();
+  logincollections.sort((a, b) => a.verified - b.verified);
+
+  try {
+    const departments = {
+      allD: "inactive",
+      HR: "inactive",
+      DP1: "inactive",
+      DP2: "inactive",
+      DP3: "inactive",
+      DP4: "inactive",
+      DP5: "inactive",
+      DP6: "inactive",
+    };
+
+    // Set the active department
+    if (departments.hasOwnProperty(department)) {
+      departments[department] = "active";
+    }
+
+    res.render("HRIS/view_employees", { logincollections, departments });
+
+  } catch (error) {
+    req.session.message = {
+      type: "warning",
+      message: error.message,
+    };
+    res.redirect("/view_employees");
   }
 });
 

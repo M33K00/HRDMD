@@ -760,3 +760,8 @@
   margin-right: 5px;
   font-size: 25px;
 }
+
+.department-link {
+  text-decoration: none;
+  color: inherit;
+}

@@ -38,7 +38,7 @@
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item" role="presentation">
         <a
-          class="nav-link active"
+          class="nav-link <%= departments.allD %>"
           data-bs-toggle="tab"
           href="#allD"
           aria-selected="true"
@@ -48,7 +48,7 @@
       </li>
       <li class="nav-item nav-bg" role="presentation">
         <a
-          class="nav-link"
+          class="nav-link <%= departments.HR %>"
           data-bs-toggle="tab"
           href="#HRdp"
           aria-selected="false"
@@ -59,7 +59,7 @@
       </li>
       <li class="nav-item nav-bg" role="presentation">
         <a
-          class="nav-link"
+          class="nav-link <%= departments.DP1 %>"
           data-bs-toggle="tab"
           href="#d1"
           aria-selected="false"
@@ -70,7 +70,7 @@
       </li>
       <li class="nav-item nav-bg" role="presentation">
         <a
-          class="nav-link"
+          class="nav-link <%= departments.DP2 %>"
           data-bs-toggle="tab"
           href="#d2"
           aria-selected="false"
@@ -81,7 +81,7 @@
       </li>
       <li class="nav-item nav-bg" role="presentation">
         <a
-          class="nav-link"
+          class="nav-link <%= departments.DP3 %>"
           data-bs-toggle="tab"
           href="#d3"
           aria-selected="false"
@@ -92,7 +92,7 @@
       </li>
       <li class="nav-item nav-bg" role="presentation">
         <a
-          class="nav-link"
+          class="nav-link <%= departments.DP4 %>"
           data-bs-toggle="tab"
           href="#d4"
           aria-selected="false"
@@ -103,7 +103,7 @@
       </li>
       <li class="nav-item nav-bg" role="presentation">
         <a
-          class="nav-link"
+          class="nav-link <%= departments.DP5 %>"
           data-bs-toggle="tab"
           href="#d5"
           aria-selected="false"
@@ -114,7 +114,7 @@
       </li>
       <li class="nav-item nav-bg" role="presentation">
         <a
-          class="nav-link"
+          class="nav-link <%= departments.DP6 %>"
           data-bs-toggle="tab"
           href="#d6"
           aria-selected="false"
@@ -132,7 +132,7 @@
     <% const DP5 = logincollections.filter((row) => row.department === 'Department 5'); %>
     <% const DP6 = logincollections.filter((row) => row.department === 'Department 6'); %>
     <div id="myTabContent" class="tab-content mt-4">
-      <div class="tab-pane fade show active" id="allD" role="tabpanel">
+      <div class="tab-pane fade <% if (departments.allD !== 'inactive') { %> show active<% } %>" id="allD" role="tabpanel">
         <div class="hris-container">
           <% if (logincollections != '') { %>
             <h5>All Employees:</h5>
@@ -204,7 +204,7 @@
           <% } %>
         </div>
       </div>
-      <div class="tab-pane fade" id="HRdp" role="tabpanel">
+      <div class="tab-pane fade <% if (departments.HR !== 'inactive') { %>show active<% } %>" id="HRdp" role="tabpanel">
         <div class="hris-container">
           <% if (HRdp != '') { %>
             <h5>HR Department:</h5>
@@ -258,7 +258,7 @@
           <% } %>
         </div>
       </div>
-      <div class="tab-pane fade" id="d1" role="tabpanel">
+      <div class="tab-pane fade <% if (departments.DP1 !== 'inactive') { %>show active<% } %>" id="d1" role="tabpanel">
         <div class="hris-container">
           <% if (DP1 != '') { %>
             <h5>PESO Department:</h5>
@@ -312,7 +312,7 @@
           <% } %>
         </div>
       </div>
-      <div class="tab-pane fade" id="d2" role="tabpanel">
+      <div class="tab-pane fade <% if (departments.DP2 !== 'inactive') { %>show active<% } %>" id="d2" role="tabpanel">
         <div class="hris-container">
           <% if (DP2 != '') { %>
             <h5>CC Development Office:</h5>
@@ -366,7 +366,7 @@
           <% } %>
         </div>
       </div>
-      <div class="tab-pane fade" id="d3" role="tabpanel">
+      <div class="tab-pane fade <% if (departments.DP3 !== 'inactive') { %>show active<% } %>" id="d3" role="tabpanel">
         <div class="hris-container">
           <% if (DP3 != '') { %>
             <h5>OAS Department:</h5>
@@ -419,7 +419,7 @@
           <% } %>
         </div>
       </div>
-      <div class="tab-pane fade" id="d4" role="tabpanel">
+      <div class="tab-pane fade <% if (departments.DP4 !== 'inactive') { %>show active<% } %>" id="d4" role="tabpanel">
         <div class="hris-container">
           <% if (DP4 != '') { %>
             <h5>BTM Department:</h5>
@@ -473,7 +473,7 @@
           <% } %>
         </div>
       </div>
-      <div class="tab-pane fade" id="d5" role="tabpanel">
+      <div class="tab-pane fade <% if (departments.DP5 !== 'inactive') { %>show active<% } %>" id="d5" role="tabpanel">
         <div class="hris-container">
           <% if (DP5 != '') { %>
             <h5>BPL Department:</h5>
@@ -527,7 +527,7 @@
           <% } %>
         </div>
       </div>
-      <div class="tab-pane fade" id="d6" role="tabpanel">
+      <div class="tab-pane fade <% if (departments.DP6 !== 'inactive') { %>show active<% } %>" id="d6" role="tabpanel">
         <div class="hris-container">
           <% if (DP6 != '') { %>
             <h5>City Assessor's Department:</h5>
