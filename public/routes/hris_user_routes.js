@@ -451,7 +451,7 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
         await attendance.save();
         timeStatus = "WARNING";
       } else {
-        status = "CLEAR";
+        timeStatus = "CLEAR";
       }
     } else {
       timeStatus = "N/A"; // You can set a default value if attendance.status is not "IN"
