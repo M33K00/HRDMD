@@ -463,6 +463,49 @@
     </div>
   </div>
 </div>
+
+// Did not Time-out prompt
+<% if (timeStatus === "WARNING") { %>
+  <div class="modal fade border-warning show" id="warnTimeOutModal" tabindex="-1" role="dialog" aria-labelledby="confirmTimeOutLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content border-warning">
+      <div class="modal-header">
+        <h5 class="modal-title text-uppercase text-warning" style="font-weight: 800;" id="warnTimeOutLabel">WARNING!!</h5>
+      </div>
+      <div class="modal-body">
+        It looks like you didn't time out correctly. <b>Your previous time-in entry won't be recorded.</b> Please be sure to time out properly next time.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" id="closeModal">I Understand</button>
+      </div>
+    </div>
+  </div>
+</div>
+<audio id="modalSound" src="../../sounds/error.mp3" preload="auto"></audio>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var myModal = new bootstrap.Modal(document.getElementById('warnTimeOutModal'), {
+      backdrop: 'static', // Optional: Prevent closing by clicking outside
+      keyboard: false     // Optional: Prevent closing with the keyboard
+    });
+
+    // Show the modal
+    myModal.show();
+
+    // Play sound when modal is shown
+    var sound = document.getElementById('modalSound');
+    sound.play();
+
+    // Close modal when "I Understand" button is clicked
+    document.getElementById('closeModal').addEventListener('click', function() {
+      var myModalElement = document.getElementById('warnTimeOutModal');
+      var myModalInstance = bootstrap.Modal.getInstance(myModalElement);
+      myModalInstance.hide();
+    });
+  });
+</script>
+<% } %>
+
 </body>
 <% function getCurrentDateInWords() { const months = ['January', 'February',
   'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',

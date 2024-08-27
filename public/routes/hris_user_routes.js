@@ -50,6 +50,7 @@ const SwornS = require("../models/201File/swornS");
 const CertLeaveB = require("../models/201File/certLeaveB");
 const DisAct = require("../models/201File/disAct");
 const logincollections = require("../models/logincollections");
+const attendance = require("../models/attendance");
 
 // 201 File Model Array
 const userDocumentsArray = [
@@ -428,6 +429,34 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
       email: email,
     });
 
+    let timeStatus;
+
+    if (attendance.status === "IN") {
+      const currentDate = new Date();
+    
+      // Convert both dates to a consistent format (e.g., just the date portion) for comparison
+      const attendanceDate = attendance.timeIn ? attendance.timeIn.toDateString() : null;
+      const formattedCurrentDate = currentDate.toDateString();
+    
+      if (attendanceDate !== formattedCurrentDate) {
+        await DaysPresent.findOneAndDelete({
+          email: email,
+          timeIn: null,
+        });
+    
+        // Update attendance record
+        attendance.status = "OUT";
+        attendance.timeOut = null;
+        attendance.timeIn = null;
+        await attendance.save();
+        timeStatus = "WARNING";
+      } else {
+        status = "CLEAR";
+      }
+    } else {
+      timeStatus = "N/A"; // You can set a default value if attendance.status is not "IN"
+    }
+
     const timeIn = new Date(attendance.timeIn);
     const currentTime = new Date();
 
@@ -515,6 +544,7 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
       pStatus: pStatus,
       VLPoints: VLPoints,
       SLPoints: SLPoints,
+      timeStatus: timeStatus,
     });
   } catch (err) {
     console.error("Error:", err);
