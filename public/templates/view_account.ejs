@@ -46,7 +46,7 @@
         === "ADMIN") { %> Department Head <% } %></p>
     </div>
   </div>
-  <div class="account-container mt-4 slide-up">
+  <div class="account-container mt-4">
     <div class="account-item">
       <div class="account-content">
         <p>Task Finished:</p>
@@ -64,5 +64,83 @@
       </div>
     </div>
   </div>
+  <% if (pendingFiles.length > 0 || approvedFiles.length > 0) { %>
+  <div class="account-table-br mt-4 slide-up">
+  <div class="account-table">
+  <% if (pendingFiles.length > 0) { %>
+    <h3>PENDING TASKS:</h3>
+    <table id="fileTable1" class="table table-hover table-striped mt-2 mb-5">
+      <thead id="fileTableHead1">
+        <tr class="table-danger">
+          <th style="width: 200px">File Code</th>
+          <th style="width: 200px">Task Name</th>
+          <th style="width: 170px">Date Assigned</th>
+          <th style="width: 170px">Due Date</th>
+          <th style="width: 100px; padding-left: 30px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% pendingFiles.forEach((file, index) => { %>
+          <tr>
+            <td>
+              <%= file.fileCode.length > 20 ? file.fileCode.substring(0, 20) + '...' : file.fileCode %>
+            </td>
+            <td>
+              <%= file.fileName.length > 15 ? file.fileName.substring(0, 15) + '...' : file.fileName %>
+            </td>
+            <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
+            <td><%= file.dueDate.toISOString().split('T')[0] %></td>
+            <td class="action-buttons">
+              <a href="view_file/<%= file.id %>" class="icon-square text-dark">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+              <% if (file.status === 'APPROVED') { %>
+                <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal">
+                  <i class="fa-solid fa-box-archive"></i>
+                </a>
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+
+  <% if (approvedFiles.length > 0) { %>
+    <h3>TASKS FINISHED:</h3>
+    <table id="fileTable2" class="table table-hover table-striped mt-2">
+      <thead id="fileTableHead2">
+        <tr class="table-success">
+          <th style="width: 200px">File Code</th>
+          <th style="width: 200px">Task Name</th>
+          <th style="width: 170px">Date Assigned</th>
+          <th style="width: 170px">Due Date</th>
+          <th style="width: 100px; padding-left: 30px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% approvedFiles.forEach((file, index) => { %>
+          <tr>
+            <td>
+              <%= file.fileCode.length > 20 ? file.fileCode.substring(0, 20) + '...' : file.fileCode %>
+            </td>
+            <td>
+              <%= file.fileName.length > 15 ? file.fileName.substring(0, 15) + '...' : file.fileName %>
+            </td>
+            <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
+            <td><%= file.dueDate.toISOString().split('T')[0] %></td>
+            <td class="action-buttons">
+              <a href="view_file/<%= file.id %>" class="icon-square text-dark">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+</div>
+<% } %>
   <%- include('./layouts/footer') -%>
 </div>

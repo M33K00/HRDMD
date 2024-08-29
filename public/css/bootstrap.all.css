@@ -980,3 +980,27 @@ body {
   z-index: 1;
   backdrop-filter: blur(5px); /* Blur effect */
 }
+
+.account-table-br {
+  border: #4d4d4d solid 1px;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.account-table {
+  padding: 20px;
+}
+
+.account-table table {
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+.account-table h3 {
+  font-weight: 600;
+  color: #4d4d4d;
+}
+
+.table-pending {
+  background-color: #701c1c !important;
+}
