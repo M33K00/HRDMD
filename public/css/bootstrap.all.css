@@ -6,6 +6,20 @@ body {
   -webkit-user-drag: none;
 }
 
+.TM-brand {
+  font-weight: 800;
+  font-size: 30px;
+  margin-left: 5px;
+  text-shadow: #000000 1px 3px 5px;
+}
+
+.HR-brand {
+  font-weight: 800;
+  font-size: 30px;
+  margin-left: 5px;
+  text-shadow: #000000 1px 3px 5px;
+}
+
 .titlebar {
   width: 100%;
   height: 25px;
@@ -154,7 +168,7 @@ body {
   overflow: visible;
   margin-top: 80px;
   margin-left: 250px;
-  padding: 20px;
+  padding: 40px;
   flex: 1;
 }
 
@@ -279,7 +293,7 @@ body {
 .rolefolder-container {
   margin-bottom: 20px;
   display: grid;
-  grid-template-columns: 320px 320px 320px 320px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 3px; /* Gap between grid items */
   grid-auto-rows: 50px; /* Default height for each row */
   justify-content: center;
