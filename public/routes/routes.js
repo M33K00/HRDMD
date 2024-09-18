@@ -1411,9 +1411,10 @@ router.post("/hrSettings", checkHRSettings, async (req, res) => {
   }
 });
 
-router.get("/print-hr-dtr/:department", async (req, res) => {
+router.get("/print-hr-dtr/:department/:month", async (req, res) => {
   try {
     const reqdep = req.params.department;
+    const month = req.params.month;
 
     let department;
 
@@ -1440,7 +1441,7 @@ router.get("/print-hr-dtr/:department", async (req, res) => {
         department = "Department 6";
         break;
       default:
-        res.status(404).send("Department not found");
+        return res.status(404).send("Department not found");
     }
 
     const employees = await LogInCollection.find({
@@ -1457,11 +1458,8 @@ router.get("/print-hr-dtr/:department", async (req, res) => {
         type: "danger",
         message: "There are no employees in this department",
       };
-      res.redirect("/hrSettings");
-      return;
+      return res.redirect("/hrSettings");
     }
-
-
 
     res.render("HRIS/PRINT/hrprint", { attendance, department });
   } catch (error) {

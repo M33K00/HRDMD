@@ -32,116 +32,51 @@
         <p>Print reports for employees</p>
       </div>
       <div class="settings-div">
-        <div class="button-container">
-          <div class="file-container-hrSet">
-            <div class="dtr-report-container">
-              <div class="report-button-container">
-                <div class="report-button">
-                  <p>HR Department</p>
-                </div>
-                <div class="report-button">
-                  <button
-                    class="btn btn-secondary btn-print"
-                    onclick="window.location.href='/print-hr-dtr/HR'"
-                  >
-                    PRINT
-                  </button>
-                </div>
+            <div class="row-print d-flex align-items-end">
+              <div class="col-md-4 printSelect">
+                <label>Department</label>
+                <select
+                  type="text"
+                  name="department"
+                  id="department"
+                  class="form-select"
+                >
+                  <option value="HR">HR Department</option>
+                  <option value="DP1">PESO Department</option>
+                  <option value="DP2">CCD Office</option>
+                  <option value="DP3">OAS Department</option>
+                  <option value="DP4">BTM Department</option>
+                  <option value="DP5">BPL Department</option>
+                  <option value="DP6">CAD Department</option>
+                </select>
               </div>
-            </div>
-            <div class="dtr-report-container">
-              <div class="report-button-container">
-                <div class="report-button">
-                  <p>PESO Department</p>
-                </div>
-                <div class="report-button">
-                  <button
-                    class="btn btn-secondary btn-print"
-                    onclick="window.location.href='/print-hr-dtr/DP1'"
-                  >
-                    PRINT
-                  </button>
-                </div>
+              <div class="col-md-2 printSelect">
+                <label>Month</label>
+                <select
+                  type="text"
+                  name="month"
+                  id="month"
+                  class="form-select"
+                >
+                  <option value="AllMonth">All</option>
+                  <option value="January">January</option>
+                  <option value="February">February</option>
+                  <option value="March">March</option>
+                  <option value="April">April</option>
+                  <option value="May">May</option>
+                  <option value="June">June</option>
+                  <option value="July">July</option>
+                  <option value="August">August</option>
+                  <option value="September">September</option>
+                  <option value="October">October</option>
+                  <option value="November">November</option>
+                  <option value="December">December</option>
+                </select>
               </div>
-            </div>
-            <div class="dtr-report-container">
-              <div class="report-button-container">
-                <div class="report-button">
-                  <p>CCD Office</p>
-                </div>
-                <div class="report-button">
-                  <button
-                    class="btn btn-secondary btn-print"
-                    onclick="window.location.href='/print-hr-dtr/DP2'"
-                  >
-                    PRINT
-                  </button>
-                </div>
+              <div class="col-md-2 printSelect">
+                <button class="btn btn-primary" id="generateBtn">Generate</button>
               </div>
-            </div>
-            <div class="dtr-report-container">
-              <div class="report-button-container">
-                <div class="report-button">
-                  <p>OAS Department</p>
-                </div>
-                <div class="report-button">
-                  <button
-                    class="btn btn-secondary btn-print"
-                    onclick="window.location.href='/print-hr-dtr/DP3'"
-                  >
-                    PRINT
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="dtr-report-container">
-              <div class="report-button-container">
-                <div class="report-button">
-                  <p>BTM Department</p>
-                </div>
-                <div class="report-button">
-                  <button
-                    class="btn btn-secondary btn-print"
-                    onclick="window.location.href='/print-hr-dtr/DP4'"
-                  >
-                    PRINT
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="dtr-report-container">
-              <div class="report-button-container">
-                <div class="report-button">
-                  <p>BPL Department</p>
-                </div>
-                <div class="report-button">
-                  <button
-                    class="btn btn-secondary btn-print"
-                    onclick="window.location.href='/print-hr-dtr/DP5'"
-                  >
-                    PRINT
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="dtr-report-container">
-              <div class="report-button-container">
-                <div class="report-button">
-                  <p>CAD Department</p>
-                </div>
-                <div class="report-button">
-                  <button
-                    class="btn btn-secondary btn-print"
-                    onclick="window.location.href='/print-hr-dtr/DP6'"
-                  >
-                    PRINT
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            </div>            
     </div>
   </div>
 </body>
@@ -173,6 +108,21 @@
         });
       });
     });
+  });
+
+  document.getElementById('generateBtn').addEventListener('click', function () {
+    // Get the selected department and month
+    const departmentSelect = document.getElementById('department');
+    const monthSelect = document.getElementById('month');
+
+    const department = departmentSelect.options[departmentSelect.selectedIndex].value;
+    const month = monthSelect.options[monthSelect.selectedIndex].value;
+
+    // Construct the URL
+    const url = `/print-hr-dtr/${department}/${month}`;
+
+    // Redirect to the constructed URL
+    window.location.href = url;
   });
 </script>
 <script>

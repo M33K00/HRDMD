@@ -688,14 +688,24 @@
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   padding: 1%;
-  height: 65%;
+  height: 68%;
   backdrop-filter: blur(5px); /* Blur effect */
 }
 
 .settings-div label {
-  font-size: 15px;
+  font-size: 20px;
   margin-right: 10px;
   font-weight: 600;
+}
+
+.row-print {
+  display: block;
+  width: 100%;
+  justify-content: center;
+}
+
+.printSelect {
+  margin: 10px;
 }
 
 .hr-settings {
