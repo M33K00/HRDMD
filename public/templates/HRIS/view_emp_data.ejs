@@ -106,14 +106,14 @@
                 text-danger
                 <% } else if (VLPoints <= 1.00 ) { %>
                 text-danger
-                <% } %>"><b style="color: rgb(0, 0, 0);">VL Points:</b> <%= VLPoints %></p>
+                <% } %>"><b style="color: rgb(0, 0, 0);">VL Points:</b> <%= VLPoints.toFixed(2) %></p>
             <p class="<% if (SLPoints >= 1.25) { %>
                  text-success
                 <% } else if (SLPoints <= 1.24 ) { %>
                 text-warning
                 <% } else if (SLPoints <= 1.15 ) { %>
                 text-danger
-                <% } %>"><b style="color: rgb(0, 0, 0);">SL Points:</b> <%= SLPoints %></p>
+                <% } %>"><b style="color: rgb(0, 0, 0);">SL Points:</b> <%= SLPoints.toFixed(2) %></p>
         </div>
     </div>
     <div class="account-stat mt-3">

@@ -2,7 +2,7 @@
 <body>
   <%- include('../layouts/navhris') -%> 
   <% if (user.hrrole === "ADMIN") { -%>
-      <%- include('../layouts/sidenavhris') %>
+    <%- include('../layouts/sidenavP') %>
     <% } else { %>
       <%- include('../layouts/user_hris/sidenavhris_user') %>
     <% } %>
@@ -29,14 +29,10 @@
         </div>
         <% } %>
       </div>
-      <% if (email === user.email) { -%>
         <div class="file-code">
           <button id="submitButton" class="btn btn-secondary">Submit <%= pageName %></button>
       </div>
-      <% } else { %>
-          <h3 class="text-muted"><%= email %>'s Papers</h3>
-    <% } %>
-    <div id="submitPaper" class="submission hidden mb-4">
+      <div id="submitPaper" class="submission hidden mb-4">
         <form action="/file-submit" method="POST" enctype="multipart/form-data">
             <fieldset>
                 <legend>Upload <%= pageName %></legend>
