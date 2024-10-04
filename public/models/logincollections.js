@@ -33,6 +33,10 @@ const logInSchema = new mongoose.Schema({
     required: [true, "Please add a password"],
     minlength: [8, "Password must be at least 8 characters"],
   },
+  passwordReset: {
+    type: Boolean,
+    default: false,
+  },
   employeeID: {
     type: String,
     required: true,

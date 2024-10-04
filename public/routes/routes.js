@@ -307,7 +307,9 @@ router.get("/reset-password/:id", async (req, res) => {
     try {
       await LogInCollection.updateOne(
         { _id: id },
-        { $set: { password: hashedPassword } }
+        { $set: { 
+          password: hashedPassword,
+          passwordReset: true  } }
       );
       console.log("Password updated successfully.");
     } catch (error) {
@@ -323,8 +325,12 @@ router.get("/reset-password/:id", async (req, res) => {
     const mailOptions = {
       from: 'mikuosuzuya@gmail.com',
       to: account.email,
-      subject: 'Password Reset',
-      html: `Your new password is: ${newPassword}, <br><strong>PLEASE CHANGE THIS PASSWORD IMMEDIATELY AFTER LOGGING IN.</strong>`,
+      subject: 'HRDMD ACCOUNT PASSWORD RESET',
+      html: `Your password for your account for the HRDMD App has been reset.<br><br>
+        Your new password is:<br>
+        <strong>${newPassword}</strong><br><br>
+        <strong style="color: red;">PLEASE CHANGE THIS PASSWORD IMMEDIATELY AFTER LOGGING IN.</strong>
+      `,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -342,7 +348,7 @@ router.get("/reset-password/:id", async (req, res) => {
 
     req.session.message = {
       type: "success",
-      message: " Password reset successfully",
+      message: "Password reset successfully",
     };
     res.redirect("/view_emp_data/" + account.email);
 
