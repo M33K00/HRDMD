@@ -215,6 +215,15 @@ router.post("/signup", authController.signup_post);
 
 router.get("/logout", authController.logout_get);
 
+// Transporter for sending emails
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'mikuosuzuya@gmail.com',
+    pass: 'uojo zrtz pjyy kohf',
+  },
+});
+
 // Insert an account into the database route
 router.post("/addacc", upload, async (req, res) => {
   try {
@@ -266,6 +275,81 @@ router.post("/addacc", upload, async (req, res) => {
     return res.redirect("/manage_accounts");
   }
 });
+
+// Function to generate a random password
+function generatePassword(length) {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let password = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    password += chars[randomIndex];
+  }
+  return password;
+}
+
+// Reset Password
+router.get("/reset-password/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const newPassword = generatePassword(8);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    console.log("New password:", newPassword);
+
+    const account = await LogInCollection.findById(id);
+    if (!account) {
+      // Handle the case where the user's _id is not found
+      res.status(404).send("User not found.");
+      return; // Exit the function early
+    }
+
+    try {
+      await LogInCollection.updateOne(
+        { _id: id },
+        { $set: { password: hashedPassword } }
+      );
+      console.log("Password updated successfully.");
+    } catch (error) {
+      console.error(error);
+
+      req.session.message = {
+        type: "danger",
+        message: error.message,
+      };
+      return res.redirect("/view_emp_data/" + account.email);
+    }
+
+    const mailOptions = {
+      from: 'mikuosuzuya@gmail.com',
+      to: account.email,
+      subject: 'Password Reset',
+      html: `Your new password is: ${newPassword}, <br><strong>PLEASE CHANGE THIS PASSWORD IMMEDIATELY AFTER LOGGING IN.</strong>`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+        req.session.message = {
+          type: "danger",
+          message: "Password reset, but email failed to send.",
+        };
+        res.redirect("/view_emp_data/" + account.email);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
+    req.session.message = {
+      type: "success",
+      message: " Password reset successfully",
+    };
+    res.redirect("/view_emp_data/" + account.email);
+
+  } catch (error) {
+    console.error(error);
+  }
+})
 
 router.post("/add_employee", upload, async (req, res) => {
   try {
@@ -326,14 +410,6 @@ router.post("/add_employee", upload, async (req, res) => {
     // Redirect to the previous page or an error page
     return res.redirect("/view_employees");
   }
-});
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'mikuosuzuya@gmail.com',
-    pass: 'uojo zrtz pjyy kohf',
-  },
 });
 
 // Verify account
