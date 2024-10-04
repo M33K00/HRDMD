@@ -115,7 +115,7 @@
           >Password</label
         >
         <input
-          type="password"
+          type="hidden"
           name="password"
           class="form-control"
           id="exampleInputPassword1"
@@ -129,6 +129,13 @@
           value="<%= logincollections.password  %>"
         />
       </div>
+      <a
+        href="#"
+        id="resetPassword"
+        class="btn btn-danger"
+        >RESET PASSWORD
+      </a>
+      <small class="form-text text-muted" style="margin-left: 5px;">*In case the password is forgotten, set a temporary password for the user that will be sent to their email.</small>
       <div class="form-group">
         <label for="formFile" class="form-label mt-4">Account Image</label>
         <input class="form-control" type="file" name="image" id="formFile" disabled/>
@@ -228,22 +235,39 @@
     </div>
   </div>
   <!-- Verify Modal -->
-<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="adminWarningLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-warning" id="adminWarningLabel" style="font-weight: 800;">Warning!</h5>
-      </div>
-      <div class="modal-body">
-        Please check all information before verifying the account.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="confirmVerification">Confirm</button>
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="adminWarningLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-warning" id="adminWarningLabel" style="font-weight: 800;">Warning!</h5>
+        </div>
+        <div class="modal-body">
+          Please check all information before verifying the account.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="confirmVerification">Confirm</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  <!-- Reset Password Modal-->
+  <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="adminWarningLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger" id="adminWarningLabel" style="font-weight: 800;">WARNING!</h5>
+        </div>
+        <div class="modal-body">
+          Resetting the password will send an email to <strong><%= logincollections.email %></strong> with a temporary password. Do you want to proceed?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeResetModal">Close</button>
+          <button type="button" class="btn btn-danger" id="confirmReset">PROCEED</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <script>
   document.addEventListener('DOMContentLoaded', (event) => {
     const hrRoleSelect = document.getElementById('hrrole');
@@ -256,6 +280,22 @@
         myModal.show();
       }
     });
+  });
+
+  // Trigger Reset Password Modal
+  document.getElementById('resetPassword').addEventListener('click', function() {
+    $('#resetPasswordModal').modal('show');
+  });
+
+  // Close Reset Password Modal
+  document.getElementById('closeResetModal').addEventListener('click', function() {
+    $('#resetPasswordModal').modal('hide');
+  });
+
+  // Confirm Reset Password
+  document.getElementById('confirmReset').addEventListener('click', function() {
+    const userId = '<%= logincollections._id %>';
+    window.location.href = `/reset-password/${userId}`;
   });
 </script>
 <%- include('./layouts/footer') -%>
