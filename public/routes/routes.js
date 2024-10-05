@@ -326,7 +326,7 @@ router.get("/reset-password/:id", async (req, res) => {
       from: 'mikuosuzuya@gmail.com',
       to: account.email,
       subject: 'HRDMD ACCOUNT PASSWORD RESET',
-      html: `Your password for your account for the HRDMD App has been reset.<br><br>
+      html: `Your account password for the HRDMD App has been successfully reset.<br><br>
         Your new password is:<br>
         <strong>${newPassword}</strong><br><br>
         <strong style="color: red;">PLEASE CHANGE THIS PASSWORD IMMEDIATELY AFTER LOGGING IN.</strong>
@@ -600,12 +600,15 @@ router.post("/update/:id", upload, async (req, res) => {
       parsedBirthday = userLogin.birthday;
     }
 
+    console.log(req.body);
+
     const result = await LogInCollection.findByIdAndUpdate(
       id,
       {
         name: req.body.name,
         lastname: req.body.lastname,
         birthday: parsedBirthday,
+        employeeID: req.body.employeeID,
         contact: req.body.contact,
         email: req.body.email,
         password: hashedPassword, // Use the hashed password here
