@@ -1,10 +1,14 @@
 <%- include('./layouts/login') -%>
 <body class="fade-in">
   <div class="video-container">
-    <video autoplay loop muted>
-      <source src="/images/bacoorvid.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+    <div class="carousel">
+      <div class="carousel-images">
+        <img src="/images/start/pic1.png" alt="image 1" class="active"/>
+        <img src="/images/start/pic2.png" alt="image 2"/>
+        <img src="/images/start/pic3.png" alt="image 3"/>
+        <img src="/images/start/pic4.png" alt="image 4"/>
+      </div>
+  </div>
   </div>
   <div class="container">
     <div class="alert alert-dismissible alert-success fade-in" id="success-alert" >
@@ -53,4 +57,44 @@
     </div>
   </div>
 </body>
+<script>
+    // Carousel
+    let slideIndex = 0;
+  const autoSlideInterval = 8000; // Time in milliseconds (3 seconds)
+
+  // Get all images
+  const slides = document.querySelectorAll('.carousel-images img');
+  const totalSlides = slides.length;
+
+  // Automatically move to the next slide every 3 seconds
+  let autoChange = setInterval(nextSlide, autoSlideInterval);
+
+  // Show the first slide
+  showSlide(slideIndex);
+
+  function showSlide(index) {
+    // Ensure all images are hidden by removing the 'active' class
+    slides.forEach(slide => slide.classList.remove('active'));
+
+    // Wrap around when reaching the last or first slide
+    if (index >= totalSlides) {
+      slideIndex = 0;
+    } else if (index < 0) {
+      slideIndex = totalSlides - 1;
+    }
+
+    // Add 'active' class to the current slide to make it visible
+    slides[slideIndex].classList.add('active');
+  }
+
+  function nextSlide() {
+    slideIndex++;
+    showSlide(slideIndex);
+  }
+
+  function prevSlide() {
+    slideIndex--;
+    showSlide(slideIndex);
+  }
+</script>
 <%- include('./layouts/signupfooter') %>

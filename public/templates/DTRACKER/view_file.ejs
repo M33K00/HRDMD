@@ -46,8 +46,12 @@
             <% if (file.status === 'PENDING' || file.status === 'FOR APPROVAL' || file.status === 'REASSIGNED') { %> class="text-warning" <% } %>
             style="font-weight: 800"
           ><strong>Status:</strong> <%= file.status %></p>
-          <% if (file.dateApproved !== null) { %>
-            <p><strong>Date Approved:</strong> <%= file.dateApproved.toISOString().split('T')[0] %></p>
+          <% if (file.dateApproved === null) { %>
+            <p><strong>Date Approved:</strong>
+              <% if (file.dateApproved !== null) { %>
+                <%= file.dateApproved.toISOString().split('T')[0] %>
+              <% } %>
+            </p>
           <% } %>
           <p><strong>Assigned To:</strong> <%= file.assignTo %></p>
         </div>

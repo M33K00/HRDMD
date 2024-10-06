@@ -91,7 +91,7 @@
             <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
             <td><%= file.dueDate.toISOString().split('T')[0] %></td>
             <td class="action-buttons">
-              <a href="view_file/<%= file.id %>" class="icon-square text-dark">
+              <a href="/view_file/<%= file.id %>" class="icon-square text-dark">
                 <i class="fa-solid fa-eye"></i>
               </a>
               <% if (file.status === 'APPROVED') { %>
@@ -130,7 +130,7 @@
             <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
             <td><%= file.dueDate.toISOString().split('T')[0] %></td>
             <td class="action-buttons">
-              <a href="view_file/<%= file.id %>" class="icon-square text-dark">
+              <a href="/view_file/<%= file.id %>" class="icon-square text-dark">
                 <i class="fa-solid fa-eye"></i>
               </a>
             </td>
