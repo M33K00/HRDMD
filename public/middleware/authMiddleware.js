@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const logincollections = require("../models/logincollections");
+const Attendance = require("../models/attendance");
 
 const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
@@ -31,7 +32,11 @@ const checkUser = (req, res, next) => {
         next();
       } else {
         let user = await logincollections.findById(decodedToken.id);
+        let userAttendance = await Attendance.findOne({
+          email: user.email,
+        })
         res.locals.user = user;
+        res.locals.userAttendance = userAttendance;
         next();
       }
     });
