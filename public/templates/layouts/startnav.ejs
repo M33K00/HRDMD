@@ -1,0 +1,45 @@
+<div class="header">
+    <div class="side-nav">
+      <a class="logo">
+        <img src="../images/logo.png" class="logo-img" />
+      </a>
+      <ul class="nav-links">
+        <li>
+          <a href="/home"
+            ><i class="fa-solid fa-list-check"></i>
+            <p style="font-size: 13px">Task Manager</p></a
+          >
+        </li>
+        <li>
+          <a
+            href="<% if (user.hrrole === 'ADMIN') { %>
+            /statusboard
+          <% } else { %>
+            /statusboard-r1
+          <% } %>"
+            ><i class="fa-solid fa-bars-progress"></i>
+            <p style="font-size: 13px">Status Board</p></a
+          >
+        </li>
+        <li>
+          <a
+            href="<% if (user.hrrole === 'ADMIN') { %>
+           /manage_accounts
+          <% } else { %>
+            /view-user/<%= user._id %>
+          <% } %>"
+            ><i class="fa-solid fa-user"></i>
+            <p style="font-size: 13px">Accounts</p></a
+          >
+        </li>
+        <li>
+          <a href="/archive_files"
+            ><i class="fa-solid fa-trash"></i>
+            <p style="font-size: 13px">Archive</p></a
+          >
+        </li>
+        <div class="active-button"></div>
+      </ul>
+    </div>
+  </div>
+  

@@ -1,6 +1,6 @@
 <div class="col-md-4 hover-div-sp" >
     <a href="/document_tracker/<%= encodeURIComponent(user.hrrole) %>">
-    <div class="card-start card border-primary mb-3 shadow startpage-font">
+    <div class="card-start card start-border mb-3 shadow startpage-font">
       <h3 class="card-header">Task Manager</h3>
       <div class="card-body">
         <h6 class="card-subtitle text-muted">
@@ -39,7 +39,7 @@
       /hris <% } else { %>
        /hris_user/<%= user.email %>
      <% } %>">
-    <div class="card-start card border-primary mb-3 shadow startpage-font">
+    <div class="card-start card start-border mb-3 shadow startpage-font">
       <h3 class="card-header">HR Information System</h3>
       <div class="card-body">
         <h6 class="card-subtitle text-muted">
@@ -77,7 +77,7 @@
     <% } else { %>
       <a href="/view-user/<%= user._id %>">
     <% } %>
-    <div class="card-start card border-primary mb-3 shadow startpage-font">
+    <div class="card-start card start-border mb-3 shadow startpage-font">
       <% if (user.mEmp === true || user.hrrole === 'ADMIN') { %>
         <h3 class="card-header">Manage Employees</h3>
       <% } else { %>

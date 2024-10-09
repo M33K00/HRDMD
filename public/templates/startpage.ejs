@@ -1,14 +1,50 @@
 
   <%- include('./layouts/header') -%>
 <body class="startbody">
-  <div class="start-container fade-in">
+  <div class="start-container">
     <%- include('./layouts/navhrisP') -%>
-    <div class="row slide-up">
+    <%- include('./layouts/startnav') %>
+    <div class="page-body-start">
+      <div class="card timeInTab fade-in">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3>Welcome, <%= user.name %></h3>
+          <h3 id="currentDate"></h3>
+        </div>
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <h5 class="card-subtitle text-muted">
+            Don't forget to time in!
+          </h5>
+          <div class="timeInButtons">
+            <button
+              type="button"
+              class="btn btn-danger"
+              id="timeOutBtn"
+              data-bs-toggle="modal"
+              data-bs-target="#timeCheck"
+              <% if (userAttendance.status === "OUT") { %>disabled<% } %>
+            >
+              Time-out
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="timeInBtn"
+              data-bs-toggle="modal"
+              data-bs-target="#timeCheck"
+              <% if (userAttendance.status === "IN") { %>disabled<% } %>
+            >
+              Time-in
+            </button>
+          </div>
+        </div>
+      </div>
+    <div class="row startButtons slide-up">
       <% if (user.department === "HR Department") { %>
         <%- include('./layouts/startpage/HRButtons.ejs') -%>
       <% } else { %>
         <%- include('./layouts/startpage/Buttons.ejs') -%>
       <% } %>
+    </div>
     </div>
   </div>
 </body>
@@ -67,12 +103,6 @@
     </div>
   </div>
 </div>
-<div class="app-version">
-        <p>Version: 2.0.0 BETA (Build 24195)</p>
-        <p> Environment: Production </p>
-        <p>&copy; 2024 CVSU Bacoor. All rights reserved.</p>
-        <p>Contact: <a href="mailto:marklawrenzuy@outlook.ph">marklawrenzuy@outlook.ph</a></p>
-</div>
 <div class="overlay" id="overlay"></div>
 <% if (userAttendance.status === "OUT") { %>
 <div class="modal" id="timeCheck" tabindex="-1">
@@ -91,6 +121,22 @@
   </div>
 </div>
 <% } %>
+<div class="modal" id="timeOutModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg fade-in" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="font-weight: 800;">TIME-OUT</h5>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to time-out?</p>
+        <p id="currentTime" class="fw-bold"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="timeOutConfirm">Time-out now</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script src="https://kit.fontawesome.com/64cf43ccc2.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -126,4 +172,62 @@ document.addEventListener('DOMContentLoaded', function () {
     window.location.href = '/dtr_user/<%= user._id %>';
   });
 })
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Get the modal element and the button
+  var timeOutModal = new bootstrap.Modal(document.getElementById('timeOutModal'), {
+    keyboard: false
+  });
+
+  var timeOutBtn = document.getElementById('timeOutBtn');
+
+  // Add a click event listener to the button
+  timeOutBtn.addEventListener('click', function () {
+  // Get the current time
+    var currentTime = new Date().toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    // Insert the current time into the modal body
+    document.getElementById('currentTime').textContent = currentTime;
+
+    // Show the modal
+    timeOutModal.show();
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('timeOutConfirm').addEventListener('click', function () {
+    window.location.href = '/dtr_user/<%= user._id %>';
+  });
+});
+
+// Helper function to add ordinal suffix to day (e.g., "9th", "1st")
+function getOrdinalSuffix(day) {
+  if (day > 3 && day < 21) return 'th'; // catch 11th - 19th
+  switch (day % 10) {
+    case 1: return 'st';
+    case 2: return 'nd';
+    case 3: return 'rd';
+    default: return 'th';
+  }
+}
+
+// Get the current date and time
+const currentDate = new Date();
+
+// Get the day, month, year, hour, and minutes
+const day = currentDate.getDate();
+const month = currentDate.toLocaleString('en-US', { month: 'short' }); // e.g., "Oct"
+const year = currentDate.getFullYear();
+const hours = currentDate.getHours() % 12 || 12; // Convert to 12-hour format
+const minutes = currentDate.getMinutes().toString().padStart(2, '0'); // Pad with zero if needed
+const ampm = currentDate.getHours() >= 12 ? 'PM' : 'AM'; // AM or PM
+
+// Construct the formatted date string
+const formattedDate = `${day}${getOrdinalSuffix(day)} ${month}. ${year} ${hours}:${minutes} ${ampm}`;
+
+// Insert the date into the element with id "currentDate"
+document.getElementById('currentDate').textContent = formattedDate;
 </script>

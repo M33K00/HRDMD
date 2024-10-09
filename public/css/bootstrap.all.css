@@ -18,6 +18,34 @@ body {
   text-align: center; /* Center text within the element */
 }
 
+.page-body-start {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: visible;
+  margin-left: 260px;
+}
+
+.timeInTab {
+  border: #158cba solid 2px;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 200px;
+}
+
+.startButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+.start-border {
+  border: #158cba solid 2px;
+}
+
 .TM-brand {
   font-weight: 800;
   font-size: 30px;
