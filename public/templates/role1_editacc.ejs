@@ -78,6 +78,30 @@
           </div>
           <div class="form-group flex-container">
             <div class="form-item">
+              <label for="middleName" class="form-label mt-4">Middle Name</label>
+              <input
+                type="text"
+                name="middleName"
+                class="form-control"
+                placeholder="Enter Middle Name"
+                value="<%= logincollections.middleName %>"
+              />
+              <small id="middleNameHint" class="form-text text-muted">Type N/A if not applicable</small>
+            </div>
+            <div class="form-item">
+              <label for="suffix" class="form-label mt-4">Suffix</label>
+              <input
+                type="text"
+                name="suffix"
+                class="form-control"
+                placeholder="Enter Suffix"
+                value="<%= logincollections.suffix %>"
+              />
+              <small id="suffixHint" class="form-text text-muted">Type N/A if not applicable</small>
+            </div>
+          </div>
+          <div class="form-group flex-container">
+            <div class="form-item">
             <label for="InputName" class="form-label mt-4">Birthday</label>
             <input
               type="date"

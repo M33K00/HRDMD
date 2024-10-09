@@ -765,3 +765,33 @@
   text-decoration: none;
   color: inherit;
 }
+
+.file-instruction {
+  width: 250%;
+  height: 100%;
+  resize: none;
+  border-radius: 5px;
+  border: 1px solid #5a5a5a;
+  font-style: italic;
+}
+
+.remarks-header {
+  display: flex;
+  align-items: center;
+}
+
+.remarks-update {
+  margin-top: 5px;
+  margin-left: 10px;
+  font-style: italic;
+}
+
+#alertContainer {
+  display: flex;
+  flex-direction: column; /* Stack alerts vertically */
+  gap: 10px; /* Adds space between each alert */
+  position: fixed; /* To keep it in the bottom-right */
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999; /* Ensures it's above other content */
+}

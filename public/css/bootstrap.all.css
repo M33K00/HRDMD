@@ -6,6 +6,18 @@ body {
   -webkit-user-drag: none;
 }
 
+.app-version {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+  padding: 10px;
+  color: #000000;
+  font-size: 10px;
+  text-align: center; /* Center text within the element */
+}
+
 .TM-brand {
   font-weight: 800;
   font-size: 30px;
@@ -120,13 +132,26 @@ body {
 .start-container {
   position: relative;
   min-height: 100vh;
-  background-image: url("../images/lp.png"); /* Set the background image */
-  background-size: cover;
-  background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 30px;
+  overflow: hidden; /* Ensures no overflow of pseudo-element */
+}
+
+.start-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("../images/pagebg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(3px); /* Adjust blur amount */
+  z-index: -1; /* Send the pseudo-element behind the content */
 }
 
 .startbar {
@@ -860,12 +885,6 @@ body {
 
 .file-item strong {
   color: #63a5be;
-}
-
-.file-item textarea {
-  resize: none;
-  width: 278%;
-  height: 100%;
 }
 
 .file-download {

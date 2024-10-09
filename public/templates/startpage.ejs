@@ -2,15 +2,7 @@
   <%- include('./layouts/header') -%>
 <body class="startbody">
   <div class="start-container fade-in">
-    <div class="startbar">
-      <p class="startbar-title">City Hall of Bacoor</p>
-      <a href="#" id="toggleSidebar" class="nav-link right-content">
-        <% if (user.image === "") { %>
-          <img class="nav-img" src="../images/user.jpg" />
-          <% } else { %>
-          <img class="nav-img" src="../<%= user.image %>" />
-        <% } %>
-    </a></div>
+    <%- include('./layouts/navhrisP') -%>
     <div class="row slide-up">
       <% if (user.department === "HR Department") { %>
         <%- include('./layouts/startpage/HRButtons.ejs') -%>
@@ -20,6 +12,9 @@
     </div>
   </div>
 </body>
+<% if (user.hrrole !== "ADMIN" && user.suffix === "" || user.middleName === "") { %>
+  <%- include('./layouts/modals/unfinishedProfile') -%>
+<% } %>
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-body">
@@ -72,8 +67,13 @@
     </div>
   </div>
 </div>
+<div class="app-version">
+        <p>Version: 2.0.0 BETA (Build 24195)</p>
+        <p> Environment: Production </p>
+        <p>&copy; 2024 CVSU Bacoor. All rights reserved.</p>
+        <p>Contact: <a href="mailto:marklawrenzuy@outlook.ph">marklawrenzuy@outlook.ph</a></p>
+</div>
 <div class="overlay" id="overlay"></div>
-// Time-in Check modal
 <% if (userAttendance.status === "OUT") { %>
 <div class="modal" id="timeCheck" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg fade-in" role="document">

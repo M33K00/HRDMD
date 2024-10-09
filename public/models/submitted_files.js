@@ -54,6 +54,11 @@ const submittedFilesSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
+  remarksDate: {
+    type: Date,
+    required: false,
+    default: null,
+  },
 });
 
 const submittedFiles = mongoose.model("submittedFiles", submittedFilesSchema);

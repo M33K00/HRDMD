@@ -1,6 +1,9 @@
 <%- include('../../layouts/header') -%>
 <body>
   <%- include('../../layouts/nav') -%> <%- include('../../layouts/sidenavR1') %>
+  <% if (user.hrrole !== "ADMIN" && user.suffix === "" || user.middleName === "") { %>
+    <%- include('../../layouts/modals/unfinishedProfile') -%>
+  <% } %>
   <div class="page-body fade-in">
     <div class="page-name">
       <h1 class="text-uppercase">Task Manager</h1>
@@ -14,6 +17,18 @@
         id="autoDismissAlert"
       >
         <strong>Attention! </strong><%= message.message %><a
+          href="#"
+          class="alert-link"
+        ></a>
+      </div>
+      <% } %>
+      <% if (pendingFiles.length > 0) { %>
+      <div
+        class="alert alert-dismissible alert-warning fade show"
+        role="alert"
+      >
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>ATTENTION! </strong>You have <strong><%= pendingFiles.length %></strong> pending task(s). Please send them for approval or add remarks to ensure they are completed.<a
           href="#"
           class="alert-link"
         ></a>

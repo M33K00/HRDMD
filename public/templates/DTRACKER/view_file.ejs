@@ -58,8 +58,8 @@
         <div class="file-item text-uppercase">
           <h3>Instructions:</h3>
           <p><strong>File Instructions:</strong></p>
-          <textarea class="form-control" readonly>
-<%= file.fileInstruction %></textarea
+          <textarea class="form-control file-instruction" readonly>
+          <%= file.fileInstruction %></textarea
           >
         </div>
       </div>
@@ -83,6 +83,13 @@
             <div class="dropdown-menu" id="fileDropdownMenu" aria-labelledby="dropdownMenuButton">
               <% if (user.hrrole !== "ADMIN" && file.status === "PENDING" || file.status === "REASSIGNED") { %>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for approval', '<%= file.id %>')"><i class="fa-solid fa-file-circle-check mr-2"></i> For Approval</a>
+                <a class="dropdown-item" href="#" onclick="showConfirmationModal('add remarks', '<%= file.id %>')"><i class="fa-solid fa-comment mr-2"></i>
+                  <% if (file.remarks === "") { %>
+                    Add Remarks
+                  <% } else { %>
+                    Update Remarks
+                  <% } %>
+                </a>
               <% } %>
               <% if (user.hrrole === "ADMIN" && file.status === "FOR APPROVAL") { %>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('set this task as approved', '<%= file.id %>')"><i class="fa-solid fa-check"></i> Approve</a>
@@ -98,7 +105,14 @@
       <% } %>
       <% if (file.remarks !== "") { %>
         <div class="remarks-div mt-3">
-          <h3 class="text-uppercase" style="font-weight: 700;">Task Remarks:</h3>
+          <div class="remarks-header">
+            <h3 class="text-uppercase" style="font-weight: 700;">Task Remarks:</h3>
+            <% if (file.remarksDate !== null) { %>
+              <p class="remarks-update text-muted">
+                Updated on: <%= file.remarksDate.toISOString().split('T')[0] %> at <%= file.remarksDate.toTimeString().split(' ')[0].slice(0, 5) %>
+              </p>              
+            <% } %>
+          </div>
           <textarea 
             class="form-control"
             id="fileComment"

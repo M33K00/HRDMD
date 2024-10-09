@@ -607,6 +607,8 @@ router.post("/update/:id", upload, async (req, res) => {
       {
         name: req.body.name,
         lastname: req.body.lastname,
+        middleName: req.body.middleName,
+        suffix: req.body.suffix,
         birthday: parsedBirthday,
         employeeID: req.body.employeeID,
         contact: req.body.contact,

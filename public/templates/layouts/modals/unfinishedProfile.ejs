@@ -1,0 +1,31 @@
+// Profile Unfinished modal
+<div class="modal" id="unfinishedModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg fade-in" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="font-weight: 800;">PROFILE UNFINISHED</h5>
+      </div>
+      <div class="modal-body">
+        <p>It is required to provide all required information before you can proceed. Please complete your profile before continuing.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="finishProfile">FINISH PROFILE</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var myModal = new bootstrap.Modal(document.getElementById('unfinishedModal'), {
+        backdrop: 'static',
+        keyboard: false
+      });
+      myModal.show();
+    });
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('finishProfile').addEventListener('click', function () {
+      window.location.href = '/editacc/<%= user.name %>';
+    });
+  })
+  </script>

@@ -766,6 +766,39 @@ router.get("/pending-file/:id", async (req, res) => {
   }
 });
 
+router.get("/update-task/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const remarks = req.query.remarks;
+
+    const file = await SubmittedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "File not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
+
+    file.remarks = remarks;
+    file.remarksDate = new Date();
+    await file.save();
+
+    req.session.message = {
+      type: "success",
+      message: "Task remarked successfully.",
+    };
+    res.redirect("/view_file/" + id);
+  } catch (error) {
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+})
+
 router.get("/for-approval-file/:id", async (req, res) => {
   try {
     const id = req.params.id;

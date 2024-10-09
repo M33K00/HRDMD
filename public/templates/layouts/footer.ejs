@@ -574,7 +574,7 @@ function showConfirmationModal(action, fileId) {
 
   // Show/hide remarks input based on the action
   const remarksInputContainer = document.getElementById("remarksInputContainer");
-  if (action === "mark this task for approval" || action === "mark this task for reassignment") {
+  if (action === "mark this task for approval" || action === "mark this task for reassignment" || action === "add remarks") {
     remarksInputContainer.style.display = "block";
   } else {
     remarksInputContainer.style.display = "none";
@@ -593,6 +593,10 @@ function showConfirmationModal(action, fileId) {
     case "Pending":
       confirmActionBtn.textContent = "Mark as Pending";
       confirmActionBtn.className = "btn btn-warning";
+      break;
+    case "add remarks":
+      confirmActionBtn.textContent = "Add Remarks";
+      confirmActionBtn.className = "btn btn-primary";
       break;
     case "mark this task for approval":
       confirmActionBtn.textContent = "Mark for Approval";
@@ -634,6 +638,10 @@ function performAction(action, fileId, remarks) {
       break;
     case "Pending":
       window.location.href = `/pending-file/${fileId}`;
+      break;
+    case "add remarks":
+      // Include remarks in the URL when adding remarks
+      window.location.href = `/update-task/${fileId}?remarks=${encodeURIComponent(remarks)}`;
       break;
     case "mark this task for approval":
       // Include remarks in the URL when marking for approval

@@ -11,6 +11,16 @@ const logInSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please add a lastname"],
   },
+  middleName: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  suffix: {
+    type: String,
+    required: false,
+    default: "",
+  },
   email: {
     type: String,
     required: [true, "Please add an email"],
