@@ -441,7 +441,7 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
       if (attendanceDate !== formattedCurrentDate) {
         await DaysPresent.findOneAndDelete({
           email: email,
-          timeIn: null,
+          timeOut: null,
         });
     
         // Update attendance record
@@ -567,6 +567,8 @@ router.get("/clockin/:email", checkHRSettings, async (req, res) => {
     // Create a Date object for the current time
     const currentTime = new Date();
 
+    console.log("Current Time:", currentTime);
+
     // Calculate the time difference in milliseconds
     const timeDifferenceMs = currentTime.getTime() - startTime.getTime();
 
@@ -598,14 +600,14 @@ router.get("/clockin/:email", checkHRSettings, async (req, res) => {
       const newData = {
         email: email,
         daysPresent: 0,
-        timeIn: new Date(), // Current date and time
+        timeIn: currentTime,
         status: "IN",
       };
       await Attendance.create(newData);
     } else {
       // If the user exists, increment daysPresent by 1 and update timeIn
       user.daysPresent += 1;
-      user.timeIn = new Date(); // Update timeIn to current date and time
+      user.timeIn = currentTime;
       user.status = "IN";
       await user.save();
     }
@@ -613,7 +615,7 @@ router.get("/clockin/:email", checkHRSettings, async (req, res) => {
     // Create DaysPresent entry for tracking presence
     const dpData = {
       email: email,
-      timeIn: new Date(),
+      timeIn: currentTime,
       timeLate: `${hoursLate}:${minutesLate}`,
       date: new Date(new Date().setHours(0, 0, 0, 0)),
     };

@@ -27,7 +27,7 @@ body {
 }
 
 .timeInTab {
-  border: #158cba solid 2px;
+  border: #158cba solid 1px;
   border-radius: 5px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
@@ -1064,4 +1064,19 @@ body {
 
 .table-pending {
   background-color: #701c1c !important;
+}
+
+.missionVision {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mission, .vision {
+  margin-top: 10px;
+  justify-content: center;
+  font-size: 14px;  
+  color: white;
+  text-align: center;
+  text-shadow: #000000 1px 1px 5px;
 }
