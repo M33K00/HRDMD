@@ -129,7 +129,16 @@
       </div>
       <div class="modal-body">
         <p>Are you sure you want to time-out?</p>
-        <p id="currentTime" class="fw-bold"></p>
+        <p>Your shift ends at <strong>
+          <%= (() => {
+            let [hours, minutes] = hrsettings.endTime.split(':');
+            hours = parseInt(hours, 10);
+            const period = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; // Convert 0 or 12 to 12, and 13-23 to 1-11
+            return `${hours}:${minutes} ${period}`;
+          })() %>
+        </strong></p>
+        <p id="currentTime"></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" id="timeOutConfirm">Time-out now</button>
@@ -190,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Insert the current time into the modal body
-    document.getElementById('currentTime').textContent = currentTime;
+    document.getElementById('currentTime').innerHTML = "Current time: <strong>" + currentTime + "</strong>";
 
     // Show the modal
     timeOutModal.show();

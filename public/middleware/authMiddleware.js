@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const logincollections = require("../models/logincollections");
 const Attendance = require("../models/attendance");
+const HRSettings = require("../models/hrsettings");
 
 const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
@@ -37,6 +38,7 @@ const checkUser = (req, res, next) => {
         })
         res.locals.user = user;
         res.locals.userAttendance = userAttendance;
+        res.locals.hrsettings = await HRSettings.findOne({});
         next();
       }
     });
