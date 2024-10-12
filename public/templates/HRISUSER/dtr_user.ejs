@@ -28,16 +28,17 @@
     <div class="page-body fade-in">
       <div id="alertContainer" class="bottom-right slide-up">
         <% if (message) { %>
-        <div
-          class="alert alert-dismissible alert-<%= message.type %> fade show"
-          role="alert"
-          id="autoDismissAlert"
-        >
-          <strong>Attention!</strong> <%= message.message %><a
-            href="#"
-            class="alert-link"
-          ></a>
-        </div>
+          <div class="toast show slide-up" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <strong class="me-auto"><%= messageType %></strong>
+              <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="toast-body">
+              <%= message %>
+            </div>
+          </div>
         <% } %>
       </div>
         <div class="page-name">

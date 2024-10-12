@@ -23,16 +23,18 @@
       </div>
       <% } %>
       <% if (pendingFiles.length > 0) { %>
-      <div
-        class="alert alert-dismissible alert-warning fade show"
-        role="alert"
-      >
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <strong>ATTENTION! </strong>You have <strong><%= pendingFiles.length %></strong> pending task(s). Please send them for approval or add remarks to ensure they are completed.<a
-          href="#"
-          class="alert-link"
-        ></a>
-      </div>
+        <div class="toast slide-up show" role="alert" aria-live="assertive" aria-atomic="true" style="margin: 10px;">
+          <div class="toast-header">
+            <strong class="me-auto text-warning">PENDING TASKS</strong>
+            <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="toast-body">
+            You have <strong><%= pendingFiles.length %></strong> pending task(s).
+            Please send a remark for an update about your pending tasks.
+          </div>
+        </div>
       <% } %>
     </div>
     <%# Folder Buttons %>

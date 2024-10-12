@@ -1548,7 +1548,68 @@ router.get("/print-hr-dtr/:department/:month", async (req, res) => {
       return res.redirect("/hrSettings");
     }
 
-    res.render("HRIS/PRINT/hrprint", { attendance, department });
+    const currentYear = new Date().getFullYear();
+
+    let employeeData = [];
+
+    if (month !== "ALL") {
+      employeeData = await Promise.all(
+        employees.map(async (employee) => {
+          const presentDays = await DaysPresent.find({
+            email: employee.email,
+            date: {
+              $gte: new Date(`${currentYear}-${month}-01`),
+              $lte: new Date(`${currentYear}-${month}-31`),
+            },
+          });
+
+          const presentDaysA = await DaysPresentA.find({
+            email: employee.email,
+            date: {
+              $gte: new Date(`${currentYear}-${month}-01`),
+              $lte: new Date(`${currentYear}-${month}-31`),
+            },
+          });
+  
+          const absentDays = await DaysAbsent.find({
+            email: employee.email,
+            date: {
+              $gte: new Date(`${currentYear}-${month}-01`),
+              $lte: new Date(`${currentYear}-${month}-31`),
+            },
+          });
+
+          const absentDaysA = await DaysAbsentA.find({
+            email: employee.email,
+            date: {
+              $gte: new Date(`${currentYear}-${month}-01`),
+              $lte: new Date(`${currentYear}-${month}-31`),
+            },
+          });
+
+          const combinedPresentDays = [...presentDays, ...presentDaysA];
+  
+          const totalTime = combinedPresentDays.reduce((total, day) => {
+            return total + day.totalTime;
+          }, 0);
+
+          const combinedAbsentDays = [...absentDays, ...absentDaysA];
+  
+          return ({
+            name: employee.name,
+            email: employee.email,
+            presentDays: combinedPresentDays.length,
+            totalTime: totalTime,
+            absentDays: combinedAbsentDays.length,
+          });
+        })
+      );
+    } 
+
+    const Month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthName = Month[month - 1];
+
+    res.render("HRIS/PRINT/hrprint", { attendance, department, employeeData, monthName, currentYear });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
