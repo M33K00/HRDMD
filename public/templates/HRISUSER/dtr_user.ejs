@@ -30,13 +30,13 @@
         <% if (message) { %>
           <div class="toast show slide-up" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
-              <strong class="me-auto"><%= messageType %></strong>
+              <strong class="me-auto">Attention!</strong>
               <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close">
                 <span aria-hidden="true"></span>
               </button>
             </div>
             <div class="toast-body">
-              <%= message %>
+              <%= message.message %>
             </div>
           </div>
         <% } %>

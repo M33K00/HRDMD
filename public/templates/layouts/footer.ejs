@@ -761,7 +761,33 @@ function performAction(action, fileId, remarks) {
       setInterval(checkForNewTasks, 5000);
   });
 </script>
-
+<script>
+  // Logout Confirmation
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get the modal element and the button
+    var logOutModal = new bootstrap.Modal(document.getElementById('logOutModal'), {
+      keyboard: false
+    });
+  
+    var logoutButton = document.getElementById('logoutButton');
+  
+    // Add a click event listener to the button
+    logoutButton.addEventListener('click', function () {
+      logOutModal.show();
+    });
+  });
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('logoutConfirm').addEventListener('click', function () {
+      var userStatus = this.getAttribute('data-user-status');
+      if (userStatus === 'IN') {
+        window.location.href = '/dtr_user/<%= user._id %>';
+      } else {
+        window.location.href = '/logout';
+      }
+    });
+  });
+</script>
 
 
     
