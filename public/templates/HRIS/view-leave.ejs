@@ -322,6 +322,13 @@
         <textarea class="form-control" id="dissaprovedReason" name="dissaprovedReason" rows="4" disabled><%= leaveapplications.dissaprovedReason %></textarea>
         </div>
     </div>
+    <% if (leaveapplications.leaveFileAdd1 && leaveapplications.leaveFileAdd2 !== "") { %>
+      <div>
+      <label for="formFile" class="form-label mt-4 d-flex justify-content-between">Additional Attachment:</label>
+          <a href="/download_leaveAttach/<%= leaveapplications.leaveFileAdd1 %>"><%= leaveapplications.leaveFileAdd1 %></a>
+          <a href="/download_leaveAttach/<%= leaveapplications.leaveFileAdd2 %>"><%= leaveapplications.leaveFileAdd2 %></a>
+    </div>
+    <% } %>
     </form>
   </div>
 </body>

@@ -44,7 +44,7 @@
       Please file application 5 days in advance, whenever possible, of the
       effictive date of the application
     </p>
-    <form action="/apply_leave" method="POST" class="app-form leave-form slide-up">
+    <form action="/apply_leave" method="POST" class="app-form leave-form slide-up" enctype="multipart/form-data">
       <div class="form-group flex-container">
         <div class="form-item">
           <input type="hidden" name="name" value="<%= user.name %>" />
@@ -267,6 +267,11 @@
             <label for="otherPurpose">Terminal Leave</label>
           </div>
         </div>
+      </div>
+      <div>
+          <label for="formFile" class="form-label mt-4">Additional Attachment:</label>
+          <input class="form-control" type="file" name="leaveFileAdd1" id="formFile">
+          <input class="form-control mt-2" type="file" name="leaveFileAdd2" id="formFile">
       </div>
       <p class="mt-4 text-uppercase text-danger" style="font-weight: bold">
         PLEASE CHECK ALL DETAILS BEFORE SUBMITTING!

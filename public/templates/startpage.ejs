@@ -115,6 +115,7 @@
         <p>You haven't timed-in yet. It is recommended to <strong>TIME-IN FIRST</strong> before doing anything else to avoid unrecorded time.</p>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="logoutClose">LOG OUT</button>
         <button type="button" class="btn btn-primary" id="timeIn">Time-in now</button>
       </div>
     </div>
@@ -180,6 +181,10 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('timeIn').addEventListener('click', function () {
     window.location.href = '/dtr_user/<%= user._id %>';
   });
+
+  document.getElementById('logoutClose').addEventListener('click', function () {
+    window.location.href = '/logout';
+  })
 })
 
 document.addEventListener('DOMContentLoaded', function () {

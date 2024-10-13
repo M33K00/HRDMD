@@ -729,8 +729,10 @@
 
 .rounded-box {
   border-radius: 5px;
-  border: 1px solid #5a5a5a;
+  border: 1px solid #9c9c9c;
+  padding: 20px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
 }
 
 .perm-info {

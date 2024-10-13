@@ -51,7 +51,7 @@
         <a href="view_file/<%= file.id %>" class="icon-square text-dark"
           ><i class="fa-solid fa-eye"></i
         ></a>
-        <% if (file.status === 'APPROVED') { %>
+        <% if (file.status === 'APPROVED' && user.hrrole === 'ADMIN') { %>
           <a href="/archive_file/<%= file.id %>" class="icon-square text-warning archive-button" data-file-id="<%= file.id %>" data-file-code="<%= file.fileCode %>" data-bs-toggle="modal">
             <i class="fa-solid fa-box-archive"></i>
           </a>

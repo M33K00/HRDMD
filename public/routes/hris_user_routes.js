@@ -13,8 +13,6 @@ const DaysAbsent = require("../models/daysabsent");
 const DaysAbsentA = require("../models/daysabsentA");
 const DaysPresentA = require("../models/dayspresentA");
 
-
-
 // Multer Config
 const EmployeeStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -26,10 +24,32 @@ const EmployeeStorage = multer.diskStorage({
   },
 });
 
-const employeeUpload = multer({ storage: EmployeeStorage });
+const employeeUpload = multer({
+  storage: EmployeeStorage,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
+});
+
+const leaveAttachmentStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./files/leaveAttach");
+  },
+  filename: (req, file, cb) => {
+    const fileName = file.originalname;
+    cb(null, fileName); // Use the original filename without any modifications
+  },
+});
+
+const leaveAttachmentUpload = multer({
+  storage: leaveAttachmentStorage,
+}).fields([
+  { name: 'leaveFileAdd1', maxCount: 1 },
+  { name: 'leaveFileAdd2', maxCount: 1 }
+]);
+
 
 // 201 File Models
-const UserDocuments = require("../models/userdocuments");
 const AppPaper = require("../models/201File/appPaper");
 const CertERL = require("../models/201File/certERL");
 const CertATD = require("../models/201File/certATD");
@@ -49,8 +69,6 @@ const Schol = require("../models/201File/schol");
 const SwornS = require("../models/201File/swornS");
 const CertLeaveB = require("../models/201File/certLeaveB");
 const DisAct = require("../models/201File/disAct");
-const logincollections = require("../models/logincollections");
-const attendance = require("../models/attendance");
 
 // 201 File Model Array
 const userDocumentsArray = [
@@ -321,9 +339,11 @@ router.get("/view_leave/:email", async (req, res) => {
   }
 });
 
-router.post("/apply_leave", async (req, res) => {
+router.post("/apply_leave", leaveAttachmentUpload, async (req, res) => {
   try {
-    // Data validation (ensure robust validation for input fields)
+
+    console.log("Files:", req.files);
+    console.log("Body:", req.body);
 
     const data = {
       name: req.body.name,
@@ -331,8 +351,12 @@ router.post("/apply_leave", async (req, res) => {
       Type: req.body.Type.toLowerCase(), // Changed to lowercase for naming convention
       StartDate: new Date(req.body.StartDate), // Convert to Date object
       EndDate: new Date(req.body.EndDate), // Convert to Date object
+      leaveFileAdd1: req.files.leaveFileAdd1 ? req.files.leaveFileAdd1[0].filename : null,
+      leaveFileAdd2: req.files.leaveFileAdd2 ? req.files.leaveFileAdd2[0].filename : null,
       ...req.body,
     };
+
+    console.log("Data:", data);
 
     // Calculate the number of days between StartDate and EndDate
     const timeDiff = Math.abs(data.EndDate - data.StartDate);

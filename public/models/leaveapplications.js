@@ -99,6 +99,18 @@ const LeaveApplicationsSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+
+  // Attachments
+  leaveFileAdd1: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  leaveFileAdd2: {
+    type: String,
+    required: false,
+    default: "",
+  },
 });
 
 const LeaveApplication = mongoose.model(

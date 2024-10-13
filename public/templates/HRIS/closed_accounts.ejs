@@ -4,14 +4,10 @@
   <%- include('../layouts/sidenavP') %>
   <div class="page-body fade-in">
     <div class="page-name">
-      <h1>All Employees (HRIS)</h1>
-      <% if (user.hrrole === "ADMIN" || user.mEmp === true) { %>
-        <a href="/add_employees" class="btn btn-secondary">Add Employee</a>
-      <% } %>
+      <h1 class="text-danger fw-bold text-uppercase">Closed Accounts</h1>
     </div>
     <p class="text-muted mb-4">
-      Manage the employees registered in the system. View their information and
-      201 Files.
+      These are employee accounts that are marked as <strong>CLOSED</strong>.
     </p>
     <div class="col-lg-12">
       <% if (message) { %>
@@ -137,7 +133,7 @@
           <% if (logincollections != '') { %>
             <div class="d-flex justify-content-end" style="align-items: center;">
               <h5 class="me-auto">All Employees:</h5>
-              <a class="btn btn-secondary" href="/closed_accounts"><i class="fa-solid fa-lock me-2"></i>CLOSED ACCOUNTS</a>
+              <a class="btn btn-secondary" href="/view_employees"><i class="fa-solid fa-user me-2"></i></i>ACTIVE ACCOUNTS</a>
             </div>
           <table id="table" class="table table-hover table-striped mt-3">
             <thead>
@@ -189,6 +185,12 @@
                   <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                     ><i class="fa-solid fa-eye"></i
                   ></a>
+                  <a
+                    href="/delete/<%= row._id %>"
+                    class="icon-square text-danger"
+                    onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                    ><i class="fa-solid fa-trash"></i
+                  ></a>
                 </td>
               </tr>
               <% }) %>
@@ -236,6 +238,12 @@
                   <td class="action-buttons">
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
+                    ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
                     ></a>
                   </td>
                 </tr>
@@ -285,6 +293,12 @@
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
                     ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
                   </td>
                 </tr>
                 <% }) %>
@@ -333,6 +347,12 @@
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
                     ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
                   </td>
                 </tr>
               <% }) %>
@@ -379,6 +399,12 @@
                   <td class="action-buttons">
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
+                    ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
                     ></a>
                   </td>
                 </tr>
@@ -428,6 +454,12 @@
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
                     ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
                   </td>
                 </tr>
               <% }) %>
@@ -476,6 +508,12 @@
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
                     ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
                   </td>
                 </tr>
               <% }) %>
@@ -523,6 +561,12 @@
                   <td class="action-buttons">
                     <a href="/view_emp_data/<%= row.email %>" class="icon-square"
                       ><i class="fa-solid fa-eye"></i
+                    ></a>
+                    <a
+                      href="/delete/<%= row._id %>"
+                      class="icon-square text-danger"
+                      onclick="return confirm('Are you sure you want to delete employee <%= row.name %>?')"
+                      ><i class="fa-solid fa-trash"></i
                     ></a>
                   </td>
                 </tr>

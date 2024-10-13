@@ -942,7 +942,9 @@ router.get("/add_employees", (req, res) => {
 
 router.get("/view_employees", async (req, res) => {
   try {
-    const logincollections = await LogInCollection.find();
+    const logincollections = await LogInCollection.find({
+      accountClosed: { $ne: true },
+    });
     const departments = {
       allD: "active",
       HR: "inactive",
@@ -959,6 +961,28 @@ router.get("/view_employees", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+router.get("/closed_accounts", async (req, res) => {
+  try {
+    const logincollections = await LogInCollection.find({
+      accountClosed: true,
+    });
+    const departments = {
+      allD: "active",
+      HR: "inactive",
+      DP1: "inactive",
+      DP2: "inactive",
+      DP3: "inactive",
+      DP4: "inactive",
+      DP5: "inactive",
+      DP6: "inactive",
+    };
+    logincollections.sort((a, b) => a.verified - b.verified);
+    res.render("HRIS/closed_accounts", { logincollections, departments });
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+})
 
 // Department Buttons Routes
 router.get("/view_department/:department", async (req, res) => {
@@ -1105,6 +1129,17 @@ router.get("/view-leave/:id", async (req, res) => {
     console.log("Error viewing leave: ", err);
     res.status(500).send("Internal Server Error");
   }
+});
+
+router.get("/download_leaveAttach/:filename", async (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, "../../files/leaveAttach/", filename);
+
+  res.download(filePath, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
 });
 
 router.post("/manage-leave/:id", async (req, res) => {

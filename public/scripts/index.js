@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const { checkUser } = require("../middleware/authMiddleware.js");
 const LeaveApplications = require("../models/leaveapplications");
 const SubmittedFiles = require("../models/submitted_files");
+const bodyParser = require("body-parser");
 
 const PORT =  3939;
 const templatePath = path.join(__dirname, "../templates");
@@ -27,6 +28,8 @@ app.set("view engine", "ejs");
 app.set("views", templatePath);
 
 // Middleware
+app.use(bodyParser.json({limit: '5mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '5mb', extended: true}))
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
