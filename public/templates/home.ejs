@@ -32,7 +32,7 @@
         ><div class="rolefolder-item active">
           <i class="fa-solid fa-list-check"></i>
           <p>All Tasks</p>
-          <% if (pendingFiles.length > 0) { %>
+          <% if (assignedFiles.length > 0) { %>
             <span class="badge rounded-pill bg-dark"
               ><%= submittedFiles.length %></span
             >
@@ -41,11 +41,11 @@
       >
       <a href="#" data-target="pending"
         ><div class="rolefolder-item">
-          <i class="fa-solid fa-hourglass-start"></i>
-          <p>Pending</p>
-          <% if (pendingFiles.length > 0) { %>
+          <i class="fa-solid fa-file-circle-plus"></i>
+          <p>Assigned</p>
+          <% if (assignedFiles.length > 0) { %>
           <span class="badge rounded-pill bg-danger"
-            ><%= pendingFiles.length %></span
+            ><%= assignedFiles.length %></span
           >
           <% } %>
         </div></a

@@ -43,7 +43,7 @@
           </p>
           <p <% if (file.status === 'REJECTED') { %> class="text-danger" <% } %>
             <% if (file.status === 'APPROVED') { %> class="text-success" <% } %> 
-            <% if (file.status === 'PENDING' || file.status === 'FOR APPROVAL' || file.status === 'REASSIGNED') { %> class="text-warning" <% } %>
+            <% if (file.status === 'ASSIGNED' || file.status === 'FOR APPROVAL' || file.status === 'REASSIGNED') { %> class="text-warning" <% } %>
             style="font-weight: 800"
           ><strong>Status:</strong> <%= file.status %></p>
           <% if (file.dateApproved === null) { %>
@@ -70,18 +70,18 @@
         </p>
         <a
           href="/download/<%= file.id %>"
-          class="btn btn-primary <% if (file.fileUpload === null) { %> disabled <% } %>"
+          class="btn <% if (file.fileUpload === null) { %>btn-dark disabled <% } else { %>btn-primary <% } %>"
           >Download File</a
         >
       </div>
-      <% if (fileDes != "Archive") { %>
+      <% if (fileDes !== "Archive" && file.status !== "ASSIGNED" && file.status !== "REASSIGNED") { %>
         <div class="file-option">
           <div class="file-dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Actions
             </button>
             <div class="dropdown-menu" id="fileDropdownMenu" aria-labelledby="dropdownMenuButton">
-              <% if (user.hrrole !== "ADMIN" && file.status === "PENDING" || file.status === "REASSIGNED") { %>
+              <% if (user.hrrole !== "ADMIN" && file.status === "ASSIGNED" || file.status === "REASSIGNED") { %>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for approval', '<%= file.id %>')"><i class="fa-solid fa-file-circle-check mr-2"></i> For Approval</a>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('add remarks', '<%= file.id %>')"><i class="fa-solid fa-comment mr-2"></i>
                   <% if (file.remarks === "") { %>
@@ -103,7 +103,7 @@
           </div>
         </div>
       <% } %>
-      <% if (file.remarks !== "") { %>
+      <% if (fileDes !== "Archive" && file.remarks !== "") { %>
         <div class="remarks-div mt-3">
           <div class="remarks-header">
             <h3 class="text-uppercase" style="font-weight: 700;">Task Remarks:</h3>

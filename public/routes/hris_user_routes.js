@@ -43,6 +43,9 @@ const leaveAttachmentStorage = multer.diskStorage({
 
 const leaveAttachmentUpload = multer({
   storage: leaveAttachmentStorage,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  }
 }).fields([
   { name: 'leaveFileAdd1', maxCount: 1 },
   { name: 'leaveFileAdd2', maxCount: 1 }

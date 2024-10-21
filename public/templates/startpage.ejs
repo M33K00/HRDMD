@@ -12,7 +12,11 @@
         </div>
         <div class="card-body d-flex justify-content-between align-items-center">
           <h5 class="card-subtitle text-muted">
-            Don't forget to time in!
+            <% if (userAttendance.status === "IN") { %>
+              You are currently timed-in, feel free to do your tasks!
+            <% } else if (userAttendance.status === "OUT") { %>
+              Don't forget to time in!
+            <% } %>
           </h5>
           <div class="timeInButtons">
             <button

@@ -1,5 +1,5 @@
-<h2 class="mt-3">Pending Files:</h2>
-<% if (pendingFiles.length > 0) { %> 
+<h2 class="mt-3">Assigned Tasks:</h2>
+<% if (assignedFiles.length > 0) { %> 
 <!-- Search bar -->
 <input
       class="form-control me-sm-2"
@@ -20,7 +20,7 @@
     </tr>
   </thead>
   <tbody id="fileTableBody">
-    <% pendingFiles.forEach((file, index) => { %>
+    <% assignedFiles.forEach((file, index) => { %>
     <tr>
       <td><%= file.fileCode %></td>
       <td>

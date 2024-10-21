@@ -82,9 +82,9 @@ router.get("/home", checkRole, async (request, response) => {
       }
     }).sort({ dateSubmitted: -1 });
 
-    // Fetch pending files and sort by dateSubmitted in descending order
-    const pendingFiles = await SubmittedFiles.find({
-      status: "PENDING",
+    // Fetch ASSIGNED files and sort by dateSubmitted in descending order
+    const assignedFiles = await SubmittedFiles.find({
+      status: "ASSIGNED",
     }).sort({
       dateSubmitted: -1,
     });
@@ -107,7 +107,7 @@ router.get("/home", checkRole, async (request, response) => {
       otherFiles,
       currentPage,
       totalPages,
-      pendingFiles,
+      assignedFiles,
       approvedFiles,
       forApproval,
       pageType,
@@ -558,7 +558,7 @@ router.post("/submitfile", documentUpload.single("file"), async (req, res) => {
 
     // Create fileData object if file code does not exist
     const fileData = {
-      status: req.body.status,
+      status: "ASSIGNED",
       fileName: req.body.fileName,
       fileCode: req.body.fileCode,
       assignTo: userName,
@@ -670,36 +670,6 @@ router.get("/approve-file/:id", async (req, res) => {
   }
 });
 
-router.get("/reject-file/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-
-    const file = await SubmittedFiles.findById(id);
-
-    if (!file) {
-      req.session.message = {
-        type: "danger",
-        message: "File not found",
-      };
-      return res.redirect("/view_file/" + id);
-    }
-
-    file.status = "REJECTED";
-    await file.save();
-
-    req.session.message = {
-      type: "danger",
-      message: "File Approved Successfully",
-    };
-    res.redirect("/view_file/" + id);
-  } catch (error) {
-    req.session.message = {
-      type: "danger",
-      message: "Error: " + error,
-    };
-    res.redirect("/home");
-  }
-});
 
 router.get("/reassign-file/:id", async (req, res) => {
   try {
@@ -735,7 +705,7 @@ router.get("/reassign-file/:id", async (req, res) => {
   }
 })
 
-router.get("/pending-file/:id", async (req, res) => {
+router.get("/assigned-file/:id", async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -749,7 +719,7 @@ router.get("/pending-file/:id", async (req, res) => {
       return res.redirect("/view_file/" + id);
     }
 
-    file.status = "PENDING";
+    file.status = "ASSIGNED";
     await file.save();
 
     req.session.message = {
