@@ -123,6 +123,41 @@
       </div>
     </div>
   </div>
+  <% if (logincollections.closedReason || logincollections.reopenReason) { %>
+  <div class="accordion mt-4" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingTwo">
+      <button class="accordion-button collapsed acchistory-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        ACCOUNT HISTORY:
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+      <% if (logincollections.reopenReason) { %>
+        <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <p class="timeline-date">Reopened on: <span class="text-primary"><%= logincollections.reopenDate %></span></p>
+            <p class="timeline-reason">Reason for reopening: <span class="text-success"><%= logincollections.reopenReason %></span></p>
+          </div>
+        </div>
+      </div>
+      <% } %>
+      <% if (logincollections.closedReason) { %>
+        <div class="timeline-danger">
+        <div class="timeline-item">
+          <div class="timeline-marker bg-danger"></div>
+          <div class="timeline-content">
+            <p class="timeline-date">Closed on: <span class="text-primary"><%= logincollections.closeDate %></span></p>
+            <p class="timeline-reason">Reason for account closure: <span class="text-danger"><%= logincollections.closedReason %></span></p>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  </div>
+  <% } %>
   <% if (user.hrrole === "ADMIN" && logincollections.empStatus !== "Job Order" && logincollections.email !== user.email && logincollections.department === 'HR Department') { %>
   <div class="border mt-4"></div>
   <div class="form mt-4">
@@ -187,6 +222,10 @@
         </div>
         <div class="modal-body">
           Are you sure you want to close <strong><%= logincollections.name %></strong>'s account? This action cannot be undone.
+          <div id="closedReasonContainer">
+            <label for="closedReason" class="form-label">Reason for closure:</label>
+            <textarea type="text" class="form-control remarks-textbox" id="closedReason"></textarea>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -205,6 +244,10 @@
         </div>
         <div class="modal-body">
           Are you sure you want to reopen <strong><%= logincollections.name %></strong>'s account?
+          <div id="RCReasonContainer">
+            <label for="reopenReason" class="form-label mt-3">Reopen Reason:</label>
+            <textarea type="text" class="form-control remarks-textbox" id="reopenReason"></textarea>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -214,26 +257,6 @@
     </div>
   </div>
   <%- include('../layouts/footer') %>
-  <script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-    const reopenAccountLink = document.getElementById('reopenAccountLink');
-    const confirmReopenAccountButton = document.getElementById('confirmReopenAccount');
-
-    reopenAccountLink.addEventListener('click', function(event) {
-      event.preventDefault();
-      var myModal = new bootstrap.Modal(document.getElementById('reopenAccountModal'), {
-        keyboard: false
-      });
-      myModal.show();
-    });
-
-    confirmReopenAccountButton.addEventListener('click', function() {
-      const userId = '<%= logincollections._id %>';
-      window.location.href = `/reopen-account/${userId}`;
-    });
-  });
-  </script>
-  // Close Confirmation Modal
   <script>
   document.addEventListener('DOMContentLoaded', (event) => {
     const closeAccountLink = document.getElementById('closeAccountLink');
@@ -249,9 +272,86 @@
 
     confirmCloseAccountButton.addEventListener('click', function() {
       const userId = '<%= logincollections._id %>';
-      window.location.href = `/close-account/${userId}`;
+      const closedReason = document.getElementById('closedReason').value;
+
+      // Prepare the data to send
+      const data = {
+        closedReason: closedReason
+      };
+
+      // Send a POST request to the server
+      fetch(`/close-account/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (response.redirected) {
+          window.location.href = response.url;
+        } else {
+          return response.json();
+        }
+      })
+      .then(data => {
+        console.log('Success:', data);
+        // Optionally close the modal if success or handle errors
+        var myModal = bootstrap.Modal.getInstance(document.getElementById('closeAccountModal'));
+        myModal.hide();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+  });
+  // Reopen Account
+    document.addEventListener('DOMContentLoaded', (event) => {
+    const reopenAccountLink = document.getElementById('reopenAccountLink');
+    const confirmReopenAccountButton = document.getElementById('confirmReopenAccount');
+
+    reopenAccountLink.addEventListener('click', function(event) {
+      event.preventDefault();
+      var myModal = new bootstrap.Modal(document.getElementById('reopenAccountModal'), {
+        keyboard: false
+      });
+      myModal.show();
+    });
+
+    confirmReopenAccountButton.addEventListener('click', function() {
+      const userId = '<%= logincollections._id %>';
+      const reopenReason = document.getElementById('reopenReason').value;
+
+      // Prepare the data to send
+      const data = {
+        reopenReason: reopenReason
+      };
+
+      // Send a POST request to the server
+      fetch(`/reopen-account/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (response.redirected) {
+          window.location.href = response.url;
+        } else {
+          return response.json();
+        }
+      })
+      .then(data => {
+        console.log('Success:', data);
+        // Optionally close the modal if success or handle errors
+        var myModal = bootstrap.Modal.getInstance(document.getElementById('reopenAccountModal'));
+        myModal.hide();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
     });
   });
   </script>
-
 </body>

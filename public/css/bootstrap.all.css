@@ -879,15 +879,13 @@ body {
 .file-code p {
   margin-left: auto;
   color: #63a5be;
-  font-size: 30px;
+  font-size: 40px;
   font-weight: 800;
 }
 
 .file-container {
-  border: #686868 solid 2px;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  border-top: #808080 2px solid;
+  border-bottom: #808080 2px solid;
   position: relative;
   z-index: 1;
   display: grid;
@@ -897,6 +895,8 @@ body {
 
 .file-item {
   margin: 10px;
+  margin-top: 25px;
+  margin-bottom: 25px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1086,4 +1086,55 @@ body {
   width: 100%;
   height: 150px;
   resize: none;
+}
+
+.timeline {
+  position: relative;
+  margin: 10px 0;
+  padding: 20px 0;
+  border-left: 2px solid #00a51b; /* Main timeline line */
+}
+
+.timeline-danger {
+  position: relative;
+  margin: 10px 0;
+  padding: 20px 0;
+  border-left: 2px solid red; /* Main timeline line */
+}
+
+.timeline-item {
+  position: relative;
+  margin: 20px 0;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -6px; /* Adjust based on your layout */
+  width: 12px;
+  height: 12px;
+  background-color: #00a51b; /* Marker color */
+  border-radius: 50%; /* Circle shape */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-content {
+  margin-left: 20px; /* Space between marker and content */
+  padding: 10px;
+  background-color: #f8f9fa; /* Content background color */
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-date {
+  font-weight: bold;
+}
+
+.timeline-reason {
+  margin-top: 5px;
+}
+
+.acchistory-btn {
+  font-size: large;
+  font-weight: 700;
+  color: #4d4d4d;
 }

@@ -183,7 +183,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('timeIn').addEventListener('click', function () {
-    window.location.href = '/dtr_user/<%= user._id %>';
+    window.location.href = '/clockin/<%= user.email %>';
   });
 
   document.getElementById('logoutClose').addEventListener('click', function () {
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('timeOutConfirm').addEventListener('click', function () {
-    window.location.href = '/dtr_user/<%= user._id %>';
+    window.location.href = '/clockout/<%= user.email %>';
   });
 });
 

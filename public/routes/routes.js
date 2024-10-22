@@ -715,9 +715,10 @@ router.post("/update-user/:id", upload, async (req, res) => {
 });
 
 // Close a user account
-router.get("/close-account/:id", async (req, res) => {
+router.post("/close-account/:id", async (req, res) => {
   try {
     const id = req.params.id;
+    const closedReason = req.body.closedReason;
     const logincollection = await LogInCollection.findById(id);
 
     if (!logincollection) {
@@ -726,7 +727,12 @@ router.get("/close-account/:id", async (req, res) => {
 
     const result = await LogInCollection.findByIdAndUpdate(
       id,
-      { accountClosed: true },
+      { accountClosed: true,
+        closedReason: closedReason,
+        closeDate: Date.now(),
+        reopenDate: null,
+        reopenReason: "",
+       },
       { new: true } // Return the modified document after update
     );
     if (!result) {
@@ -744,10 +750,11 @@ router.get("/close-account/:id", async (req, res) => {
   }
 });
 
-// Reopem a user account
-router.get("/reopen-account/:id", async (req, res) => {
+// Reopen a user account
+router.post("/reopen-account/:id", async (req, res) => {
   try {
     const id = req.params.id;
+    const reopenReason = req.body.reopenReason;
     const logincollection = await LogInCollection.findById(id);
 
     if (!logincollection) {
@@ -756,7 +763,10 @@ router.get("/reopen-account/:id", async (req, res) => {
 
     const result = await LogInCollection.findByIdAndUpdate(
       id,
-      { accountClosed: false },
+      { accountClosed: false, 
+        reopenReason: reopenReason,
+        reopenDate: Date.now(),
+      },
       { new: true } // Return the modified document after update
     );
     if (!result) {

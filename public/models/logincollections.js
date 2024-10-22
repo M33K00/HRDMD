@@ -96,6 +96,24 @@ const logInSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  // Closed Reopen Fields
+  closedReason: {
+    type: String,
+    default: "",
+  },
+  reopenReason: {
+    type: String,
+    default: "",
+  },
+  closeDate: {
+    type: Date,
+    default: null,
+  },
+  reopenDate: {
+    type: Date,
+    default: null,
+  },
   verified: {
     type: Boolean,
     default: false,
