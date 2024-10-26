@@ -12,13 +12,11 @@
   <div class="page-body fade-in">
     <div class="page-name">
       <h1 class="text-uppercase">Manage Account</h1>
-      <% if (user.department != 'HR Department') { %>
         <a
           href="/view_profile/<%= user.email %>"
           class="btn btn-primary"
           >RETURN TO PROFILE</a
         >
-      <% } %>
     </div>
     <div id="alertContainer" class="bottom-right">
       <% if (message) { %>
@@ -35,10 +33,9 @@
       <% } %>
     </div>
     <p class="text-muted mt-4">Manage your account details here.</p>
-    <div class="border mt-4"></div>
     <div class="rounded-box">
       <div class="mt-4">
-        <h4>Personal Information:</h4>
+        <h4 class="text-uppercase" style="font-weight: bold">Personal Information:</h4>
       </div>
       <form
         action="/update/<%= logincollections.id %>"
@@ -112,24 +109,23 @@
             />
             </div>
             <div class="form-item">
-              <label for="InputName" class="form-label mt-4">Employee ID</label>
+              <label for="InputName" class="form-label mt-4"
+                >Contact Number</label
+              >
               <input
                 type="text"
-                name="employeeID"
+                name="contact"
                 class="form-control"
-                placeholder="Enter Employee ID"
-                value="<%= logincollections.employeeID %>"
+                placeholder="(+639) 123 456 7890"
+                value="<%= logincollections.contact  %>"
+                maxlength="12"
                 required
-                <% if (logincollections.employeeID !== "") { %>
-                  disabled
-                <% } %>
               />
-              <% if (logincollections.employeeID !== "") { %>
-              <small id="emailHelp" class="form-text text-muted"
-                >You cannot change your employee ID</small
-              >
-              <% } %>
             </div>
+          </div>
+          <div class="border mt-5"></div>
+          <div class="mt-4">
+            <h4 class="text-uppercase" style="font-weight: bold">Account Information:</h4>
           </div>
           <div class="form-group flex-container">
             <div class="form-item">
@@ -150,18 +146,23 @@
               >
             </div>
             <div class="form-item">
-              <label for="InputName" class="form-label mt-4"
-                >Contact Number</label
-              >
+              <label for="InputName" class="form-label mt-4">Employee ID</label>
               <input
                 type="text"
-                name="contact"
+                name="employeeID"
                 class="form-control"
-                placeholder="(+639) 123 456 7890"
-                value="<%= logincollections.contact  %>"
-                maxlength="12"
+                placeholder="Enter Employee ID"
+                value="<%= logincollections.employeeID %>"
                 required
+                <% if (logincollections.employeeID !== "") { %>
+                  disabled
+                <% } %>
               />
+              <% if (logincollections.employeeID !== "") { %>
+              <small id="emailHelp" class="form-text text-muted"
+                >You cannot change your employee ID</small
+              >
+              <% } %>
             </div>
           </div>
           <div class="form-group">
@@ -205,12 +206,12 @@
           </div>
           <small id="imageHelp" class="mt-2 text-muted">File size should not exceed 140KB</small>
           <div class="border mt-4"></div>
-        </fieldset>
-        <input
+          <input
           type="submit"
           value="Save Changes"
-          class="btn btn-success btn mt-4"
+          class="btn-success btn mt-4 float-end" 
         />
+        </fieldset>
       </form>
     </div>
   </div>

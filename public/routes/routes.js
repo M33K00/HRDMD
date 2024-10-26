@@ -833,7 +833,8 @@ router.get("/", checkJWT, (req, res) => {
 });
 
 router.get("/startpage", (req, res) => {
-  res.render("startpage");
+  const dateToday = new Date().toLocaleDateString().split("T")[0];
+  res.render("startpage", { dateToday });
 });
 
 router.get("/document_tracker/:hrrole", async (req, res) => {
