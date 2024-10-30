@@ -797,3 +797,15 @@
   right: 10px;
   z-index: 9999; /* Ensures it's above other content */
 }
+
+.changePasswordModal {
+  overflow: hidden;
+  height: 80%;
+  width: 80%;
+}
+
+.modal-header p {
+  margin: 0; /* Remove default margins */
+  font-size: 0.9rem; /* Adjust font size */
+  color: #6c757d; /* Optional: Change the text color */
+}

@@ -165,24 +165,9 @@
               <% } %>
             </div>
           </div>
+          <label for="formFile" class="form-label mt-4">Password</label>
           <div class="form-group">
-            <label for="exampleInputPassword1" class="form-label mt-4"
-              >Password</label
-            >
-            <input
-              type="password"
-              name="password"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="Leave blank to keep old password"
-              autocomplete="off"
-            />
-            <input
-              type="hidden"
-              name="old_password"
-              autocomplete="off"
-              value="<%= logincollections.password  %>"
-            />
+          <button type="button" id="changePasswordBtn" class="btn btn-primary mt-1">Change Password</button>
           </div>
           <div class="form-group">
             <label for="formFile" class="form-label mt-4">Account Image</label>
@@ -214,6 +199,180 @@
         </fieldset>
       </form>
     </div>
+    </div>
   </div>
+  <%# Change Password Modal %>
+  <div
+  class="modal fade"
+  id="changePasswordModal"
+  tabindex="-1"
+  aria-labelledby="changePasswordModalLabel"
+  aria-hidden="true"
+  >
+  <div class="modal-dialog modal-xl fade-in changePasswordModal">
+    <div class="modal-content">
+      <div class="modal-header flex-column">
+        <h5 class="modal-title" id="changePasswordModalLabel" style="font-weight: 600; font-size: 1.5rem">
+          UPDATE PASSWORD
+        </h5>
+        <p class="modal-subtitle" style="margin-bottom: 0;">Enter your current and new password</p>
+      </div>
+      <div class="modal-body">
+        <label for="exampleInputPassword1" class="form-label mt-4"
+        >CURRENT PASSWORD:</label
+      >
+      <input
+      type="password"
+      name="currentPassword"
+      class="form-control"
+      id="currentPassword"
+      placeholder="Enter old password"
+      autocomplete="off"
+    />
+    <div class="invalid-feedback" id="currentPasswordFeedback">
+      Old password is incorrect.
+    </div>
+    <!-- New Password Field -->
+    <label for="newPassword" class="form-label mt-4">NEW PASSWORD:</label>
+    <input
+      type="password"
+      name="new_password"
+      class="form-control"
+      id="newPassword"
+      placeholder="Enter new password"
+      autocomplete="off"
+    />
+    <!-- Retype Password Field -->
+    <label for="retypePassword" class="form-label mt-4">RETYPE PASSWORD:</label>
+    <input
+      type="password"
+      name="retypePassword"
+      class="form-control"
+      id="retypePassword"
+      placeholder="Retype new password"
+      autocomplete="off"
+    />
+    <div class="invalid-feedback" id="retypePasswordFeedback">
+      Passwords do not match.
+    </div>
+    <%# Employee ID %>
+    <input
+      type="hidden"
+      name="employeeID"
+      class="form-control"
+      id="employeeID"
+      value="<%= logincollections.employeeID %>"
+    />
+    <%# Old Pasword %>
+    <input
+      type="hidden"
+      name="oldPassword"
+      class="form-control"
+      id="oldPassword"
+      value="<%= logincollections.password %>"
+    />
+    </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="savePasswordChanges"
+        >
+          Save changes
+        </button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Show change password modal
+    document.getElementById("changePasswordBtn").addEventListener("click", function () {
+      const modal = new bootstrap.Modal(document.getElementById("changePasswordModal"));
+      modal.show();
+    });
+  
+    // Password input elements
+    const newPassword = document.getElementById("newPassword");
+    const retypePassword = document.getElementById("retypePassword");
+    const currentPassword = document.getElementById("currentPassword");
+    const oldHashedPassword = document.getElementById("oldPassword");
+    const employeeID = document.getElementById("employeeID").value; // Get employee ID once
+  
+    // Validate password match
+    function validatePasswordMatch() {
+      const retypePasswordFeedback = document.getElementById("retypePasswordFeedback");
+      if (newPassword.value && retypePassword.value !== newPassword.value) {
+        retypePassword.classList.add("is-invalid");
+        retypePasswordFeedback.style.display = "block"; // Show feedback
+      } else {
+        retypePassword.classList.remove("is-invalid");
+        retypePasswordFeedback.style.display = "none"; // Hide feedback
+      }
+    }
+  
+    // Add input event listeners for real-time validation
+    newPassword.addEventListener("input", validatePasswordMatch);
+    retypePassword.addEventListener("input", validatePasswordMatch);
+  
+    // Handle password change submission
+    document.getElementById("savePasswordChanges").addEventListener("click", async function () {
+      const newPasswordValue = newPassword.value;
+      const retypePasswordValue = retypePassword.value;
+  
+      // Check if new password and retype password match
+      if (newPasswordValue !== retypePasswordValue) {
+        alert("Passwords do not match.");
+        return; // Stop the function from proceeding
+      }
+  
+      const passwordData = {
+        currentPassword: currentPassword.value,
+        oldHashedPassword: oldHashedPassword.value,
+        newPassword: newPasswordValue,
+        employeeID: employeeID
+      };
+  
+      try {
+        const response = await fetch("/change-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(passwordData),
+        });
+  
+        const data = await response.json();
+  
+        if (data.success) {
+          alert("Password changed successfully!");
+          window.location.href = "/editacc/" + employeeID; // Redirect to the edit account page
+        } else {
+          handlePasswordChangeError(data.error);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while changing the password.");
+      }
+    });
+  
+    // Handle errors during password change
+    function handlePasswordChangeError(error) {
+      const currentPasswordFeedback = document.getElementById("currentPasswordFeedback");
+      if (error === "current_password_incorrect") {
+        currentPassword.classList.add("is-invalid");
+        currentPasswordFeedback.style.display = "block"; // Show feedback
+      } else {
+        currentPassword.classList.remove("is-invalid");
+        currentPasswordFeedback.style.display = "none"; // Hide feedback
+        alert("An error occurred while changing the password.");
+      }
+    }
+  </script>  
   <%- include('./layouts/footer') -%>
 </body>

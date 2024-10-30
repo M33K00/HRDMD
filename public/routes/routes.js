@@ -584,14 +584,6 @@ router.post("/update/:id", upload, async (req, res) => {
       new_image = req.body.old_image;
     }
 
-    // Check if the new password is empty
-    let hashedPassword = req.body.old_password;
-    if (req.body.password) {
-      // Generate a salt and hash the new password
-      const salt = await bcrypt.genSalt();
-      hashedPassword = await bcrypt.hash(req.body.password, salt);
-    }
-
     // Update the user
     if (req.body.birthday) {
       const datePartOnly = req.body.birthday.split("T")[0];
@@ -610,10 +602,8 @@ router.post("/update/:id", upload, async (req, res) => {
         middleName: req.body.middleName,
         suffix: req.body.suffix,
         birthday: parsedBirthday,
-        employeeID: req.body.employeeID,
         contact: req.body.contact,
         email: req.body.email,
-        password: hashedPassword, // Use the hashed password here
         department: req.body.department,
         position: req.body.position,
         hrrole: req.body.hrrole,

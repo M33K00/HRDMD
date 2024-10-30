@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
+const bcrypt = require("bcrypt");
 const LogInCollection = require("../models/logincollections");
 const Attendance = require("../models/attendance");
 const SubmittedFiles = require("../models/submitted_files");
 const ArchivedFiles = require("../models/archivedfiles");
 
 // Edit Account
-router.get("/editacc/:name", async (req, res) => {
+router.get("/editacc/:employeeID", async (req, res) => {
   try {
-    const name = req.params.name;
-    // Use findOne with a query object to find the user by name
-    const logincollections = await LogInCollection.findOne({ name: name });
+    const employeeID = req.params.employeeID;
+    // Use findOne with a query object to find the user by employeeID
+    const logincollections = await LogInCollection.findOne({ employeeID: employeeID });
 
     const attendance = await Attendance.findOne({ email: logincollections.email });
 
@@ -39,6 +39,34 @@ router.get("/editacc/:name", async (req, res) => {
     res.redirect("/role1");
   }
 });
+
+// Change Password
+router.post("/change-password", async (req, res) => {
+  const { currentPassword, oldHashedPassword, newPassword, employeeID } = req.body;
+  try {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Validate entered old password against the stored hashed password
+    const isMatch = await bcrypt.compare(currentPassword, oldHashedPassword);
+    if (!isMatch) {
+      return res.json({ success: false, error: "current_password_incorrect" });
+    }
+
+    // Update password in the database
+    await LogInCollection.updateOne(
+      { employeeID: employeeID },
+      { $set: { password: hashedPassword } }
+    );
+
+    console.log("Password updated successfully.");
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    res.json({ success: false, error: "server_error" });
+  }
+});
+
 
 // View a user
 router.get("/view-user/:id", async (req, res) => {

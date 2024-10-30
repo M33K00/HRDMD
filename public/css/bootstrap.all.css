@@ -2,6 +2,15 @@ body {
   user-select: none;
 }
 
+/* CSS to apply blur effect */
+body.modal-open {
+  overflow: hidden; /* Prevent scrolling */
+}
+
+body.modal-open .modal-backdrop {
+  backdrop-filter: blur(5px); /* Blur effect for the backdrop */
+}
+
 * {
   -webkit-user-drag: none;
 }
