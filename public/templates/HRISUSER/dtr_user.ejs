@@ -365,8 +365,10 @@
               dayspresentA.slice(0, 10).forEach((row, index) => { %>
               <tr>
                 <td><%= row.date.toISOString().slice(0, 10) %></td>
-                <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
-                <td><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                <td><%= row.timeIn ? row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A' %></td>
+                <td>
+                  <%= row.timeOut ? row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A' %>
+                </td>
                 <td><%= row.totalTime.toFixed(2) %></td>
                 <td><%= row.overTime.toFixed(2) %></td>
                 <td><%= row.underTime.toFixed(2) %></td>
@@ -399,7 +401,7 @@
               daysabsentA.slice(0, 10).forEach((row, index) => { %>
               <tr class="text-center">
                 <td><%= row.date.toISOString().slice(0, 10) %></td>
-                <td><%= row.day %></td>
+                <td><%= row.date ? row.date.toLocaleDateString('en-US', { weekday: 'long' }) : 'N/A' %></td>
               </tr>
               <% }) %>
               <% } else { %>

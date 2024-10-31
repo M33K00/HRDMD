@@ -1660,20 +1660,18 @@ router.get("/closeDTR/:department", async (req, res) => {
       department: department,
     });
 
-    console.log("Found employees: ", employeeDetails);
-
     const employeeEmails = employeeDetails.map(employee => employee.email);
 
     const employees = await DaysPresent.find({
       email: { $in: employeeEmails }
     });
 
-    console.log("Found Employee Records: ", employees);
-
-    const moveDaysPresent = employees.map((employee) => {
-      const docObject = employee.toObject();
-      docObject.dateArchived = new Date();
-      return docObject;
+    const moveDaysPresent = employees
+      .filter(employee => employee.timeOut !== null)
+      .map((employee) => {
+        const docObject = employee.toObject();
+        docObject.dateArchived = new Date();
+        return docObject;
     });
 
     const moveDaysAbsent = employees.map((employee) => {
@@ -1692,8 +1690,26 @@ router.get("/closeDTR/:department", async (req, res) => {
       await leaveapplication.save();
     }
 
-    await DaysPresentA.insertMany(moveDaysPresent);
-    await DaysAbsentA.insertMany(moveDaysAbsent);
+    await DaysPresentA.bulkWrite(
+      moveDaysPresent.map(doc => ({
+        updateOne: {
+          filter: { _id: doc._id }, // Match based on `_id`
+          update: { $set: doc },
+          upsert: true, // Insert if not found, update if it exists
+        },
+      }))
+    );
+    
+    await DaysAbsentA.bulkWrite(
+      moveDaysAbsent.map(doc => ({
+        updateOne: {
+          filter: { _id: doc._id },
+          update: { $set: doc },
+          upsert: true,
+        },
+      }))
+    );
+    
     await DaysPresent.deleteMany({ email: { $in: employeeDetails.map((employee) => employee.email) } });
     await DaysAbsent.deleteMany({ email: { $in: employeeDetails.map((employee) => employee.email) } });
 
