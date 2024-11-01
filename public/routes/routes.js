@@ -7,7 +7,10 @@ const path = require("path");
 const authController = require("../controllers/authController");
 const bcrypt = require("bcrypt");
 const { checkRoleHR } = require("../middleware/authMiddleware.js");
-const { checkHRSettings, calculateMonthlyVLPoints, calculateMonthlySLPoints } = require("../middleware/HRSettingsMiddleware");
+const { checkHRSettings, 
+        calculateMonthlyVLPoints, 
+        calculateMonthlySLPoints 
+      } = require("../middleware/HRSettingsMiddleware");
 
 // Models
 const LogInCollection = require("../models/logincollections");
@@ -1147,7 +1150,7 @@ router.get("/view_emp_data/:email", checkHRSettings, async (req, res) => {
     const results = await findDocumentsByEmail(logincollections.email);
 
     const VLPoints = await calculateMonthlyVLPoints(logincollections.email, attendance.VLPoints);
-    const SLPoints = await calculateMonthlyVLPoints(logincollections.email, attendance.SLPoints);
+    const SLPoints = await calculateMonthlySLPoints(logincollections.email, attendance.SLPoints);
 
     // Render the edit_users template with the retrieved user data
     res.render("HRIS/view_emp_data", {
