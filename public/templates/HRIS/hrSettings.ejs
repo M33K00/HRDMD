@@ -4,7 +4,7 @@
   <%- include('../layouts/sidenavP') %>
   <div class="page-body fade-in">
     <div class="page-name text-uppercase">
-      <h1>PRINT REPORTS:</h1>
+      <h1>PRINT AND SETTINGS:</h1>
       <% if (user.hrrole === "ROLE 5") { %>
         <a
           class="btn btn-secondary btn-print"
@@ -29,11 +29,12 @@
     </div>
     <div id="hrSettings" class="content-div active">
       <div class="settings-title">
-        <p>Print reports for employees</p>
+        <p class="text-muted">PRINT REPORTS or change PAYROLL computations settings</p>
       </div>
-      <div class="settings-div">
+      <div class="settings-div d-flex flex-column">
+        <h3>Print DTR Report:</h3>
             <div class="row-print d-flex align-items-end">
-              <div class="col-md-4 printSelect">
+              <div class="col-md-3 printSelect">
                 <label>Department</label>
                 <select
                   type="text"
@@ -50,7 +51,7 @@
                   <option value="DP6">CAD Department</option>
                 </select>
               </div>
-              <div class="col-md-2 printSelect">
+              <div class="col-md-3 printSelect">
                 <label>Month</label>
                 <select
                   type="text"
@@ -73,7 +74,7 @@
                   <option value="12">December</option>
                 </select>
               </div>
-              <div class="col-md-2 printSelect">
+              <div class="col-md-3 printSelect">
                 <label>Year</label>
                 <select
                   type="text"
@@ -85,11 +86,29 @@
                   <option value="2024">2024</option>
                 </select>
               </div>
-              <div class="col-md-2 printSelect">
-                <button class="btn btn-primary" id="generateBtn">Generate</button>
+              <div class="col-md-2">
+                <button class="btn btn-primary printSelect btn-settings" id="generateBtn">Generate</button>
               </div>
-            </div>            
-    </div>
+            </div>
+            <h3 class="mt-5">Payroll Computation Settings:</h3>
+            <div class="row-settings d-flex align-items-end mt-2">
+              <div class="col-md-3 printSelect">
+                <label>Settings 1</label>
+                <input type="text" name="settings1" id="settings1" class="form-control" />
+              </div>
+              <div class="col-md-3 printSelect">
+                <label>Settings 2</label>
+                <input type="text" name="settings2" id="settings2" class="form-control" />
+              </div>
+              <div class="col-md-3 printSelect">
+                <label>Settings 3</label>
+                <input type="text" name="settings3" id="settings3" class="form-control" />
+              </div>
+              <div class="col-md-3 printSelect">
+                <button class="btn btn-primary btn-settings" id="saveSettings">Save</button>
+              </div>
+            </div>                      
+    </div>   
   </div>
 </body>
 <%- include('../layouts/footer') %>

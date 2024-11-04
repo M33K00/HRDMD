@@ -682,14 +682,13 @@
 .settings-div {
   display: flex;
   justify-content: center;
-  align-items: center;
   border: #414141 solid 1px;
   border-radius: 5px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
-  padding: 1%;
+  padding: 5%;
   height: 68%;
-  backdrop-filter: blur(5px); /* Blur effect */
+  backdrop-filter: blur(8px); /* Blur effect */
 }
 
 .settings-div label {
@@ -701,11 +700,19 @@
 .row-print {
   display: block;
   width: 100%;
-  justify-content: center;
+  border-top: #313131 solid 1px;
+}
+
+.row-settings {
+  border-top: #313131 solid 1px;
 }
 
 .printSelect {
   margin: 10px;
+}
+
+.btn-settings {
+ width: 150px;
 }
 
 .hr-settings {
