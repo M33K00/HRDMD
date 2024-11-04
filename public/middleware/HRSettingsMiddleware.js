@@ -16,11 +16,6 @@ const vlPointsAdditions = [
 ];
   
 async function calculateMonthlyVLPoints(email, VLPoints) {
-    const vlPointsAdditions = [
-      0.042, 0.063, 0.125, 0.167, 0.208, 0.250, 0.292, 0.333, 0.375, 0.417,
-      0.458, 0.500, 0.542, 0.583, 0.625, 0.667, 0.708, 0.750, 0.792, 0.833,
-      0.875, 0.917, 0.958, 1.000, 1.042, 1.083, 1.125, 1.167, 1.208, 1.250
-    ];
   
     let totalVLPoints = VLPoints;
   

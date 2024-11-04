@@ -170,6 +170,9 @@ router.get("/view_profile/:email", async (req, res) => {
       return res.redirect("/hris");
     }
 
+    let empID = logincollections.empID;
+    let PersonalDataSheet = await PDS.findOne({ employeeID: empID });
+
     const results = await findDocumentsByEmail(email);
     const unsubmitted = countArraysWithNull(results);
     const VLPointsM = await calculateMonthlyVLPoints(logincollections.email, attendance.VLPoints);
@@ -183,6 +186,7 @@ router.get("/view_profile/:email", async (req, res) => {
       SLPoints: SLPointsM,
       results: results,
       unsubmitted: unsubmitted,
+      PDS: PersonalDataSheet,
     });
   } catch (err) {
     // Log and handle errors gracefully
@@ -445,7 +449,7 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
     }
 
     const VLPoints = await calculateMonthlyVLPoints(logincollections.email, attendance.VLPoints);
-    const SLPoints = await calculateMonthlyVLPoints(logincollections.email, attendance.SLPoints);
+    const SLPoints = await calculateMonthlySLPoints(logincollections.email, attendance.SLPoints);
 
 
     res.render("HRISUSER/dtr_user", {
@@ -734,12 +738,15 @@ router.get("/view-201/:type/:email" , async (req, res) => {
     const type = req.params.type;
     const email = req.params.email;
 
+    const account = await LogInCollection.findOne({ email: email });
+    const EmpID = account.empID;
+
     switch (type) {
       case "appPaper":
         res.redirect("/appPaper/" + email);
         break;
       case "pds":
-        res.redirect("/pds/" + email);
+        res.redirect("/pds/" + EmpID);
         break;
       case "certERL":
         res.redirect("/certERL/" + email);
@@ -818,13 +825,13 @@ router.get("/appPaper/:email" , async (req, res) => {
   }
 })
 
-router.get("/pds/:email", async (req, res) => {
+router.get("/pds/:EmpID", async (req, res) => {
   try {
-    const email = req.params.email;
-    const fileType = await PDS.find({email: email});
+    const EmpID = req.params.EmpID;
+    const fileType = await PDS.find({empID: EmpID});
     const pageName = "Personal Data Sheet";
     const docuType = "pds";
-    res.render("HRIS/201Single", {email, fileType, pageName, docuType});
+    res.render("HRIS/201Single", {EmpID, fileType, pageName, docuType});
   } catch (err) {
     console.error(err);
     req.session.message = {
@@ -1131,6 +1138,9 @@ router.post("/file-submit", employeeUpload.single("files"), async (req, res) => 
     const docuType = req.body.docuType;
     const file = req.file;
 
+    const account = await LogInCollection.findOne({ email: email });
+    const empID = account.employeeID;
+
     if (docuType === "appPaper") {
       const appPaper = await AppPaper.findOne({
         email: email,
@@ -1160,7 +1170,7 @@ router.post("/file-submit", employeeUpload.single("files"), async (req, res) => 
       res.redirect("/appPaper/" + email);
     } else if (docuType === "pds") {
       const pds = await PDS.findOne({
-        email: email,
+        empID: empID,
         files: file.originalname
       });
       if (pds) {

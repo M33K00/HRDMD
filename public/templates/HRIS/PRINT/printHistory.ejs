@@ -15,7 +15,7 @@
         <table id="table" class="table table-bordered">
             <tr>
               <td style="width: 50%"><strong>Name:</strong> <%= user.name %></td>
-              <td><strong>Email:</strong> <%= user.email %></td>
+              <td><strong>Employee ID:</strong> <%= user.employeeID %></td>
             </tr>
             <tr>
               <td><strong>Position:</strong> <% if (user.hrrole === "ROLE 1") { %> Administrative Officer <% }
@@ -68,24 +68,14 @@
             <thead>
             <tr class="table-dark text-center text-uppercase">
                 <th>Date</th>
-                <th>Time Late</th>
-                <th>Time In</th>
-                <th>Time Out</th>
-                <th>Under Time</th>
-                <th>Over Time</th>
-                <th>Total Time</th>
+                <th>Day</th>
             </tr>
             </thead>
             <tbody class="text-center">
             <% daysAbsentA.forEach((row) => { -%>
                 <tr>
                 <td><%- row.date.toISOString().slice(0, 10) %></td>
-                <td><%- row.timeLate %></td>
-                <td><%= new Date(row.timeIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
-                <td><%- new Date(row.timeOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
-                <td><%- row.underTime.toFixed(2) %></td>
-                <td><%- row.overTime.toFixed(2) %></td> 
-                <td><%- row.totalTime.toFixed(2) %></td>
+                <td><%- row.date.toLocaleDateString('en-US', { weekday: 'long' }) %></td>
                 </tr>
             <% }) -%>
             </tbody>

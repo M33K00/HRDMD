@@ -91,11 +91,80 @@
             </div>
         </div>
     </div>
-    <h4 class="mt-4">201 Files:</h4>
-    <p class="text-muted mb-4">These are the files that have been submitted by you.</p>
+    <div class="border mt-5"></div>
+    <h4 class="mt-4">Personal Data Sheet:</h4>
+    <p class="text-muted mb-4">This is the Personal Data Sheet submitted by you.</p>
     <div class="profile-stats">
     </div>
-    <div class="div-table"><%- include('../layouts/tables/201Table') %></div>
+    <div class="div-table">
+    </div>
+        <div class="file-code">
+          <button id="submitButton" class="btn btn-secondary">Submit Personal Data Sheet</button>
+      </div>
+      <div id="submitPaper" class="submission hidden mb-4">
+        <form action="/file-submit" method="POST" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Upload Personal Data Sheet</legend>
+                <p class="text-muted">Please make sure to only submit <strong>PDF</strong> file</p>
+                <div class="form-group flex-container">
+                    <div class="form-item">
+                      <input type="hidden" name="name" value="<%= user.name %>" />
+                      <input type="hidden" name="email" value="<%= user.email %>" />
+                      <input type="hidden" name="docuType" value="PDS" />
+                      <input
+                        type="text"
+                        name="fileYear"
+                        class="form-control"
+                        id="orig"
+                        placeholder="Enter Year or Description"
+                      />
+                    </div>
+                    <div class="form-item">
+                      <input
+                        type="file"
+                        name="files"
+                        class="form-control"
+                      />
+                    </div>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary btn-submit w-100 mt-3" style="text-align: center; display: inline-block;">Submit</button>
+        </form>
+      </div>
+      <% if (PDS) { %>
+        <% PDS.forEach((row, index) => { %>
+            <div class="file-container-hris mt-4">
+                <div class="file-item text-uppercase">
+                    <h3>File Details:</h3>
+                    <p><strong>File Year:</strong> <%= row.fileYear %></p>
+                    <p><strong>Date Submitted:</strong> <%= row.dateSubmitted.toISOString().split('T')[0] %></p>
+                  </div>
+                <div class="file-item text-uppercase">
+                    <h3>File Attached:</h3>
+                    <p><strong>File Name:</strong> <%= row.files.split('\\').pop() %></p>
+                </div>
+                <div class="dropdown-button">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      Actions
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <li>
+                        <a class="dropdown-item" href="/download-201/<%= row.files %>">Download</a>
+                      </li>
+                      <li>
+                        <form action="/delete-201/<%= docuType %>/<%= row.files %>/<%= user.email %>" method="POST" style="display: inline;">
+                            <button class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-type="<%= docuType %>" data-file="<%= row.files %>" data-email="<%= row.email %>">Delete</button>
+                        </form>
+                      </li>
+                    </ul>
+                  </div>
+            </div>
+        <% }) %>
+      <% } else { %>
+        <p class="text-muted text-center">No Personal Data Sheet file submitted.</p>
+      <% } %>
+      </div>
+    </div>
   </div>
   <%- include('../layouts/footer') %>
 </body>

@@ -5,7 +5,7 @@ const PersonalDataSheetsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  email: {
+  empID: {
     type: String,
     required: true,
   },
