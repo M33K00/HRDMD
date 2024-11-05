@@ -91,8 +91,14 @@ router.get("/view-user/:id", async (req, res) => {
     let allFiles = [...submittedfiles, ...archivedfiles];
 
     // Filter the combined array for PENDING and APPROVED files
-    let pendingFiles = allFiles.filter((file) => file.status === "PENDING");
+    let pendingFiles = allFiles.filter((file) => file.status === "ASSIGNED");
     let approvedFiles = allFiles.filter((file) => file.status === "APPROVED");
+
+    // Calculate Ratio
+    let pendingCount = pendingFiles.length;
+    let approvedCount = approvedFiles.length;
+
+    let ratio = pendingCount > 0 ? (approvedCount / pendingCount).toFixed(2) : 0;
 
     // Render the view_account template with the retrieved data
     res.render("role/view_user", {
@@ -100,6 +106,7 @@ router.get("/view-user/:id", async (req, res) => {
       logincollections: logincollections,
       pendingFiles: pendingFiles,
       approvedFiles: approvedFiles,
+      ratio: ratio
     });
   } catch (err) {
     // Log and handle errors gracefully

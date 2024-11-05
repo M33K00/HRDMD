@@ -101,6 +101,14 @@ router.get("/role1", passUserToRoute, async (request, response) => {
         }
       }).sort({ dateSubmitted: -1 });
 
+      const assignedFiles = await SubmittedFiles.find({
+        status: "ASSIGNED",
+        assignTo: userName,
+      }).sort({
+        dateSubmitted: -1,
+      });
+  
+
     // Fetch pending files and sort by dateSubmitted in descending order
     const pendingFiles = await SubmittedFiles.find({
       status: "PENDING",
@@ -129,6 +137,7 @@ router.get("/role1", passUserToRoute, async (request, response) => {
       totalPages,
       pendingFiles,
       approvedFiles,
+      assignedFiles,
       forApproval,
     });
   } catch (error) {

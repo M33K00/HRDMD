@@ -584,18 +584,132 @@ body.modal-open .modal-backdrop {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 300px 1fr; /* Grid with 2 columns */
+  grid-template-columns: 340px 420px auto; /* Set auto for the second column to allow flexibility */
   gap: 5px; /* Gap between grid items */
   backdrop-filter: blur(5px); /* Blur effect */
 }
+
+.account-stats {
+  border: #7c7c7c solid 2px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: #00000065 0px 2px 5px;
+  margin: 15px; /* Margin for spacing */
+  padding: 15px; /* Padding inside the box */
+  font-size: 17px; /* Font size */
+  width: 450px; /* Fixed width */
+  height: 90%;
+  max-width: 100%; /* Responsive up to full width of the parent */
+  min-width: 250px; /* Minimum width */
+  grid-column: 4; /* Place in the third column */
+  align-self: start; /* Align to the start of the grid cell */
+}
+
+.graph-container {
+  display: grid;
+  position: relative;
+  justify-content: center;
+  grid-template-columns: 50% 50%;
+}
+
+.chart-container {
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  top: 50%;
+  left: 65%;
+  transform: translate(-50%, -30%);
+}
+
+.doughnut-chart {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    #338036 0% 70%,  /* Finished Tasks (Green) */
+    #6d0a0a 70% 100%  /* Pending Tasks (Orange) */
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-weight: bold;
+  border: #3333339d solid 1px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chart-center {
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.chart-legend {
+  display: flex;              /* Use flexbox for horizontal layout */
+  flex-direction: column;     /* Stack legend items vertically */
+  align-items: flex-start;    /* Align items to the start (left) */
+  position: absolute;         /* Position it absolutely */
+  left: -50px;              /* Adjust this value to place it left of the chart */
+  top: 50%;                  /* Center it vertically in relation to the chart */
+  font-family: Arial, sans-serif; /* Font style */
+}
+
+.legend-item {
+  display: flex;              /* Use flexbox for horizontal layout */
+  align-items: center;        /* Center items vertically */
+  margin-bottom: 10px;       /* Space between legend items */
+}
+
+.legend-circle {
+  width: 15px;               /* Width of the legend circle */
+  height: 15px;              /* Height of the legend circle */
+  border-radius: 50%;        /* Make it circular */
+  margin-right: 5px;         /* Space between circle and label */
+}
+
+.legend-circle:first-child {
+  background-color: green;   /* Color for finished tasks (F) */
+}
+
+.legend-circle:last-child {
+  background-color: red;     /* Color for pending tasks (P) */
+}
+
+.legend-label {
+  font-size: 14px;           /* Font size for the labels */
+  color: #333;               /* Text color */
+}
+
+    .info-btn {
+      position: absolute;
+      display: flex; /* Enables flexbox to center the icon */
+      align-items: center; /* Centers icon vertically */
+      justify-content: center; /* Centers icon horizontally */
+      bottom: -180px;
+      right: 5px;
+      width: 30px;
+      height: 30px;
+      border: #333333 solid 1px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      color: #333333;
+    }
+    
+
 
 .account-image {
   padding: 10px;
   display: flex; /* Use flexbox */
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
-  width: 300px; /* Set width to 100% of the column */
-  height: 300px;
+  width: 330px; /* Set width to 100% of the column */
+  height: 330px;
 }
 
 .account-image img {

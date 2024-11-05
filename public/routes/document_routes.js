@@ -786,6 +786,7 @@ router.get("/for-approval-file/:id", async (req, res) => {
 
     file.status = "FOR APPROVAL";
     file.remarks = remarks;
+    file.remarksDate = new Date();
     await file.save();
 
     req.session.message = {

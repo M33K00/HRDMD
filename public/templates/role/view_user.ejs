@@ -32,6 +32,49 @@
           (logincollections.hrrole === "ROLE 5") { %> Admin Aide <% } else if (logincollections.hrrole
           === "ADMIN") { %> Department Head <% } %></p>
       </div>
+      <div class="account-stats">
+        <p>Account Level: <strong>100</strong></p>
+        <p>F/A Ratio: <strong><%= ratio %></strong><p>
+        <div class="graph-container">
+          <div class="chart-container">
+            <div class="doughnut-chart" style="background: conic-gradient(
+                #338036 0% <%= Math.min(100, (ratio * 100)) %>%,  /* Finished Tasks (Green) */
+                #6d0a0a <%= Math.min(100, (ratio * 100)) %>% 100%  /* Pending Tasks (Red) */
+              );">
+              <div class="chart-center">
+                <div class="chart-label">
+                  <span><%= ratio %></span><br>
+                  F/A Ratio
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-circle"></div>
+              <div class="legend-label">Finished</div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-circle" style="background-color: rgb(112, 28, 28)"></div>
+              <div class="legend-label">Assigned</div>
+            </div>
+          </div>
+          <button 
+              class="btn info-btn"
+              data-bs-container="body"
+              data-bs-toggle="popover"
+              data-bs-placement="bottom"
+              data-bs-content="
+              This number shows the balance between tasks finished and tasks still assigned/pending. 
+              A higher ratio indicates more tasks completed relative to pending tasks, with 1.0 meaning an equal number of finished and pending tasks. 
+              For example, a ratio of 2.5 means there are 2.5 times more tasks completed than pending.
+              "
+              data-bs-original-title="Task Completion Ratio"
+              aria-describedby="popover445990"
+            ><i class="fa-solid fa-info"></i>
+        </button>
+        </div>
+      </div>
     </div>
     <div class="account-container mt-4 slide-up">
     <div class="account-item">
@@ -44,13 +87,21 @@
     </div>
     <div class="account-item" style="background-color: rgb(112, 28, 28)">
       <div class="account-content">
-        <p>Tasks Pending:</p>
+        <p>Tasks Assigned:</p>
       </div>
       <div class="account-count">
-        <p><%= pendingFiles.filter((row) => row.status === 'PENDING').length %></p>
+        <p><%= pendingFiles.filter((row) => row.status === 'ASSIGNED').length %></p>
       </div>
     </div>
   </div>
-    <%- include('../layouts/footer') -%>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+      var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+      });
+    });
+  </script>
+  <%- include('../layouts/footer') -%>
   </div>
 </body>
