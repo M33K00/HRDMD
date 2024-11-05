@@ -74,10 +74,12 @@
           >Download File</a
         >
       </div>
-      <% if (fileDes !== "Archive" && file.status !== "REASSIGNED") { %>
+      <% if (fileDes !== "Archive") { %>
         <div class="file-option">
           <div class="file-dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn <% if (user.hrrole !== "ADMIN" && file.status !== "ASSIGNED") { %>btn-dark disabled <% } else { %>btn-primary <% } %>
+              dropdown-toggle" 
+              type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Actions
             </button>
             <div class="dropdown-menu" id="fileDropdownMenu" aria-labelledby="dropdownMenuButton">
@@ -101,27 +103,73 @@
             </div>
           </div>
           </div>
-        </div>
       <% } %>
+    </div>
       <% if (fileDes !== "Archive" && file.remarks !== "") { %>
-        <div class="remarks-div mt-3">
-          <div class="remarks-header">
-            <h3 class="text-uppercase" style="font-weight: 700;">Task Remarks:</h3>
-            <% if (file.remarksDate !== null) { %>
-              <p class="remarks-update text-muted">
-                Updated on: <%= file.remarksDate.toISOString().split('T')[0] %> at <%= file.remarksDate.toTimeString().split(' ')[0].slice(0, 5) %>
-              </p>              
-            <% } %>
-          </div>
-          <textarea 
-            class="form-control"
-            id="fileComment"
-            placeholder="<%= file.remarks %>"
-            rows="4"
-            disabled
-          ></textarea>
+        <div class="timelineNameContainer">
+          <h4>Task History:</h4>
+          <p class="text-muted">This table shows the history of the task.</p>
         </div>
-      <% } %>
+        <div class="accordion mt-3" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTimeline">
+              <button class="accordion-button collapsed acchistory-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTimeline" aria-expanded="false" aria-controls="collapseTimeline">
+                TASK TIMELINE:
+              </button>
+            </h2>
+            <div id="collapseTimeline" class="accordion-collapse collapse" aria-labelledby="headingTimeline" data-bs-parent="#accordionExample">
+                <% remarks
+                  .sort((b, a) => new Date(a.date) - new Date(b.date))
+                  .forEach((remark, index) => { %>
+                  <% if (remark.fileStatus === "ASSIGNED") { %>
+                    <div class="timeline-warning">
+                    <div class="timeline-item">
+                      <div class="timeline-marker-warning"></div>
+                      <div class="timeline-content">
+                        <p class="timeline-date">
+                          Updated on: <span class="text-primary"><%= remark.date %></span>
+                        </p>
+                        <p class="timeline-reason">
+                          Remarks: <span class="text-warning"><%= remark.remarks %></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <% } %>
+                  <% if (remark.fileStatus === "FOR APPROVAL") { %>
+                    <div class="timeline-danger">
+                      <div class="timeline-marker-approval"></div>
+                      <div class="timeline-content">
+                        <p class="timeline-date">
+                          Updated on: <span class="text-primary"><%= remark.date %></span>
+                        </p>
+                        <p class="timeline-reason">
+                          Remarks: <span class="text-danger"><%= remark.remarks %></span>
+                        </p>
+                      </div>
+                    </div>
+                  <% } %>
+                  <% if (remark.fileStatus === "APPROVED") { %>
+                    <div class="timeline">
+                      <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                          <p class="timeline-date">
+                            Updated on: <span class="text-primary"><%= remark.date %></span>
+                          </p>
+                          <p class="timeline-reason">
+                            Remarks: <span class="text-success"><%= remark.remarks %></span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  <% } %>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>      
     </div>
   </div>
   <%- include('../layouts/modals/confirm') %>

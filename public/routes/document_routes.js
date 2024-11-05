@@ -12,6 +12,7 @@ const UserDocuments = require("../models/userdocuments");
 const rejectedDocuments = require("../models/rejecteddocuments");
 const SubmittedFiles = require("../models/submitted_files");
 const ArchivedFiles = require("../models/archivedfiles");
+const TaskTimeline = require("../models/taskTimeline");
 
 // Multer configuration
 const documentStorage = multer.diskStorage({
@@ -600,9 +601,11 @@ router.get("/view_file/:id", async (req, res) => {
       return res.redirect("/home");
     }
 
+    const remarks = await TaskTimeline.find({ fileCode: file.fileCode });
+
     const fileDes = "Main"
 
-    res.render("DTRACKER/view_file", { file, fileDes });
+    res.render("DTRACKER/view_file", { file, remarks, fileDes });
   } catch (error) {
     req.session.message = {
       type: "danger",
@@ -655,6 +658,13 @@ router.get("/approve-file/:id", async (req, res) => {
     file.status = "APPROVED";
     file.dateApproved = new Date();
     await file.save();
+
+    await TaskTimeline.create({
+      fileCode: file.fileCode,
+      fileStatus: file.status,
+      remarks: "Task Approved",
+      date: new Date(),
+    });
 
     req.session.message = {
       type: "success",
@@ -739,7 +749,7 @@ router.get("/assigned-file/:id", async (req, res) => {
 router.get("/update-task/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const remarks = req.query.remarks;
+    const remarks = req.query.remarks || "No remarks provided"; // Default message if remarks is missing
 
     const file = await SubmittedFiles.findById(id);
 
@@ -751,9 +761,12 @@ router.get("/update-task/:id", async (req, res) => {
       return res.redirect("/view_file/" + id);
     }
 
-    file.remarks = remarks;
-    file.remarksDate = new Date();
-    await file.save();
+    await TaskTimeline.create({
+      fileCode: file.fileCode,
+      fileStatus: file.status,
+      remarks: remarks,
+      date: new Date(),
+    });
 
     req.session.message = {
       type: "success",
@@ -761,13 +774,15 @@ router.get("/update-task/:id", async (req, res) => {
     };
     res.redirect("/view_file/" + id);
   } catch (error) {
+    console.error("Error updating task:", error); // Log the error for debugging
     req.session.message = {
       type: "danger",
-      message: "Error: " + error,
+      message: "Error: " + error.message,
     };
     res.redirect("/home");
   }
-})
+});
+
 
 router.get("/for-approval-file/:id", async (req, res) => {
   try {
@@ -785,9 +800,14 @@ router.get("/for-approval-file/:id", async (req, res) => {
     }
 
     file.status = "FOR APPROVAL";
-    file.remarks = remarks;
-    file.remarksDate = new Date();
     await file.save();
+
+    await TaskTimeline.create({
+      fileCode: file.fileCode,
+      fileStatus: file.status,
+      remarks: remarks,
+      date: new Date(),
+    });
 
     req.session.message = {
       type: "success",

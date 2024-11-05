@@ -32,11 +32,6 @@
         <a href="view_file/<%= file.id %>" class="icon-square text-dark"
           ><i class="fa-solid fa-eye"></i
         ></a>
-        <% if (user.hrrole === 'ADMIN') { %>
-          <a href="/archive_file/<%= file.id %>" class="icon-square text-warning" data-bs-toggle="modal" data-bs-target="#archiveModal2"
-            ><i class="fa-solid fa-box-archive"></i>
-          </a>
-        <% } %>
       </td>
     </tr>
     <!-- Modal for the "Archive" action -->

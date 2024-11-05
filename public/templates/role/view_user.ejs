@@ -37,14 +37,13 @@
         <p>F/A Ratio: <strong><%= ratio %></strong><p>
         <div class="graph-container">
           <div class="chart-container">
-            <div class="doughnut-chart" style="background: conic-gradient(
-                #338036 0% <%= Math.min(100, (ratio * 100)) %>%,  /* Finished Tasks (Green) */
-                #6d0a0a <%= Math.min(100, (ratio * 100)) %>% 100%  /* Pending Tasks (Red) */
-              );">
+            <div class="doughnut-chart" style="background: <%= ratio === 0 ? '#6d0a0a' : `conic-gradient(
+                #338036 0% ${Math.min(100, (ratio / 3 * 100))}%,
+                #6d0a0a ${Math.min(100, (ratio / 3 * 100))}% 100%
+              )` %>;">
               <div class="chart-center">
                 <div class="chart-label">
-                  <span><%= ratio %></span><br>
-                  F/A Ratio
+                  <span><%= approvedFiles.length %>/<%= pendingFiles.length %></span><br>
                 </div>
               </div>
             </div>

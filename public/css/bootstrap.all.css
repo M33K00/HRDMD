@@ -1070,8 +1070,15 @@ body.modal-open .modal-backdrop {
 }
 
 .dropdown-menu {
-  margin-right: 40px;
+  z-index: 1050; /* Higher than default for Bootstrap modals and tooltips */
+  margin-right: 60px;
 }
+
+.accordion .accordion-item .accordion-button {
+  z-index: 1; /* A neutral low value to stay in the flow, but still clickable */
+  position: relative; /* Ensure it's positioned within its stacking context */
+}
+
 
 .img-icon {
   width: 15px;
@@ -1162,7 +1169,6 @@ body.modal-open .modal-backdrop {
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
   padding: 5px;
   padding-left: 10px;
-  z-index: 1;
   backdrop-filter: blur(5px); /* Blur effect */
 }
 
@@ -1225,6 +1231,13 @@ body.modal-open .modal-backdrop {
   border-left: 2px solid red; /* Main timeline line */
 }
 
+.timeline-warning {
+  position: relative;
+  margin: 10px 0;
+  padding: 20px 0;
+  border-left: 2px solid orange; /* Main timeline line */
+}
+
 .timeline-item {
   position: relative;
   margin: 20px 0;
@@ -1239,6 +1252,27 @@ body.modal-open .modal-backdrop {
   border-radius: 50%; /* Circle shape */
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
+
+.timeline-marker-warning {
+  position: absolute;
+  left: -6px; /* Adjust based on your layout */
+  width: 12px;
+  height: 12px;
+  background-color: orange; /* Marker color */
+  border-radius: 50%; /* Circle shape */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-marker-approval {
+  position: absolute;
+  left: -6px; /* Adjust based on your layout */
+  width: 12px;
+  height: 12px;
+  background-color: red; /* Marker color */
+  border-radius: 50%; /* Circle shape */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
 
 .timeline-content {
   margin-left: 20px; /* Space between marker and content */
@@ -1264,4 +1298,10 @@ body.modal-open .modal-backdrop {
 
 .modal-border-danger {
   border-color: red;
+}
+
+.timelineNameContainer {
+  margin-top: 20px;
+  border-top:rgba(0, 0, 0, 0.1) 1px solid;
+  padding-top: 20px;
 }
