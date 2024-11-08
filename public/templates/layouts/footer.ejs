@@ -582,6 +582,10 @@ function showConfirmationModal(action, fileId) {
 
   // Customize confirm button based on the action
   switch (action) {
+    case "change the assignment for this task":
+      confirmActionBtn.textContent = "Change Assignment";
+      confirmActionBtn.className = "btn btn-primary";
+      break;
     case "move this task to archive":
       confirmActionBtn.textContent = "Move to Archive";
       confirmActionBtn.className = "btn btn-warning";
@@ -659,6 +663,31 @@ function performAction(action, fileId, remarks) {
   }
 }
 
+// Change Assignee Modal
+function showChangeAssigneeModal(fileId) {
+  const confirmActionBtn = document.getElementById("confirmChange");
+
+  // Show the modal
+  const changeAssigneeModal = new bootstrap.Modal(document.getElementById("changeAssigneeModal"));
+  changeAssigneeModal.show();
+
+  // Set up the confirm button action
+  confirmActionBtn.onclick = function () {
+    const newAssignee = document.getElementById("assignTo").value;
+    console.log(newAssignee);
+    if (newAssignee) {  // Ensure an assignee is selected
+      window.location.href = `/change-assignee/${fileId}?newAssignee=${encodeURIComponent(newAssignee)}`;
+      changeAssigneeModal.hide();
+    } else {
+      alert("Please select an assignee.");
+    }
+  };
+
+  // Set up the cancel button action
+  document.getElementById("cancelAction").onclick = function () {
+    changeAssigneeModal.hide();
+  };
+}
 </script>
 <script>
   // script.js

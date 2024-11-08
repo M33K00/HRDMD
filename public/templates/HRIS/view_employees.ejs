@@ -161,7 +161,7 @@
                   else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
                   (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
                   (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
-                  === "ADMIN") { %> Department Head <% } %>
+                  === "ADMIN") { %> Department Head I <% } else if (logincollections.hrrole === "ADMIN2") { %> Department Head II <% } %>
                 </td>
                 <td>
                   <% if (row.department === 'HR Department') { %>
@@ -226,7 +226,7 @@
                     else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
                     (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
                     (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
-                    === "ADMIN") { %> Department Head <% } %>
+                    === "ADMIN") { %> Department Head I <% } else if (logincollections.hrrole === "ADMIN2") { %> Department Head II <% } %>
                   </td>
                   <% if (!row.verified) { %>
                   <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
@@ -274,7 +274,7 @@
                     else if (row.hrrole === "ROLE 3") { %> Admin Officer <% } else if
                     (row.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
                     (row.hrrole === "ROLE 5") { %> Admin Aide <% } else if (row.hrrole
-                    === "ADMIN") { %> Department Head <% } %>
+                    === "ADMIN") { %> Department Head I <% } else if (logincollections.hrrole === "ADMIN2") { %> Department Head II <% } %>
                   </td>
                   <% if (!row.verified) { %>
                   <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>

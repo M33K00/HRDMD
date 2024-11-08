@@ -220,6 +220,7 @@
 }
 .page-name h1 {
   margin-right: 20px;
+  font-weight: 700;
 }
 .page-name button {
   margin-left: auto;
@@ -808,4 +809,11 @@
   margin: 0; /* Remove default margins */
   font-size: 0.9rem; /* Adjust font size */
   color: #6c757d; /* Optional: Change the text color */
+}
+
+.urgent {
+  box-shadow: 
+  0 0 8px rgba(0, 183, 255, 0.6), 
+  0 0 20px rgba(0, 183, 255, 0.4), 
+  0 0 25px rgba(0, 183, 255, 0.3);
 }

@@ -56,7 +56,7 @@
               />
             </div>
           </div>
-          <div id="non-con" class="form-group">
+          <div id="non-con" class="form-group flex-container">
             <div class="form-item">
               <label for="assignTo" class="form-label mt-4">Assign To:</label>
               <select
@@ -80,10 +80,22 @@
               
               </select>
               <small id="assignHelp" class="form-text text-muted"
-                >Assign the file to someone (Optional)</small
+                >Assign the file to an employee</small
               >
             </div>
+            <div class="form-item">
+              <label for="urgentTask" class="form-label text-danger mt-4">Mark task as <strong>urgent</strong>:</label>
+                <select
+                  name="urgentTask"
+                  class="form-control"
+                  id="urgentTask"
+                >
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+            </div>
           </div>
+          </div> 
           <div class="form-group">
             <div class="form-item">
               <label for="fileInstruction" class="form-label mt-4"

@@ -4,7 +4,7 @@
   <%- include('../layouts/sidenavP') %>
   <div class="page-body fade-in">
     <div class="page-name text-uppercase">
-      <h1>PRINT AND SETTINGS:</h1>
+      <h1>PRINT REPORTS:</h1>
       <% if (user.hrrole === "ROLE 5") { %>
         <a
           class="btn btn-secondary btn-print"
@@ -29,7 +29,7 @@
     </div>
     <div id="hrSettings" class="content-div active">
       <div class="settings-title">
-        <p class="text-muted">PRINT REPORTS or change PAYROLL computations settings</p>
+        <p class="text-muted">PRINT REPORTS</p>
       </div>
       <div class="settings-div d-flex flex-column">
         <h3>Print DTR Report:</h3>
@@ -90,6 +90,7 @@
                 <button class="btn btn-primary printSelect btn-settings" id="generateBtn">Generate</button>
               </div>
             </div>
+            <%#  
             <h3 class="mt-5">Payroll Computation Settings:</h3>
             <div class="row-settings d-flex align-items-end mt-2">
               <div class="col-md-3 printSelect">
@@ -107,7 +108,8 @@
               <div class="col-md-3 printSelect">
                 <button class="btn btn-primary btn-settings" id="saveSettings">Save</button>
               </div>
-            </div>                      
+            </div>      
+            %>                
     </div>   
   </div>
 </body>

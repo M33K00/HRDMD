@@ -69,7 +69,7 @@ async function calculateMonthlyVLPoints(email, VLPoints) {
       const AbsentDeduction = daysAbsentInMonth * 1;
   
       // Update total VL points
-      totalVLPoints += vlPointsForMonth - AbsentDeduction;
+      totalVLPoints += vlPointsForMonth;
   
       console.log(`Month: ${monthKey}, Days Present: ${daysPresentInMonth}, Days Absent: ${daysAbsentInMonth}, VL Points Added: ${vlPointsForMonth}, Absent Deduction: ${AbsentDeduction}`);
     }

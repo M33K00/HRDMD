@@ -41,6 +41,7 @@ router.get("/home", checkRole, async (request, response) => {
     // Fetch all submitted files and sort by dateSubmitted in descending order
     const submittedFiles = await SubmittedFiles.find({})
       .sort({
+        urgentTask: -1,        // Sort by urgentTask (true first)
         dateSubmitted: -1,
       })
       .skip((currentPage - 1) * pageSize)
@@ -568,6 +569,7 @@ router.post("/submitfile", documentUpload.single("file"), async (req, res) => {
       dateSubmitted: new Date(),
       dueDate: req.body.dueDate,
       fileUpload: req.file ? req.file.filename : null,
+      urgentTask: req.body.urgentTask === "true",
     };
 
     // Save fileData to database
@@ -602,10 +604,12 @@ router.get("/view_file/:id", async (req, res) => {
     }
 
     const remarks = await TaskTimeline.find({ fileCode: file.fileCode });
-
     const fileDes = "Main"
+    const users = await LogInCollection.find({
+      department: "HR Department",
+    });
 
-    res.render("DTRACKER/view_file", { file, remarks, fileDes });
+    res.render("DTRACKER/view_file", { file, remarks, fileDes, users });
   } catch (error) {
     req.session.message = {
       type: "danger",
@@ -861,6 +865,54 @@ router.get("/archive_file/:id", async (req, res) => {
     res.redirect("/home");
   }
 });
+
+router.get("/change-assignee/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const assignee = req.query.newAssignee;
+
+    const newAssign = await LogInCollection.findOne({ email: assignee });
+
+    if (!newAssign) {
+      req.session.message = {
+        type: "danger",
+        message: "User not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
+    console.log(newAssign);
+
+    const file = await SubmittedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger", 
+        message: "File not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
+
+    const data = {
+      assignTo: newAssign.name + ", " + newAssign.lastname,
+      email: newAssign.email,
+    };
+
+    await SubmittedFiles.findByIdAndUpdate(id, data);
+
+    req.session.message = {
+      type: "warning",
+      message: "Assignee changed successfully.",
+    };
+    res.redirect("/view_file/" + id);
+  } catch (error) {
+    console.error("Error updating assignee:", error);
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+})
 
 router.get("/printStatusboard", async (req, res) => {
   const files = await SubmittedFiles.find({});

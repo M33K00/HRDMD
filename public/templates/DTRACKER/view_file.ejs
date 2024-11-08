@@ -29,11 +29,14 @@
       </div>
       <% } %>
     </div>
-    <div class="page-content rounded-box">
+    <div class="page-content rounded-box
+      <% if (file.urgentTask === true) { %> urgent <% } %>">
       <div class="file-code">
         <p class="text-uppercase"><%= file.fileCode %></p>
       </div>
-      <div class="file-container">
+      <div class="file-container
+        <% if (file.urgentTask === true) { %> urgentTask <% } %>
+      ">
         <div class="file-item text-uppercase">
           <h3>File Details:</h3>
           <p><strong>File Name:</strong> <%= file.fileName %></p>
@@ -41,11 +44,23 @@
             <strong>TASK DUE DATE:</strong> <%=
             file.dueDate.toISOString().split('T')[0] %>
           </p>
-          <p <% if (file.status === 'REJECTED') { %> class="text-danger" <% } %>
-            <% if (file.status === 'APPROVED') { %> class="text-success" <% } %> 
-            <% if (file.status === 'ASSIGNED' || file.status === 'FOR APPROVAL' || file.status === 'REASSIGNED') { %> class="text-warning" <% } %>
-            style="font-weight: 800"
-          ><strong>Status:</strong> <%= file.status %></p>
+          <p><strong>Status:</strong><span class="badge taskBadge
+            <% if (file.status === "FOR APPROVAL") { %> 
+              bg-danger
+            <% } else if (file.status === "APPROVED") { %> 
+              bg-success
+            <% } else if (file.urgentTask === true) { %>
+                bg-primary urgent
+            <% } else if (file.status === "ASSIGNED") { %> 
+              bg-warning
+            <% } else if (file.status === "REASSIGNED") { %> 
+              bg-warning
+            <% } %>
+          "><%= file.status %>
+            <% if (file.urgentTask === true) { %>
+             - URGENT
+            <% } %>
+          </span></p>
           <% if (file.dateApproved === null) { %>
             <p><strong>Date Approved:</strong>
               <% if (file.dateApproved !== null) { %>
@@ -83,6 +98,12 @@
               Actions
             </button>
             <div class="dropdown-menu" id="fileDropdownMenu" aria-labelledby="dropdownMenuButton">
+              <% if (user.hrrole === "ADMIN" || user.hrrole === "ADMIN2") { %>
+                <a class="dropdown-item" href="#" onclick="showChangeAssigneeModal('<%= file.id %>')">
+                  <i class="fa-solid fa-users"></i>
+                  Change Assignment
+                </a>
+              <% } %>
               <% if (user.hrrole !== "ADMIN" && file.status === "ASSIGNED" || file.status === "REASSIGNED") { %>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for approval', '<%= file.id %>')"><i class="fa-solid fa-file-circle-check mr-2"></i> For Approval</a>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('add remarks', '<%= file.id %>')"><i class="fa-solid fa-comment mr-2"></i>
@@ -105,7 +126,7 @@
           </div>
       <% } %>
     </div>
-      <% if (fileDes !== "Archive" && file.remarks !== "") { %>
+      <% if (fileDes !== "Archive" && remarks.length !== 0) { %>
         <div class="timelineNameContainer">
           <h4>Task History:</h4>
           <p class="text-muted">This table shows the history of the task.</p>
@@ -172,6 +193,40 @@
       <% } %>      
     </div>
   </div>
+<%# Change Assignee Modal %>
+<div class="modal fade" id="changeAssigneeModal" tabindex="-1" role="dialog" aria-labelledby="changeAssigneeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changeAssigneeModalLabel">Change Assignee</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>  
+      </div>
+      <div class="modal-body">
+        <p>Select a new assignee for this task.</p>
+        <!-- Assignee Dropdown -->
+        <label for="assignTo" class="form-label">Assign To:</label>
+        <select name="assignTo" class="form-control mb-4" id="assignTo">
+          <option value="" disabled selected>Select a user</option>
+          <% users.forEach(user => { 
+            if (user.department === "HR Department" && user.hrrole !== "ADMIN" && !user.accountClosed) { %>
+              <option value="<%= user.email %>"><strong><%= user.name %> <%= user.lastname %></strong> - 
+                <% if (user.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                  else if (user.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
+                  else if (user.hrrole === "ROLE 3") { %> Admin Officer <% }
+                  else if (user.hrrole === "ROLE 4") { %> Admin Assistant <% }
+                  else if (user.hrrole === "ROLE 5") { %> Admin Aide <% } %>
+            </option>
+            <% } 
+          }) %>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="confirmChange">Confirm</button>
+        <button type="button" class="btn btn-secondary" id="cancelAction">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
   <%- include('../layouts/modals/confirm') %>
   <%- include('../layouts/footer') -%>
 </body>

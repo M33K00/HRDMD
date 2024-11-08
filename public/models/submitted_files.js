@@ -49,15 +49,10 @@ const submittedFilesSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
-  remarks: {
-    type: String,
+  urgentTask: {
+    type: Boolean,
     required: false,
-    default: "",
-  },
-  remarksDate: {
-    type: Date,
-    required: false,
-    default: null,
+    default: false,
   },
 });
 

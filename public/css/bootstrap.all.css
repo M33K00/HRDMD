@@ -991,10 +991,6 @@ body.modal-open .modal-backdrop {
   opacity: 1;
 }
 
-.page-content {
-
-}
-
 .file-code {
   display: flex;
 }
@@ -1002,6 +998,17 @@ body.modal-open .modal-backdrop {
 .file-code p {
   margin-left: auto;
   color: #63a5be;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.file-code-urgent {
+  display: flex;
+}
+
+.file-code-urgent p {
+  margin-left: auto;
+  color: #ffffff;
   font-size: 40px;
   font-weight: 800;
 }
@@ -1031,10 +1038,6 @@ body.modal-open .modal-backdrop {
   font-weight: 800;
 }
 
-.file-item p {
-  color: #000000;
-}
-
 .file-item strong {
   color: #63a5be;
 }
@@ -1055,6 +1058,11 @@ body.modal-open .modal-backdrop {
 .file-option {
   display: flex;
   align-items: center;
+}
+
+.taskBadge {
+  
+  margin-left: 10px;
 }
 
 .file-dropdown {
