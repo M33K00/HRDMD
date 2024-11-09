@@ -870,6 +870,7 @@ router.get("/change-assignee/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const assignee = req.query.newAssignee;
+    const empID = req.query.empID;
 
     const newAssign = await LogInCollection.findOne({ email: assignee });
 
@@ -881,6 +882,16 @@ router.get("/change-assignee/:id", async (req, res) => {
       return res.redirect("/view_file/" + id);
     }
     console.log(newAssign);
+
+    const assignChange = await LogInCollection.findOne({ employeeID: empID });
+
+    if (!assignChange) {
+      req.session.message = {
+        type: "danger",
+        message: "Your Employee ID is not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
 
     const file = await SubmittedFiles.findById(id);
 
@@ -894,6 +905,7 @@ router.get("/change-assignee/:id", async (req, res) => {
 
     const data = {
       assignTo: newAssign.name + ", " + newAssign.lastname,
+      assignChange: assignChange.name + ", " + assignChange.lastname,
       email: newAssign.email,
     };
 

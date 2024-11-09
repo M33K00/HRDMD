@@ -4,7 +4,7 @@
       <h3 class="card-header">Task Manager</h3>
       <div class="card-body">
         <h6 class="card-subtitle text-muted">
-          <% if (user.hrrole != "ADMIN") { %>
+          <% if (user.hrrole != "ADMIN" && user.hrrole != "ADMIN2") { %>
             View and manage your tasks
           <% } else { %>
             Assign and manage tasks to employees
@@ -35,7 +35,7 @@
     </div>
   </div>
   <div class="col-md-4 hover-div-sp">
-    <a href="<% if (user.hrrole === 'ADMIN') { %>
+    <a href="<% if (user.hrrole === 'ADMIN' || user.hrrole === 'ADMIN2') { %>
       /hris <% } else { %>
        /hris_user/<%= user.email %>
      <% } %>">

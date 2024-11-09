@@ -729,7 +729,7 @@ router.get("/document_tracker/:hrrole", async (req, res) => {
     const hrrole = req.params.hrrole;
 
     // Based on the hrrole, render the appropriate template
-    if (hrrole === "ADMIN") {
+    if (hrrole === "ADMIN" || hrrole === "ADMIN2") {
       res.redirect("/home");
     } else {
       res.redirect("/role1");

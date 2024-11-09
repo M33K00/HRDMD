@@ -674,9 +674,10 @@ function showChangeAssigneeModal(fileId) {
   // Set up the confirm button action
   confirmActionBtn.onclick = function () {
     const newAssignee = document.getElementById("assignTo").value;
+    const empID = document.getElementById("empID").value;
     console.log(newAssignee);
     if (newAssignee) {  // Ensure an assignee is selected
-      window.location.href = `/change-assignee/${fileId}?newAssignee=${encodeURIComponent(newAssignee)}`;
+      window.location.href = `/change-assignee/${fileId}?newAssignee=${encodeURIComponent(newAssignee)}&empID=${encodeURIComponent(empID)}`;
       changeAssigneeModal.hide();
     } else {
       alert("Please select an assignee.");

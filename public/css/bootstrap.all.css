@@ -1061,11 +1061,11 @@ body.modal-open .modal-backdrop {
 }
 
 .taskBadge {
-  
   margin-left: 10px;
 }
 
 .file-dropdown {
+  z-index: 1050;
   margin-top: 10px;
   margin-left: auto;
 }

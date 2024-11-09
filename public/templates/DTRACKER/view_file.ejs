@@ -44,7 +44,7 @@
             <strong>TASK DUE DATE:</strong> <%=
             file.dueDate.toISOString().split('T')[0] %>
           </p>
-          <p><strong>Status:</strong><span class="badge taskBadge
+          <p><strong>Status:</strong><span class="badge rounded-pill taskBadge
             <% if (file.status === "FOR APPROVAL") { %> 
               bg-danger
             <% } else if (file.status === "APPROVED") { %> 
@@ -91,8 +91,11 @@
       </div>
       <% if (fileDes !== "Archive") { %>
         <div class="file-option">
+          <% if (file.assignChange) { %>
+            <span class="badge rounded-pill bg-danger text-uppercase">The task assignment was changed by: <%= file.assignChange %></span>
+          <% } %>
           <div class="file-dropdown">
-            <button class="btn <% if (user.hrrole !== "ADMIN" && file.status !== "ASSIGNED") { %>btn-dark disabled <% } else { %>btn-primary <% } %>
+            <button class="btn <% if ((user.hrrole !== "ADMIN" || user.hrrole !== "ADMIN2") && file.status !== "ASSIGNED") { %>btn-dark disabled <% } else { %>btn-primary <% } %>
               dropdown-toggle" 
               type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Actions
@@ -104,13 +107,13 @@
                   Change Assignment
                 </a>
               <% } %>
-              <% if (user.hrrole !== "ADMIN" && file.status === "ASSIGNED" || file.status === "REASSIGNED") { %>
+              <% if (user.hrrole === "ADMIN" && file.status === "ASSIGNED" || file.status === "REASSIGNED") { %>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for approval', '<%= file.id %>')"><i class="fa-solid fa-file-circle-check mr-2"></i> For Approval</a>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('add remarks', '<%= file.id %>')"><i class="fa-solid fa-comment mr-2"></i>
                   <% if (file.remarks === "") { %>
                     Add Remarks
                   <% } else { %>
-                    Update Remarks
+                    Add Update
                   <% } %>
                 </a>
               <% } %>
@@ -219,6 +222,7 @@
             <% } 
           }) %>
         </select>
+        <input type="hidden" name="empID" id="empID" value="<%= user.employeeID %>">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="confirmChange">Confirm</button>

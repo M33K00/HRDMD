@@ -15,6 +15,11 @@ const submittedFilesSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
+  assignChange: {
+    type: String,
+    required: false,
+    default: "",
+  },
   email: {
     type: String,
     required: false,
