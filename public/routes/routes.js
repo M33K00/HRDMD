@@ -740,16 +740,16 @@ router.get("/document_tracker/:hrrole", async (req, res) => {
   }
 });
 
-router.get("/manage_account/:hrrole/:name", async (req, res) => {
+router.get("/manage_account/:hrrole/:empID", async (req, res) => {
   try {
     const hrrole = req.params.hrrole;
-    const name = req.params.name;
+    const empID = req.params.empID;
 
     // Based on the hrrole, render the appropriate template
     if (hrrole === "ADMIN") {
       res.redirect("/manage_accounts");
     } else {
-      res.redirect(`/editacc/${encodeURIComponent(name)}`);
+      res.redirect(`/editacc/${encodeURIComponent(empID)}`);
     }
   } catch (err) {
     console.log("Error loading pages: ", err);
