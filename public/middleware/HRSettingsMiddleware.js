@@ -71,10 +71,10 @@ async function calculateMonthlyVLPoints(email, VLPoints) {
       // Update total VL points
       totalVLPoints += vlPointsForMonth;
   
-      console.log(`Month: ${monthKey}, Days Present: ${daysPresentInMonth}, Days Absent: ${daysAbsentInMonth}, VL Points Added: ${vlPointsForMonth}, Absent Deduction: ${AbsentDeduction}`);
+      //console.log(`Month: ${monthKey}, Days Present: ${daysPresentInMonth}, Days Absent: ${daysAbsentInMonth}, VL Points Added: ${vlPointsForMonth}, Absent Deduction: ${AbsentDeduction}`);
     }
   
-    console.log('Total VL Points:', totalVLPoints);  // Final output for verification
+    // console.log('Total VL Points:', totalVLPoints);  // Final output for verification
     return totalVLPoints;
 }
 

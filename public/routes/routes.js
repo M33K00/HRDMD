@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const formidable = require("formidable");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 const path = require("path");
@@ -549,56 +550,77 @@ router.post("/update/:id", upload, async (req, res) => {
 });
 
 // Update account for users
-router.post("/update-user/:id", upload, async (req, res) => {
-  try {
+router.post("/update-user/:id", async (req, res) => {
+  const form = new formidable.IncomingForm({
+    uploadDir: path.join(__dirname, './files/images'),
+    keepExtensions: true,
+    maxFileSize: 5 * 1024 * 1024, // 5 MB file size limit
+  });
+
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error(err);
+      return res.json({ message: err.message, type: "DANGER" });
+    }
+
     let id = req.params.id;
     let new_image = "";
 
-    if (req.file) {
-      new_image = req.file.filename;
-      try {
-        // Delete old image if a new image is uploaded
-        fs.unlinkSync("./files/images/" + req.body.old_image);
-      } catch (err) {
-        console.error(err);
-        // If an error occurs during file deletion, it shouldn't affect the update process
+    if (files.image) {
+      // Get the uploaded file name
+      const file = files.image;
+      new_image = `image_${Date.now()}_${file.originalFilename || file.newFilename}`;
+      const newPath = path.join(form.uploadDir, new_image);
+
+      // Move the file to the desired path
+      fs.renameSync(file.filepath, newPath);
+
+      // Delete old image if a new one is uploaded
+      if (fields.old_image) {
+        const oldImagePath = path.join(form.uploadDir, fields.old_image);
+        try {
+          fs.unlinkSync(oldImagePath);
+        } catch (err) {
+          console.error("Error deleting old image:", err);
+        }
       }
     } else {
-      new_image = req.body.old_image;
+      // No new file uploaded, keep the old image
+      new_image = fields.old_image;
     }
 
-    // Generate a salt
-    const salt = await bcrypt.genSalt();
+    try {
+      // Generate a salt and hash the password
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(fields.password, salt);
 
-    // Hash the new password using the generated salt
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+      // Update user information in the database
+      const result = await LogInCollection.findByIdAndUpdate(
+        id,
+        {
+          name: fields.name,
+          email: fields.email,
+          password: hashedPassword,
+          hrrole: fields.hrrole,
+          image: new_image,
+        },
+        { new: true }
+      );
 
-    // Update user information in the database, using the hashed password
-    const result = await LogInCollection.findByIdAndUpdate(
-      id,
-      {
-        name: req.body.name,
-        email: req.body.email,
-        password: hashedPassword, // Use the hashed password here
-        hrrole: req.body.hrrole,
-        image: new_image,
-      },
-      { new: true } // Return the modified document after update
-    );
+      if (!result) {
+        return res.json({ message: "User not found", type: "DANGER" });
+      }
 
-    if (!result) {
-      return res.json({ message: "User not found", type: "DANGER" });
+      req.session.message = {
+        type: "SUCCESS",
+        message: "User updated successfully",
+      };
+      res.json({ message: "User updated successfully", type: "SUCCESS" });
+    } catch (err) {
+      console.error(err);
+      return res.json({ message: err.message, type: "DANGER" });
     }
-
-    req.session.message = {
-      type: "SUCCESS",
-      message: " User updated successfully",
-    };
-  } catch (err) {
-    console.error(err);
-    // Handle errors and provide a response
-    return res.json({ message: err.message, type: "DANGER" });
-  }
+  });
 });
 
 // Close a user account

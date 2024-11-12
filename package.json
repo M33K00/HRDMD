@@ -49,6 +49,7 @@
     "express-flash": "^0.0.2",
     "express-session": "^1.18.0",
     "express-validator": "^7.0.1",
+    "formidable": "^3.5.2",
     "graceful-fs": "^4.2.11",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",

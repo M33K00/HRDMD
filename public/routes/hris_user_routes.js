@@ -1179,7 +1179,6 @@ router.get("/officeOrder/:email", async (req, res) => {
   }
 });
 
-
 router.post("/file-submit", employeeUpload.single("files"), async (req, res) => {
   try {
     const email = req.body.email;
@@ -1188,6 +1187,10 @@ router.post("/file-submit", employeeUpload.single("files"), async (req, res) => 
 
     const account = await LogInCollection.findOne({ email: email });
     const empID = account.employeeID;
+
+    console.log("Email:", email);
+    console.log("Employee ID:", empID);
+    console.log("Document Type:", docuType);
 
     if (docuType === "appPaper") {
       const appPaper = await AppPaper.findOne({
@@ -1216,7 +1219,7 @@ router.post("/file-submit", employeeUpload.single("files"), async (req, res) => 
         message: "Paper submitted successfully",
       };
       res.redirect("/appPaper/" + email);
-    } else if (docuType === "pds") {
+    } else if (docuType === "PDS") {
       const pds = await PDS.findOne({
         empID: empID,
         files: file.originalname
@@ -1233,6 +1236,7 @@ router.post("/file-submit", employeeUpload.single("files"), async (req, res) => 
       const data = {
         name: req.body.name,
         email: email,
+        empID: empID,
         files: filename,
         fileYear: req.body.fileYear,
         dateSubmitted: new Date(),
@@ -1721,6 +1725,15 @@ router.post("/delete-201/:docuType/:fileName/:email", async (req, res) => {
     const email = req.params.email;
     const filePath = path.join(__dirname, "../../files/employeedocument", fileName);
 
+    const employee = await LogInCollection.findOne({ email: email });
+    if (!employee) {
+      req.session.message = {
+        type: "danger",
+        message: "User account not found",
+      };
+      return res.redirect("/hris");
+    }
+
     if (docuType === "appPaper") {
       const result = await AppPaper.deleteOne({ email: email, files: fileName });
       if (result.deletedCount === 0) {
@@ -1737,20 +1750,20 @@ router.post("/delete-201/:docuType/:fileName/:email", async (req, res) => {
       };
       res.redirect("/appPaper/" + email);
     } else if (docuType === "pds") {
-      const result = await PDS.deleteOne({ email: email, files: fileName });
+      const result = await PDS.deleteOne({ empID: employee.employeeID, files: fileName });
       if (result.deletedCount === 0) {
         req.session.message = {
           type: "danger",
           message: "No document found to delete",
         };
-        return res.redirect("/pds/" + email);
+        return res.redirect("/view_profile/" + email);
       }
       fs.unlinkSync(filePath);
       req.session.message = {
         type: "danger",
         message: "File deleted successfully",
       };
-      res.redirect("/pds/" + email);
+      res.redirect("/view_profile/" + email);
     } else if (docuType === "certERL") {
       const result = await CertERL.deleteOne({ email: email, files: fileName });
       if (result.deletedCount === 0) {

@@ -905,7 +905,7 @@ router.get("/change-assignee/:id", async (req, res) => {
 
     const data = {
       assignTo: newAssign.name + ", " + newAssign.lastname,
-      assignChange: assignChange.name + ", " + assignChange.lastname,
+      assignChange: assignChange.name + " " + assignChange.lastname,
       email: newAssign.email,
     };
 
