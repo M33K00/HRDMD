@@ -1,11 +1,7 @@
 <%- include('./layouts/header') -%>
 <body>
-  <%- include('./layouts/nav') -%>
-  <% if (user.hrrole !== "ADMIN") { %>
-    <%- include('./layouts/sidenavR1') %>
-  <% } else { %>
+    <%- include('./layouts/nav') -%>
     <%- include('./layouts/sidenav') %>
-  <% } %>
   <div class="page-body fade-in">
     <div class="page-name">
       <h1>STATUS BOARD</h1>

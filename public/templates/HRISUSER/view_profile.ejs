@@ -126,6 +126,8 @@
                         type="file"
                         name="files"
                         class="form-control"
+                        accept=".pdf"
+                        required
                       />
                     </div>
                 </div>
@@ -137,8 +139,8 @@
             <div class="file-container-hris mt-4">
                 <div class="file-item text-uppercase">
                     <h3>File Details:</h3>
-                    <p><strong>File Year:</strong> <%= PDS.fileYear %></p>
                     <p><strong>Date Submitted:</strong> <%= PDS.dateSubmitted.toISOString().split('T')[0] %></p>
+                    <p><strong>File Description:</strong> <%= PDS.fileYear %></p>
                   </div>
                 <div class="file-item text-uppercase">
                     <h3>File Attached:</h3>

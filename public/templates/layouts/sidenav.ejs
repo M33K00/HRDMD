@@ -12,11 +12,7 @@
       </li>
       <li>
         <a
-          href="<% if (user.hrrole === 'ADMIN') { %>
-          /statusboard
-        <% } else { %>
-          /statusboard-r1
-        <% } %>"
+          href="/statusboard"
           ><i class="fa-solid fa-bars-progress"></i>
           <p style="font-size: 13px">Status Board</p></a
         >
@@ -29,7 +25,13 @@
           /view-user/<%= user._id %>
         <% } %>"
           ><i class="fa-solid fa-user"></i>
-          <p style="font-size: 13px">Accounts</p></a
+          <p style="font-size: 13px">
+            <% if (user.hrrole === 'ADMIN') { %>
+              Accounts
+            <% } else { %>
+              Profile
+            <% } %>
+          </p></a
         >
       </li>
       <li>
