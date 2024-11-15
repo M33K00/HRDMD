@@ -5,7 +5,9 @@
   <div class="page-body fade-in">
     <div class="page-bg-img"></div>
     <div class="page-name">
-      <h1>Leave Applications</h1>
+      <h1>
+        LEAVE APPLICATIONS
+      </h1>
       <h3><%= getCurrentDateInWords() %></h3>
     </div>
     <p class="text-muted">Manage employee leave applications</p>
@@ -150,7 +152,7 @@
                     <%= row.Status %>
                   </td>
                   <td class="action-buttons-leave">
-                    <% if (row.Status !== 'Done/Expired') { %>
+                    <% if (row.Status !== 'Done/Expired' && row.email !== user.email) { %>
                       <a
                       href="/manage-leave/<%= row.id %>"
                       class="icon-square-leave"
@@ -215,11 +217,13 @@
                       <%= row.Status %>
                     </td>
                     <td class="action-buttons-leave">
-                      <a
+                      <% if (row.email !== user.email) { %>
+                        <a
                         href="/manage-leave/<%= row.id %>"
                         class="icon-square-leave"
                         ><i class="fa-solid fa-pen-to-square text-warning"></i
                       ></a>
+                      <% } %>
                       <a
                         href="/view-leave/<%= row.id %>"
                         class="icon-square-leave"

@@ -19,13 +19,17 @@
         </div>
         <header>Human Resources Department</header>
         <form>
-          <input type="text" name="email" placeholder="Email" required />
-          <div class="email-error mb-3"></div>
-          <input type="password" name="password" placeholder="Password" required />
-          <div class="password-error mb-3"></div>
-          <input type="submit" class="button" value="LOGIN"/>
+          <div class="has-danger mt-4">
+            <input class="form-control" type="text" name="email" placeholder="Email" id="emailInput" required />
+            <div class="email-error invalid-feedback"></div>
+          </div>
+          <div class="has-danger mt-4">
+            <input class="form-control" type="password" name="password" placeholder="Password" id="passwordInput" required />
+            <div class="password-error invalid-feedback"></div>
+          </div>
+          <input type="submit" class="button mt-4" value="LOGIN"/>
         </form>
-        <div class="forgot-password mb-3">
+        <div class="forgot-password mb-3 mt-3">
           <a href="#" id="forgot-password-link" data-bs-toggle="modal" data-bs-target="#forgot-password-modal">Forgot Password?</a>
         </div>
         <div class="signup">
@@ -39,10 +43,9 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password?</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>Please contact the <strong>HR Department</strong> for assistance.</p>
+          <p>For security reasons, please contact the <strong>HR Department</strong> for a password reset.</p>
         </div>
       </div>
     </div>
@@ -52,14 +55,10 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-danger" id="accountClosedLabel">Account Closed</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title text-danger" style="font-weight: 800;" id="accountClosedLabel">Account Closed</h5>
         </div>
         <div class="modal-body">
           Your account has been closed. Please contact your Department Head for further assistance.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -70,7 +69,6 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title text-danger" id="noRolesLabel">Not Authorized</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           Your account is not yet verified. Please contact the HR Department for further assistance.
@@ -87,7 +85,6 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title text-danger" id="accountNotVerifiedLabel">Not Verified</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           Your account is not yet verified. Please contact the HR Department for further assistance.

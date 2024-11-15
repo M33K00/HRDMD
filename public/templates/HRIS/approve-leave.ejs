@@ -12,6 +12,12 @@
       <h1>MANAGE LEAVE:</h1>
       <a href="/leave_applications" class="btn btn-secondary">GO Back</a>
     </div>
+    <% if (user.email === leaveapplications.email) { %>
+      <div class="alert alert-dismissible alert-warning mb-4">
+        <h4 class="alert-heading">Cannot Approve</h4>
+        <p class="mb-0">You cannot approve this application as you were the one who made the application.</p>
+      </div>
+    <% } %>
     <H3 class="text-muted text-uppercase text-center"
       >Details of application</H3
     >
@@ -360,7 +366,11 @@
     </div>
     <p class="text-danger mt-4" style="font-weight: 600;">PLEASE DOUBLE CHECK ACTION DETAILS BEFORE SUBMITTING!</p>
       <div class="button-container mt-4">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn w-100 
+        <% if (user.email === leaveapplications.email) { %>
+          btn-dark disabled
+        <% } else { %> btn-primary<% } %>
+        ">APPROVE/DECLINE</button>
       </div>
     </form>
   </div>

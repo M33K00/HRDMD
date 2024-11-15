@@ -766,7 +766,7 @@ router.get("/clockout/:email", async (req, res) => {
       user.timeIn = null; // Update timeIn to current date and time
       user.status = "OUT";
       user.hoursWorked += totalHoursDecimal;
-      user.creditPoints -= deductionPoints;
+      user.VLPoints -= deductionPoints;
       await user.save();
     }
 

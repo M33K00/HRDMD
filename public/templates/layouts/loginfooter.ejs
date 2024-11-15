@@ -5,6 +5,9 @@
   const emailError = document.querySelector(".email-error");
   const passwordError = document.querySelector(".password-error");
 
+  const emailInput = document.getElementById("emailInput");
+  const passwordInput = document.getElementById("passwordInput");
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -26,8 +29,18 @@
       console.log(data); // Log the response data for debugging
 
       if (data.errors) {
-        emailError.textContent = data.errors.email;
-        passwordError.textContent = data.errors.password;
+
+        if (data.errors.email && data.errors.password) {
+          passwordError.textContent = "Email or Password is incorrect";
+          emailInput.classList.add("is-invalid");
+          passwordInput.classList.add("is-invalid");
+        } else if (data.errors.email) {
+          emailError.textContent = "Email is incorrect";
+          emailInput.classList.add("is-invalid");
+        } else if (data.errors.password) {
+          passwordError.textContent = "Password is incorrect";
+          passwordInput.classList.add("is-invalid");
+        }
 
         // Check if account has roles
         if (data.errors.password === "No roles assigned to this account") {

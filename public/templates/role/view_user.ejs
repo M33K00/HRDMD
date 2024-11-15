@@ -3,7 +3,9 @@
   <%- include('../layouts/nav') -%> <%- include('../layouts/sidenav') %>
   <div class="page-body fade-in">
     <div class="page-name">
-      <h1><%= logincollections.name %> <%= logincollections.lastname %></h1>
+      <h1><span><i class="fa-solid fa-user" style="margin-right: 15px;"></i></span>
+        TASK MANAGER PROFILE:
+      </h1>
       <div class="account-options">
         <a
           href="/editacc/<%= user.employeeID %>"

@@ -65,7 +65,7 @@
           else if (user.hrrole === "ROLE 3") { %> Admin Officer <% } else if
           (user.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
           (user.hrrole === "ROLE 5") { %> Admin Aide <% } else if (user.hrrole
-          === "ADMIN") { %> Department Head <% } %></a
+          === "ADMIN") { %> Department Head <% } else if (user.hrrole === "ADMIN2") { %> Department Head II <% } %></a
         >
       </div>
     </div>
@@ -78,8 +78,8 @@
               ><i class="fa-solid fa-gear"></i>Account Settings</a
             >
             <% } else { %>
-            <a href="/editacc/<%= encodeURIComponent(user.name) %>"
-              ><i class="fa-solid fa-gear"></i>Account Settings</a
+            <a href="/view_profile/<%= user.email %>"
+              ><i class="fa-solid fa-gear"></i>Accosunt Settings</a
             >
             <% } %>
           </li>

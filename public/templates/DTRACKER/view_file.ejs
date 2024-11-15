@@ -101,13 +101,13 @@
               Actions
             </button>
             <div class="dropdown-menu" id="fileDropdownMenu" aria-labelledby="dropdownMenuButton">
-              <% if (user.hrrole === "ADMIN" || user.hrrole === "ADMIN2") { %>
+              <% if (user.hrrole === "ADMIN" || user.hrrole === "ADMIN2" && user.email !== file.email) { %>
                 <a class="dropdown-item" href="#" onclick="showChangeAssigneeModal('<%= file.id %>')">
                   <i class="fa-solid fa-users"></i>
                   Change Assignment
                 </a>
               <% } %>
-              <% if (user.hrrole === "ADMIN" && file.status === "ASSIGNED" || file.status === "REASSIGNED") { %>
+              <% if (user.hrrole === "ADMIN" && file.status === "ASSIGNED" || file.status === "REASSIGNED" || user.email === file.email) { %>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for approval', '<%= file.id %>')"><i class="fa-solid fa-file-circle-check mr-2"></i> For Approval</a>
                 <a class="dropdown-item" href="#" onclick="showConfirmationModal('add remarks', '<%= file.id %>')"><i class="fa-solid fa-comment mr-2"></i>
                   <% if (file.remarks === "") { %>

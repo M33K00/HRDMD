@@ -47,86 +47,69 @@ router.get("/role1", passUserToRoute, async (request, response) => {
   const user = request.user;
 
   try {
+    const userEmail = user.email;
 
-    const userName = `${user.name} ${user.lastname}`;
+    // Fetch all files assigned to the user or unassigned, sorted by dateSubmitted
+    const allFiles = await SubmittedFiles.find({
+      $or: [{ email: userEmail }, { assignTo: "None" }],
+    }).sort({ dateSubmitted: -1 });
 
-    const totalSubmittedFiles = await SubmittedFiles.countDocuments();
+    const totalSubmittedFiles = allFiles.length;
     const totalPages = Math.ceil(totalSubmittedFiles / pageSize);
-    // Fetch all submitted files and sort by dateSubmitted in descending order
-    const submittedFiles = await SubmittedFiles.find({
-      $or: [{ assignTo: userName }, { assignTo: "None" }],
-    })
-      .sort({
-        dateSubmitted: -1,
-      })
-      .skip((currentPage - 1) * pageSize)
-      .limit(pageSize);
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Set time to beginning of the day
-  
-      // Get end of today
-      const endOfToday = new Date();
-      endOfToday.setHours(23, 59, 59, 999); // Set time to end of the day
-  
-      const todayFiles = await SubmittedFiles.find({
-        assignTo: userName,
-        dueDate: { $gte: today, $lte: endOfToday },
-      }).sort({ dateSubmitted: -1 });
-  
-      const todayFilesIds = todayFiles.map((file) => file._id);
-  
-      // Calculate the start and end of the current week
-      const startOfWeek = new Date();
-      startOfWeek.setHours(0, 0, 0, 0); // Set time to beginning of the day
-      startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Move to start of the week (Sunday)
-  
-      const endOfWeek = new Date();
-      endOfWeek.setHours(23, 59, 59, 999); // Set time to end of the day
-      endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay())); // Move to end of the week (Saturday)
-  
-      const currentWeekFiles = await SubmittedFiles.find({
-        assignTo: userName,
-        dueDate: { $gte: startOfWeek, $lte: endOfWeek },
-        _id: { $nin: todayFilesIds },
-      }).sort({ dateSubmitted: -1 });
+    // Paginate the files for main display
+    const submittedFiles = allFiles.slice(
+      (currentPage - 1) * pageSize,
+      currentPage * pageSize
+    );
 
-      const otherFiles = await SubmittedFiles.find({
-        assignTo: userName,
-        dueDate: {
-          $not: {
-            $gte: today,
-            $lte: endOfWeek,
-          }
-        }
-      }).sort({ dateSubmitted: -1 });
+    // Define date ranges
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-      const assignedFiles = await SubmittedFiles.find({
-        status: "ASSIGNED",
-        assignTo: userName,
-      }).sort({
-        dateSubmitted: -1,
-      });
-  
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
 
-    // Fetch pending files and sort by dateSubmitted in descending order
-    const pendingFiles = await SubmittedFiles.find({
-      status: "PENDING",
-      assignTo: userName,
-    }).sort({
-      dateSubmitted: -1,
+    const startOfWeek = new Date();
+    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+
+    const endOfWeek = new Date();
+    endOfWeek.setHours(23, 59, 59, 999);
+    endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay()));
+
+    // Categorize files
+    const todayFiles = [];
+    const currentWeekFiles = [];
+    const otherFiles = [];
+    const assignedFiles = [];
+    const pendingFiles = [];
+    const approvedFiles = [];
+    const forApproval = [];
+
+    allFiles.forEach((file) => {
+      const { dueDate, status } = file;
+
+      // Categorize by due date
+      if (dueDate >= today && dueDate <= endOfToday) {
+        todayFiles.push(file);
+      } else if (dueDate >= startOfWeek && dueDate <= endOfWeek) {
+        currentWeekFiles.push(file);
+      } else {
+        otherFiles.push(file);
+      }
+
+      // Categorize by status
+      if (status === "ASSIGNED") {
+        assignedFiles.push(file);
+      } else if (status === "PENDING") {
+        pendingFiles.push(file);
+      } else if (status === "APPROVED") {
+        approvedFiles.push(file);
+      } else if (status === "FOR APPROVAL") {
+        forApproval.push(file);
+      }
     });
-
-    // Fetch approved files and sort by dateSubmitted in descending order
-    const approvedFiles = await SubmittedFiles.find({
-      status: "APPROVED",
-      assignTo: userName,
-    }).sort({ dateSubmitted: -1 });
-
-    const forApproval = await SubmittedFiles.find({
-      status: "FOR APPROVAL",
-      assignTo: userName,
-    }).sort({ dateSubmitted: -1 });
 
     response.render("role/role1_temps/role1", {
       submittedFiles,
@@ -142,9 +125,10 @@ router.get("/role1", passUserToRoute, async (request, response) => {
     });
   } catch (error) {
     console.error("Error reading directory:", error);
-    response.status(500).send("Internal Server Error");
+    response.redirect("/startpage");
   }
 });
+
 
 // Rejected Documents
 router.get("/rejected_docu", async (req, res) => {

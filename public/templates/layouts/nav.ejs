@@ -66,7 +66,7 @@
               ><i class="fa-solid fa-gear"></i>Account Settings</a
             >
             <% } else { %>
-            <a href="/editacc/<%= encodeURIComponent(user.name) %>"
+            <a href="/view_profile/<%= user.email %>"
               ><i class="fa-solid fa-gear"></i>Account Settings</a
             >
             <% } %>
@@ -101,26 +101,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" style="font-weight: 800;">
-          <% if (userAttendance.status === "IN") { %>
-            TIME-IN in progress
-          <% } else { %>
             LOG OUT
-          <% } %>
         </h5>
       </div>
       <div class="modal-body">
-        <% if (userAttendance.status === "IN") { %>
-          <p>It looks like you're still timed-in. You need to time-out before you can log-out. Would you like to time-out now?</p>
-        <% } else { %>
           <p>Are you sure you want to log-out?</p>
-        <% } %>
       </div>
       <div class="modal-footer">
-        <% if (userAttendance.status === "IN") { %>
-          <button type="button" class="btn btn-primary" id="logoutConfirm" data-user-status="IN">TIME-OUT NOW</button>
-        <% } else { %>
           <button type="button" class="btn btn-primary" id="logoutConfirm" data-user-status="OUT">CONFIRM</button>
-        <% } %>
       </div>
     </div>
   </div>

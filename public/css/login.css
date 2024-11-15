@@ -79,7 +79,6 @@ body {
   width: 100%;
   padding: 0 15px;
   font-size: 17px;
-  margin-bottom: 1.3rem;
   border: 1px solid #ddd;
   outline: none;
 }
@@ -278,4 +277,20 @@ button.prev {
 
 button.next {
   right: 10px;
+}
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-container input {
+  flex: 1;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
 }

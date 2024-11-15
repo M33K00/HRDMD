@@ -38,80 +38,70 @@ router.get("/home", checkRole, async (request, response) => {
   try {
     const totalSubmittedFiles = await SubmittedFiles.countDocuments();
     const totalPages = Math.ceil(totalSubmittedFiles / pageSize);
-    // Fetch all submitted files and sort by dateSubmitted in descending order
-    const submittedFiles = await SubmittedFiles.find({})
-      .sort({
-        urgentTask: -1,        // Sort by urgentTask (true first)
-        dateSubmitted: -1,
-      })
+
+    // Fetch all submitted files and sort by dateSubmitted and urgentTask
+    const allFiles = await SubmittedFiles.find({})
+      .sort({ urgentTask: -1, dateSubmitted: -1 })
       .skip((currentPage - 1) * pageSize)
       .limit(pageSize);
 
-    // Get today's date
+    // Define date ranges
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set time to beginning of the day
+    today.setHours(0, 0, 0, 0);
 
-    // Get end of today
     const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999); // Set time to end of the day
+    endOfToday.setHours(23, 59, 59, 999);
 
-    const todayFiles = await SubmittedFiles.find({
-      dueDate: { $gte: today, $lte: endOfToday },
-    }).sort({ dateSubmitted: -1 });
-
-    const todayFilesIds = todayFiles.map((file) => file._id);
-
-    // Calculate the start and end of the current week
     const startOfWeek = new Date();
-    startOfWeek.setHours(0, 0, 0, 0); // Set time to beginning of the day
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Move to start of the week (Sunday)
+    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
 
     const endOfWeek = new Date();
-    endOfWeek.setHours(23, 59, 59, 999); // Set time to end of the day
-    endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay())); // Move to end of the week (Saturday)
+    endOfWeek.setHours(23, 59, 59, 999);
+    endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay()));
 
-    const currentWeekFiles = await SubmittedFiles.find({
-      dueDate: { $gte: startOfWeek, $lte: endOfWeek },
-      _id: { $nin: todayFilesIds },
-    }).sort({ dateSubmitted: -1 });
+    // Categorize files based on dueDate and status
+    const todayFiles = [];
+    const currentWeekFiles = [];
+    const otherFiles = [];
+    const assignedFiles = [];
+    const approvedFiles = [];
+    const forApproval = [];
 
-    const otherFiles = await SubmittedFiles.find({
-      dueDate: {
-        $not: {
-          $gte: today,
-          $lte: endOfWeek,
-        }
+    allFiles.forEach((file) => {
+      const { dueDate, status } = file;
+
+      // Categorize by due date
+      if (dueDate >= today && dueDate <= endOfToday) {
+        todayFiles.push(file);
+      } else if (dueDate >= startOfWeek && dueDate <= endOfWeek) {
+        currentWeekFiles.push(file);
+      } else {
+        otherFiles.push(file);
       }
-    }).sort({ dateSubmitted: -1 });
 
-    // Fetch ASSIGNED files and sort by dateSubmitted in descending order
-    const assignedFiles = await SubmittedFiles.find({
-      status: "ASSIGNED",
-    }).sort({
-      dateSubmitted: -1,
+      // Categorize by status
+      if (status === "ASSIGNED") {
+        assignedFiles.push(file);
+      } else if (status === "APPROVED") {
+        approvedFiles.push(file);
+      } else if (status === "FOR APPROVAL") {
+        forApproval.push(file);
+      }
     });
-
-    // Fetch approved files and sort by dateSubmitted in descending order
-    const approvedFiles = await SubmittedFiles.find({
-      status: "APPROVED",
-    }).sort({ dateSubmitted: -1 });
-
-    const forApproval = await SubmittedFiles.find({
-      status: "FOR APPROVAL",
-    }).sort({ dateSubmitted: -1 });
 
     const pageType = "non-confidential";
 
     response.render("home", {
-      submittedFiles,
-      currentWeekFiles,
+      submittedFiles: allFiles,
       todayFiles,
+      currentWeekFiles,
       otherFiles,
-      currentPage,
-      totalPages,
       assignedFiles,
       approvedFiles,
       forApproval,
+      currentPage,
+      totalPages,
       pageType,
     });
   } catch (error) {
@@ -119,6 +109,7 @@ router.get("/home", checkRole, async (request, response) => {
     response.status(500).send("Internal Server Error");
   }
 });
+
 
 // Archive Files
 router.get("/archive_files", async (req, res) => {
