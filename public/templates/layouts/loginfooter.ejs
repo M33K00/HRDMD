@@ -30,17 +30,12 @@
 
       if (data.errors) {
 
-        if (data.errors.email && data.errors.password) {
-          passwordError.textContent = "Email or Password is incorrect";
-          emailInput.classList.add("is-invalid");
-          passwordInput.classList.add("is-invalid");
-        } else if (data.errors.email) {
-          emailError.textContent = "Email is incorrect";
-          emailInput.classList.add("is-invalid");
-        } else if (data.errors.password) {
-          passwordError.textContent = "Password is incorrect";
-          passwordInput.classList.add("is-invalid");
-        }
+        // Apply "is-invalid" class to both fields
+        emailInput.classList.add("is-invalid");
+        passwordInput.classList.add("is-invalid");
+
+        // Show a generic error message
+        passwordError.textContent = "Email or password is incorrect. Please double-check your credentials.";
 
         // Check if account has roles
         if (data.errors.password === "No roles assigned to this account") {
