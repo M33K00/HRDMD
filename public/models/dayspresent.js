@@ -38,6 +38,11 @@ const daysPresentSchema = new mongoose.Schema({
     required: false,
     default: 0,
   },
+  forFile: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const daysPresent = mongoose.model("daysPresent", daysPresentSchema);

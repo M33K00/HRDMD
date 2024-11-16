@@ -1370,6 +1370,67 @@ router.get("/m-absent/:id", async (req, res) => {
   }
 });
 
+router.post("/markAbsent", async (req, res) => {
+  try {
+    // Access the data from the body
+    const { employeeID, category, amount } = req.body;
+
+    // Log the data to check if it is received correctly
+    console.log("Employee ID:", employeeID);
+    console.log("Category:", category);
+    console.log("Amount:", amount);
+
+    // Find login collection by employee ID
+    const logincollections = await LogInCollection.findOne({
+      employeeID: employeeID,
+    });
+
+    if (!logincollections) {
+      return res.status(404).json({ message: "Employee not found." });
+    }
+
+    // Find attendance record for the employee
+    const attendance = await Attendance.findOne({
+      email: logincollections.email,
+    });
+
+    if (!attendance) {
+      return res.status(404).json({ message: "Attendance record not found." });
+    }
+
+    // Update the attendance record
+    if (category === "VL") {
+      attendance.availableVL -= amount;
+      attendance.VLPoints -= amount;
+    } else if (category === "SL") {
+      attendance.availableSL -= amount;
+      attendance.SLPoints -= amount;
+    } else if (category === "SPL") {
+      attendance.availableSPL -= amount;
+    }
+
+    // Save the updated attendance record
+    await attendance.save();
+
+    // Record Absent in DaysAbsent collection
+    const date = new Date();
+    const daysAbsent = {
+      name: logincollections.name,
+      email: logincollections.email,
+      date: date,
+    };
+    await DaysAbsent.create(daysAbsent);
+
+    // Send a success response back to the client
+    res.status(200).json({ message: "Marked as absent successfully." });
+
+  } catch (error) {
+    // Handle error and send response
+    console.error("Error marking absent:", error);
+    res.status(500).json({ message: "An error occurred while marking absent." });
+  }
+});
+
 router.get("/hrSettings", checkHRSettings, async (req, res) => {
   try {
     let hrSettings = await req.models.HRSettings.findOne();

@@ -364,10 +364,14 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
       const formattedCurrentDate = currentDate.toDateString();
     
       if (attendanceDate !== formattedCurrentDate) {
-        await DaysPresent.findOneAndDelete({
+        const improper = await DaysPresent.findOne({
           email: email,
           timeOut: null,
         });
+
+        // Set the forFile property to true
+        improper.forFile = true;
+        await improper.save();
     
         // Update attendance record
         attendance.status = "OUT";
