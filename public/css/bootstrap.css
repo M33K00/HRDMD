@@ -8542,7 +8542,7 @@ textarea.form-control-lg {
 
 .text-danger {
   --bs-text-opacity: 1;
-  color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+  color: rgba(139, 0, 0, var(--bs-text-opacity)) !important;
 }
 
 .text-light {
@@ -12132,7 +12132,7 @@ textarea.form-control-lg {
   border-color: #52adc8;
 }
 .btn-danger {
-  border-color: #d83b20;
+  border-color: rgb(126, 0, 0);
 }
 .btn-warning {
   color: #fff;
