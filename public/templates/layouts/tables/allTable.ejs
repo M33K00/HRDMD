@@ -6,6 +6,70 @@
   placeholder="Search"
   oninput="searchAllTasks()"
 />
+<% if (urgentFiles.length > 0) %>
+<h3 id="fileTableLabel4" class="text-primary fw-bold mt-4 text-uppercase">Urgent Tasks:</h3>
+<table id="fileTable4" class="table table-hover table-striped mt-4">
+  <thead id="fileTableHead4">
+    <tr class="table-primary">
+      <th style="width: 200px">File Code</th>
+      <th style="width: 200px">Task Name</th>
+      <th style="width: 150px">Assigned To</th>
+      <th style="width: 170px">Date Assigned</th>
+      <th style="width: 170px">Due Date</th>
+      <th style="width: 90px">Status</th>
+      <th style="width: 10px; padding-left: 30px"></th>
+    </tr>
+  </thead>
+  <tbody id="fileTableBody4">
+    <% urgentFiles.forEach((file, index) => { %>
+    <tr>
+      <td>
+        <%= file.fileCode.length > 20 ? file.fileCode.substring(0, 20) + '...' :
+        file.fileCode %>
+      </td>
+      <td>
+        <%= file.fileName.length > 15 ? file.fileName.substring(0, 15) + '...' :
+        file.fileName %>
+      </td>
+      <td
+        <% if (file.assignTo === 'None') { %>
+          class="text-primary fw-bold"
+        <% } %>
+      >
+        <% if (file.assignTo === 'None') { %>
+          OPEN TASK
+        <% } else { %>
+          <%= file.assignTo %>
+        <% } %>
+      </td>
+      <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
+      <td><%= file.dueDate.toISOString().split('T')[0] %></td>
+      <td>
+        <% if (file.status === 'APPROVED') { %>
+          <span class="badge rounded-pill bg-success">APPROVED</span>
+        <% } else if (file.status === 'ASSIGNED') { %>
+          <% if (file.urgentTask === true) { %>
+            <span class="badge rounded-pill bg-primary urgent">URGENT</span>
+          <% } else { %>  
+            <span class="badge rounded-pill bg-warning">ASSIGNED</span>
+          <% } %>
+        <% } else if (file.status === 'FOR APPROVAL') { %>
+        <span class="badge rounded-pill" style="background-color: #ff4107">FOR APPROVAL</span>
+        <% } else if (file.status === 'REASSIGNED') { %>
+        <span class="badge rounded-pill bg-warning">REASSIGNED</span>
+        <% } else { %>
+        <span class="badge rounded-pill bg-primary">UNKNOWN</span>
+        <% } %>
+      </td>
+      <td class="action-buttons">
+        <a href="view_file/<%= file.id %>" class="icon-square text-dark"
+          ><i class="fa-solid fa-eye"></i
+        ></a>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
 <% if (todayFiles.length > 0) { %>
 <h3 id="fileTableLabel1" class="mt-3">Today's Tasks:</h3>
 <table id="fileTable1" class="table table-hover table-striped mt-4">
@@ -31,7 +95,17 @@
         <%= file.fileName.length > 15 ? file.fileName.substring(0, 15) + '...' :
         file.fileName %>
       </td>
-      <td><%= file.assignTo %></td>
+      <td
+        <% if (file.assignTo === 'None') { %>
+          class="text-primary fw-bold"
+        <% } %>
+      >
+        <% if (file.assignTo === 'None') { %>
+          OPEN TASK
+        <% } else { %>
+          <%= file.assignTo %>
+        <% } %>
+      </td>
       <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
       <td><%= file.dueDate.toISOString().split('T')[0] %></td>
       <td>
@@ -39,7 +113,7 @@
           <span class="badge rounded-pill bg-success">APPROVED</span>
         <% } else if (file.status === 'ASSIGNED') { %>
           <% if (file.urgentTask === true) { %>
-            <span class="badge rounded-pill bg-primary">URGENT</span>
+            <span class="badge rounded-pill bg-primary urgent">URGENT</span>
           <% } else { %>  
             <span class="badge rounded-pill bg-warning">ASSIGNED</span>
           <% } %>
@@ -87,7 +161,17 @@
           <%= file.fileName.length > 15 ? file.fileName.substring(0, 15) + '...' :
           file.fileName %>
         </td>
-        <td><%= file.assignTo %></td>
+        <td
+        <% if (file.assignTo === 'None') { %>
+          class="text-primary fw-bold"
+        <% } %>
+        >
+          <% if (file.assignTo === 'None') { %>
+            OPEN TASK
+          <% } else { %>
+            <%= file.assignTo %>
+          <% } %>
+        </td>
         <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
         <td><%= file.dueDate.toISOString().split('T')[0] %></td>
         <td>
@@ -97,7 +181,7 @@
           <span class="badge rounded-pill bg-danger">REJECTED</span>
           <% } else if (file.status === 'ASSIGNED') { %>
             <% if (file.urgentTask === true) { %>
-              <span class="badge rounded-pill bg-primary">URGENT</span>
+              <span class="badge rounded-pill bg-primary urgent">URGENT</span>
             <% } else { %>  
               <span class="badge rounded-pill bg-warning">ASSIGNED</span>
             <% } %>
@@ -144,7 +228,17 @@
           <%= file.fileName.length > 15 ? file.fileName.substring(0, 15) + '...' :
           file.fileName %>
         </td>
-        <td><%= file.assignTo %></td>
+        <td
+        <% if (file.assignTo === 'None') { %>
+          class="text-primary fw-bold"
+        <% } %>
+        >
+          <% if (file.assignTo === 'None') { %>
+            OPEN TASK
+          <% } else { %>
+            <%= file.assignTo %>
+          <% } %>
+        </td>
         <td><%= file.dateSubmitted.toISOString().split('T')[0] %></td>
         <td><%= file.dueDate.toISOString().split('T')[0] %></td>
         <td>
@@ -264,5 +358,6 @@
     searchAndUpdate(document.getElementById('fileTable1'), 'fileTableLabel1');
     searchAndUpdate(document.getElementById('fileTable2'), 'fileTableLabel2');
     searchAndUpdate(document.getElementById('fileTable3'), 'fileTableLabel3');
+    searchAndUpdate(document.getElementById('fileTable4'), 'fileTableLabel4');
   }
   </script>

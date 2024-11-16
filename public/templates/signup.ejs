@@ -14,19 +14,20 @@
     <div class="alert alert-dismissible alert-success fade-in" id="success-alert" >
       <strong>Account Created Successfully </strong>Please wait for the HR Department to verify your account and an email will be sent to you.
     </div>
-    <div class="login form">
+    <div class="login form signupcontainer">
       <form>
         <div class="flex-container">
-          <input type="text" name="name" placeholder="First Name" required />
-          <input type="text" name="lastname" placeholder="Last Name" required />
+          <input type="text" class="form-control" name="name" placeholder="First Name" required />
+          <input type="text" class="form-control" name="lastname" placeholder="Last Name" required />
         </div>
         <div class="flex-container">
-          <input type="text" name="email" placeholder="Email" required />
-          <input type="text" name="employeeID" placeholder="Employee ID" required />
+          <input type="text" class="form-control" name="email" placeholder="Email" required />
+          <input type="text" class="form-control" name="employeeID" placeholder="Employee ID" required />
         </div>
-        <input type="date" name="birthday" placeholder="Birthday" required />
+        <input type="date" class="form-control" name="birthday" placeholder="Birthday" required />
         <input
           type="password"
+          class="form-control mt-3"
           name="password"
           placeholder="Password"
           required
@@ -34,7 +35,7 @@
           <select
             type="text"
             name="department"
-            class="form-select form-select-lg mb-3"
+            class="form-select mb-3 mt-3"
             id="department"
           >
             <option value="" disabled selected>Department</option>
@@ -52,7 +53,7 @@
         <input type="hidden" name="hrrole" value="NO ROLE" />
         <input type="submit" class="button" value="SIGN UP" />
       </form>
-      <div class="signup">
+      <div class="signup mt-4">
         <a href="login">LOGIN</a>
       </div>
     </div>

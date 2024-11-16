@@ -39,9 +39,9 @@ router.get("/home", checkRole, async (request, response) => {
     const totalSubmittedFiles = await SubmittedFiles.countDocuments();
     const totalPages = Math.ceil(totalSubmittedFiles / pageSize);
 
-    // Fetch all submitted files and sort by dateSubmitted and urgentTask
+    // Fetch all submitted files and sort by dateSubmitted
     const allFiles = await SubmittedFiles.find({})
-      .sort({ urgentTask: -1, dateSubmitted: -1 })
+      .sort({ dateSubmitted: -1 })
       .skip((currentPage - 1) * pageSize)
       .limit(pageSize);
 
@@ -61,6 +61,7 @@ router.get("/home", checkRole, async (request, response) => {
     endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay()));
 
     // Categorize files based on dueDate and status
+    const urgentFiles = [];
     const todayFiles = [];
     const currentWeekFiles = [];
     const otherFiles = [];
@@ -69,10 +70,12 @@ router.get("/home", checkRole, async (request, response) => {
     const forApproval = [];
 
     allFiles.forEach((file) => {
-      const { dueDate, status } = file;
+      const { urgentTask, dueDate, status } = file;
 
       // Categorize by due date
-      if (dueDate >= today && dueDate <= endOfToday) {
+      if (urgentTask === true) {
+        urgentFiles.push(file);
+      } else if (dueDate >= today && dueDate <= endOfToday) {
         todayFiles.push(file);
       } else if (dueDate >= startOfWeek && dueDate <= endOfWeek) {
         currentWeekFiles.push(file);
@@ -94,6 +97,7 @@ router.get("/home", checkRole, async (request, response) => {
 
     response.render("home", {
       submittedFiles: allFiles,
+      urgentFiles,
       todayFiles,
       currentWeekFiles,
       otherFiles,
@@ -547,9 +551,27 @@ router.post("/submitfile", documentUpload.single("file"), async (req, res) => {
     }
 
     const { assignTo } = req.body;
-    const [userName, userEmail] = assignTo.split(",");
+    console.log(assignTo);
+    
+    let userName = "";
+    let userEmail = "";
+    
+    // Validate assignTo input
+    if (!assignTo) {
+      userName = "None";
+      userEmail = "None";
+    } else {
+      // Safely split assignTo into userName and userEmail
+      const parts = assignTo.split(",");
+      if (parts.length === 2) {
+        [userName, userEmail] = parts;
+      } else {
+        console.error("assignTo is in an invalid format, expected 'name,email'");
+        userName = "Invalid";
+        userEmail = "Invalid";
+      }
+    }
 
-    // Create fileData object if file code does not exist
     const fileData = {
       status: "ASSIGNED",
       fileName: req.body.fileName,
@@ -905,6 +927,53 @@ router.get("/change-assignee/:id", async (req, res) => {
     req.session.message = {
       type: "warning",
       message: "Assignee changed successfully.",
+    };
+    res.redirect("/view_file/" + id);
+  } catch (error) {
+    console.error("Error updating assignee:", error);
+    req.session.message = {
+      type: "danger",
+      message: "Error: " + error,
+    };
+    res.redirect("/home");
+  }
+})
+
+router.get("/take-task/:id/:email", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const email = req.params.email;
+
+    const file = await SubmittedFiles.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "File not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
+
+    const assignChange = await LogInCollection.findOne({ email: email });
+
+    if (!assignChange) {
+      req.session.message = {
+        type: "danger",
+        message: "User not found",
+      };
+      return res.redirect("/view_file/" + id);
+    }
+
+    const data = {
+      assignTo: assignChange.name + " " + assignChange.lastname,
+      email: email,
+    };
+
+    await SubmittedFiles.findByIdAndUpdate(id, data);
+
+    req.session.message = {
+      type: "success",
+      message: "Task taken successfully.",
     };
     res.redirect("/view_file/" + id);
   } catch (error) {

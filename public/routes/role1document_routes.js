@@ -79,6 +79,7 @@ router.get("/role1", passUserToRoute, async (request, response) => {
     endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay()));
 
     // Categorize files
+    const urgentFiles = [];
     const todayFiles = [];
     const currentWeekFiles = [];
     const otherFiles = [];
@@ -88,10 +89,12 @@ router.get("/role1", passUserToRoute, async (request, response) => {
     const forApproval = [];
 
     allFiles.forEach((file) => {
-      const { dueDate, status } = file;
+      const { urgentTask, dueDate, status } = file;
 
       // Categorize by due date
-      if (dueDate >= today && dueDate <= endOfToday) {
+      if (urgentTask === true) {
+        urgentFiles.push(file);
+      } else if (dueDate >= today && dueDate <= endOfToday) {
         todayFiles.push(file);
       } else if (dueDate >= startOfWeek && dueDate <= endOfWeek) {
         currentWeekFiles.push(file);
@@ -113,6 +116,7 @@ router.get("/role1", passUserToRoute, async (request, response) => {
 
     response.render("role/role1_temps/role1", {
       submittedFiles,
+      urgentFiles,
       todayFiles,
       currentWeekFiles,
       currentPage,

@@ -689,6 +689,26 @@ function showChangeAssigneeModal(fileId) {
     changeAssigneeModal.hide();
   };
 }
+
+// Accept Task
+function showAcceptTaskModal(fileId, email) {
+  const confirmActionBtn = document.getElementById("confirmAccept");
+
+  // Show the modal
+  const acceptTaskModal = new bootstrap.Modal(document.getElementById("acceptTaskModal"));
+  acceptTaskModal.show();
+
+  // Set up the confirm button action
+  confirmActionBtn.onclick = function () {
+    window.location.href = `/take-task/${fileId}/${encodeURIComponent(email)}`;
+    acceptTaskModal.hide();
+  }
+
+  // Set up the cancel button action
+  document.getElementById("cancelAccept").onclick = function () {
+    acceptTaskModal.hide();
+  };
+}
 </script>
 <script>
   // script.js

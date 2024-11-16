@@ -188,10 +188,11 @@ video {
 }
 .flex-container {
   display: flex;
-  gap: 10px; /* Optional: adds space between the input fields */
+  gap: px; /* Optional: adds space between the input fields */
 }
 .flex-container input {
   flex: 1; /* Optional: makes the input fields take equal width */
+  margin-bottom: 10px; /* Optional: adds margin between the input fields */
 }
 
 .alert {
