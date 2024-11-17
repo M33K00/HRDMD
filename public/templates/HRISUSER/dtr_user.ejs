@@ -42,7 +42,7 @@
         <% } %>
       </div>
         <div class="page-name">
-          <h1>Attendance Record:</h1>
+          <h1 class="text-uppercase">Attendance Record:</h1>
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
               Print Current DTR REPORT
@@ -170,6 +170,40 @@
               id="timeOutBtn">TIME Out</a>
           </div>
         </div>
+        <div class="dtr-improper mt-4">
+            <h4 class="text-warning fw-bold">IMPROPER TIME RECORD:</h4>
+            <p class="text-muted">These are time records that are not properly recorded due to missing time-out.</p>
+            <table id="improperTable" class="table table-bordered mt-4">
+              <thead class="table-light text-center text-uppercase">
+                <tr>
+                  <th>Date</th>
+                  <th>Time In</th>
+                  <th>Time Late</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+                <% // Sort dayspresent array by date (from latest to oldest)
+                dayspresent
+                  .sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+                // Render sorted rows
+                dayspresent
+                .filter((row) => row.forFile === true)
+                .forEach((row, index) => { %>
+              <tr>
+                <td><%= row.date.toISOString().slice(0, 10) %></td>
+                <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                <td><%= row.timeLate.split(":")[0] %>h and <%= row.timeLate.split(":")[1] %>m</td>
+                <td style="padding: 0%;">
+                  <button class="btn btn-warning btn-action" onclick="handleAction('<%= row.id %>')"><i class="fa-solid fa-pen"></i></button>
+                </td>
+              </tr>
+                  <% }) %>
+              </tbody>
+            </table>
+            <p class="text-danger" style="font-style: italic; text-align: right;">*Please file improper time records <strong>AS SOON AS POSSIBLE</strong>.</p>
+          </div>
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item" role="presentation">
               <a class="nav-link nav-first active" data-bs-toggle="tab" href="#hw" aria-selected="true" role="tab">Hours Worked</a>
@@ -235,6 +269,7 @@
               <div class="div-view-count"><%= (attendance.hoursWorked + attendance.allTimeRecord).toFixed(2) %> Hour(s)</div>
             </div>
           </div>
+          
         </div>
         <div class="tab-pane fade" style="max-height: 10px;" id="dp" role="tabpanel">
           <h4 class="mt-4">Days Present:</h4>
@@ -262,7 +297,9 @@
                     <td><%= row.date.toISOString().slice(0, 10) %></td>
                 <td><%= row.timeLate.split(":")[0] %>h and <%= row.timeLate.split(":")[1] %>m</td>
                 <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
-                <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %><% } else { %>Ongoing<% } %></td>
+                <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %><% } 
+                  else if (row.timeOut === null && row.forFile === true) { %>
+                    <i class="text-warning fa-solid fa-circle-exclamation"></i><% } else { %>ONGOING<% } %></td>
                 <td><%= row.totalTime.toFixed(2) %></td>
                 <td><%= row.overTime.toFixed(2) %></td>
                 <td><%= row.underTime.toFixed(2) %></td>
@@ -505,6 +542,7 @@
     });
   });
 </script>
+
 <% } %>
 
 </body>

@@ -839,3 +839,23 @@
 .absentModal {
   overflow: hidden;
 }
+
+.dtr-improper {
+  margin-bottom: 25px;
+  padding: 2%;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1), 0 0 15px #ff9900;
+  border: 2px solid #ff9900;
+  background-color: #ffffff;
+  transition: box-shadow 0.3s ease-in-out; /* Smooth glowing effect */
+}
+
+.btn-action {
+  width: 100%;
+  height: 100%;
+  display: block; /* Ensures the button fills the cell */
+  text-align: center;
+  cursor: pointer;
+  font-size: small;
+  font-weight: bold;
+}
