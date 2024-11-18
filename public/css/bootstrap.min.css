@@ -736,6 +736,17 @@
   backdrop-filter: blur(5px);
 }
 
+.rounded-box-print {
+  margin-left: 250px;
+  margin-right: 250px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #9c9c9c;
+  padding: 20px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}
+
 .perm-info {
   font-size: 20px;
   margin-left: 20px;
@@ -858,4 +869,28 @@
   cursor: pointer;
   font-size: small;
   font-weight: bold;
+}
+
+.page-content {
+  background-color: #ffffff;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.logo-print {
+  display: flex;
+  position: absolute;
+  top: 8%;
+  left: 7%;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+}
+
+.header-print h5 {
+  font-size: small;
+}
+
+.header-print h3 {
+  font-size: x-large;
 }

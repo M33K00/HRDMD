@@ -25,16 +25,6 @@
   text-align: center;
 }
 
-
-.header h5 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.header h3 {
-  margin-top: 30px;
-}
-
 </style>
 <body>
   <%- include('../layouts/navhris') -%>
@@ -42,12 +32,14 @@
     <div class="page-name">
       <h1>Daily Time Record:</h1>
       <a href="/dtr_user/<%= user._id %>" class="btn btn-secondary">GO BACK</a>
+      <input type="hidden" id="userID" value="<%= user.employeeID %>">
     </div>
     <button id="download" class="btn btn-primary mb-5">Download as PDF</button>
+    <div class="rounded-box-print mt-3">
     <div class="page-content p-4 bg-white" id="page-content">
       <div class="header">
-        <img src="../images/logo.png" class="logo">
-        <div class="text-container">
+        <img src="../images/logo.png" class="logo-print">
+        <div class="text-container header-print">
           <h5 class="text-center">Republic of the Philippines</h5>
           <h5 class="text-center">City Government of Bacoor</h5>
           <h5 class="text-center">Bacoor Government Center, Brgy. Bayanan,</h5>
@@ -134,30 +126,45 @@
         </table>
       </div>
     </div>
+  </div>
 </div>
 <script src="../scripts/html2pdf.bundle.min.js"></script>
 <script>
-  document.getElementById("download").addEventListener("click", () => {
-  // Select the content of the div
-  var element = document.getElementById("page-content");
+    document.getElementById("download").addEventListener("click", () => {
+        // Select the content of the div
+        var element = document.getElementById("page-content");
+        var userID = document.getElementById("userID").value;
+        console.log(userID);
 
-  // Configure the options for the PDF
-  var opt = {
-    filename: "DTRReport.pdf",
-    image: { type: "jpeg", quality: 1.0 },
-    html2canvas: {
-      margin: 1,
-      scale: 5.0,
-      dpi: 144,
-      letterRendering: true,
-      useCORS: true // Use this option if you have cross-origin images
-    },
-    jsPDF: { unit: "in", format: "legal", orientation: "landscape" },
-  };
+        // Define the desired DPI (dots per inch), which sets the resolution
+        var dpi = 300; // You can use any DPI value like 300, 600, etc.
+        
+        // A4 page dimensions in pixels at the given DPI (A4 is 210mm x 297mm)
+        var a4WidthInPixels = 210 
+        var a4HeightInPixels = 297 
 
-  // Use html2pdf to create and download the PDF
-  html2pdf().from(element).set(opt).save();
-});
+        // Define scale for html2canvas based on DPI
+        var scale = dpi / 72;  // Convert DPI to scale factor for html2canvas (default 72 DPI)
 
+        // Configure the options for the PDF
+        var opt = {
+            filename: "DTR_" + userID + ".pdf",
+            image: { type: "jpeg", quality: 2.0 },
+            html2canvas: { 
+                scale: scale,  // Set scaling factor based on DPI
+                useCORS: true,  // Useful for external images
+                logging: false,  // Disable logging for cleaner output
+            },
+            jsPDF: { 
+                unit: "mm",  // Use pixels as the unit (instead of mm or pt)
+                format: [a4WidthInPixels, a4HeightInPixels],  // Custom A4 size in pixels
+                orientation: "portrait",  // Set the orientation of the page
+                compress: true  // Optional compression to reduce PDF size
+            },
+        };
+
+        // Use html2pdf to create and download the PDF
+        html2pdf().from(element).set(opt).save();
+    });
 </script>
 <%- include('../layouts/footer') %>

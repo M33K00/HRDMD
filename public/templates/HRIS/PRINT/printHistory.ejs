@@ -3,15 +3,25 @@
   <%- include('../../layouts/navhris') -%>
   <div class="print-body fade-in">
     <div class="page-name">
-      <h1 class="text-center">Attendance History</h1>
+      <h1 class="text-center text-uppercase">Attendance History</h1>
       <a href="/dtr_user/<%= user.id %>" class="btn btn-secondary">GO BACK</a>
     </div>
     <div class="printBTNS">
         <button id="download" class="btn btn-primary">Download as PDF</button>
     </div>
-    <div class="rounded-box mt-3">
-    <div class="page-content mt-4 p-4 bg-light" id="page-content">
-        <h3>Attendance History:</h3>
+    <div class="rounded-box-print mt-3">
+    <div class="page-content mt-4 p-4" id="page-content">
+      <div class="header">
+        <img src="https://i.imgur.com/7RbCGni.png" class="logo-print">
+        <div class="text-container header-print">
+          <h5 class="text-center">Republic of the Philippines</h5>
+          <h5 class="text-center">City Government of Bacoor</h5>
+          <h5 class="text-center">Bacoor Government Center, Brgy. Bayanan,</h5>
+          <h5 class="text-center">Bacoor Blvd., City of Bacoor, Cavite</h5>
+          <h3 class="text-center">DAILY TIME RECORD REPORT</h3>
+        </div>
+      </div>
+      <h3 class="mt-4">Attendance History:</h3>
         <table id="table" class="table table-bordered">
             <tr>
               <td style="width: 50%"><strong>Name:</strong> <%= user.name %></td>
@@ -120,23 +130,41 @@
       </div>
     </div>
   </div>
-  <script src="../scripts/html2pdf.bundle.min.js"></script>
-    <script>
-        document.getElementById("download").addEventListener("click", () => {
+<script src="../scripts/html2pdf.bundle.min.js"></script>
+<script>
+    document.getElementById("download").addEventListener("click", () => {
         // Select the content of the div
         var element = document.getElementById("page-content");
-    
+
+        // Define the desired DPI (dots per inch), which sets the resolution
+        var dpi = 300; // You can use any DPI value like 300, 600, etc.
+        
+        // A4 page dimensions in pixels at the given DPI (A4 is 210mm x 297mm)
+        var a4WidthInPixels = 210 
+        var a4HeightInPixels = 297 
+
+        // Define scale for html2canvas based on DPI
+        var scale = dpi / 72;  // Convert DPI to scale factor for html2canvas (default 72 DPI)
+
         // Configure the options for the PDF
         var opt = {
-            margin: 0.5,
             filename: "DTRHISTORYReport.pdf",
-            image: { type: "jpeg", quality: 1.0 },
-            html2canvas: { scale: 5.0 },
-            jsPDF: { unit: "in", format: "legal", orientation: "landscape" },
+            image: { type: "jpeg", quality: 2.0 },
+            html2canvas: { 
+                scale: scale,  // Set scaling factor based on DPI
+                useCORS: true,  // Useful for external images
+                logging: false,  // Disable logging for cleaner output
+            },
+            jsPDF: { 
+                unit: "mm",  // Use pixels as the unit (instead of mm or pt)
+                format: [a4WidthInPixels, a4HeightInPixels],  // Custom A4 size in pixels
+                orientation: "portrait",  // Set the orientation of the page
+                compress: true  // Optional compression to reduce PDF size
+            },
         };
-    
+
         // Use html2pdf to create and download the PDF
         html2pdf().from(element).set(opt).save();
-        });
-    </script>
-  <%- include('../../layouts/footer') %>
+    });
+</script>
+<%- include('../../layouts/footer') %>
