@@ -1,0 +1,109 @@
+<%- include('../layouts/user_hris/hris_user_header') -%>
+<body>
+  <%- include('../layouts/navhris') -%> <%-
+  include('../layouts/user_hris/sidenavhris_user') %>
+</body>
+<div class="page-body fade-in">
+    <div class="page-name">
+        <h1 class="text-uppercase">File Absent:</h1>
+        <a href="/dtr_user/<%- user.id %>" class="btn btn-primary">return to dtr</a>
+    </div>
+    <p class="text-muted mt-4">Submit your reason for not being able to time-out here. <br>
+      <strong>HR Department</strong> will review your submission to determine its validity and either approve or update the record accordingly.
+    </p>
+    <div id="alertContainer" class="bottom-right">
+        <% if (message) { %>
+        <div
+          class="alert alert-dismissible alert-<%= message.type %> fade show"
+          role="alert"
+          id="autoDismissAlert"
+        >
+          <strong>Attention! </strong><%= message.message %><a
+            href="#"
+            class="alert-link"
+          ></a>
+        </div>
+        <% } %>
+    </div>
+    <div class="dtr-improper mt-4">
+      <table id="table" class="table table-hover table-striped table-bordered" style="font-size: large;">
+        <thead class="table-warning text-center text-uppercase">
+          <tr>
+            <th>Date</th>
+            <th>Time In</th>
+            <th>Time Late</th>
+          </tr>
+        </thead>
+        <tbody class="text-center fw-bold">
+          <tr>
+            <td><%= file.date.toISOString().slice(0, 10) %></td>
+            <td><%= file.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+            <td><%= file.timeLate.split(":")[0] %>h and <%= file.timeLate.split(":")[1] %>m</td>
+          </tr>
+      </table>
+      <div class="border"></div>
+      <form id="fileDTRForm">
+        <div class="form-group mt-4">
+          <label class="form-label text-uppercase" for="reason">Reason:</label>
+          <textarea class="form-control" id="reason" rows="3" required></textarea>
+          <input type="hidden" id="fileID" name="fileID" value="<%= file.id %>">
+          <input type="hidden" id="userID" name="userID" value="<%= user.id %>">
+        </div>
+        <div>
+          <label for="formFile" class="form-label mt-4">Additional Attachment:</label>
+          <input class="form-control" type="file" name="FFattach1" id="formFile">
+          <input class="form-control mt-2" type="file" name="FFattach2" id="formFile">
+        </div>
+        <p class="text-danger mt-4">*Please check all details and attachments before submitting.</p>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-warning w-100 mt-3">Submit</button>
+        </div>
+      </form>
+    </div>
+</div>
+<script>
+document.querySelector("form").addEventListener("submit", async (event) => {
+  event.preventDefault(); // Prevent the default form submission behavior
+
+  // Collect input values
+  const reason = document.getElementById("reason").value.trim();
+  const fileID = document.getElementById("fileID").value.trim();
+  const userID = document.getElementById("userID").value.trim();
+  const FFattach1 = document.getElementById("formFile").files[0];
+  const FFattach2 = document.querySelector('input[name="FFattach2"]').files[0];
+
+  // Validate reason field
+  if (!reason) {
+    alert("Please enter a valid reason.");
+    return;
+  }
+
+  // Prepare form data for submission
+  const formData = new FormData();
+  formData.append("reason", reason);
+  formData.append("fileID", fileID);
+  if (FFattach1) formData.append("FFattach1", FFattach1);
+  if (FFattach2) formData.append("FFattach2", FFattach2);
+
+  try {
+    // Send the data to the server using POST
+    const response = await fetch("/fileDTR", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      // Redirect to the new URL after a successful submission
+      window.location.href = `/dtr_user/${userID}`;  // Using replace to avoid going back to the same page in history
+    } else {
+      const error = await response.json();
+      alert("Error submitting form: " + error.message);
+    }
+  } catch (err) {
+    console.error("Submission error:", err);
+    alert("An unexpected error occurred. Please try again.");
+  }
+});
+</script>
+<%- include('../layouts/footer') %>

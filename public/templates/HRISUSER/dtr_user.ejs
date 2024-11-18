@@ -170,7 +170,8 @@
               id="timeOutBtn">TIME Out</a>
           </div>
         </div>
-        <div class="dtr-improper mt-4">
+        <% if (ForFileDTR) { %>
+          <div class="dtr-improper mt-4">
             <h4 class="text-warning fw-bold">IMPROPER TIME RECORD:</h4>
             <p class="text-muted">These are time records that are not properly recorded due to missing time-out.</p>
             <table id="improperTable" class="table table-bordered mt-4">
@@ -196,7 +197,11 @@
                 <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
                 <td><%= row.timeLate.split(":")[0] %>h and <%= row.timeLate.split(":")[1] %>m</td>
                 <td style="padding: 0%;">
-                  <button class="btn btn-warning btn-action" onclick="handleAction('<%= row.id %>')"><i class="fa-solid fa-pen"></i></button>
+                  <% if (row.FFapproved === "N/A") { %>
+                    <button class="btn btn-warning btn-action" onclick="handleAction('<%= row.id %>')"><i class="fa-solid fa-pen"></i></button>
+                  <% } else { %>
+                    <span class="badge rounded-pill bg-warning mt-2">PENDING APPROVAL</span>
+                  <% } %>
                 </td>
               </tr>
                   <% }) %>
@@ -204,6 +209,7 @@
             </table>
             <p class="text-danger" style="font-style: italic; text-align: right;">*Please file improper time records <strong>AS SOON AS POSSIBLE</strong>.</p>
           </div>
+        <% } %>
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item" role="presentation">
               <a class="nav-link nav-first active" data-bs-toggle="tab" href="#hw" aria-selected="true" role="tab">Hours Worked</a>

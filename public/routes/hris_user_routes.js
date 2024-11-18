@@ -72,6 +72,7 @@ const Schol = require("../models/201File/schol");
 const SwornS = require("../models/201File/swornS");
 const CertLeaveB = require("../models/201File/certLeaveB");
 const DisAct = require("../models/201File/disAct");
+const daysPresent = require("../models/dayspresent");
 
 // 201 File Model Array
 const userDocumentsArray = [
@@ -452,6 +453,12 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
       status = "Present";
     }
 
+    let ForFileDTR = await DaysPresent.findOne({
+      email: email,
+      forFile: true,
+      FFapproved: { $in: ["N/A", "PENDING"] }
+    });
+
     const VLPoints = await calculateMonthlyVLPoints(logincollections.email, attendance.VLPoints);
     const SLPoints = await calculateMonthlySLPoints(logincollections.email, attendance.SLPoints);
 
@@ -461,6 +468,7 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
       hrSettings: hrSettings,
       logincollections: logincollections,
       attendance: attendance,
+      ForFileDTR: ForFileDTR,
       dayspresent: dayspresent,
       daysabsent: daysabsent,
       leaveapplications: leaveapplications,
@@ -2159,5 +2167,77 @@ router.get("/printHistory/:email", async (req, res) => {
     res.redirect("/dtr_user" + logincollections.id);
   }
 })
+
+router.get("/fileDTR/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const file = await daysPresent.findById(id);
+
+    if (!file) {
+      req.session.message = {
+        type: "danger",
+        message: "DTR Record not found",
+      };
+      return res.redirect("/hris");
+    }
+
+    res.render("HRISUSER/fileDTR", { file });
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+})
+
+const DTRStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./files/employeedocument/fileDTR");
+  },
+  filename: (req, file, cb) => {
+    const safeFileName = path.basename(file.originalname); // Sanitizing filename
+    cb(null, safeFileName);
+  },
+});
+
+const upload = multer({
+  storage: DTRStorage,
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5 MB
+  },
+}).fields([
+  { name: "FFattach1", maxCount: 1 },
+  { name: "FFattach2", maxCount: 1 },
+]);
+
+router.post("/fileDTR", upload, async (req, res) => {
+  const { reason, fileID } = req.body;
+  const files = req.files;
+
+  try {
+    const fileDTR = await daysPresent.findById(fileID);
+
+    if (!fileDTR) {
+      return res.status(404).json({ error: "File not found" });
+    }
+
+    // Update the document
+    await fileDTR.updateOne({
+      $set: {
+        reasonFF: reason || null,
+        FFapproved: "PENDING",
+        FFattach1: files?.FFattach1 ? files.FFattach1[0].filename : null,
+        FFattach2: files?.FFattach2 ? files.FFattach2[0].filename : null,
+      },
+    });
+
+    res.status(200).json({ message: "File updated successfully" });
+  } catch (error) {
+    console.error("Error handling files:", error);
+    res.status(500).json({ error: "An error occurred while saving files." });
+  }
+});
 
 module.exports = router;
