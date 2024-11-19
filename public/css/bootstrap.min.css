@@ -894,3 +894,16 @@
 .header-print h3 {
   font-size: x-large;
 }
+
+.modal-xl {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.DTRModal {
+  margin-top: 460px;
+}
+
+.viewDTRModal {
+  margin-top: 350px;
+}

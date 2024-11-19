@@ -39,18 +39,14 @@
   </script>
   <div class="page-body fade-in">
     <div class="page-name">
-      <h1>Daily Time Record</h1>
+      <h1 class="text-uppercase">Daily Time Record</h1>
       <h3><%= getCurrentDateInWords() %></h3>
     </div>
     <div class="page-extra">
       <p class="page-description text-muted">
-        View employee's daily time record here
+        View employee's daily time record here.
       </p>
-    <% if (user.hrrole === "ADMIN") { %>
       <a href="/DTRSettings" class="btn btn-secondary"><i class="fa-solid fa-gear"></i> Settings</a>
-    <% } else if (user.hrrole === "ROLE 5") { %>
-      <a href="/hrSettings" class="btn btn-secondary"><i class="fa-solid fa-print"></i> PRINT REPORTS</a>
-    <% } %>
     </div>
     <div class="dtr-container">
       <% let inCount = 0; %> <% mergedData.forEach(employee => { %> <%
@@ -82,6 +78,14 @@
       style="margin-bottom: 20px"
       oninput="searchTables()"
     />
+    <% if (DTRApproval.length > 0) { %>
+      <div class="alert alert-dismissible alert-warning">
+        <h4 class="alert-heading">Attention!</h4>
+        <p class="mb-0">There are currently <strong><%= DTRApproval.length %></strong> DTR file(s) that needs your attention.
+          <a href="/DTRApproval" class="alert-link">Click here</a> to view and approve them.  
+        </p>
+      </div>
+    <% } %>
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item" role="presentation">
         <a

@@ -33,23 +33,21 @@ const employeeUpload = multer({
 
 const leaveAttachmentStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./files/leaveAttach");
+    cb(null, "./files/leaveAttach"); // Correct path for file storage
   },
   filename: (req, file, cb) => {
-    const fileName = file.originalname;
-    cb(null, fileName); // Use the original filename without any modifications
+    cb(null, file.originalname); // Save with the original filename
   },
 });
 
+// Ensure the storage is applied in multer setup
 const leaveAttachmentUpload = multer({
-  storage: leaveAttachmentStorage,
   limits: {
-    fileSize: 1024 * 1024 * 5,
-  }
-}).fields([
-  { name: 'leaveFileAdd1', maxCount: 1 },
-  { name: 'leaveFileAdd2', maxCount: 1 }
-]);
+    fileSize: 10 * 1024 * 1024,
+  },
+  storage: leaveAttachmentStorage, // Apply the storage configuration
+});
+
 
 
 // 201 File Models
@@ -241,24 +239,19 @@ router.get("/view_leave/:email", async (req, res) => {
   }
 });
 
-router.post("/apply_leave", leaveAttachmentUpload, async (req, res) => {
+router.post('/apply_leave', async (req, res) => {
   try {
-
-    console.log("Files:", req.files);
     console.log("Body:", req.body);
 
     const data = {
       name: req.body.name,
       email: req.body.email,
-      Type: req.body.Type.toLowerCase(), // Changed to lowercase for naming convention
-      StartDate: new Date(req.body.StartDate), // Convert to Date object
-      EndDate: new Date(req.body.EndDate), // Convert to Date object
-      leaveFileAdd1: req.files.leaveFileAdd1 ? req.files.leaveFileAdd1[0].filename : null,
-      leaveFileAdd2: req.files.leaveFileAdd2 ? req.files.leaveFileAdd2[0].filename : null,
-      ...req.body,
+      Type: req.body.Type,
+      StartDate: new Date(req.body.StartDate),
+      EndDate: new Date(req.body.EndDate),
+      leaveFileAdd1: req.body.leaveFileAdd1,
+      leaveFileAdd2: req.body.leaveFileAdd2
     };
-
-    console.log("Data:", data);
 
     // Calculate the number of days between StartDate and EndDate
     const timeDiff = Math.abs(data.EndDate - data.StartDate);
@@ -299,38 +292,71 @@ router.post("/apply_leave", leaveAttachmentUpload, async (req, res) => {
       return;
     }
 
-    // Insert data into the database
-    await LeaveApplications.insertMany([data]);
+    const leaveApplications = new LeaveApplications(data);
+    await leaveApplications.save();
 
-    // Update available leave based on leave type and number of days
-    if (data.Type === "sick leave") {
-      account.availableSL -= daysDiff;
-    } else if (data.Type === "vacation leave") {
-      account.availableVL -= daysDiff;
-    }
+    res.json({
+      success: true,
+      message: 'Leave application created. Please upload the files.',
+      leaveId: leaveApplications._id, // Send the document ID to associate with files
+    });
 
-    // Save the updated account
-    await account.save();
-
-    // Set success message in session
-    req.session.message = {
-      type: "success",
-      message: "Leave application submitted successfully!",
-    };
-
-    res.redirect("/view_leave/" + data.email); // Redirect to a different page after successful submission
   } catch (err) {
-    // Log and handle errors gracefully
-    console.error("Error adding leave application:", err);
-    req.session.message = {
-      type: "danger",
-      message:
-        err.message ||
-        "An error occurred while processing your request. Please try again later.",
-    };
-    res.redirect("/apply_leave/" + data.email);
+    console.error('Error creating leave application:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to create leave application.',
+    });
   }
 });
+
+// Route to handle file uploads
+router.post(
+  '/upload_files',
+  leaveAttachmentUpload.fields([
+    { name: 'leaveFileAdd1', maxCount: 1 },
+    { name: 'leaveFileAdd2', maxCount: 1 },
+  ]),
+  async (req, res) => {
+    try {
+      const { leaveId } = req.body; // Get the leave ID from the request
+
+      if (!leaveId) {
+        throw new Error('Leave application ID is required.');
+      }
+
+      // File paths to be updated
+      const filePaths = {
+        leaveFileAdd1: req.files.leaveFileAdd1 ? req.files.leaveFileAdd1[0].filename : null,
+        leaveFileAdd2: req.files.leaveFileAdd2 ? req.files.leaveFileAdd2[0].filename : null,
+      };
+
+      // Update the MongoDB document with the file paths
+      const leaveApplication = await LeaveApplications.findByIdAndUpdate(
+        leaveId,
+        { $set: filePaths },
+        { new: true }
+      );
+
+      if (!leaveApplication) {
+        throw new Error('Leave application not found.');
+      }
+
+      res.json({
+        success: true,
+        message: 'Files uploaded and leave application updated.',
+        leaveApplication,
+      });
+    } catch (error) {
+      console.error('Error uploading files:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to upload files or update leave application.',
+      });
+    }
+  }
+);
+
 
 router.get("/HRFiles", async (req, res) => {
   res.render("HRISUSER/HRFiles");

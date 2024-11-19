@@ -44,11 +44,11 @@
       Please file application 5 days in advance, whenever possible, of the
       effictive date of the application
     </p>
-    <form action="/apply_leave" method="POST" class="app-form leave-form slide-up" enctype="multipart/form-data">
+    <form method="POST" onsubmit="submitForm(event)" class="app-form leave-form slide-up" >
       <div class="form-group flex-container">
         <div class="form-item">
-          <input type="hidden" name="name" value="<%= user.name %>" />
-          <input type="hidden" name="email" value="<%= user.email %>" />
+          <input type="hidden" id="name" name="name" value="<%= user.name %>" />
+          <input type="hidden" id="email" name="email" value="<%= user.email %>" />
           <label for="email" class="form-label mt-4">Email address</label>
           <input
             type="text"
@@ -270,8 +270,8 @@
       </div>
       <div>
           <label for="formFile" class="form-label mt-4">Additional Attachment:</label>
-          <input class="form-control" type="file" name="leaveFileAdd1" id="formFile">
-          <input class="form-control mt-2" type="file" name="leaveFileAdd2" id="formFile">
+          <input class="form-control" type="file" name="leaveFileAdd1" id="leaveFileAdd1">
+          <input class="form-control mt-2" type="file" name="leaveFileAdd2" id="leaveFileAdd2">
       </div>
       <p class="mt-4 text-uppercase text-danger" style="font-weight: bold">
         PLEASE CHECK ALL DETAILS BEFORE SUBMITTING!
@@ -293,5 +293,62 @@
     document.getElementById("dateFiling").value = currentDate;
   });
 </script>
+<script>
+  async function submitForm(event) {
+  event.preventDefault();
 
+  const leaveFileAdd1Input = document.querySelector('#leaveFileAdd1');
+  const leaveFileAdd2Input = document.querySelector('#leaveFileAdd2');
+
+  // Extract filenames
+  const leaveFileAdd1 = leaveFileAdd1Input.files[0]?.name || null;
+  const leaveFileAdd2 = leaveFileAdd2Input.files[0]?.name || null;
+
+  // Step 1: Submit Leave Application
+  const leaveData = {
+    name: document.querySelector('#name').value,
+    email: document.querySelector('#email').value,
+    Type: document.querySelector('#Type').value,
+    StartDate: document.querySelector('#StartDate').value,
+    EndDate: document.querySelector('#EndDate').value,
+    leaveFileAdd1: leaveFileAdd1,
+    leaveFileAdd2: leaveFileAdd2,
+  };
+
+  const leaveResponse = await fetch('/apply_leave', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(leaveData),
+  });
+
+  const leaveResult = await leaveResponse.json();
+
+  if (!leaveResult.success) {
+    alert('Failed to submit leave application.');
+    return;
+  }
+
+  const leaveId = leaveResult.leaveId;
+
+  // Step 2: Upload Files
+  const formData = new FormData();
+  formData.append('leaveId', leaveId); // Include the leave ID
+  formData.append('leaveFileAdd1', document.querySelector('#leaveFileAdd1').files[0]);
+  formData.append('leaveFileAdd2', document.querySelector('#leaveFileAdd2').files[0]);
+
+  const uploadResponse = await fetch('/upload_files', {
+    method: 'POST',
+    body: formData,
+  });
+
+  const uploadResult = await uploadResponse.json();
+
+  if (uploadResult.success) {
+    alert('Leave application and files submitted successfully!');
+    window.location.reload();
+  } else {
+    alert('File upload failed. Please try again.');
+  }
+}
+</script>
 <%-include('../layouts/footer') %>

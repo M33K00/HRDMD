@@ -1062,6 +1062,17 @@ router.get("/download_leaveAttach/:filename", async (req, res) => {
   });
 });
 
+router.get("/download_FFattach/:filename", async (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, "../../files/employeedocument/fileDTR/", filename);
+
+  res.download(filePath, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+});
+
 router.post("/manage-leave/:id", async (req, res) => {
   console.log(req.body);
 
@@ -1216,7 +1227,9 @@ router.get("/dtr", async (req, res) => {
       },
     ]);
 
-    res.render("HRIS/dtr", { mergedData });
+    const DTRApproval = await DaysPresent.find({ FFapproved: "PENDING" });
+
+    res.render("HRIS/dtr", { mergedData, DTRApproval });
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }
@@ -1373,12 +1386,7 @@ router.get("/m-absent/:id", async (req, res) => {
 router.post("/markAbsent", async (req, res) => {
   try {
     // Access the data from the body
-    const { employeeID, category, amount } = req.body;
-
-    // Log the data to check if it is received correctly
-    console.log("Employee ID:", employeeID);
-    console.log("Category:", category);
-    console.log("Amount:", amount);
+    const { startDate, endDate, employeeID, category, amount } = req.body;
 
     // Find login collection by employee ID
     const logincollections = await LogInCollection.findOne({
@@ -1409,20 +1417,37 @@ router.post("/markAbsent", async (req, res) => {
       attendance.availableSPL -= amount;
     }
 
+    // Parse the start and end dates
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Check if the start date is before or equal to the end date
+    if (start > end) {
+      return res.status(400).json({ message: "Start date must be before or equal to end date." });
+    }
+
+    // Create records for each day in the date range
+    const daysAbsentRecords = [];
+    let daysCount = 0;
+    for (let date = start; date <= end; date.setDate(date.getDate() + 1)) {
+      const dayAbsent = {
+        name: logincollections.name + " " + logincollections.lastname,
+        email: logincollections.email,
+        date: new Date(date), // Add the current date to the record
+      };
+      daysAbsentRecords.push(dayAbsent);
+      daysCount++;
+    }
+
     // Save the updated attendance record
+    attendance.daysAbsent += daysCount;
     await attendance.save();
 
-    // Record Absent in DaysAbsent collection
-    const date = new Date();
-    const daysAbsent = {
-      name: logincollections.name,
-      email: logincollections.email,
-      date: date,
-    };
-    await DaysAbsent.create(daysAbsent);
+    // Insert all the records in bulk
+    await DaysAbsent.insertMany(daysAbsentRecords);
 
     // Send a success response back to the client
-    res.status(200).json({ message: "Marked as absent successfully." });
+    res.status(200).json({ message: "Marked as absent successfully for all days in the range." });
 
   } catch (error) {
     // Handle error and send response
@@ -1430,6 +1455,7 @@ router.post("/markAbsent", async (req, res) => {
     res.status(500).json({ message: "An error occurred while marking absent." });
   }
 });
+
 
 router.get("/hrSettings", checkHRSettings, async (req, res) => {
   try {
@@ -1714,6 +1740,79 @@ router.get("/closeDTR/:department", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 })
+
+router.get("/DTRApproval", async (req, res) => {
+  try {
+    const dayspresent = await DaysPresent.find({ FFapproved: "PENDING" });
+    const mergedRecords = await Promise.all(
+      dayspresent.map(async (record) => {
+        const employee = await LogInCollection.findOne({ email: record.email });
+        return {
+          ...record._doc, // Spread dayspresent record fields
+          name: employee?.name, // Add employee's name (if found)
+          lastname: employee?.lastname // Add employee's lastname (if found)
+        };
+      })
+    );
+    res.render("HRIS/DTRApproval", { dayspresent, mergedRecords });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+router.post("/DTRApprove", async (req, res) => {
+  const { id, email, approval, reason, overtime } = req.body;
+
+  console.log(id, email, approval, reason, overtime);
+  try {
+    const overtimeDecimal = parseFloat(overtime);
+
+    // Validate the overtime input
+    if (isNaN(overtimeDecimal) || overtimeDecimal < 0) {
+      // Handle invalid overtime input (optional)
+      req.session.message = {
+        type: "danger",
+        message: "Invalid overtime input.",
+      }
+      return res.redirect("/DTRApproval");
+    }
+    
+    const attendance = await Attendance.findOne({ email: email });
+    const dayspresent = await DaysPresent.findOne({ _id: id });
+    if (!dayspresent) {
+      return res.status(404).send("Days present record not found");
+    }
+
+    if (!attendance) {
+      return res.status(404).send("Attendance record not found");
+    }  
+
+    if (approval === "approve") {
+      dayspresent.FFapproved = "APPROVED";
+      dayspresent.FFreason = reason;
+      dayspresent.overTime = overtimeDecimal;
+      await dayspresent.save();
+
+      attendance.hoursWorked += overtimeDecimal;
+      await attendance.save();
+    } else if (approval === "disapprove") {
+      dayspresent.FFapproved = "DISAPPROVED";
+      dayspresent.FFreason = reason;
+      await dayspresent.save();
+    }
+
+    req.session.message = {
+      type: "light",
+      message: "DTR Record Acknowledged",
+    };
+
+    res.redirect("/DTRApproval");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 
 router.get("/addacc", (req, res) => {

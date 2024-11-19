@@ -53,6 +53,11 @@ const daysPresentSchema = new mongoose.Schema({
     required: false,
     default: "N/A",
   },
+  FFreason: {
+    type: String,
+    required: false,
+    default: "",
+  },
   FFattach1: {
     type: String,
     required: false,

@@ -1,0 +1,184 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/navhrisP') -%>
+  <%- include('../layouts/sidenavP') %>
+  <div class="page-body fade-in">
+    <div class="page-name">
+      <h1>DTR APPROVAL:</h1>
+      <a href="/dtr" class="btn btn-secondary">Go Back</a>
+    </div>
+    <div id="alertContainer" class="bottom-right slide-up">
+      <% if (message) { %>
+        <div class="toast show slide-up" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto">Attention!</strong>
+            <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="toast-body">
+            <%= message.message %>
+          </div>
+        </div>
+      <% } %>
+    </div>
+    <p class="text-muted">These are time records that are not properly recorded due to missing time-out.</p>
+    <% if (mergedRecords.length > 0) { %>
+      <div class="dtr-improper mt-4">
+        <h4 class="text-warning fw-bold">IMPROPER TIME RECORD:</h4>
+        <table id="improperTable" class="table table-bordered mt-4">
+          <thead class="table-light text-center text-uppercase">
+            <tr>
+              <th>Name</th>
+              <th>Date</th>
+              <th>Time In</th>
+              <th>Time Late</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <% // Sort dayspresent array by date (from latest to oldest)
+            mergedRecords
+              .sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+            // Render sorted rows
+            mergedRecords
+            .forEach((row, index) => { %>
+          <tr>
+            <td class="fw-bold text-uppercase"><%= row.name %> <%= row.lastname %></td>
+            <td><%= row.date.toISOString().slice(0, 10) %></td>
+            <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+            <td><%= row.timeLate.split(":")[0] %>h and <%= row.timeLate.split(":")[1] %>m</td>
+            <td style="padding: 0%;">
+                <button class="btn btn-warning btn-action" onclick="approveFile(<%= JSON.stringify(row) %>)">
+                    <i class="fa-solid fa-pen"></i>
+                </button>
+            </td>
+          </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </div>
+  </div>
+  <% } else { %>
+    <p>All time records are properly recorded.</p>
+  <% } %>
+</body>
+<!-- Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" style="overflow: hidden;">
+  <div class="modal-dialog modal-dialog-centered modal-xl DTRModal" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Approve DTR Record:</h5>
+      </div>
+      <div class="modal-body">
+        <table id="table" class="table table-hover table-striped table-bordered">
+        <thead class="table-warning text-center text-uppercase">
+          <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Time In</th>
+            <th>Time Late</th>
+          </tr>
+        </thead>
+        <tbody class="text-center fw-bold">
+          <tr>
+            <td><span id="modalName"></span></td>
+            <td><span id="modalDate"></span></td>
+            <td><span id="modalTimeIn"></span></td>
+            <td><span id="modalTimeLate"></span></td>
+          </tr>
+        </table>
+        <p class="fw-bold">Reason:</p>
+        <textarea class="form-control" id="modalReason" rows="3" disabled></textarea>
+        <p class="fw-bold">Attachments:</p>
+        <ul>
+            <li><a id="modalFFattach1" href="#" download>Download Attachment 1</a></li>
+            <li><a id="modalFFattach2" href="#" download>Download Attachment 2</a></li>
+        </ul>
+        <form id="approvalForm" action="/DTRApprove" method="POST">
+            <input type="hidden" name="id" id="modalInputID">
+            <input type="hidden" name="email" id="modalUserEmail">
+            <div class="approval">
+                <p class="fw-bold">Approve:</p>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="approval" id="approve" value="approve" required>
+                <label class="form-check-label" for="approve">Approve</label>
+                </div>
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="approval" id="disapprove" value="disapprove" required>
+                <label class="form-check-label" for="disapprove">Disapprove</label>
+                </div>
+            </div>
+
+            <div id="timeRecord" class="mt-3">
+                <p class="fw-bold">Time Record:</p>
+                <p>Set time-out and overtime</p>
+                <table class="table table-light table-bordered">
+                <thead class="table-light text-center text-uppercase">
+                    <tr>
+                    <th>Time out</th>
+                    <th>Overtime</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center fw-bold">
+                    <tr>
+                    <td>Time-out is set automatically based on shift-end setting</td>
+                    <td>
+                        <input type="number" name="overtime" class="form-control text-center" id="daysWithPay" />
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+            <div class="mt-3">
+                <label for="reason" class="fw-bold">Reason:</label>
+                <textarea name="reason" id="reason" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="mt-3 text-end" style="border-top: 1px solid rgba(187, 187, 187, 0.836);">
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function approveFile(row) {
+    // Populate modal content
+    document.getElementById('modalName').textContent = `${row.name} ${row.lastname}`;
+    document.getElementById('modalDate').textContent = new Date(row.date).toISOString().slice(0, 10);
+    document.getElementById('modalTimeIn').textContent = new Date(row.timeIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const [hours, minutes] = row.timeLate.split(":");
+    document.getElementById('modalTimeLate').textContent = `${hours}h and ${minutes}m`;
+    document.getElementById('modalReason').textContent = row.reasonFF;
+    document.getElementById('modalInputID').value = row._id;
+    document.getElementById('modalUserEmail').value = row.email;
+
+    // Handle attachments
+    const attach1 = document.getElementById('modalFFattach1');
+    const attach2 = document.getElementById('modalFFattach2');
+
+    if (row.FFattach1) {
+      attach1.href = `/download_FFattach/${row.FFattach1}`;
+      attach1.textContent = row.FFattach1;
+    } else {
+      attach1.href = '#';
+      attach1.textContent = 'No Attachment 1';
+    }
+
+    if (row.FFattach2) {
+      attach2.href = `/download_FFattach/${row.FFattach2}`;
+      attach2.textContent = row.FFattach2;
+    } else {
+      attach2.href = '#';
+      attach2.textContent = 'No Attachment 2';
+    }
+
+    // Show the modal
+    $('#confirmationModal').modal('show');
+  }
+</script>
+
+<%- include('../layouts/footer') %>
