@@ -395,10 +395,25 @@ router.get("/view/:id", async (req, res) => {
     let pendingFiles = allFiles.filter((file) => file.status === "PENDING");
     let approvedFiles = allFiles.filter((file) => file.status === "APPROVED");
 
+    // Calculate Ratio
+    let pendingCount = pendingFiles.length;
+    let approvedCount = approvedFiles.length;
+    let ratio = pendingCount > 0 ? (approvedCount / pendingCount).toFixed(2) : 0;
+
+    // Calculate Exp
+    const { exp, level } = logincollections;
+    const requiredExp = 100 * level;
+    const nextLevelExp = 100 * (level + 1);
+
     // Render the view_account template with the retrieved data
     res.render("view_account", {
       title: "View Account",
       logincollections: logincollections,
+      ratio: ratio,
+      exp: exp,
+      level: level,
+      requiredExp: requiredExp,
+      nextLevelExp: nextLevelExp,
       pendingFiles: pendingFiles,
       approvedFiles: approvedFiles,
     });

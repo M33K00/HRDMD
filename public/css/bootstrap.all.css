@@ -578,7 +578,7 @@ body.modal-open .modal-backdrop {
 }
 
 .account-basic1 {
-  border: #686868 solid 2px;
+  border:rgba(0, 0, 0, 0.5) 1px solid;
   border-radius: 5px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -590,13 +590,13 @@ body.modal-open .modal-backdrop {
 }
 
 .account-stats {
-  border: #7c7c7c solid 2px;
-  border-radius: 5px;
+  border:rgba(0, 0, 0, 0.5) 1px solid;
+  border-radius: 4px;
   background-color: #ffffff;
-  box-shadow: #00000065 0px 2px 5px;
+  box-shadow: #00000065 0px 0px 4px;
   margin: 15px; /* Margin for spacing */
   padding: 15px; /* Padding inside the box */
-  font-size: 17px; /* Font size */
+  font-size: 20px; /* Font size */
   width: 450px; /* Fixed width */
   height: 90%;
   max-width: 100%; /* Responsive up to full width of the parent */
@@ -604,6 +604,7 @@ body.modal-open .modal-backdrop {
   grid-column: 4; /* Place in the third column */
   align-self: start; /* Align to the start of the grid cell */
 }
+
 
 .graph-container {
   display: grid;

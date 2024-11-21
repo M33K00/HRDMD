@@ -20,6 +20,7 @@ const documentStorage = multer.diskStorage({
   },
 });
 
+
 const employeeStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./files/employeedocument");

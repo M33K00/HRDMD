@@ -394,6 +394,7 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
         const improper = await DaysPresent.findOne({
           email: email,
           timeOut: null,
+          forFile: false
         });
 
         // Set the forFile property to true

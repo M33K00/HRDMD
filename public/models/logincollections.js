@@ -136,6 +136,14 @@ const logInSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  exp: {
+    type: Number,
+    default: 0,
+  },
+  level: {
+    type: Number,
+    default: 1,
+  },
 });
 
 // Fire a function before doc is saved to db

@@ -27,6 +27,20 @@ const documentStorage = multer.diskStorage({
 
 const documentUpload = multer({ storage: documentStorage });
 
+// Level function
+function calculateLevel(exp) {
+  let level = 1;
+  let requiredExp = 100;
+
+  while (exp >= requiredExp) {
+    exp -= requiredExp;
+    level++;
+    requiredExp = 100 * level; // Adjust this for a custom curve
+  }
+
+  return { level, remainingExp: exp, nextLevelExp: requiredExp };
+}
+
 router.get("/startpage", requireAuth, (req, res) => {
   res.render("startpage");
 });
@@ -616,14 +630,16 @@ router.get("/view_file/:id", async (req, res) => {
       return res.redirect("/home");
     }
 
+    const fileDes = "Home";
     const remarks = await TaskTimeline.find({ fileCode: file.fileCode });
-    const fileDes = "Main"
     const users = await LogInCollection.find({
       department: "HR Department",
     });
+    
 
     res.render("DTRACKER/view_file", { file, remarks, fileDes, users });
   } catch (error) {
+    console.error(error);
     req.session.message = {
       type: "danger",
       message: "Error: " + error,
@@ -647,8 +663,11 @@ router.get("/view_archived/:id", async (req, res) => {
     }
 
     const fileDes = "Archive"
+    const users = await LogInCollection.find({
+      department: "HR Department",
+    })
 
-    res.render("DTRACKER/view_file", { file, fileDes });
+    res.render("DTRACKER/view_file", { file, fileDes, users });
   } catch (error) {
     req.session.message = {
       type: "danger",
@@ -683,11 +702,20 @@ router.get("/approve-file/:id", async (req, res) => {
       date: new Date(),
     });
 
+    const user = await LogInCollection.findOne({ email: file.email });
+    if (user) {
+      user.exp += 50;
+      const { level, remainingExp, nextLevelExp } = calculateLevel(user.exp);
+      user.level = level;
+      user.remainingExp = remainingExp;
+      await user.save();
+    }
+
     req.session.message = {
       type: "success",
       message: `File ${file.fileCode} Approved Successfully`,
     };
-    res.redirect("/view_file/" + id);
+    res.redirect("/home");
   } catch (error) {
     req.session.message = {
       type: "danger",

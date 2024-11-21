@@ -101,13 +101,13 @@
             <span class="badge rounded-pill bg-danger text-uppercase">The task assignment was changed by: <%= file.assignChange %></span>
           <% } %>
           <div class="file-dropdown">
-            <button class="btn <% if ((user.hrrole !== "ADMIN" || user.hrrole !== "ADMIN2") && file.status !== "ASSIGNED") { %>btn-dark disabled <% } else { %>btn-primary <% } %>
+            <button class="btn <% if ((user.hrrole !== "ADMIN" && user.hrrole !== "ADMIN2") && file.status !== "ASSIGNED") { %>btn-dark disabled<% } else { %>btn-primary <% } %>
               dropdown-toggle" 
               type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Actions
             </button>
             <div class="dropdown-menu" id="fileDropdownMenu" aria-labelledby="dropdownMenuButton">
-              <% if (user.hrrole === "ADMIN" || user.hrrole === "ADMIN2" && user.email !== file.email) { %>
+              <% if ((user.hrrole === "ADMIN" || user.hrrole === "ADMIN2") && user.email !== file.email && file.status !== "FOR APPROVAL") { %>
                 <a class="dropdown-item" href="#" onclick="showChangeAssigneeModal('<%= file.id %>')">
                   <i class="fa-solid fa-users"></i>
                   Change Assignment

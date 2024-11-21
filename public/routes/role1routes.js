@@ -100,13 +100,22 @@ router.get("/view-user/:id", async (req, res) => {
 
     let ratio = pendingCount > 0 ? (approvedCount / pendingCount).toFixed(2) : 0;
 
+    // Level Variables
+    const { exp, level } = logincollections;
+    const requiredExp = 100 * level;
+    const nextLevelExp = 100 * (level + 1);
+
     // Render the view_account template with the retrieved data
     res.render("role/view_user", {
       title: "View Account",
       logincollections: logincollections,
       pendingFiles: pendingFiles,
       approvedFiles: approvedFiles,
-      ratio: ratio
+      ratio: ratio,
+      exp: exp,
+      level: level,
+      requiredExp: requiredExp,
+      nextLevelExp: nextLevelExp
     });
   } catch (err) {
     // Log and handle errors gracefully
