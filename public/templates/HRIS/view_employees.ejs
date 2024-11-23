@@ -146,13 +146,12 @@
                 <th style="width: 100px">ID Number</th>
                 <th style="width: 150px">Position</th>
                 <th style="width: 150px">Department</th>
-                <th class="text-center" style="width: 100px">Account Status</th>
-                <th style="width: 10px; padding-left: 40px"></th>
+                <th class="text-center" style="width: 10px">Account Status</th>
               </tr>
             </thead>
             <tbody>
               <% logincollections.forEach((row, index) => { %>
-              <tr>
+              <tr class="clickable-row" data-href="/view_emp_data/<%= row.email %>">
                 <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                 <td><%= row.employeeID %></td>
                 <td>
@@ -184,12 +183,7 @@
                   <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
                 <% } else { %>
                   <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
-                <% } %>
-                <td class="action-buttons">
-                  <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                </td>
+                <% } %> 
               </tr>
               <% }) %>
             </tbody>
@@ -212,12 +206,11 @@
                   <th style="width: 100px">ID Number</th>
                   <th style="width: 100px">Position</th>
                   <th class="text-center" style="width: 100px;">Account Status</th>
-                  <th style="width: 10px; padding-left: 40px"></th>
                 </tr>
               </thead>
               <tbody>
                 <% HRdp.forEach((row, index) => { %>
-                <tr>
+                <tr class="clickable-row" data-href="/view_emp_data/<%= row.email %>">
                   <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                   <td><%= row.employeeID %></td>
                   <td>
@@ -233,11 +226,6 @@
                   <% } else { %>
                     <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
                   <% } %>
-                  <td class="action-buttons">
-                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                      ><i class="fa-solid fa-eye"></i
-                    ></a>
-                  </td>
                 </tr>
                 <% }) %>
               </tbody>
@@ -260,12 +248,11 @@
                   <th style="width: 100px">ID Number</th>
                   <th style="width: 100px">Position</th>
                   <th class="text-center" style="width: 100px;">Account Status</th>
-                  <th style="width: 10px; padding-left: 40px"></th>
                 </tr>
               </thead>
               <tbody>
                 <% DP1.forEach((row, index) => { %>
-                  <tr>
+                  <tr class="clickable-row" data-href="/view_emp_data/<%= row.email %>">
                   <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                   <td><%= row.employeeID %></td>
                   <td>
@@ -281,11 +268,6 @@
                   <% } else { %>
                     <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
                   <% } %>
-                  <td class="action-buttons">
-                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                      ><i class="fa-solid fa-eye"></i
-                    ></a>
-                  </td>
                 </tr>
                 <% }) %>
               </tbody>
@@ -307,13 +289,12 @@
                 <th style="width: 150px">Name</th>
                   <th style="width: 100px">ID Number</th>
                   <th style="width: 100px">Position</th>
-                  <th class="text-center" style="width: 100px;">Account Status</th>
-                  <th style="width: 10px; padding-left: 40px"></th>
+                  <th class="text-center" style="width: 50px;">Account Status</th>
               </tr>
             </thead>
             <tbody>
               <% DP2.forEach((row, index) => { %>
-                <tr>
+                <tr class="clickable-row" data-href="/view_emp_data/<%= row.email %>">
                   <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                   <td><%= row.employeeID %></td>
                   <td>
@@ -329,11 +310,6 @@
                   <% } else { %>
                     <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
                   <% } %>
-                  <td class="action-buttons">
-                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                      ><i class="fa-solid fa-eye"></i
-                    ></a>
-                  </td>
                 </tr>
               <% }) %>
             </tbody>
@@ -355,12 +331,12 @@
                 <th style="width: 150px">Name</th>
                 <th style="width: 100px">ID Number</th>
                 <th style="width: 100px">Position</th>
-                <th class="text-center" style="width: 100px;">Account Status</th>
-                <th style="width: 10px; padding-left: 40px"></th>
+                <th class="text-center" style="width: 50px;">Account Status</th>
               </tr>
             </thead>
             <tbody>
-              <% DP3.forEach((row, index) => { %><tr>
+              <% DP3.forEach((row, index) => { %>
+                <tr class="clickable-row" data-href="/view_emp_data/<%= row.email %>">
                   <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                   <td><%= row.employeeID %></td>
                   <td>
@@ -376,11 +352,6 @@
                   <% } else { %>
                     <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
                   <% } %>
-                  <td class="action-buttons">
-                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                      ><i class="fa-solid fa-eye"></i
-                    ></a>
-                  </td>
                 </tr>
               <% }) %>
             </tbody>
@@ -402,13 +373,12 @@
                 <th style="width: 150px">Name</th>
                 <th style="width: 100px">ID Number</th>
                 <th style="width: 100px">Position</th>
-                <th class="text-center" style="width: 100px;">Account Status</th>
-                <th style="width: 10px; padding-left: 40px"></th>
+                <th class="text-center" style="width: 50px;">Account Status</th>
               </tr>
             </thead>
             <tbody>
               <% DP4.forEach((row, index) => { %>
-                <tr>
+                <tr class="clickable-row" data-href="/view_emp_data/<%= row.email %>">
                   <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                   <td><%= row.employeeID %></td>
                   <td>
@@ -424,11 +394,6 @@
                   <% } else { %>
                     <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
                   <% } %>
-                  <td class="action-buttons">
-                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                      ><i class="fa-solid fa-eye"></i
-                    ></a>
-                  </td>
                 </tr>
               <% }) %>
             </tbody>
@@ -450,13 +415,12 @@
                 <th style="width: 150px">Name</th>
                 <th style="width: 100px">ID Number</th>
                 <th style="width: 100px">Position</th>
-                <th class="text-center" style="width: 100px;">Account Status</th>
-                <th style="width: 10px; padding-left: 40px"></th>
+                <th class="text-center" style="width: 50px;">Account Status</th>
               </tr>
             </thead>
             <tbody>
               <% DP5.forEach((row, index) => { %>
-                <tr>
+                <tr class="clickable-row" data-href="/view_emp_data/<%= row.email %>">
                   <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                   <td><%= row.employeeID %></td>
                   <td>
@@ -472,11 +436,6 @@
                   <% } else { %>
                     <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
                   <% } %>
-                  <td class="action-buttons">
-                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                      ><i class="fa-solid fa-eye"></i
-                    ></a>
-                  </td>
                 </tr>
               <% }) %>
             </tbody>
@@ -498,13 +457,12 @@
                 <th style="width: 150px">Name</th>
                 <th style="width: 100px">ID Number</th>
                 <th style="width: 100px">Position</th>
-                <th class="text-center" style="width: 100px;">Account Status</th>
-                 <th style="width: 10px; padding-left: 40px"></th>
+                <th class="text-center" style="width: 50px;">Account Status</th>
               </tr>
             </thead>
             <tbody>
               <% DP6.forEach((row, index) => { %>
-                <tr>
+                <tr class="clickable-row" data-href="/view_emp_data/<%= row.email %>">
                   <td class="fw-bold mb-1" ><%= row.name %> <%= row.lastname %></td>
                   <td><%= row.employeeID %></td>
                   <td>
@@ -520,11 +478,6 @@
                   <% } else { %>
                     <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
                   <% } %>
-                  <td class="action-buttons">
-                    <a href="/view_emp_data/<%= row.email %>" class="icon-square"
-                      ><i class="fa-solid fa-eye"></i
-                    ></a>
-                  </td>
                 </tr>
               <% }) %>
             </tbody>
@@ -539,4 +492,14 @@
     </div>
   </div>
 </body>
+<script>
+  document.querySelectorAll('.clickable-row').forEach((row) => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    if (href) {
+      window.location.href = href;
+    }
+  });
+  });
+</script>
 <%- include('../layouts/footer') %>

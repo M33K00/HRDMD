@@ -243,9 +243,9 @@
         <td><%= file.dueDate.toISOString().split('T')[0] %></td>
         <td>
           <% if (file.status === 'APPROVED') { %>
-          <span class="badge bg-success">APPROVED</span>
+          <span class="badge rounded-pill bg-success">APPROVED</span>
           <% } else if (file.status === 'REJECTED') { %>
-          <span class="badge bg-danger">REJECTED</span>
+          <span class="badge rounded-pill bg-danger">REJECTED</span>
           <% } else if (file.status === 'ASSIGNED') { %>
             <% if (file.urgentTask === true) { %>
               <span class="badge rounded-pill bg-primary urgent">URGENT</span>

@@ -72,13 +72,13 @@
                     <td><%= row.dateSubmitted.toISOString().split('T')[0] %></td>
                     <td style="font-weight: 700;"><%= row.assignTo %></td>
                     <td><% if (row.status === 'APPROVED') { %>
-                      <span class="badge bg-success">APPROVED</span>
+                      <span class="badge rounded-pill bg-success">APPROVED</span>
                     <% } else if (row.status === 'ASSIGNED') { %>
-                      <span class="badge bg-warning">ASSIGNED</span>
+                      <span class="badge rounded-pill bg-warning">ASSIGNED</span>
                     <% } else if (row.status === 'FOR APPROVAL') { %>
                       <span class="badge" style="background-color: #ff4107">FOR APPROVAL</span>
                     <% } else if (row.status === 'REASSIGNED') { %>
-                      <span class="badge bg-warning">REASSIGNED</span>
+                      <span class="badge rounded-pill bg-warning">REASSIGNED</span>
                     <% } %></td>
                   </tr>
                 <% }) %>
