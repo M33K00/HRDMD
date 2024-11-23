@@ -756,9 +756,27 @@ router.get("/", checkJWT, (req, res) => {
   res.render("login");
 });
 
-router.get("/startpage", (req, res) => {
+router.get("/startpage", async (req, res) => {
   const dateToday = new Date().toLocaleDateString().split("T")[0];
-  res.render("startpage", { dateToday });
+
+  // Count the number of active tasks
+  const activeTasks = await SubmittedFiles.countDocuments();
+
+  // Count currently clocked in employees
+  const activeEmp = await Attendance.countDocuments({
+    status: "IN"
+  });
+
+  // Count Pending DTR records
+  const pendingDTR = await DaysPresent.countDocuments({
+    FFapproved: "PENDING"
+  });
+
+  // Count Pending Leave Applications
+  const pendingLeave = await LeaveApplications.countDocuments({
+    status: "PENDING"
+  });
+  res.render("startpage", { dateToday, activeTasks, activeEmp, pendingDTR, pendingLeave });
 });
 
 router.get("/document_tracker/:hrrole", async (req, res) => {

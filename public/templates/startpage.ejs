@@ -5,7 +5,41 @@
     <%- include('./layouts/navhrisP') -%>
     <%- include('./layouts/startnav') %>
     <div class="page-body-start">
-      <div class="card timeInTab fade-in">
+      <% if (user.hrrole === "ADMIN") { %>
+      <div class="notifs fade-in">
+        <div class="bottomTab fade-in">
+          <div class="bottomTabCard">
+            <div class="task-info">
+              <p class="task-count"><span><%= activeTasks %></span></p>
+              <p class="task-label">Active Tasks</p>
+            </div>
+            <i class="fa-solid fa-list-check task-icon"></i>
+          </div>        
+          <div class="bottomTabCard" style="background-color: #147ca5;">
+            <div class="task-info">
+              <p class="task-count"><span><%= activeEmp %></span></p>
+              <p class="task-label">Active Employees</p>
+            </div>
+            <i class="fa-solid fa-clock task-icon"></i>
+          </div>
+          <div class="bottomTabCard">
+            <div class="task-info">
+              <p class="task-count"><span><%= pendingDTR %></span></p>
+              <p class="task-label">Pending DTR</p>
+            </div>
+            <i class="fa-solid fa-clipboard task-icon"></i>
+          </div>
+          <div class="bottomTabCard" style="background-color: #147ca5;">
+            <div class="task-info">
+              <p class="task-count"><span><%= pendingLeave %></span></p>
+              <p class="task-label">Pending Leave</p>
+            </div>
+            <i class="fa-solid fa-envelope task-icon"></i>
+          </div>
+        </div>
+      </div>
+      <% } %>
+      <div class="card timeInTab slide-up">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h3>Welcome, <%= user.name %></h3>
           <h3 id="currentDate"></h3>

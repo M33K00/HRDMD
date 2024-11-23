@@ -35,12 +35,67 @@ body.modal-open .modal-backdrop {
   margin-left: 260px;
 }
 
+.notifs {
+  margin-bottom: 30px;
+}
+
 .timeInTab {
   border: #158cba solid 1px;
   border-radius: 5px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
-  height: 200px;
+  height: 150px;
+}
+
+.bottomTab {
+  width: 100%;
+  height: 150px;
+  margin-top: 35px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+.bottomTabCard {
+  background-color: #158cba;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px; /* Padding for inner content */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.bottomTabCard:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Align content to the left */
+  margin-left: 30px;
+}
+
+.task-count {
+  font-size: 30px; /* Large and bold for emphasis */
+  font-weight: bold;
+  color: #ffffff; /* Neutral dark color */
+  margin: 0;
+}
+
+.task-label {
+  font-size: 14px; /* Smaller font for the label */
+  color: #ffffff; /* Lighter gray for subtlety */
+}
+
+.task-icon {
+  margin-right: 20px;
+  font-size: 50px; /* Large icon for visual balance */
+  color: #ffffff; /* Accent color (blue) */
 }
 
 .startButtons {
@@ -48,11 +103,11 @@ body.modal-open .modal-backdrop {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 80px;
+  margin-top: 50px;
 }
 
 .start-border {
-  border: #158cba solid 2px;
+  border: #158cba solid 1px;
 }
 
 .TM-brand {
@@ -133,16 +188,15 @@ body.modal-open .modal-backdrop {
 }
 
 .hover-div-sp {
-  transition: filter 0.3s ease, opacity 0.3s ease;
-  filter: brightness(100%);
   display: flex;
   justify-content: center;
   align-items: center;
   max-height: 280px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .hover-div-sp:hover {
-  filter: brightness(50%);
+  transform: translateY(-5px); /* Slight lift effect on hover */
 }
 
 .hover-div-sp a {
@@ -541,7 +595,8 @@ body.modal-open .modal-backdrop {
   margin-right: 5px;
 }
 .card-start {
-  height: 330px;
+  height: 300px;
+  border-radius: 5px;
 }
 .lower-button {
   text-decoration: none;

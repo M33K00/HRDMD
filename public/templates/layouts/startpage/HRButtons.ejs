@@ -3,13 +3,6 @@
     <div class="card-start card start-border mb-3 shadow startpage-font">
       <h3 class="card-header">Task Manager</h3>
       <div class="card-body">
-        <h6 class="card-subtitle text-muted">
-          <% if (user.hrrole != "ADMIN" && user.hrrole != "ADMIN2") { %>
-            View and manage your tasks
-          <% } else { %>
-            Assign and manage tasks to employees
-          <% } %>
-        </h6>
       </div>
       <svg
         class="d-block user-select-none"
@@ -34,7 +27,7 @@
     </a>
     </div>
   </div>
-  <div class="col-md-4 hover-div-sp">
+<div class="col-md-4 hover-div-sp">
     <a href="<% if (user.hrrole === 'ADMIN' || user.hrrole === 'ADMIN2') { %>
       /hris <% } else { %>
        /hris_user/<%= user.email %>
@@ -42,9 +35,6 @@
     <div class="card-start card start-border mb-3 shadow startpage-font">
       <h3 class="card-header">HR Information System</h3>
       <div class="card-body">
-        <h6 class="card-subtitle text-muted">
-          Streamline HR tasks with the HRIS page
-        </h6>
       </div>
       <svg
         class="d-block user-select-none"
@@ -71,7 +61,7 @@
     </a>
     </div>
   </div>
-  <div class="col-md-4 hover-div-sp">
+<div class="col-md-4 hover-div-sp">
     <% if (user.mEmp === true || user.hrrole === 'ADMIN') { %>
       <a href="/view_employees">
     <% } else { %>
@@ -84,15 +74,6 @@
         <h3 class="card-header">My Account</h3>
       <% } %>
       <div class="card-body">
-        <% if (user.mEmp === true || user.hrrole === 'ADMIN') { %>
-          <h6 class="card-subtitle text-muted">
-            Manage employee accounts
-          </h6>
-        <% } else { %>
-          <h6 class="card-subtitle text-muted">
-            Manage your account settings
-          </h6>
-        <% } %>
       </div>
       <svg
         class="d-block user-select-none"

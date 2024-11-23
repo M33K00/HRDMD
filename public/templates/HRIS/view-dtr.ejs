@@ -211,7 +211,9 @@
                 <td><%= row.date.toISOString().slice(0, 10) %></td>
                 <td><%= row.timeLate.split(":")[0] %>h and <%= row.timeLate.split(":")[1] %>m</td>
                 <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
-                <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %><% } else { %>Ongoing<% } %></td>
+                <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %><% } 
+                  else if (row.timeOut === null && row.forFile === true) { %>
+                    <i class="text-warning fa-solid fa-circle-exclamation"></i><% } else { %>ONGOING<% } %></td>
                 <td><%= row.totalTime.toFixed(2) %></td>
                 <td><%= row.underTime.toFixed(2) %></td>
                 <td><%= row.overTime.toFixed(2) %></td>
