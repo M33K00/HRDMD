@@ -7,20 +7,6 @@
       <h1>DTR Settings:</h1>
       <a href="/dtr" class="btn btn-secondary">RETURN TO DTR</a>
     </div>
-    <div id="alertContainer" class="bottom-right">
-      <% if (message) { %>
-      <div
-        class="alert alert-dismissible alert-<%= message.type %> fade show"
-        role="alert"
-        id="autoDismissAlert"
-      >
-        <strong>Attention! </strong><%= message.message %><a
-          href="#"
-          class="alert-link"
-        ></a>
-      </div>
-      <% } %>
-    </div>
     <div id="dtrSettings" class="content-div active">
       <div class="settings-title">
         <p>Manage department paydates and other HRIS settings</p>

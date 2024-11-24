@@ -11,20 +11,6 @@
     <p class="text-muted mt-4">Submit your reason for not being able to time-out here. <br>
       <strong>HR Department</strong> will review your submission to determine its validity and either approve or update the record accordingly.
     </p>
-    <div id="alertContainer" class="bottom-right">
-        <% if (message) { %>
-        <div
-          class="alert alert-dismissible alert-<%= message.type %> fade show"
-          role="alert"
-          id="autoDismissAlert"
-        >
-          <strong>Attention! </strong><%= message.message %><a
-            href="#"
-            class="alert-link"
-          ></a>
-        </div>
-        <% } %>
-    </div>
     <div class="dtr-improper mt-4">
       <table id="table" class="table table-hover table-striped table-bordered" style="font-size: large;">
         <thead class="table-warning text-center text-uppercase">

@@ -7,21 +7,6 @@
       <h1>Attendance Record:</h1>
       <a href="/dtr" class="btn btn-secondary">Go Back</a>
     </div>
-    <div id="alertContainer" class="bottom-right slide-up">
-      <% if (message) { %>
-      <div
-        class="alert alert-dismissible alert-<%= message.type %> fade show"
-        role="alert"
-        id="autoDismissAlert"
-      >
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <strong>Attention!</strong> <%= message.message %><a
-          href="#"
-          class="alert-link"
-        ></a>
-      </div>
-      <% } %>
-    </div>
     <div class="account-at">
       <div class="account-img">
         <% if (logincollections.image === "") { %>

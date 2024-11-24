@@ -153,75 +153,6 @@
     });
   });
 </script>
-<%# PDF SCRIPT %>
-<script>
-  function determineRoleFolder(roleElement) {
-    if (!roleElement) {
-      console.error("Role element not found.");
-      return null;
-    }
-
-    const role = roleElement.textContent.trim();
-
-    switch (role) {
-      case "Entry Level":
-        return "role1";
-      case "Individual Contributors":
-        return "role2";
-      case "HR Manager":
-        return "role3";
-      case "HR Director":
-        return "role4";
-      default:
-        console.error("Unknown role:", role);
-        return "role1"; // Default role folder
-    }
-  }
-
-  document.querySelectorAll(".file-preview").forEach(function (previewElement) {
-    previewElement.addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent default link behavior
-
-      var modal = document.getElementById("modal");
-      modal.style.display = "block";
-
-      var roleElement = previewElement
-        .closest(".page-item")
-        .querySelector(".file-hr-role");
-      var roleFolder = determineRoleFolder(roleElement);
-
-      if (roleFolder) {
-        var fileName = previewElement
-          .closest(".page-item")
-          .querySelector(".card-text")
-          .textContent.trim();
-        var pdfViewer = document.getElementById("pdfViewer");
-        pdfViewer.src = "../../files/" + roleFolder + "/" + fileName;
-      } else {
-        console.error("Role folder not determined.");
-      }
-    });
-  });
-
-  document.querySelector(".close").addEventListener("click", function () {
-    document.getElementById("modal").style.display = "none";
-  });
-</script>
-
-<%# ENLARGE MODAL SCRIPT %>
-<script>
-  function toggleEnlargedModal() {
-    const modal = document.getElementById("modal");
-    modal.classList.toggle("enlarged");
-  }
-
-  // Add event listener for the 'Enlarge' button
-  document
-    .getElementById("enlargeButton")
-    .addEventListener("click", function () {
-      toggleEnlargedModal();
-    });
-</script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const convertLinks = document.querySelectorAll(".convert-link");
@@ -843,3 +774,45 @@ function showAcceptTaskModal(fileId, email) {
     window.location.href = `/fileDTR/${id}`;
   }
 </script>
+<script>
+  function playSoundAtTime(timeString) {
+    const soundPlayedKey = 'timeoutSoundPlayed'; 
+
+    // Check if the sound has already been played
+    if (sessionStorage.getItem(soundPlayedKey) === 'true') {
+      return; // Exit the function if sound has already been played
+    }
+
+    const [hours, minutes] = timeString.split(':');
+    const targetTime = new Date();
+    targetTime.setHours(hours);
+    targetTime.setMinutes(minutes - 10); // Subtract 15 minutes
+    targetTime.setSeconds(0);
+
+    const intervalId = setInterval(() => {
+      console.log("Checking time...");
+      const now = new Date();
+
+      if (now >= targetTime) {
+        clearInterval(intervalId); // Stop checking after the target time is reached
+
+        // Play the sound
+        const audio = new Audio('../../sounds/timeout.wav'); // Replace with your sound file path
+        audio.play();
+
+        // Set the flag in sessionStorage
+        sessionStorage.setItem('timeoutSoundPlayed', 'true');
+
+        $(document).ready(function () {
+          const toastElement = $('.toast-DTR'); 
+          $(toastElement).toast({autohide: false});
+          $(toastElement).toast('show');
+        });
+      }
+    }, 2000); // Check every second
+  }
+
+  const timeOut = '<%= hrsettings.endTime %>'; // Ensure this contains a valid time like "15:30"
+  playSoundAtTime(timeOut);
+</script>
+

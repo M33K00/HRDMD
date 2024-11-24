@@ -15,3 +15,33 @@
   </head>
 </html>
 <div class="page-bg-img"></div>
+<div id="alertContainer" class="bottom-right slide-up">
+  <% if (message) { %>
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto fw-bold
+        <% if (message.type === 'error') { %>text-danger<% } else if (message.type === 'success') { %>text-success<% } else { %>text-warning<% } %>
+        ">Attention!</strong>
+        <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+        <input type="hidden" id="timeOutAlert" value="<%= hrsettings.endTime %>">
+      </div>
+      <div class="toast-body">
+        <%= message.message %>
+      </div>
+    </div>
+  <% } %>
+  <div class="toast toast-DTR" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 9999;">
+    <div class="toast-header">
+      <strong class="me-auto">Time-out in 10 minutes</strong>
+      <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true"></span>
+      </button>
+      <input type="hidden" id="timeOutAlert" value="<%= hrsettings.endTime %>">
+    </div>
+    <div class="toast-body">
+      Time-out is in <%= hrsettings.endTime %>. Please ensure to time-out on time.
+    </div>
+  </div>
+</div>

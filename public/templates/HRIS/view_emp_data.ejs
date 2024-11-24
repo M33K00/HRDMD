@@ -9,20 +9,6 @@
         <a href="/view_employees" class="btn btn-secondary">Go Back</a>
       </div>
     </div>
-    <div id="alertContainer" class="bottom-right">
-      <% if (message) { %>
-      <div
-        class="alert alert-dismissible alert-<%= message.type %> fade show"
-        role="alert"
-        id="autoDismissAlert"
-      >
-        <strong>Attention!</strong> <%= message.message %><a
-          href="#"
-          class="alert-link"
-        ></a>
-      </div>
-      <% } %>
-    </div>
     <% if (logincollections.accountClosed === true) { %>
       <div class="alert alert-danger">
         <strong>ATTENTION!</strong> This account has been closed and cannot be accessed by the user.

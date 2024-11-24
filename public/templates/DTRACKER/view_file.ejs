@@ -15,20 +15,6 @@
         <a href="/home" class="btn btn-secondary">RETURN TO MANAGER</a>
       <% } %>
     </div>
-    <div id="alertContainer" class="bottom-right">
-      <% if (message) { %>
-      <div
-        class="alert alert-dismissible alert-<%= message.type %> fade show"
-        role="alert"
-        id="autoDismissAlert"
-      >
-        <strong>Attention! </strong><%= message.message %><a
-          href="#"
-          class="alert-link"
-        ></a>
-      </div>
-      <% } %>
-    </div>
     <div class="page-content rounded-box
       <% if (file.urgentTask === true) { %> urgent <% } %>">
       <div class="file-code">

@@ -6,20 +6,6 @@
     <div class="page-name">
       <h1>Application Details</h1>
     </div>
-    <div id="alertContainer" class="bottom-right">
-      <% if (message) { %>
-      <div
-        class="alert alert-dismissible alert-<%= message.type %> fade show"
-        role="alert"
-        id="autoDismissAlert"
-      >
-        <strong>Attention!</strong> <%= message.message %><a
-          href="#"
-          class="alert-link"
-        ></a>
-      </div>
-      <% } %>
-    </div>
     <div class="leave-count-div">
       <div class="leave-count">
         <p class="leave-label">Available Sick Leave:</p>

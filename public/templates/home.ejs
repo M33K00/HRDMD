@@ -8,20 +8,6 @@
         <a class="btn btn-primary" href="/submitfile">Assign Task</a>
       <% } %>
     </div>
-    <div id="alertContainer" class="bottom-right slide-up">
-      <% if (message) { %>
-      <div
-        class="alert alert-dismissible alert-<%= message.type %> fade show"
-        role="alert"
-        id="autoDismissAlert"
-      >
-        <strong>Attention! </strong><%= message.message %><a
-          href="#"
-          class="alert-link"
-        ></a>
-      </div>
-      <% } %>
-    </div>
     <%# Folder Buttons %>
     <div class="tabs-container">
       <h5 class="folder-title">Tabs:</h5>

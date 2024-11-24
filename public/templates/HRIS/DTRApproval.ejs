@@ -7,21 +7,6 @@
       <h1>DTR APPROVAL:</h1>
       <a href="/dtr" class="btn btn-secondary">Go Back</a>
     </div>
-    <div id="alertContainer" class="bottom-right slide-up">
-      <% if (message) { %>
-        <div class="toast show slide-up" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-            <strong class="me-auto">Attention!</strong>
-            <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close">
-              <span aria-hidden="true"></span>
-            </button>
-          </div>
-          <div class="toast-body">
-            <%= message.message %>
-          </div>
-        </div>
-      <% } %>
-    </div>
     <p class="text-muted">These are time records that are not properly recorded due to missing time-out.</p>
     <% if (mergedRecords.length > 0) { %>
       <div class="dtr-improper mt-4">

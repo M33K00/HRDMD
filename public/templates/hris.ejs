@@ -12,11 +12,17 @@
     <% const unverified = employeecount.filter((employee) => !employee.verified); %>
     <% if (user.mEmp === true || user.hrrole === 'ADMIN') { %>
       <% if (unverified.length > 0) { %>
-        <div id="alertContainer" class="bottom-right slide-up">
-          <div class="alert alert-dismissible alert-warning fade show">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <h4 class="alert-heading mb-0" style="font-size: 20px;">Attention!</h4>
-            <p class="mb-0" style="font-size: 15px;">There are currently <%= unverified.length %> accounts that needs verification. <a href="/view_employees" class="alert-link">Click here</a> to view and verify them.</p>
+        <div id="alertContainer" class="bottom-right slide-up" style="z-index: 9998;">
+          <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <strong class="me-auto text-warning">Unverified Employees</strong>
+              <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="toast-body">
+              There are <strong><%= unverified.length %></strong> unverified employees. <a href="/view_employees" class="alert-link ">Click here</a> to view and verify them.
+            </div>
           </div>
         </div>
         <% } %>

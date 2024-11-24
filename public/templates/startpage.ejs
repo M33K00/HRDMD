@@ -143,7 +143,7 @@
 </div>
 <div class="overlay" id="overlay"></div>
 <% if (userAttendance.status === "OUT") { %>
-<div class="modal" id="timeCheck" tabindex="-1">
+<div class="modal" id="timeChseck" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg fade-in" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -211,6 +211,7 @@
 </div>
 <% } %>
 <script src="https://kit.fontawesome.com/64cf43ccc2.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const toggleSidebar = document.getElementById("toggleSidebar");
@@ -349,4 +350,45 @@ document.getElementById('currentDate').textContent = formattedDate;
       }
     });
   });
+</script>
+<script>
+  function playSoundAtTime(timeString) {
+    const soundPlayedKey = 'timeoutSoundPlayed'; 
+
+    // Check if the sound has already been played
+    if (sessionStorage.getItem(soundPlayedKey) === 'true') {
+      return; // Exit the function if sound has already been played
+    }
+
+    const [hours, minutes] = timeString.split(':');
+    const targetTime = new Date();
+    targetTime.setHours(hours);
+    targetTime.setMinutes(minutes - 10); // Subtract 15 minutes
+    targetTime.setSeconds(0);
+
+    const intervalId = setInterval(() => {
+      console.log("Checking time...");
+      const now = new Date();
+
+      if (now >= targetTime) {
+        clearInterval(intervalId); // Stop checking after the target time is reached
+
+        // Play the sound
+        const audio = new Audio('../../sounds/timeout.wav'); // Replace with your sound file path
+        audio.play();
+
+        // Set the flag in sessionStorage
+        sessionStorage.setItem('timeoutSoundPlayed', 'true');
+
+        $(document).ready(function () {
+          const toastElement = $('.toast-DTR'); 
+          $(toastElement).toast({autohide: false});
+          $(toastElement).toast('show');
+        });
+      }
+    }, 2000); // Check every second
+  }
+
+  const timeOut = '<%= hrsettings.endTime %>'; // Ensure this contains a valid time like "15:30"
+  playSoundAtTime(timeOut);
 </script>

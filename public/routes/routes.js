@@ -1239,7 +1239,7 @@ router.get("/view_emp_data/:email", checkHRSettings, async (req, res) => {
 router.get("/dtr", async (req, res) => {
   try {
     const mergedData = await LogInCollection.aggregate([
-      // Add a $match stage to filter out closed accounts
+      // filter out closed accounts
       { $match: { accountClosed: false } },
       {
         $lookup: {

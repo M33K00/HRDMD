@@ -36,9 +36,10 @@ const checkUser = (req, res, next) => {
         let userAttendance = await Attendance.findOne({
           email: user.email,
         })
+        let hrsettings = await HRSettings.findOne({});
         res.locals.user = user;
         res.locals.userAttendance = userAttendance;
-        res.locals.hrsettings = await HRSettings.findOne({});
+        res.locals.hrsettings = hrsettings;
         next();
       }
     });
