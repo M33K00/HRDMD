@@ -98,7 +98,7 @@
     <div class="clockin-tab">
       <p><%= getCurrentDateInWords() %></p>
       <div class="clockin-btn">
-        <a onclick="markAsAbsent('<%= logincollections.employeeId %>')" class="btn btn-danger <% if (status === 'Absent' || attendance.status === 'IN' || logincollections.email === user.email) { %>disabled<% } %>"
+        <a href="/markAsAbsent/<%= logincollections.employeeID %>" class="btn btn-danger <% if (status === 'Absent' || attendance.status === 'IN' || logincollections.email === user.email) { %>disabled<% } %>"
           style="margin-right: 10px;">Mark as Absent</a>
       </div>
     </div>
@@ -361,14 +361,14 @@
             <!-- Input for amount -->
             <label class="mt-3" for="amount">Amount to Deduct:</label>
             <input class="form-control" type="number" id="amount" name="amount" min="1" max="<%= attendance.availableVL %>" required>
-            <input type="hidden" id="employeeID" name="employeeID" value="<%= logincollections.employeeID %>">
+            <input type="hidden" id="employeeID" name="employeeID">
           </form>
           <p class="text-danger mt-2">Please double check the leave type and amount before submitting.</p>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" id="confirmAbsent" data-bs-dismiss="modal">Mark as Absent</button>
+          <button type="button" class="btn btn-danger" id="saveAbsent" data-bs-dismiss="modal">Mark as Absent</button>
         </div>
       </div>
     </div>
@@ -383,17 +383,27 @@
   const year = currentDate.getFullYear(); return `${dayOfWeek}, ${month}
   ${dayOfMonth}, ${year}`; } %>
 <script>
-function markAsAbsent(employeeId) {
-    const AbsentModal = new bootstrap.Modal(document.getElementById("AbsentModal"));
+function markAsAbsent(employeeID) {
+    // Show the modal
+    const AbsentModal = new bootstrap.Modal(document.getElementById("AbsentModal"), {
+        backdrop: false,
+    });
     AbsentModal.show();
 
-    // Get form values
+    // Set the employeeId in the hidden input field of the form
+    document.getElementById("employeeID").value = employeeID;
+}
+
+// Submit the form from the modal
+function submitAbsentForm() {
+    // Get form values from the modal
     const startDate = document.getElementById("startDate").value;
     const endDate = document.getElementById("endDate").value;
     const category = document.getElementById("category").value;
     const amount = document.getElementById("amount").value;
     const employeeID = document.getElementById("employeeID").value;
 
+    // Validate form input
     if (!category || !amount) {
         alert("Please select leave type and enter amount to deduct.");
         return; // Prevent form submission if not valid
@@ -405,26 +415,39 @@ function markAsAbsent(employeeId) {
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            // Handle success response
-            const response = JSON.parse(xhr.responseText);
-            console.log(response);
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                // Handle success response
+                const response = JSON.parse(xhr.responseText);
+                console.log(response);
 
-            // Show success message
-            alert("Absent Marked Successfully!");
+                // Show success message
+                alert("Absent Marked Successfully!");
 
-            // Optionally, refresh the page
-            location.reload();
-        } else if (xhr.readyState === 4) {
-            // Handle error response
-            const error = JSON.parse(xhr.responseText);
-            console.error(error);
-            alert("Error Marking Absent");
+                // Close the modal
+                const AbsentModal = bootstrap.Modal.getInstance(document.getElementById("AbsentModal"));
+                AbsentModal.hide();
+
+                // Optionally refresh or update the UI
+                location.reload();
+            } else {
+                // Handle error response
+                try {
+                    const error = JSON.parse(xhr.responseText);
+                    console.error(error);
+                    alert(error.message || "Error Marking Absent");
+                } catch (e) {
+                    console.error(xhr.responseText);
+                    alert("An unexpected error occurred.");
+                }
+            }
         }
     };
 
     xhr.send(JSON.stringify({ startDate, endDate, employeeID, category, amount }));
 }
-document.getElementById('confirmAbsent').addEventListener('click', markAsAbsent);
+
+// Attach the form submission handler to the modal's save button
+document.getElementById('saveAbsent').addEventListener('click', submitAbsentForm);
 </script>
 <%- include('../layouts/footer') %>

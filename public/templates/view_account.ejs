@@ -62,9 +62,9 @@
             </div>
           </div>
           <div class="chart-legend">
-            <div class="legend-item">
+            <div class="legend-item" style="margin-left: 16px;">
               <div class="legend-circle"></div>
-              <div class="legend-label">Finished</div>
+              <div class="legend-label">Accomplished</div>
             </div>
             <div class="legend-item">
               <div class="legend-circle" style="background-color: rgb(112, 28, 28)"></div>
@@ -112,7 +112,7 @@
   <div class="account-container mt-4">
     <div class="account-item">
       <div class="account-content">
-        <p>Task Finished:</p>
+        <p>Accomplished Tasks:</p>
       </div>
       <div class="account-count">
         <p><%= approvedFiles.filter((row) => row.status === 'APPROVED').length %></p>
@@ -120,7 +120,7 @@
     </div>
     <div class="account-item" style="background-color: rgb(112, 28, 28)">
       <div class="account-content">
-        <p>Tasks Pending:</p>
+        <p>Assigned Tasks:</p>
       </div>
       <div class="account-count">
         <p><%= pendingFiles.filter((row) => row.status === 'PENDING').length %></p>
@@ -205,5 +205,14 @@
 </div>
 </div>
 <% } %>
-  <%- include('./layouts/footer') -%>
+<script>
+  // Ensure all popovers are initialized
+  document.addEventListener('DOMContentLoaded', function () {
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl);
+    });
+  });
+</script>
+<%- include('./layouts/footer') -%>
 </div>

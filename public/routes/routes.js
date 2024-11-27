@@ -47,6 +47,7 @@ const SwornS = require("../models/201File/swornS");
 const CertLeaveB = require("../models/201File/certLeaveB");
 const DisAct = require("../models/201File/disAct");
 const { default: isEmail } = require("validator/lib/isEmail.js");
+const { log } = require("console");
 
 // 201 File Model Array
 const userDocumentsArray = [  
@@ -1389,7 +1390,7 @@ router.get("/m-absent/:id", async (req, res) => {
         type: "warning",
         message: "No attendance found for this user",
       };
-      res.redirect("/view-dtr/" + logincollections._id);
+      res.redirect("/view-dtr/" + logincollections.id);
     } else {
       attendance.daysAbsent += 1;
       await attendance.save();
@@ -1411,12 +1412,44 @@ router.get("/m-absent/:id", async (req, res) => {
       message: "Marked as absent successfully",
     };
 
-    res.redirect("/view-dtr/" + logincollections._id);
+    res.redirect("/view-dtr/" + logincollections.id);
   } catch (err) {
     console.log("Error marking as absent: ", err);
     res.status(500).send("aw bollucks!");
   }
 });
+
+router.get("/markAsAbsent/:id", async (req, res) => {
+  try {
+    const employeeID = req.params.id;
+    const logincollections = await LogInCollection.findOne({ employeeID: employeeID });
+
+    if (!logincollections) {
+      req.session.message = {
+        type: "danger",
+        intro: "Error!",
+        message: "User account not found.",
+      }
+      return res.redirect("/view-dtr/" + logincollections._id);
+    }
+
+    const attendance = await Attendance.findOne({ email: logincollections.email });
+
+    if (!attendance) {
+      req.session.message = {
+        type: "danger",
+        intro: "Error!",
+        message: `Attendance record for ${logincollections.name} not found.`,
+      }
+      return res.redirect("/view-dtr/" + logincollections._id);
+    }
+
+    res.render("HRIS/markAbsent", { logincollections, attendance });
+  } catch (err) {
+    console.log("Error marking as absent: ", err);
+    res.status(500).send("aw bollucks!");
+  }
+})
 
 router.post("/markAbsent", async (req, res) => {
   try {

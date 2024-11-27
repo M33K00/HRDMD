@@ -1,0 +1,108 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/navhrisP') -%>
+  <%- include('../layouts/sidenavP') %>
+  <div class="page-body fade-in">
+    <div class="page-name">
+      <h1 class="text-uppercase">Mark as Absent:</h1>
+      <a href="/view-dtr/<%= logincollections.id %>" class="btn btn-secondary">Go Back</a>
+    </div>
+    <div class="rounded-box mt-3">
+        <div>
+            <label class="mt-4">Available Leave Credits:</label>
+            <table class="table table-hover table-striped table-bordered">
+            <thead>
+              <tr class="table-dark text-center text-uppercase">
+                <th>Leave Type</th>
+                <th>Available Credits</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center">
+                <td class="fw-bold">Vacation Leave</td>
+                <td><%= attendance.availableVL %></td>
+                <td><%= attendance.VLPoints.toFixed(3) %></td>
+              </tr>
+              <tr class="text-center">
+                <td class="fw-bold">Sick Leave</td>
+                <td><%= attendance.availableSL %></td>
+                <td><%= attendance.SLPoints.toFixed(3) %></td>
+              </tr>
+              <tr class="text-center">
+                <td class="fw-bold">Special Leave</td>
+                <td><%= attendance.availableSPL %></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <form id="deductPointsForm" class="form-container">
+            <label for="date">Choose Start Date:</label>
+            <input type="date" class="form-control" id="startDate" name="startDate" required>
+            <label for="date">Choose End Date:</label>
+            <input type="date" class="form-control" id="endDate" name="endDate" required>
+            <label for="category" class="mt-3">Choose Leave Type:</label>
+            <select class="form-select" id="category" name="category" required>
+              <option value="">--Select--</option>
+              <option value="VL">VL (Vacation Leave)</option>
+              <option value="SL">SL (Sick Leave)</option>
+              <option value="SPL">SPL (Special Leave)</option>
+            </select>
+
+            <!-- Input for amount -->
+            <label class="mt-3" for="amount">Amount to Deduct:</label>
+            <input class="form-control" type="number" id="amount" name="amount" min="1" max="<%= attendance.availableVL %>" required>
+            <input type="hidden" id="accID" name="accID" value="<%= logincollections.id %>">
+            <input type="hidden" id="employeeID" name="employeeID" value="<%= logincollections.employeeID %>">
+          </form>
+          <p class="text-danger mt-2">Please double check the leave type and amount before submitting.</p>
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-danger mt-3 fw-bold" id="confirmAbsent">Submit</button>
+          </div>
+    </div>
+  </div>
+</body>
+<%- include('../layouts/footer') %>
+<script>
+    $(document).ready(function () {
+      $('#confirmAbsent').click(function (e) {
+        console.log("Button clicked");
+        e.preventDefault(); // Prevent the form submission
+    
+        // Get form values
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+        const category = $('#category').val();
+        const amount = $('#amount').val();
+        const accID = $('#accID').val();
+        const employeeID = $('#employeeID').val();
+    
+        // Validate fields
+        if (!category || !amount) {
+          alert("Please select leave type and enter amount to deduct.");
+          return; // Prevent form submission if not valid
+        }
+    
+        // Send AJAX request
+        $.ajax({
+          url: '/markAbsent',
+          method: 'POST',
+          data: {
+            startDate: startDate,
+            endDate: endDate,
+            category: category,
+            amount: amount,
+            employeeID: employeeID
+          },
+          success: function (response) {
+            alert(response.message);  // Show success message from server
+            location.href = '/view-dtr/' + accID;
+          },
+          error: function (xhr, status, error) {
+            console.error(error);     // Log any error to the console
+            alert("Error submitting data."); // Show error message
+          }
+        });
+      });
+    });
+</script>

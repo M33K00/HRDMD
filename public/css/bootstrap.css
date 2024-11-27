@@ -12,10 +12,6 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 
- ::-webkit-scrollbar {
-  width: 0px;
-}
-
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
 :root,
 [data-bs-theme=light] {
@@ -136,6 +132,10 @@
   --bs-form-valid-border-color: #43ac6a;
   --bs-form-invalid-color: #f04124;
   --bs-form-invalid-border-color: #f04124;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
 }
 
 [data-bs-theme=dark] {
@@ -5570,6 +5570,7 @@ textarea.form-control-lg {
   border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
   border-radius: var(--bs-modal-border-radius);
   outline: 0;
+  z-index: 1004;
 }
 
 .modal-backdrop {
@@ -5579,7 +5580,7 @@ textarea.form-control-lg {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: var(--bs-backdrop-zindex);
+  z-index: 1001;
   width: 100vw;
   height: 100vh;
   background-color: var(--bs-backdrop-bg);

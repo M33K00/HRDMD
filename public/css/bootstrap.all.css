@@ -605,7 +605,7 @@ body.modal-open .modal-backdrop {
   top: 84%;
   left: 15;
   right: 10;
-  height: 45px;
+  height: 41px;
   border-bottom: 3px solid #137ea7;
   border: 2px solid #137ea7;
   border-radius: 5px;
@@ -623,14 +623,11 @@ body.modal-open .modal-backdrop {
   margin-right: 5px; /* Add space between the icon and text */
   width: 15px;
   color: #dee2e6;
+  transition: color, 0.3s ease;
 }
 
 .lower-button:hover {
-  background-color: #ffffff;
-  color: #137ea7;
-  border-bottom: 3px solid #e2e2e2;
-  border: 2px solid #e2e2e2;
-  box-shadow: 0 10px 15px rgba(255, 255, 255, 0.3);
+  background-color: #137ea7;
 }
 
 .account-basic1 {
