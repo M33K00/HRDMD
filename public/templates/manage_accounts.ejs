@@ -3,11 +3,10 @@
   <%- include('./layouts/nav') -%> <%- include('./layouts/sidenav') %>
   <div class="page-body fade-in">
     <div class="page-name">
-      <h1>All Accounts </h1>
-      <a href="/view_employees" class="btn btn-primary">HRIS Mode</a>
+      <h1 class="text-uppercase">TASK MANAGER ACCOUNTS: </h1>
     </div>
     <p class="text-muted mb-4">
-      Manage accounts that have access to the Document Tracker System (<strong>HR Department</strong>). 
+      Manage accounts that have access to the Task Manager System (<strong>HR Department</strong>). 
     </p>
     <div id="alertContainer" class="bottom-right">
       <% if (message) { %>
@@ -38,13 +37,14 @@
         <div class="hris-container">
           <% const HRDp = logincollections.filter((item) => item.department === "HR Department"); %>
           <% if (logincollections.length > 0) { %>
-          <table id="table" class="table table-hover table-striped text-center">
+          <table id="table" class="table table-hover table-striped">
             <thead>
-              <tr class="table-dark">
-                <th style="width: 150px">Name</th>
-                <th style="width: 200px">Email</th>
-                <th style="width: 250px">Position</th>
-                <th style="width: 10px; padding-left: 40px"></th>
+              <tr class="table-primary text-uppercase">
+                <th>Name</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Account Level</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -62,7 +62,12 @@
                   (item.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
                   (item.hrrole === "ROLE 5") { %> Admin Aide <% } else if (item.hrrole
                   === "ADMIN") { %> Department Head <% } %></td>
-                <td><a href="/view/<%= item.id %>" class="icon-square"><i class="fa-solid fa-eye"></i></a></td>
+                <td class="fw-bold"><%= item.level %></td>
+                <td>
+                  <% if (item.hrrole !== "ADMIN") { %>
+                    <a href="/view/<%= item.id %>" class="icon-square"><i class="fa-solid fa-eye"></i></a>
+                  <% } %>
+                </td>
               </tr>
               <% }); %>
           <% } else { %>

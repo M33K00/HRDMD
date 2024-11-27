@@ -820,7 +820,8 @@ router.get("/manage_accounts", async (req, res) => {
     const page = parseInt(req.query.page) || 1; // Current page number, default to 1
     const totalItems = await LogInCollection.countDocuments(); // Total number of items
 
-    const logincollections = await LogInCollection.find()
+    const logincollections = await LogInCollection.find({
+      accountClosed: { $ne: true },})
       .skip((page - 1) * ITEMS_PER_PAGE) // Skip items based on current page
       .limit(ITEMS_PER_PAGE); // Limit the number of items per page
 

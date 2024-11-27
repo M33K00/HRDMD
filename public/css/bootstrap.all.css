@@ -821,7 +821,6 @@ body.modal-open .modal-backdrop {
   display: flex;
   justify-content: center; /* Center the grid horizontally */
   align-items: center; /* Center the grid vertically */
-  margin: 10px;
   grid-template-columns: repeat(2, 1fr); /* Grid with 2 columns */
   gap: 10px; /* Gap between grid items */
   grid-auto-rows: 40px; /* Default height for each row */
@@ -838,7 +837,19 @@ body.modal-open .modal-backdrop {
   font-size: 20px;
   text-decoration: none;
   color: rgb(255, 255, 255);
-  background-color: #04742e;
+  border: #00a51b solid 3px;
+  background-image: url("../images/approved.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.assigned-item {
+  border: #a32929 solid 3px;
+  background-image: url("../images/cross.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .account-content {

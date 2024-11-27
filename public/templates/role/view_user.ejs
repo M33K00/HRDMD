@@ -40,7 +40,7 @@
         <p>F/A Ratio: <strong><%= ratio %></strong><p>
         <div class="graph-container">
           <div class="chart-container">
-            <div class="doughnut-chart" style="background: <%= ratio === 0 ? '#6d0a0a' : `conic-gradient(
+            <div class="doughnut-chart" style="background: <%= ratio === 0 ? '#338036' : `conic-gradient(
                 #6d0a0a ${Math.min(100, (ratio / 5 * 100))}%,
                 #338036 0% ${Math.min(100, (ratio / 5 * 100))}% 100%
               )` %>;">
@@ -52,9 +52,9 @@
             </div>
           </div>
           <div class="chart-legend">
-            <div class="legend-item">
+            <div class="legend-item" style="margin-left: 16px;">
               <div class="legend-circle"></div>
-              <div class="legend-label">Finished</div>
+              <div class="legend-label">Accomplished</div>
             </div>
             <div class="legend-item">
               <div class="legend-circle" style="background-color: rgb(112, 28, 28)"></div>
@@ -87,10 +87,90 @@
           <p><strong>Account Level:</strong> <%= level %></p>
           <p><strong>EXP:</strong> <%= exp %> / <%= requiredExp %></p>
         </div>
+        <div class="task-title">
+          <p class="text-uppercase" style="font-weight: 600;">
+            <% if (level <= 10 ) { %>
+              Task Novice
+            <% } else if (level <= 20) { %>
+              Task Beginner
+            <% } else if (level <= 30) { %>
+              Task Intermediate
+            <% } else if (level <= 40) { %>
+              Task Proficient
+            <% } else if (level <= 50) { %>
+              Task Master
+            <% } else if (level <= 60) { %>
+              Task Grandmaster
+            <% } else if (level <= 70) { %>
+              Task Legend
+            <% } %>
+          </p>
+          <% if (level <= 10) { %>
+            <i class="fa-solid fa-star-half-stroke"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          <% } else if (level <= 20) { %>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          <% } else if (level <= 30) { %>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-stroke"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          <% } else if (level <= 40) { %>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          <% } else if (level <= 50) { %>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-stroke"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          <% } else if (level <= 60) { %>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          <% } else if (level <= 70) { %>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-stroke"></i>
+            <i class="fa-regular fa-star"></i>
+          <% } else if (level <= 80) { %>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          <% } else if (level <= 90) { %>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-stroke"></i>
+          <% } else if (level <= 100) { %>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          <% } %>
+        </div>
       </div>
       <div class="progress mt-2">
         <div 
-          class="progress-bar progress-bar-striped progress-bar-animated bg-info" 
+          class="progress-bar progress-bar-striped progress-bar-animated bg-warning" 
           role="progressbar" 
           style="width: <%= (exp / requiredExp) * 100 %>%;" 
           aria-valuenow="50" 
@@ -102,15 +182,15 @@
     <div class="account-container mt-4 slide-up">
     <div class="account-item">
       <div class="account-content">
-        <p>Task Finished:</p>
+        <p>Accomplished Tasks:</p>
       </div>
       <div class="account-count">
         <p><%= approvedFiles.filter((row) => row.status === 'APPROVED').length %></p>
       </div>
     </div>
-    <div class="account-item" style="background-color: rgb(112, 28, 28)">
+    <div class="account-item assigned-item" style="background-color: rgb(112, 28, 28)">
       <div class="account-content">
-        <p>Tasks Assigned:</p>
+        <p>Assigned Tasks:</p>
       </div>
       <div class="account-count">
         <p><%= pendingFiles.filter((row) => row.status === 'ASSIGNED').length %></p>
