@@ -387,15 +387,16 @@
   display: flex; /* Use flexbox */
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
-  width: 250px; /* Set width to 100% of the column */
-  height: 100%;
+  width: 250px; /* Set width to 330px */
+  height: 250px; /* Set height to 330px */
 }
 
 .account-img img {
-  max-width: 100%; /* Ensure the image doesn't overflow its container */
-  max-height: 100%; /* Ensure the image doesn't overflow its container */
-  border-radius: 5px;
-  border: #686868 solid 3px;
+  width: 100%; /* Make the image fill the container */
+  height: 100%; /* Make the image fill the container */
+  object-fit: cover; /* Make the image fill the container while preserving aspect ratio */
+  border-radius: 4px;
+  border: #686868 solid 2px;
 }
 
 .account-in {

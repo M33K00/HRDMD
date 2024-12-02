@@ -60,7 +60,16 @@
       <% } %>
       </div>
       <div class="account-in mt-3 text">
-        <p><b>Name:</b> <%= logincollections.name %> <%= logincollections.lastname %></p>
+        <p><b>Name:</b> 
+          <%= logincollections.name %>
+          <% if (logincollections.middleName !== "N/A") { %>
+          <%= logincollections.middleName %>
+          <% } %>
+          <%= logincollections.lastname %>
+          <% if (logincollections.suffix !== "N/A") { %>
+          <%= logincollections.suffix %>.
+          <% } %>
+        </p>
         <p><b>Email:</b> <%= logincollections.email %></p>
         <p><b>Emp. Status:</b> <%= logincollections.empStatus %></p>
         <p><b>Department:</b> <% if (logincollections.department === 'HR Department') { %>
@@ -76,7 +85,7 @@
           else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
           else if (logincollections.hrrole === "ROLE 3") { %> Admin Officer <% } else if
           (logincollections.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
-          (logincollections.hrrole === "ROLE 5") { %> Admin Aide <% } else if (logincollections.hrrole
+          (logincollections.hrrole === "ROLE 5") { %> Admin Aide <% } else if (logincollections.hrrole === "ROLE 6") { %> Helper <% } else if (logincollections.hrrole
           === "ADMIN") { %> Department Head I <% } else if (logincollections.hrrole === "ADMIN2") { %> Department Head II <% } %>
           </p>
       </div>

@@ -756,22 +756,22 @@ body.modal-open .modal-backdrop {
     }
     
 
-
-.account-image {
-  padding: 10px;
-  display: flex; /* Use flexbox */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  width: 330px; /* Set width to 100% of the column */
-  height: 330px;
-}
-
-.account-image img {
-  max-width: 100%; /* Ensure the image doesn't overflow its container */
-  max-height: 100%; /* Ensure the image doesn't overflow its container */
-  border-radius: 5px;
-  border: #686868 solid 3px;
-}
+    .account-image {
+      padding: 10px;
+      display: flex; /* Use flexbox */
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      width: 330px; /* Set width to 330px */
+      height: 330px; /* Set height to 330px */
+    }
+    
+    .account-image img {
+      width: 100%; /* Make the image fill the container */
+      height: 100%; /* Make the image fill the container */
+      object-fit: cover; /* Make the image fill the container while preserving aspect ratio */
+      border-radius: 4px;
+      border: #686868 solid 2px;
+    }
 
 .account-info {
   display: flex;
