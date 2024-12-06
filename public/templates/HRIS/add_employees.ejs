@@ -4,21 +4,7 @@
   <%- include('../layouts/sidenavP') %>
   <div class="page-body fade-in">
     <div class="page-name">
-      <h1>Add Employee</h1>
-    </div>
-    <div id="alertContainer" class="bottom-right">
-      <% if (message) { %>
-      <div
-        class="alert alert-dismissible alert-<%= message.type %> fade show"
-        role="alert"
-        id="autoDismissAlert"
-      >
-        <strong>Attention! </strong><%= message.message %><a
-          href="#"
-          class="alert-link"
-        ></a>
-      </div>
-      <% } %>
+      <h1 class="text-uppercase"></i>Add Employee:</h1>
     </div>
     <div class="rounded-box">
       <form
@@ -26,88 +12,89 @@
         method="POST"
         enctype="multipart/form-data"
       >
-      <fieldset>
-        <div class="form-group">
-          <label for="InputName" class="form-label mt-4">Name</label>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label for="InputName" class="form-label mt-4">First Name</label>
           <input
             type="text"
             name="name"
             class="form-control"
             aria-describedby="emailHelp"
             placeholder="Enter name"
+            value=""
             required
           />
         </div>
-        <div class="form-group">
-          <label for="InputName" class="form-label mt-4">Birthday</label>
+        <div class="form-item">
+          <label for="InputName" class="form-label mt-4">Last Name</label>
           <input
-            type="date"
-            name="birthday"
+            type="text"
+            name="lastname"
             class="form-control"
+            aria-describedby="emailHelp"
+            value=""
+            required
+
+          />
+        </div>
+      </div>
+      <p class="form-text text-muted mt-4">*Additional details will be required from the employee after they log-in.</p>
+      <div class="form-group flex-container">
+        <div class="form-item">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input
+            type="text"
+            name="email"
+            class="form-control"
+            id="exampleInputEmail1"
+            placeholder="Enter email"
+            value=""
             required
           />
         </div>
-        <div class="form-group flex-container">
-          <div class="form-item">
-            <label for="exampleInputEmail1" class="form-label mt-4">Email address</label>
-            <input
-              type="text"
-              name="email"
-              class="form-control"
-              id="exampleInputEmail1"
-              placeholder="Enter email"
-              required
-            />
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-          </div>
-          <div class="form-item">
-            <label for="InputName" class="form-label mt-4">Contact Number</label>
-            <input
-              type="text"
-              name="contact"
-              class="form-control"
-              placeholder="(+639) 123 456 7890"
-              maxlength="12"
-              required
-            />
-          </div>
-        </div>          
-        <div class="form-group">
-          <label for="exampleInputPassword1" class="form-label mt-4"
-            >Password</label
-          >
+        <div class="form-item">
+          <label for="employeeID" class="form-label">Employee ID</label>
           <input
-            type="password"
-            name="password"
+            type="text"
+            name="employeeID"
             class="form-control"
-            id="exampleInputPassword1"
-            autocomplete="off"
+            id="employeeID"
+            placeholder="Enter employee ID"
+            value=""
+            required
           />
         </div>
-        <div class="form-group">
-          <label for="formFile" class="form-label mt-4">Account Image</label>
-          <input class="form-control" type="file" name="image" id="formFile"/>
-        </div>
-        <div class="border mt-4"></div>
+      </div>          
+      <div class="form-group">
+        <label for="exampleInputPassword1" class="form-label mt-4"
+          >Password</label
+        >
+      </div>
+      <small class="form-text text-muted" style="margin-left: 5px;">*A temporary password will be sent to the user via email.</small>
+      <div class="border mt-4"></div>
         <div class="mt-4">
           <h4>HR Information:</h4>
         </div>
         <div class="form-group flex-container">
           <div class="form-item">
-            <label for="department" class="form-label mt-4">Department</label>
+            <label for="department" class="form-label mt-4">Department:</label>
             <select
               type="text"
               name="department"
               class="form-select"
               id="department"
             >
-              <option value="Department 1">Department 1</option>
-              <option value="Department 2">Department 2</option>
-              <option value="HR Department">HR Department</option>
+            <option value="HR Department">HR Department</option>
+            <option value="Department 1">PESO Department</option>
+            <option value="Department 2">CC Development Office</option>
+            <option value="Department 3">OAS Department</option>
+            <option value="Department 4">BTM Department</option>
+            <option value="Department 5">BPL Department</option>
+            <option value="Department 6">CAD Department</option>
             </select>
           </div>
           <div class="form-item">
-            <label for="hrrole" class="form-label mt-4">HR Role</label>
+            <label for="hrrole" class="form-label mt-4">Position:</label>
             <select
               type="text"
               name="hrrole"
@@ -119,11 +106,26 @@
               <option value="ROLE 3">Admin Officer</option>
               <option value="ROLE 4">Admin Assistant</option>
               <option value="ROLE 5">Admin Aide</option>
+              <option value="ROLE 6">Helper</option>
             </select>
           </div>
         </div>
         <div class="form-group flex-container">
-          <div class="form-item-2">
+          <div class="form-item">
+            <label for="empStatus" class="form-label mt-4">Employment Type</label>
+            <select
+              type="text"
+              name="empStatus"
+              class="form-select"
+              id="empStatus"
+            >
+              <option value="Permanent">Permanent</option>
+              <option value="Coterminous">Coterminous</option>
+              <option value="Casual">Casual</option>
+              <option value="Job Order">Job Order</option>
+            </select>
+          </div>
+          <div class="form-item">
             <label for="dayOff" class="form-label mt-4">Day Offs:</label>
             <select
               name="dayOff"
@@ -140,14 +142,50 @@
               <option value="Saturday">Saturday</option>
             </select>
           </div>
+        </div>
+        <div class="form-group flex-container">
+          <div class="form-item">
+            <label for="VL Points" class="form-label mt-4">VL Points:</label>
+            <input
+              type="number"
+              name="vlPoints"
+              class="form-control"
+              id="vlPoints"
+              placeholder="1.25"
+              value=""
+              step="0.01"
+              min="0"
+              required
+            />
+          </div>
+          <div class="form-item mb-2">
+            <label for="SL Points" class="form-label mt-4">SL Points:</label>
+            <input
+              type="number"
+              name="slPoints"
+              class="form-control"
+              id="slPoints"
+              placeholder="1.25"
+              value=""
+              step="0.01"
+              min="0"
+              required
+            />
+          </div>
+        </div>
+        <small class="form-text text-muted">
+          *Enter the current VL and SL points of the employee. The system will continue to track the employee's VL and SL points.
+        </small>
       </fieldset>
-        <input type="submit" value="Register Employee" class="btn btn-success btn mt-4" />
-        <a
-          href="/view_employees"
-          class="btn btn-secondary mt-4"
-          style="margin-left: 10px"
-          >CANCEL</a
-        >
+        <div class="d-flex justify-content-end">
+          <input type="submit" value="Register Employee" class="btn btn-success btn mt-4" />
+          <a
+            href="/view_employees"
+            class="btn btn-secondary mt-4"
+            style="margin-left: 10px; width: 180px;"
+            >CANCEL</a
+          >
+        </div>
       </form>
     </div>
   </div>

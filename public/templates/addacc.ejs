@@ -4,20 +4,6 @@
   <div class="page-name">
     <h1>Add Employee</h1>
   </div>
-  <div id="alertContainer" class="bottom-right">
-    <% if (message) { %>
-    <div
-      class="alert alert-dismissible alert-<%= message.type %> fade show"
-      role="alert"
-      id="autoDismissAlert"
-    >
-      <strong>Attention! </strong><%= message.message %><a
-        href="#"
-        class="alert-link"
-      ></a>
-    </div>
-    <% } %>
-  </div>
   <div class="rounded-box">
     <form
       action="/add_employee"
@@ -117,6 +103,7 @@
             <option value="ROLE 3">Admin Officer</option>
             <option value="ROLE 4">Admin Assistant</option>
             <option value="ROLE 5">Admin Aide</option>
+            <option value="ROLE 6">Helper</option>
           </select>
         </div>
       </div>

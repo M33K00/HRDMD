@@ -259,34 +259,57 @@ router.get("/reset-password/:id", async (req, res) => {
 router.post("/add_employee", upload, async (req, res) => {
   try {
     console.log(req.body);
+    const newPassword = generatePassword(8);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    let hashedPassword = req.body.password;
-    if (req.body.password) {
-      // Generate a salt and hash the new password
-      const salt = await bcrypt.genSalt();
-      hashedPassword = await bcrypt.hash(req.body.password, salt);
-    }
-
-    const parsedBirthday = new Date(req.body.birthday);
+    console.log("Password:", newPassword);
 
     const data = {
       name: req.body.name,
-      birthday: parsedBirthday,
+      lastname: req.body.lastname,
+      employeeID: req.body.employeeID,
       contact: req.body.contact,
       email: req.body.email,
       password: hashedPassword, // Use the hashed password here
       department: req.body.department,
       hrrole: req.body.hrrole,
-      image: req.file.filename,
+      verified: true,
     };
+
+    const mailOptions = {
+      from: 'mikuosuzuya@gmail.com',
+      to: data.email,
+      subject: 'HRDMD ACCOUNT CREATED',
+      html: `The HR Department Management System (HRDMD) has created an account for you.<br><br>
+        Your password is:<br>
+        <strong>${newPassword}</strong><br><br>
+        <strong style="color: red;">PLEASE CHANGE THIS PASSWORD IMMEDIATELY AFTER LOGGING IN.</strong><br><br>
+        Additional details will be asked after you log in.<br><br>
+      `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+        req.session.message = {
+          type: "danger",
+          message: "User added, but email failed to send.",
+        };
+        res.redirect("/view_emp_data/" + account.email);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
 
     const dayOff = req.body.dayOff; // Array of day off strings like ["Sunday", "Monday"]
 
     const adata = {
       name: req.body.name,
       email: req.body.email,
-      paySched: req.body.paySched,
       dayOff: dayOff,
+      VLPoints: req.body.vlPoints,
+      SLPoints: req.body.slPoints,
     };
 
     // Insert data into the LogInCollection

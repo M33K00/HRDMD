@@ -36,7 +36,7 @@ const logInSchema = new mongoose.Schema({
   birthday: {
     type: Date,
     required: false,
-    default: Date.now,
+    default: null,
   },
   password: {
     type: String,
