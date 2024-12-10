@@ -992,6 +992,14 @@ router.get("/take-task/:id/:email", async (req, res) => {
       return res.redirect("/view_file/" + id);
     }
 
+    if (assignChange) {
+      assignChange.exp += 25;
+      const { level, remainingExp, nextLevelExp } = calculateLevel(assignChange.exp);
+      assignChange.level = level;
+      assignChange.remainingExp = remainingExp;
+      await assignChange.save();
+    }
+
     const data = {
       assignTo: assignChange.name + " " + assignChange.lastname,
       email: email,
@@ -1001,7 +1009,7 @@ router.get("/take-task/:id/:email", async (req, res) => {
 
     req.session.message = {
       type: "success",
-      message: "Task taken successfully.",
+      message: "Task taken successfully. +25 EXP!",
     };
     res.redirect("/view_file/" + id);
   } catch (error) {

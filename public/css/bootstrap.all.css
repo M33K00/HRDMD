@@ -643,12 +643,10 @@ body.modal-open .modal-backdrop {
 }
 
 .account-stats {
-  border:rgba(0, 0, 0, 0.5) 1px solid;
-  border-radius: 4px;
+  border-left: #4141418a solid 1px;
   background-color: #ffffff;
-  box-shadow: #00000065 0px 0px 4px;
   margin: 15px; /* Margin for spacing */
-  padding: 15px; /* Padding inside the box */
+  padding: 20px; /* Padding inside the box */
   font-size: 20px; /* Font size */
   width: 450px; /* Fixed width */
   height: 90%;

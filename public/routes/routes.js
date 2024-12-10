@@ -114,6 +114,34 @@ router.post("/signup", authController.signup_post);
 
 router.get("/logout", authController.logout_get);
 
+// StartPage Updates
+router.post("/pendingDTRCount", async (req, res) => {
+  try {
+    const pendingDTR = await DaysPresent.countDocuments({
+      FFapproved: "PENDING"
+    });
+
+    const pendingLeave = await LeaveApplications.countDocuments({
+      status: "PENDING"
+    });
+
+    const activeEmp = await Attendance.countDocuments({
+      status: "IN"
+    });
+
+    const activeTasks = await SubmittedFiles.countDocuments({
+      status: {
+        $in: ["ASSIGNED", "REASSIGNED"]
+      }
+    });
+
+    res.json({ pendingDTR, pendingLeave, activeEmp, activeTasks });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Transporter for sending emails
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -1853,6 +1881,138 @@ router.get("/DTRApproval", async (req, res) => {
   }
 })
 
+function calculateDeductionPoints(hoursLate, minutesLate) {
+  // Calculate total lateness in minutes
+  const totalMinutesLate = hoursLate * 60 + minutesLate;
+
+  // Deduct points based on lateness rules
+  let deductionPoints = 0;
+  if (totalMinutesLate > 0 && totalMinutesLate <= 1) {
+    deductionPoints = 0.002;
+  } else if (totalMinutesLate > 1 && totalMinutesLate <= 2) {
+    deductionPoints = 0.004;
+  } else if (totalMinutesLate > 2 && totalMinutesLate <= 3) {
+    deductionPoints = 0.006;
+  } else if (totalMinutesLate > 3 && totalMinutesLate <= 4) {
+    deductionPoints = 0.008;
+  } else if (totalMinutesLate > 4 && totalMinutesLate <= 5) {
+    deductionPoints = 0.010;
+  } else if (totalMinutesLate > 5 && totalMinutesLate <= 6) {
+    deductionPoints = 0.012;
+  } else if (totalMinutesLate > 6 && totalMinutesLate <= 7) {
+    deductionPoints = 0.015;
+  } else if (totalMinutesLate > 7 && totalMinutesLate <= 8) {
+    deductionPoints = 0.017;
+  } else if (totalMinutesLate > 8 && totalMinutesLate <= 9) {
+    deductionPoints = 0.019;
+  } else if (totalMinutesLate > 9 && totalMinutesLate <= 10) {
+    deductionPoints = 0.021;
+  } else if (totalMinutesLate > 10 && totalMinutesLate <= 11) {
+    deductionPoints = 0.023;
+  } else if (totalMinutesLate > 11 && totalMinutesLate <= 12) {
+    deductionPoints = 0.025;
+  } else if (totalMinutesLate > 12 && totalMinutesLate <= 13) {
+    deductionPoints = 0.027;
+  } else if (totalMinutesLate > 13 && totalMinutesLate <= 14) {
+    deductionPoints = 0.029;
+  } else if (totalMinutesLate > 14 && totalMinutesLate <= 15) {
+    deductionPoints = 0.031;
+  } else if (totalMinutesLate > 15 && totalMinutesLate <= 16) {
+    deductionPoints = 0.033;
+  } else if (totalMinutesLate > 16 && totalMinutesLate <= 17) {
+    deductionPoints = 0.035;
+  } else if (totalMinutesLate > 17 && totalMinutesLate <= 18) {
+    deductionPoints = 0.037;
+  } else if (totalMinutesLate > 18 && totalMinutesLate <= 19) {
+    deductionPoints = 0.040;
+  } else if (totalMinutesLate > 19 && totalMinutesLate <= 20) {
+    deductionPoints = 0.042;
+  } else if (totalMinutesLate > 20 && totalMinutesLate <= 21) {
+    deductionPoints = 0.044;
+  } else if (totalMinutesLate > 21 && totalMinutesLate <= 22) {
+    deductionPoints = 0.046;
+  } else if (totalMinutesLate > 22 && totalMinutesLate <= 23) {
+    deductionPoints = 0.048;
+  } else if (totalMinutesLate > 23 && totalMinutesLate <= 24) {
+    deductionPoints = 0.050;
+  } else if (totalMinutesLate > 24 && totalMinutesLate <= 25) {
+    deductionPoints = 0.052;
+  } else if (totalMinutesLate > 25 && totalMinutesLate <= 26) {
+    deductionPoints = 0.054;
+  } else if (totalMinutesLate > 26 && totalMinutesLate <= 27) {
+    deductionPoints = 0.056;
+  } else if (totalMinutesLate > 27 && totalMinutesLate <= 28) {
+    deductionPoints = 0.058;
+  } else if (totalMinutesLate > 28 && totalMinutesLate <= 29) {
+    deductionPoints = 0.060;
+  } else if (totalMinutesLate > 29 && totalMinutesLate <= 30) {
+    deductionPoints = 0.062;
+  } else if (totalMinutesLate > 30 && totalMinutesLate <= 31) {
+    deductionPoints = 0.065;
+  } else if (totalMinutesLate > 31 && totalMinutesLate <= 32) {
+    deductionPoints = 0.067;
+  } else if (totalMinutesLate > 32 && totalMinutesLate <= 33) {
+    deductionPoints = 0.069;
+  } else if (totalMinutesLate > 33 && totalMinutesLate <= 34) {
+    deductionPoints = 0.071;
+  } else if (totalMinutesLate > 34 && totalMinutesLate <= 35) {
+    deductionPoints = 0.073;
+  } else if (totalMinutesLate > 35 && totalMinutesLate <= 36) {
+    deductionPoints = 0.075;
+  } else if (totalMinutesLate > 36 && totalMinutesLate <= 37) {
+    deductionPoints = 0.077;
+  } else if (totalMinutesLate > 37 && totalMinutesLate <= 38) {
+    deductionPoints = 0.079;
+  } else if (totalMinutesLate > 38 && totalMinutesLate <= 39) {
+    deductionPoints = 0.081;
+  } else if (totalMinutesLate > 39 && totalMinutesLate <= 40) {
+    deductionPoints = 0.083;
+  } else if (totalMinutesLate > 40 && totalMinutesLate <= 41) {
+    deductionPoints = 0.085;
+  } else if (totalMinutesLate > 41 && totalMinutesLate <= 42) {
+    deductionPoints = 0.087;
+  } else if (totalMinutesLate > 42 && totalMinutesLate <= 43) {
+    deductionPoints = 0.090;
+  } else if (totalMinutesLate > 43 && totalMinutesLate <= 44) {
+    deductionPoints = 0.092;
+  } else if (totalMinutesLate > 44 && totalMinutesLate <= 45) {
+    deductionPoints = 0.094;
+  } else if (totalMinutesLate > 45 && totalMinutesLate <= 46) {
+    deductionPoints = 0.096;
+  } else if (totalMinutesLate > 46 && totalMinutesLate <= 47) {
+    deductionPoints = 0.098;
+  } else if (totalMinutesLate > 47 && totalMinutesLate <= 48) {
+    deductionPoints = 0.100;
+  } else if (totalMinutesLate > 48 && totalMinutesLate <= 49) {
+    deductionPoints = 0.102;
+  } else if (totalMinutesLate > 49 && totalMinutesLate <= 50) {
+    deductionPoints = 0.104;
+  } else if (totalMinutesLate > 50 && totalMinutesLate <= 51) {
+    deductionPoints = 0.106;
+  } else if (totalMinutesLate > 51 && totalMinutesLate <= 52) {
+    deductionPoints = 0.108;
+  } else if (totalMinutesLate > 52 && totalMinutesLate <= 53) {
+    deductionPoints = 0.110;
+  } else if (totalMinutesLate > 53 && totalMinutesLate <= 54) {
+    deductionPoints = 0.112;
+  } else if (totalMinutesLate > 54 && totalMinutesLate <= 55) {
+    deductionPoints = 0.115;
+  } else if (totalMinutesLate > 55 && totalMinutesLate <= 56) {
+    deductionPoints = 0.117;
+  } else if (totalMinutesLate > 56 && totalMinutesLate <= 57) {
+    deductionPoints = 0.119;
+  } else if (totalMinutesLate > 57 && totalMinutesLate <= 58) {
+    deductionPoints = 0.121;
+  } else if (totalMinutesLate > 58 && totalMinutesLate <= 59) {
+    deductionPoints = 0.123;
+  } else if (totalMinutesLate > 59 && totalMinutesLate <= 60) {
+    deductionPoints = 0.125;
+  } else {
+    deductionPoints = 0.250;
+  }
+  return deductionPoints;
+}
+
 router.post("/DTRApprove", async (req, res) => {
   const { id, email, approval, reason, overtime } = req.body;
 
@@ -1861,12 +2021,16 @@ router.post("/DTRApprove", async (req, res) => {
     const overtimeDecimal = parseFloat(overtime);
 
     // Validate the overtime input
+    if (overtimeDecimal === null) {
+      overtimeDecimal = 0;
+    }
+    
     if (isNaN(overtimeDecimal) || overtimeDecimal < 0) {
       // Handle invalid overtime input (optional)
       req.session.message = {
         type: "danger",
         message: "Invalid overtime input.",
-      }
+      };
       return res.redirect("/DTRApproval");
     }
     
@@ -1882,11 +2046,18 @@ router.post("/DTRApprove", async (req, res) => {
 
     if (approval === "approve") {
       dayspresent.FFapproved = "APPROVED";
+      dayspresent.forFile = false;
       dayspresent.FFreason = reason;
       dayspresent.overTime = overtimeDecimal;
       await dayspresent.save();
 
-      attendance.hoursWorked += overtimeDecimal;
+      // Calculate late points deduction
+      const hoursLate = dayspresent.timeLate.split(":")[0];
+      const minutesLate = dayspresent.timeLate.split(":")[1];
+      const deductionPoints = calculateDeductionPoints(hoursLate, minutesLate);
+
+      // Update Attendance record
+      attendance.VLPoints -= deductionPoints;
       await attendance.save();
     } else if (approval === "disapprove") {
       dayspresent.FFapproved = "DISAPPROVED";

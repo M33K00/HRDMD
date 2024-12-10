@@ -483,7 +483,10 @@ router.get("/dtr_user/:id", checkHRSettings, async (req, res) => {
     let ForFileDTR = await DaysPresent.findOne({
       email: email,
       forFile: true,
-      FFapproved: { $in: ["N/A", "PENDING"] }
+      $and: [
+        { FFapproved: { $in: ["N/A", "PENDING"] } }, // Include "N/A" and "PENDING"
+        { FFapproved: { $ne: "APPROVED" } }         // Exclude "APPROVED"
+      ]
     });
 
     const VLPoints = await calculateMonthlyVLPoints(logincollections.email, attendance.VLPoints);

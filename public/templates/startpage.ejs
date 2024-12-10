@@ -1,5 +1,5 @@
 
-  <%- include('./layouts/header') -%>
+<%- include('./layouts/header') -%>
 <body class="startbody">
   <div class="start-container">
     <%- include('./layouts/navhrisP') -%>
@@ -10,28 +10,28 @@
         <div class="bottomTab fade-in">
           <div class="bottomTabCard">
             <div class="task-info">
-              <p class="task-count"><span><%= activeTasks %></span></p>
+              <p class="task-count"><span id="activeTask"></span></p>
               <p class="task-label">Active Tasks</p>
             </div>
             <i class="fa-solid fa-list-check task-icon"></i>
           </div>        
           <div class="bottomTabCard" style="background-color: #147ca5;">
             <div class="task-info">
-              <p class="task-count"><span><%= activeEmp %></span></p>
+              <p class="task-count"><span id="activeEmp"></span></p>
               <p class="task-label">Active Employees</p>
             </div>
             <i class="fa-solid fa-clock task-icon"></i>
           </div>
           <div class="bottomTabCard">
             <div class="task-info">
-              <p class="task-count"><span><%= pendingDTR %></span></p>
+              <p class="task-count"><span id="pendingDTR"></span></p>
               <p class="task-label">Pending DTR</p>
             </div>
             <i class="fa-solid fa-clipboard task-icon"></i>
           </div>
           <div class="bottomTabCard" style="background-color: #147ca5;">
             <div class="task-info">
-              <p class="task-count"><span><%= pendingLeave %></span></p>
+              <p class="task-count"><span id="pendingLeave"></span></p>
               <p class="task-label">Pending Leave</p>
             </div>
             <i class="fa-solid fa-envelope task-icon"></i>
@@ -391,4 +391,34 @@ document.getElementById('currentDate').textContent = formattedDate;
 
   const timeOut = '<%= hrsettings.endTime %>'; // Ensure this contains a valid time like "15:30"
   playSoundAtTime(timeOut);
+</script>
+<script>
+  async function fetchPendingDTRCount() {
+  try {
+    // Send a POST request to the "pendingDTRCount" route
+    const response = await fetch("/pendingDTRCount", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch pending DTR count");
+    }
+
+    const data = await response.json();
+    // Update the DOM element with the pending DTR count
+    document.getElementById("activeTask").textContent = data.activeTasks;
+    document.getElementById("activeEmp").textContent = data.activeEmp;
+    document.getElementById("pendingDTR").textContent = data.pendingDTR;
+    document.getElementById("pendingLeave").textContent = data.pendingLeave;
+  } catch (error) {
+      console.error("Error fetching pending DTR count:", error);
+      document.getElementById("pendingDTR").textContent = "Error";
+    }
+  }
+  // Call the function when the page loads
+  fetchPendingDTRCount();
+  setInterval(fetchPendingDTRCount, 2000);
 </script>
