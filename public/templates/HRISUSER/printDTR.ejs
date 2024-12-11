@@ -37,17 +37,8 @@
     <button id="download" class="btn btn-primary mb-5">Download as PDF</button>
     <div class="rounded-box-print mt-3">
     <div class="page-content p-4 bg-white" id="page-content">
-      <div class="header">
-        <img src="../images/logo.png" class="logo-print">
-        <div class="text-container header-print">
-          <h5 class="text-center">Republic of the Philippines</h5>
-          <h5 class="text-center">City Government of Bacoor</h5>
-          <h5 class="text-center">Bacoor Government Center, Brgy. Bayanan,</h5>
-          <h5 class="text-center">Bacoor Blvd., City of Bacoor, Cavite</h5>
-          <h3 class="text-center">DAILY TIME RECORD</h3>
-        </div>
-      </div>      
-        <table id="table" class="table table-bordered" style="width: 100%">
+        <h3 class="text-center mt-3">DAILY TIME RECORD</h3>
+        <table id="table" class="table table-bordered mt-5" style="width: 100%">
             <tr>
               <td style="width: 50%"><strong>Name:</strong> <%= user.name %></td>
               <td><strong>Email:</strong> <%= user.email %></td>
@@ -115,7 +106,15 @@
                   <tr class="text-center">
                     <td><%= row.date.toISOString().slice(0, 10) %></td>
                 <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
-                <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %><% } else { %>Ongoing<% } %></td>
+                <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+                  <% } else if (row.timeOut === null && row.forFile === true && row.FFapproved === "N/A") { %>
+                    <i class="text-warning fa-solid fa-circle-exclamation"></i>
+                  <% } else if (row.timeOut === null && row.forFile === false && row.FFapproved === "APPROVED") { %>
+                    FILE APPROVED
+                  <% } else { %>
+                    ONGOING
+                  <% } %>
+                </td>
                 <td><%= row.totalTime.toFixed(2) %></td>
                 <td><%= row.overTime.toFixed(2) %></td>
                 <td><%= row.underTime.toFixed(2) %></td>
