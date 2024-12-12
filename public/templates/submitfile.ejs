@@ -21,6 +21,7 @@
       </div>
       <% } %>
     </div>
+    <div class="rounded-box">
     <div class="page-content">
       <form action="/submitfile" method="post" enctype="multipart/form-data">
         <fieldset>
@@ -114,8 +115,11 @@
             >
           </div>
         </fieldset>
-        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
       </form>
+    </div>
     </div>
   </div>
   <script>

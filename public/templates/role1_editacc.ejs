@@ -109,16 +109,15 @@
             />
             </div>
             <div class="form-item">
-              <label for="InputName" class="form-label mt-4"
-                >Contact Number</label
-              >
+              <label for="InputName" class="form-label mt-4">Contact Number</label>
               <input
+                id="contactInput"
                 type="text"
                 name="contact"
                 class="form-control"
-                placeholder="(+639) 123 456 7890"
-                value="<%= logincollections.contact  %>"
-                maxlength="12"
+                placeholder="(+639)"
+                value="<%= logincollections.contact %>"
+                maxlength="13"
                 required
               />
             </div>
@@ -189,7 +188,7 @@
               value="<%= logincollections.image  %>"
             />
           </div>
-          <small id="imageHelp" class="mt-2 text-muted">File size should not exceed 250KB</small>
+          <small id="imageHelp" class="mt-2 text-muted">File size should not exceed 300KB</small>
           <div class="border mt-4"></div>
           <input
           type="submit"
@@ -290,6 +289,19 @@
       </div>
     </div>
   </div>
+  <script>
+    const contactInput = document.getElementById('contactInput');
+  
+    contactInput.addEventListener('input', () => {
+      let rawValue = contactInput.value.replace(/\D/g, ''); // Remove non-digit characters
+      if (!rawValue.startsWith('639')) {
+        rawValue = '639' + rawValue.substring(0, 9); // Add 639 if not present and limit to 9 digits
+      } else {
+        rawValue = rawValue.substring(0, 12); // Ensure it doesn't exceed +639xxxxxxxxx
+      }
+      contactInput.value = '+' + rawValue;
+    });
+  </script>
   <script>
     // Show change password modal
     document.getElementById("changePasswordBtn").addEventListener("click", function () {

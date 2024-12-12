@@ -860,12 +860,6 @@
   font-weight: bold;
 }
 
-.page-content {
-  background-color: #ffffff;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
 .logo-print {
   display: flex;
   position: absolute;
@@ -953,4 +947,33 @@
 
 .progress {
   border: rgba(0, 0, 0, 0.1) 1px solid;
+}
+
+.file-instructions {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: medium;
+  border: #5a5a5a 1px solid;
+  border-radius: 4px;
+  width: 190%;
+  height: 200%;
+}
+
+#timeOutConfirm {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #dc3545;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transitions */
+  box-sizing: border-box; /* Ensure padding and borders don't affect size */
+}
+
+#timeOutConfirm:hover {
+  background-color: #b02a37; /* Darker red for hover */
+  border-color: #940c12; /* Border color on hover */
+  /* No change in padding, margin, or border width */
 }

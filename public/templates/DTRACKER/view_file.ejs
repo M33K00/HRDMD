@@ -65,9 +65,9 @@
         <div class="file-item text-uppercase">
           <h3>Instructions:</h3>
           <p><strong>File Instructions:</strong></p>
-          <textarea class="form-control file-instruction" readonly>
-          <%= file.fileInstruction %></textarea
-          >
+          <div class="file-instructions">
+            <p style="margin: 10px;"><%= file.fileInstruction %></p>
+          </div>
         </div>
       </div>
       <div class="file-download mt-3">

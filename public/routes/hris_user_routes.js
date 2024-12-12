@@ -169,8 +169,8 @@ router.get("/view_profile/:email", async (req, res) => {
       return res.redirect("/hris");
     }
 
-    let empID = logincollections.empID;
-    let PersonalDataSheet = await PDS.findOne({ employeeID: empID });
+    let empID = logincollections.employeeID;
+    let PersonalDataSheet = await PDS.findOne({ empID: empID });
 
     const results = await findDocumentsByEmail(email);
     const unsubmitted = countArraysWithNull(results);
@@ -591,7 +591,7 @@ router.get("/clockin/:email", checkHRSettings, async (req, res) => {
     // Set a success message in the session
     req.session.message = {
       type: "success",
-      message: "Clock-in successful.",
+      message: "Time-in successful.",
     };
 
     // Redirect to the user's page
