@@ -5,11 +5,17 @@ const app = express();
 const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
+const cron = require("node-cron");
 const cookieParser = require("cookie-parser");
 const { checkUser } = require("../middleware/authMiddleware.js");
-const LeaveApplications = require("../models/leaveapplications");
-const SubmittedFiles = require("../models/submitted_files");
 const bodyParser = require("body-parser");
+
+// Models
+const LeaveApplications = require("../models/leaveapplications");
+const Attendance = require("../models/attendance");
+const LastUpdate = require("../models/lastUpdate");
+const SubmittedFiles = require("../models/submitted_files");
+
 
 const PORT =  3939;
 const templatePath = path.join(__dirname, "../templates");
@@ -79,7 +85,15 @@ mongoose.connect("mongodb://0.0.0.0:27017/HRDMD");
 
 const db = mongoose.connection;
 db.on("error", (error) => console.log(error));
-db.once('open', () =>  console.log('Connected to MongoDB'));
+db.once("open", async () => {
+  console.log("Connected to MongoDB");
+
+  // Perform backup check on server startup
+  await performBackupCheck();
+
+  // Schedule the annual update
+  scheduleAnnualUpdate();
+});
 
 // Function to update the collection
 async function updateLeaveApplications() {
@@ -99,6 +113,62 @@ async function updateLeaveApplications() {
   }
 }
 
+async function updateAttendancePoints() {
+  try {
+    // Update attendance points for all records
+    const result = await Attendance.updateMany(
+      {}, // Empty filter means update all records
+      { $inc: { availableSL: 15, availableVL: 15, availableSPL: 3 } }
+    );
+
+    // Log the update
+    console.log(`Updated ${result.modifiedCount} attendance records.`);
+
+    // Update the last update timestamp
+    const currentYear = new Date().getFullYear();
+    await LastUpdate.updateOne(
+      { id: "annualUpdate" }, // Use a constant ID to track this specific update
+      { $set: { year: currentYear, updatedAt: new Date() } },
+      { upsert: true } // Create the record if it doesn't exist
+    );
+
+    console.log("Annual attendance points update completed.");
+  } catch (error) {
+    console.error("Error updating attendance points:", error);
+  }
+}
+
+
+// Function to perform a backup check on server startup
+async function performBackupCheck() {
+  const currentYear = new Date().getFullYear();
+
+  try {
+    // Check the last update record
+    const lastUpdate = await LastUpdate.findOne({ id: "annualUpdate" });
+
+    // If no update for the current year, perform the update
+    if (!lastUpdate || lastUpdate.year < currentYear) {
+      console.log("Missed annual update. Running update now...");
+      await updateAttendancePoints();
+    } else {
+      console.log("Annual update for this year already applied.");
+    }
+  } catch (error) {
+    console.error("Error performing backup check:", error);
+  }
+}
+
+// Schedule the task to run on January 1st at midnight
+function scheduleAnnualUpdate() {
+  cron.schedule("0 0 1 1 *", async () => {
+    console.log("Running annual attendance points update...");
+    await updateAttendancePoints();
+    console.log("Annual attendance points update completed.");
+  });
+
+  console.log("Scheduled task for annual attendance points update.");
+}
 
 setInterval(updateLeaveApplications, 60 * 60 * 1000);
 
