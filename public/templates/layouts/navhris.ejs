@@ -17,6 +17,10 @@
         BPL Department 
       <% } else if (user.department === "Department 6") { %> 
         City Assessor's Office 
+      <% } else if (user.department === "Department 7") { %> 
+        MIS Department
+      <% } else if (user.department === "Department 8") { %>
+        BDEEM Office:
       <% } else if (user.department === "HR Department") { %> 
         Human Resource Department 
       <% } %>
@@ -79,7 +83,7 @@
             >
             <% } else { %>
             <a href="/view_profile/<%= user.email %>"
-              ><i class="fa-solid fa-gear"></i>Accosunt Settings</a
+              ><i class="fa-solid fa-gear"></i>Account Settings</a
             >
             <% } %>
           </li>

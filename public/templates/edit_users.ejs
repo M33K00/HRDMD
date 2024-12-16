@@ -2,22 +2,16 @@
 <%-include('./layouts/sidenav') -%>
 <div class="page-body">
   <div class="page-name">
-    <h1>Manage Account (<%= logincollections.name %>)</h1>
+    <h1 class="text-uppercase">Manage Account:</h1>
     <% if (!logincollections.verified) { %>
     <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Actions
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item text-danger" href="/delete/<%= logincollections.id %>" onclick="return confirm('Are you sure you want to delete account?')">Delete Account</a>
-        <a class="dropdown-item" href="/verify/<%= logincollections.id %>" onclick="return confirm('Are you sure you want to verify this account?')">Verify Account</a>
-      </div>
+      <a class="btn btn-success" href="/verify/<%= logincollections.id %>" onclick="return confirm('Are you sure you want to verify this account?')">Verify Account</a>
     </div>
     <% } else if (logincollections.email != user.email) { %>
       <a class="btn btn-danger" href="/delete/<%= logincollections.id %>" onclick="return confirm('Are you sure you want to delete account?')">Delete Account</a>
     <% } %>
   </div>
-  <div>
+  <div class="rounded-box">
     <form
       action="/update/<%= logincollections.id %>"
       method="POST"
@@ -209,6 +203,7 @@
         </div>
       </div>
     </fieldset>
+    <div class="d-flex justify-content-end">
       <input type="submit" value="Update User" class="btn btn-success btn mt-4" />
   
       <a
@@ -217,6 +212,7 @@
         style="margin-left: 10px"
         >CANCEL</a
       >
+    </div>
     </form>
   </div>
   <!-- Modal -->
