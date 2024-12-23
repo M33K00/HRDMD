@@ -30,10 +30,10 @@
           <h1 class="text-uppercase">Attendance Record:</h1>
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-              Print Current DTR REPORT
+              Print DTR REPORT
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" href="/printDTR/<%= user.email %>">Print Current DTR REPORT</a></li>
+              <li><a class="dropdown-item" href="/printDTRuser/<%= user.employeeID %>">Print DTR REPORT</a></li>
               <li><a class="dropdown-item" href="/printHistory/<%= user.email %>">Print DTR History</a></li>
             </ul>
           </div>

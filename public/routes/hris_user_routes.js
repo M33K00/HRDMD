@@ -6,6 +6,7 @@ const { checkHRSettings, calculateMonthlyVLPoints, calculateMonthlySLPoints } = 
 
 // Models
 const LogInCollection = require("../models/logincollections");
+const HRSettings = require("../models/hrsettings");
 const LeaveApplications = require("../models/leaveapplications");
 const Attendance = require("../models/attendance");
 const DaysPresent = require("../models/dayspresent");
@@ -2197,6 +2198,118 @@ router.get("/printHistory/:email", async (req, res) => {
     res.redirect("/dtr_user" + logincollections.id);
   }
 })
+
+router.get("/printDTRuser/:employeeID", async (req, res) => {
+  try {
+    const employeeID = req.params.employeeID;
+    const logincollections = await LogInCollection.findOne({ employeeID: employeeID });
+    const attendance = await Attendance.findOne({ email: logincollections.email });
+    const daysPresent = await DaysPresent.find({ email: logincollections.email });
+    const VLPoints = await calculateMonthlyVLPoints(logincollections.email, attendance.VLPoints);
+    const SLPoints = await calculateMonthlySLPoints(logincollections.email, attendance.SLPoints);
+    const year = "";
+    const month = "";
+    const yearsSet = new Set();
+
+    daysPresent.forEach(doc => {
+      const year = new Date(doc.date).getFullYear();
+      yearsSet.add(year);
+    });
+
+    const years = Array.from(yearsSet).sort((a, b) => b - a);
+    res.render("HRISUSER/printDTRA", { 
+      logincollections, 
+      attendance, 
+      VLPoints, 
+      SLPoints,
+      daysPresent, 
+      years, 
+      year, 
+      month });
+    
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
+
+router.post("/printByYear/:employeeID", async (req, res) => {
+  try {
+    const employeeID = req.params.employeeID;
+    const year = parseInt(req.body.Year, 10); // Ensure year is a number
+    const month = parseInt(req.body.Month, 10); // Ensure month is a number
+
+    console.log("Year:", year, "Month:", month);
+    
+    const hrsettings = await HRSettings.findOne();
+
+    const user = await LogInCollection.findOne({ employeeID: employeeID });
+    const attendance = await Attendance.findOne({ email: user.email });
+    const userAttendance = await Attendance.findOne({ email: user.email });
+    const daysPresentUnsorted = await DaysPresent.find({ email: user.email});
+
+    const VLPoints = await calculateMonthlyVLPoints(user.email, attendance.VLPoints);
+    const SLPoints = await calculateMonthlySLPoints(user.email, attendance.SLPoints);
+
+    const filteredDaysPresent = daysPresentUnsorted.filter(doc => {
+    const docDate = new Date(doc.date); // Parse the ISO 8601 date
+
+    // Debug log to check how each date is parsed
+    console.log("Document Date:", doc.date, "Parsed Date:", docDate);
+
+    // Check if docDate is a valid date before comparing year and month
+    if (isNaN(docDate)) {
+        console.error("Invalid date detected:", doc.date);
+        return false; // Skip invalid dates
+    }
+
+      return docDate.getFullYear() === year && docDate.getMonth() === month - 1;
+    });
+
+
+    // Log filtered results
+    console.log("Filtered Days Present:", filteredDaysPresent);
+
+    // Sort the filtered documents by date
+    const daysPresent = filteredDaysPresent.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    // Final result log
+    console.log("Sorted Days Present:", daysPresent);
+
+    const yearsSet = new Set();
+
+    daysPresentUnsorted.forEach(doc => {
+      const year = new Date(doc.date).getFullYear();
+      yearsSet.add(year);
+    });
+
+    const years = Array.from(yearsSet).sort((a, b) => b - a);
+
+    res.render("HRISUSER/printDTRA", { 
+      user, 
+      hrsettings,
+      userAttendance,
+      attendance, 
+      VLPoints,
+      SLPoints,
+      daysPresent,
+      years,
+      year,
+      month,
+    });
+  } catch (err) {
+    console.error(err);
+    req.session.message = {
+      type: "danger",
+      message: "Error fetching data",
+    };
+    res.redirect("/hris");
+  }
+});
 
 router.get("/fileDTR/:id", async (req, res) => {
   const id = req.params.id;
