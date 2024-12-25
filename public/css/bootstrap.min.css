@@ -736,6 +736,11 @@
   backdrop-filter: blur(5px);
 }
 
+.download-button {
+  margin-left: 250px;
+  margin-right: 250px;
+}
+
 .perm-info {
   font-size: 20px;
   margin-left: 20px;

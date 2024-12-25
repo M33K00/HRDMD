@@ -6,48 +6,65 @@
             <h1 class="text-uppercase">Print DTR</h1>
             <a class="btn btn-primary" href="/dtr_user/<%= user.id %>">RETURN TO DTR</a>
         </div>
-        <div>
+        <div class="rounded-box-print">
+          <div>
+            <h5 class="text-uppercase fw-bold">DTR Report:</h5>
+          </div>
             <%# ID for print script %>
             <input type="hidden" id="userID" value="<%= user.employeeID %>">
             <form action="/printByYear/<%= user.employeeID %>/" method="POST">
-                <div class="form-group">
-                    <label for="Month">Month:</label>
-                    <select id="Month" name="Month" class="form-control">
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                </div>
-                <div class="form-group mt-2">
-                    <label for="Year">Year:</label>
-                    <select id="Year" name="Year" class="form-control">
-                        <% years.forEach((year) => { %>
-                            <option value="<%= year %>"><%= year %></option>
-                        <% }); %>
-                    </select>
+                <div class="form-group flex-container">
+                    <div class="form-item">
+                      <label for="Month">Month:</label>
+                      <select id="Month" name="Month" class="form-control">
+                          <option></option>
+                          <option value="1" <% if (month == 1) { %> selected <% } %>>January</option>
+                          <option value="2" <% if (month == 2) { %> selected <% } %>>February</option>
+                          <option value="3" <% if (month == 3) { %> selected <% } %>>March</option>
+                          <option value="4" <% if (month == 4) { %> selected <% } %>>April</option>
+                          <option value="5" <% if (month == 5) { %> selected <% } %>>May</option>
+                          <option value="6" <% if (month == 6) { %> selected <% } %>>June</option>
+                          <option value="7" <% if (month == 7) { %> selected <% } %>>July</option>
+                          <option value="8" <% if (month == 8) { %> selected <% } %>>August</option>
+                          <option value="9" <% if (month == 9) { %> selected <% } %>>September</option>
+                          <option value="10" <% if (month == 10) { %> selected <% } %>>October</option>
+                          <option value="11" <% if (month == 11) { %> selected <% } %>>November</option>
+                          <option value="12" <% if (month == 12) { %> selected <% } %>>December</option>
+                      </select>
+                    </div>
+                    <div class="form-item">
+                      <label for="Year">Year:</label>
+                      <select id="Year" name="Year" class="form-control">
+                          <% years.forEach((year) => { %>
+                              <option value="<%= year %>"><%= year %></option>
+                          <% }); %>
+                          <% if (years.length === 0) { %>
+                              <option value="2024" selected>2024</option>
+                          <% } %>
+                      </select>
+                  </div>
                 </div>
                 <div class="d-flex justify-content-end mt-3">
                     <button id="print" class="btn btn-primary">SHOW REPORT</button>
                 </div>
             </form>
+      </div>
+      <% if (daysPresent.length > 0 && year) { %>
+        <div class="download-button d-flex justify-content-end mt-5">
+            <button id="download" class="btn btn-primary">Download as PDF</button>
+        </div>
+      <% } %>
             <% if (daysPresent.length > 0 && year) { %>
-                <div class="d-flex justify-content-end mt-3">
-                    <button id="download" class="btn btn-primary mb-5">Download as PDF</button>
-                </div>
-            <% } %>
-            <% if (daysPresent.length > 0 && year) { %>
+              <% 
+                    const monthMap = {
+                      1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June",
+                      7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"
+                    };
+              %>
             <div class="rounded-box-print mt-3">
             <div class="page-content p-4 bg-white" id="page-content">
                 <h3 class="text-center mt-3">DAILY TIME RECORD</h3>
+                <h4 class="text-uppercase">Report for: <%= monthMap[month] %> <%= year %></h4>
                 <table id="table" class="table table-bordered mt-5" style="width: 100%">
                     <tr>
                       <td style="width: 50%"><strong>Name:</strong> <%= user.name %></td>
@@ -151,14 +168,14 @@
                 "11": "November",
                 "12": "December"
             }; %>
-            <p class="text-center">No DTR Record found for the month of <strong><%= monthMap[month] %></strong> in <strong><%= year %></strong>.</p>
+            <p class="text-center mt-4">No DTR Record found for the month of <strong><%= monthMap[month] %></strong> in <strong><%= year %></strong>.</p>
         <% } else { %>
-            <p class="text-center">Please select a month and year to view the DTR Report.</p>
+            <p class="text-center mt-4">Please select a month and year to view the DTR Report.</p>
         <% } %>
     </div>
     </div>
 </body>
-<script src="../scripts/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>
     document.getElementById("download").addEventListener("click", () => {
         // Select the content of the div

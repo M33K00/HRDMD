@@ -2244,34 +2244,53 @@ router.post("/printByYear/:employeeID", async (req, res) => {
     const month = parseInt(req.body.Month, 10); // Ensure month is a number
 
     console.log("Year:", year, "Month:", month);
-    
-    const hrsettings = await HRSettings.findOne();
 
+    const hrsettings = await HRSettings.findOne();
     const user = await LogInCollection.findOne({ employeeID: employeeID });
     const attendance = await Attendance.findOne({ email: user.email });
     const userAttendance = await Attendance.findOne({ email: user.email });
-    const daysPresentUnsorted = await DaysPresent.find({ email: user.email});
 
-    const VLPoints = await calculateMonthlyVLPoints(user.email, attendance.VLPoints);
-    const SLPoints = await calculateMonthlySLPoints(user.email, attendance.SLPoints);
+    const daysPresentUnsorted = async () => {
+      try {
+        const daysPresent = await DaysPresent.find({ email: user.email });
+        const daysPresentA = await DaysPresentA.find({ email: user.email });
+        return [...daysPresent, ...daysPresentA];
+      } catch (err) {
+        console.error("Error fetching days present:", err);
+        return [];
+      }
+    };
 
-    const filteredDaysPresent = daysPresentUnsorted.filter(doc => {
-    const docDate = new Date(doc.date); // Parse the ISO 8601 date
+    const filterDaysPresent = async (year, month) => {
+      try {
+        const unsortedDays = await daysPresentUnsorted(); // Await the async function
+        const filteredDaysPresent = unsortedDays.filter(doc => {
+          const docDate = new Date(doc.date); // Parse the ISO 8601 date
 
-    // Debug log to check how each date is parsed
-    console.log("Document Date:", doc.date, "Parsed Date:", docDate);
+          // Debug log to check how each date is parsed
+          console.log("Document Date:", doc.date, "Parsed Date:", docDate);
 
-    // Check if docDate is a valid date before comparing year and month
-    if (isNaN(docDate)) {
-        console.error("Invalid date detected:", doc.date);
-        return false; // Skip invalid dates
-    }
+          // Check if docDate is a valid date before comparing year and month
+          if (isNaN(docDate)) {
+            console.error("Invalid date detected:", doc.date);
+            return false; // Skip invalid dates
+          }
 
-      return docDate.getFullYear() === year && docDate.getMonth() === month - 1;
-    });
+          // Compare year and month
+          return docDate.getFullYear() === year && docDate.getMonth() === month - 1;
+        });
 
+        // Log filtered results
+        console.log("Filtered Days Present:", filteredDaysPresent);
+        return filteredDaysPresent;
+      } catch (err) {
+        console.error("Error filtering days present:", err);
+        return [];
+      }
+    };
 
-    // Log filtered results
+    // Await and log filtered results
+    const filteredDaysPresent = await filterDaysPresent(year, month);
     console.log("Filtered Days Present:", filteredDaysPresent);
 
     // Sort the filtered documents by date
@@ -2280,20 +2299,27 @@ router.post("/printByYear/:employeeID", async (req, res) => {
     // Final result log
     console.log("Sorted Days Present:", daysPresent);
 
+    // Get unique years
     const yearsSet = new Set();
-
-    daysPresentUnsorted.forEach(doc => {
-      const year = new Date(doc.date).getFullYear();
-      yearsSet.add(year);
+    daysPresent.forEach(doc => {
+      const docYear = new Date(doc.date).getFullYear();
+      yearsSet.add(docYear);
     });
 
-    const years = Array.from(yearsSet).sort((a, b) => b - a);
+    const years = Array.from(yearsSet); // Convert the Set to an array
 
-    res.render("HRISUSER/printDTRA", { 
-      user, 
+    // Calculate VL and SL Points
+    const VLPoints = await calculateMonthlyVLPoints(user.email, attendance.VLPoints);
+    const SLPoints = await calculateMonthlySLPoints(user.email, attendance.SLPoints);
+
+    console.log("Year", years, "Month", month);
+
+    // Render the result
+    res.render("HRISUSER/printDTRA", {
+      user,
       hrsettings,
       userAttendance,
-      attendance, 
+      attendance,
       VLPoints,
       SLPoints,
       daysPresent,
@@ -2310,6 +2336,7 @@ router.post("/printByYear/:employeeID", async (req, res) => {
     res.redirect("/hris");
   }
 });
+
 
 router.get("/fileDTR/:id", async (req, res) => {
   const id = req.params.id;
