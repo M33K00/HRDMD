@@ -6,25 +6,15 @@
       <h1 class="text-center text-uppercase">Attendance History</h1>
       <a href="/dtr_user/<%= user.id %>" class="btn btn-secondary">GO BACK</a>
     </div>
-    <div class="printBTNS">
-        <button id="download" class="btn btn-primary">Download as PDF</button>
+    <div class="download-button d-flex justify-content-end mt-5">
+      <button id="download" class="btn btn-primary">Download as PDF</button>
     </div>
     <div class="rounded-box-print mt-3">
-    <div class="page-content mt-4 p-4" id="page-content">
-      <div class="header">
-        <img src="https://i.imgur.com/7RbCGni.png" class="logo-print">
-        <div class="text-container header-print">
-          <h5 class="text-center">Republic of the Philippines</h5>
-          <h5 class="text-center">City Government of Bacoor</h5>
-          <h5 class="text-center">Bacoor Government Center, Brgy. Bayanan,</h5>
-          <h5 class="text-center">Bacoor Blvd., City of Bacoor, Cavite</h5>
-          <h3 class="text-center">DAILY TIME RECORD REPORT</h3>
-        </div>
-      </div>
+    <div class="page-content p-4" id="page-content">
       <h3 class="mt-4">Attendance History:</h3>
         <table id="table" class="table table-bordered">
             <tr>
-              <td style="width: 50%"><strong>Name:</strong> <%= user.name %></td>
+              <td style="width: 50%"><strong>Name:</strong> <%= user.name %> <%= user.lastname %></td>
               <td><strong>Employee ID:</strong> <%= user.employeeID %></td>
             </tr>
             <tr>
@@ -33,7 +23,7 @@
                 else if (user.hrrole === "ROLE 3") { %> Admin Officer <% } else if
                 (user.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
                 (user.hrrole === "ROLE 5") { %> Admin Aide <% } else if (user.hrrole
-                === "ADMIN") { %> Department Head <% } %></td>
+                === "ADMIN") { %> Department Head <% } else if (user.hrrole === "ADMIN2") { %> Department Head II <% } %></td>
               <td><strong>Department:</strong> <% if (logincollections.department === 'HR Department') { %>
               HR Department <% } else if (logincollections.department === 'Department 1') { %>
               PESO Department <% } else if (logincollections.department === 'Department 2') { %>
@@ -45,12 +35,11 @@
              <% } %></td>
             </tr>
         </table>
-        <h3 class="mt-4">Days Present:</h3>
+        <h4 class="mt-4">Days Present:</h4>
         <table id="table" class="table table-hover table-striped table-bordered">
           <thead>
             <tr class="table-dark text-center text-uppercase">
               <th>Date</th>
-              <th>Time Late</th>
               <th>Time In</th>
               <th>Time Out</th>
               <th>Under Time</th>
@@ -62,7 +51,6 @@
             <% daysPresentA.forEach((row) => { -%>
             <tr>
               <td><%- row.date.toISOString().slice(0, 10) %></td>
-              <td><%- row.timeLate %></td>
               <td><%= new Date(row.timeIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
               <td><%- new Date(row.timeOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
               <td><%- row.underTime.toFixed(2) %></td>
@@ -72,7 +60,7 @@
             <% }) -%>
           </tbody>
         </table>
-        <h3 class="mt-4">Days Absent:</h3>
+        <h4 class="mt-4">Days Absent:</h4>
         <table id="table" class="table table-hover table-striped table-bordered">
         <% if (daysAbsentA.length > 0) { %>
             <thead>
@@ -97,8 +85,8 @@
             </tbody>
         <% } %>
         </table>
-
-        <h3 class="mt-4">Days on Leave:</h3>
+        <div class="page-break"></div>
+        <h4 class="mt-5">Days on Leave:</h4>
         <table id="table" class="table table-hover table-striped table-bordered">
             <% if (leaveapplications.length > 0) { %>
                 <thead>
@@ -127,44 +115,59 @@
                 </tbody>
             <% } %>
             </table>
+            <p class="csf">
+              I certify on my honor that the above is a true and correct report
+              of the hours of work performed, record of which was made daily at the time 
+              of arrival and departure from the office.
+            </p>
+            <div class="csf-border">
+              <p class="mt-3">VERIFIED as to the prescribed office hours:</p>
+            </div>
+            <div class="csf-border text-center">
+              <p>In Charge</p>
+            </div>
       </div>
     </div>
   </div>
 <script src="../scripts/html2pdf.bundle.min.js"></script>
 <script>
-    document.getElementById("download").addEventListener("click", () => {
-        // Select the content of the div
-        var element = document.getElementById("page-content");
+  document.getElementById("download").addEventListener("click", () => {
+    // Select the content of the div
+    var element = document.getElementById("page-content");
 
-        // Define the desired DPI (dots per inch), which sets the resolution
-        var dpi = 300; // You can use any DPI value like 300, 600, etc.
-        
-        // A4 page dimensions in pixels at the given DPI (A4 is 210mm x 297mm)
-        var a4WidthInPixels = 210 
-        var a4HeightInPixels = 297 
+    // Define the desired DPI (dots per inch) for high-resolution output
+    var dpi = 300; 
 
-        // Define scale for html2canvas based on DPI
-        var scale = dpi / 72;  // Convert DPI to scale factor for html2canvas (default 72 DPI)
+    // Calculate scale for html2canvas based on DPI
+    var scale = dpi / 72; 
 
-        // Configure the options for the PDF
-        var opt = {
-            filename: "DTRHISTORYReport.pdf",
-            image: { type: "jpeg", quality: 2.0 },
-            html2canvas: { 
-                scale: scale,  // Set scaling factor based on DPI
-                useCORS: true,  // Useful for external images
-                logging: false,  // Disable logging for cleaner output
-            },
-            jsPDF: { 
-                unit: "mm",  // Use pixels as the unit (instead of mm or pt)
-                format: [a4WidthInPixels, a4HeightInPixels],  // Custom A4 size in pixels
-                orientation: "portrait",  // Set the orientation of the page
-                compress: true  // Optional compression to reduce PDF size
-            },
-        };
+    // Configure the options for the PDF
+    var opt = {
+        filename: "DTRHISTORYReport.pdf",
+        image: { type: "jpeg", quality: 2.0 },
+        html2canvas: { 
+            scale: scale,  // Set scaling factor for better quality
+            useCORS: true,  // Useful for external images
+            logging: false,  // Disable logging for cleaner output
+        },
+        jsPDF: { 
+            unit: "mm",  // Unit for PDF dimensions
+            format: "a4",  // Standard A4 size
+            orientation: "portrait",  // Portrait orientation
+        },
+        pagebreak: { 
+            mode: ['css', 'legacy'],  // Handle content overflow
+            before: '.page-break',    // Insert page breaks before specific elements (optional)
+            avoid: 'tr, img'          // Avoid page breaks inside tables or images (optional)
+        },
+    };
 
-        // Use html2pdf to create and download the PDF
-        html2pdf().from(element).set(opt).save();
-    });
+    // Use html2pdf to create and download the PDF
+    html2pdf()
+        .set(opt)
+        .from(element)
+        .save();
+});
+
 </script>
 <%- include('../../layouts/footer') %>

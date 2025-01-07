@@ -726,8 +726,8 @@
 }
 
 .rounded-box-print {
-  margin-left: 250px;
-  margin-right: 250px;
+  width: 800px;
+  margin: auto; /* Automatically center the element */
   background-color: #ffffff;
   border-radius: 5px;
   border: 1px solid #9c9c9c;
@@ -737,8 +737,8 @@
 }
 
 .download-button {
-  margin-left: 250px;
-  margin-right: 250px;
+  width: 800px;
+  margin: auto;
 }
 
 .perm-info {
@@ -981,4 +981,17 @@
   background-color: #b02a37; /* Darker red for hover */
   border-color: #940c12; /* Border color on hover */
   /* No change in padding, margin, or border width */
+}
+
+.csf {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.csf-border {
+  border-top: black 2px solid;
+  margin-top: 50px;
+}
+
+.page-content {
+  page-break-inside: avoid;
 }
