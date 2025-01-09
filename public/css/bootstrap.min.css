@@ -995,3 +995,43 @@
 .page-content {
   page-break-inside: avoid;
 }
+
+.table-status {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.table-status th, .table-status td {
+  width: 50%;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.table-status th {
+  background-color: #f4f4f4;
+  font-weight: 800;
+}
+
+.status {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.status.approved {
+  color: white;
+  background-color: #28a745; /* Green */
+}
+
+.status.disapproved {
+  color: white;
+  background-color: #dc3545; /* Red */
+}
+
+.status.pending {
+  color: white;
+  background-color: #6c757d; /* Grey */
+}

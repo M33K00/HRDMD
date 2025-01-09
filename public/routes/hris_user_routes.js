@@ -2410,4 +2410,49 @@ router.post("/fileDTR", upload, async (req, res) => {
   }
 });
 
+router.get("/view-leaveP/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const leaveapplications = await LeaveApplications.findById(id);
+
+    if (!leaveapplications) {
+      req.session.message = {
+        type: "warning",
+        message: "Leave application not found",
+      };
+      return res.redirect("HRIS/view_employees");
+    }
+
+    const leaveuser = await LogInCollection.findOne({
+      email: leaveapplications.email,
+    });
+    if (!leaveuser) {
+      req.session.message = {
+        type: "warning",
+        message: "User not found",
+      };
+    }
+
+    const userAttendance = await Attendance.findOne({
+      email: leaveapplications.email,
+    });
+
+    if (!userAttendance) {
+      req.session.message = {
+        type: "warning",
+        message: "User not found",
+      };
+    }
+
+    res.render("HRISUSER/manage_leave", {
+      leaveapplications,
+      leaveuser,
+      userAttendance,
+    });
+  } catch (err) {
+    console.log("Error viewing leave: ", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

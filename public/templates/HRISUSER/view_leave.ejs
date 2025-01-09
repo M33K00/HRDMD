@@ -114,23 +114,23 @@
                 <tr class="table-dark">
                   <th>Applicant's Name</th>
                   <th>Type</th>
-                  <th>Applied Date</th>
                   <th>Start Date</th>
                   <th>End Date</th>
+                  <th>Approved Date</th>
                   <th>Status</th>
                 </tr>
               </thead>
               <tbody>
                 <% leaveapplications.forEach((row, index) => { %>
-                <tr class="popup-row" data-reason="<%= row.reason %>">
+                <tr class="clickable-row" data-href="/view-leaveP/<%= row.id %>" data-reason="<%= row.reason %>">
                   <td><%= row.name %></td>
                   <td><%= row.Type %></td>
+                  <td><%= row.StartDate.toISOString().split('T')[0] %></td>
+                  <td><%= row.EndDate.toISOString().split('T')[0] %></td>
                   <td>
                     <% if (row.AppliedDate === null) { %> N/A <% } else { %> <%=
                     row.AppliedDate.toISOString().split('T')[0] %> <% } %>
                   </td>
-                  <td><%= row.StartDate.toISOString().split('T')[0] %></td>
-                  <td><%= row.EndDate.toISOString().split('T')[0] %></td>
                   <td
                     style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
                   >
@@ -168,7 +168,7 @@
                 </thead>
                 <tbody>
                   <% pendingApplications.forEach((row, index) => { %>
-                  <tr class="popup-row" data-reason="<%= row.reason %>">
+                  <tr class="clickable-row" data-reason="<%= row.reason %>">
                     <td><%= row.name %></td>
                     <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
@@ -216,7 +216,7 @@
                 <tbody>
                   <% approvedApplications.filter(row => row.Status ===
                   'Approved').forEach((row, index) => { %>
-                  <tr class="popup-row" data-reason="<%= row.reason %>">
+                  <tr class="clickable-row" data-reason="<%= row.reason %>">
                     <td><%= row.name %></td>
                     <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
@@ -264,7 +264,7 @@
                 <tbody>
                   <% declinedApplications.filter(row => row.Status ===
                   'Approved').forEach((row, index) => { %>
-                  <tr class="popup-row" data-reason="<%= row.reason %>">
+                  <tr class="clickable-row" data-href="#" data-reason="<%= row.reason %>">
                     <td><%= row.name %></td>
                     <td><%= row.Title %></td>
                     <td><%= row.Type %></td>
@@ -299,5 +299,15 @@
       </div>
     </div>
   </div>
+  <script>
+    document.querySelectorAll('.clickable-row').forEach((row) => {
+      row.addEventListener('click', () => {
+        const href = row.dataset.href;
+        if (href) {
+          window.location.href = href;
+        }
+      });
+    });
+  </script>
   <%- include('../layouts/footer') %>
 </body>
