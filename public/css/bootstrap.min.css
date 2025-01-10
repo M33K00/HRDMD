@@ -736,9 +736,24 @@
   backdrop-filter: blur(5px);
 }
 
+.leave-formD {
+  width: 1200px;
+  margin: auto; /* Automatically center the element */
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #9c9c9c;
+  padding: 20px;
+}
+
 .download-button {
   width: 800px;
   margin: auto;
+}
+
+.download-form {
+  width: 1200px;
+  margin: auto;
+  padding-bottom: 20px;
 }
 
 .perm-info {
@@ -1034,4 +1049,51 @@
 .status.pending {
   color: white;
   background-color: #6c757d; /* Grey */
+}
+
+.header-leaveForm h5 {
+  margin: 4px;
+  transform: scale(0.8);
+}
+
+.formHeader {
+  margin: auto;
+}
+
+/* Style for the first th with the logo */
+.formHeader th img.logoForm {
+  max-width: 115px;         /* Adjust the max width for the logo */
+  height: auto;             /* Maintain aspect ratio */
+}
+
+/* Style for the second th containing the text */
+.formHeader th:nth-child(2) {
+  width: 70%;               /* Adjust width of the text th */
+  padding-left: 30px;       /* Space between image and text */
+  padding-right: 200px;      /* Space between text and button */
+}
+
+/* Style the text container for better spacing */
+.formHeader th:nth-child(2) h5, th:nth-child(2) h3 {
+  margin: 5px 0;            /* Add some margin between text */
+}
+
+/* Optional: Change text alignment of the text container */
+.formHeader th:nth-child(2) {
+  text-align: left;         /* Align text to the left */
+}
+
+/* Adjust font size of h3 and h5 in the second th */
+.formHeader th:nth-child(2) h5 {
+  font-size: 14px;          /* Smaller font size for h5 */
+}
+
+.formHeader th:nth-child(2) h3 {
+  font-size: 25px;          /* Larger font size for h3 */
+}
+
+.textReason {
+  resize: none;
+  text-align: left;
+  font-size: small;
 }
