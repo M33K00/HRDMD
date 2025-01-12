@@ -11,22 +11,8 @@
     <% if (user.hrrole === "ADMIN") { %>
       <p class="text-muted mt-3 mb-4">These are tasks that are closed/finished. Deleting these tasks <strong>will not be recoverable</strong> and will not affect the user's EXP.</p>
     <% } else { %>
-      <p class="text-muted text-center mt-3 mb-4">These are tasks that are closed by the Department Head or Admin</p>
+      <p class="text-muted mt-3 mb-4">These are tasks that are closed by the HR Head or Admin</p>
     <% } %>
-    <div id="alertContainer" class="bottom-right slide-up">
-      <% if (message) { %>
-      <div
-        class="alert alert-dismissible alert-<%= message.type %> fade show"
-        role="alert"
-        id="autoDismissAlert"
-      >
-        <strong>Attention! </strong><%= message.message %><a
-          href="#"
-          class="alert-link"
-        ></a>
-      </div>
-      <% } %>
-    </div>
     <input
       class="form-control me-sm-2"
       type="text"

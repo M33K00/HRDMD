@@ -976,8 +976,10 @@
   font-size: medium;
   border: #5a5a5a 1px solid;
   border-radius: 4px;
-  width: 190%;
+  width: 35vw; /* 90% of the viewport width */
+  max-width: 100%; /* Prevent overflow */
   height: 200%;
+  background-color: white;
 }
 
 #timeOutConfirm {

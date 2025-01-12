@@ -1118,11 +1118,6 @@ body.modal-open .modal-backdrop {
   margin-left: auto;
 }
 
-.file-option {
-  display: flex;
-  align-items: center;
-}
-
 .taskBadge {
   margin-left: 10px;
 }
@@ -1384,4 +1379,93 @@ body.modal-open .modal-backdrop {
 
 .clickable-row:hover {
   background-color: #f0f0f0; /* Highlight row on hover */
+}
+
+.custom-file-dropdown {
+  display: flex;
+  justify-content: end;
+  position: relative;
+}
+
+.file-option {
+  margin-top: 10px;
+  z-index: 1000;
+}
+
+.custom-btn-dark {
+  background-color: #4d4d4d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.custom-btn {
+  background-color: #158cba;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.custom-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  display: none; /* Hidden by default */
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  min-width: 13rem;
+}
+
+.custom-dropdown-item {
+  padding: 10px;
+  display: block;
+  color: #212529;
+  text-decoration: none;
+  font-size: small;
+}
+
+.custom-dropdown-item:hover {
+  background-color: #158cba;
+  color: #fff;
+}
+
+/* Add a visible state */
+.custom-dropdown-menu.visible {
+  display: block;
+}
+
+.refresh-button {
+  background-color: #f2f2f2;
+  border: 1px solid #3a3a3a; /* Single border declaration */
+  color: rgb(0, 0, 0);
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  height: 50px;
+  border-radius: 5px; /* Adds rounded corners */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transitions */
+  text-align: center;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.refresh-button i {
+  font-size: x-large;
+}
+
+.refresh-button:hover {
+  background-color: #158cba; /* Hover background */
+  color: #f2f2f2; /* White text on hover */
+  border-color: #158cba; /* Match the border color with background on hover */
+}
+
+.refresh-button:focus {
+  outline: none; /* Remove the default outline for better aesthetics */
+  box-shadow: 0 0 0 3px rgba(21, 140, 186, 0.3); /* Add focus ring */
 }

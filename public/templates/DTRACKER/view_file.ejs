@@ -86,42 +86,65 @@
           <% if (file.assignChange) { %>
             <span class="badge rounded-pill bg-danger text-uppercase">The task assignment was changed by: <%= file.assignChange %></span>
           <% } %>
-          <div class="file-dropdown">
-            <button class="btn <% if ((user.hrrole !== "ADMIN" && user.hrrole !== "ADMIN2") && file.status !== "ASSIGNED") { %>btn-dark disabled<% } else { %>btn-primary <% } %>
-              dropdown-toggle" 
-              type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Actions
-            </button>
-            <div class="dropdown-menu" id="fileDropdownMenu" aria-labelledby="dropdownMenuButton">
-              <% if ((user.hrrole === "ADMIN" || user.hrrole === "ADMIN2") && user.email !== file.email && file.status !== "FOR APPROVAL") { %>
-                <a class="dropdown-item" href="#" onclick="showChangeAssigneeModal('<%= file.id %>')">
-                  <i class="fa-solid fa-users"></i>
-                  Change Assignment
-                </a>
-              <% } %>
-              <% if (user.hrrole === "ADMIN" && file.status === "ASSIGNED" || file.status === "REASSIGNED" || user.email === file.email) { %>
-                <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for approval', '<%= file.id %>')"><i class="fa-solid fa-file-circle-check mr-2"></i> For Approval</a>
-                <a class="dropdown-item" href="#" onclick="showConfirmationModal('add remarks', '<%= file.id %>')"><i class="fa-solid fa-comment mr-2"></i>
-                  <% if (file.remarks === "") { %>
-                    Add Remarks
-                  <% } else { %>
-                    Add Update
-                  <% } %>
-                </a>
-              <% } %>
-              <% if (user.hrrole === "ADMIN" && file.status === "FOR APPROVAL") { %>
-                <a class="dropdown-item" href="#" onclick="showConfirmationModal('set this task as approved', '<%= file.id %>')"><i class="fa-solid fa-check"></i> Approve</a>
-                <a class="dropdown-item" href="#" onclick="showConfirmationModal('mark this task for reassignment', '<%= file.id %>')"><i class="fa-solid fa-arrow-rotate-right"></i> Reassign</a>
-              <% } %>
-              <% if (user.hrrole === "ADMIN" && file.status === "APPROVED") { %>
-                <a class="dropdown-item" href="#" onclick="showConfirmationModal('move this task to archive', '<%= file.id %>')"><i class="fa-solid fa-box-archive"></i> Archive</a>
-              <% } %>
-              <% if (user.hrrole !== "ADMIN" && file.assignTo === "None") { %>
-                <a class="dropdown-item" href="#" onclick="showAcceptTaskModal('<%= file.id %>', '<%= user.email %>')"><i class="fa-solid fa-users"></i> Take Task</a>
-              <% } %>
+          <div class="custom-file-option">
+            <% if (file.assignChange) { %>
+              <span class="badge rounded-pill bg-danger text-uppercase">
+                The task assignment was changed by: <%= file.assignChange %>
+              </span>
+            <% } %>
+            <div class="custom-file-dropdown">
+              <button
+                class="<% if ((user.hrrole !== 'ADMIN' && user.hrrole !== 'ADMIN2') && file.status !== 'ASSIGNED') { %>custom-btn-dark disabled<% } else { %>custom-btn<% } %>
+                  custom-dropdown-toggle"
+                type="button"
+                id="customDropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                ACTIONS
+              </button>
+              <div class="custom-dropdown-menu" aria-labelledby="customDropdownMenuButton">
+                <% if ((user.hrrole === 'ADMIN' || user.hrrole === 'ADMIN2') && user.email !== file.email && file.status !== 'FOR APPROVAL') { %>
+                  <a class="custom-dropdown-item" href="#" onclick="showChangeAssigneeModal('<%= file.id %>')">
+                    <i class="fa-solid fa-users"></i> Change Assignment
+                  </a>
+                <% } %>
+                <% if (user.hrrole === 'ADMIN' && (file.status === 'ASSIGNED' || file.status === 'REASSIGNED') || user.email === file.email) { %>
+                  <a class="custom-dropdown-item" href="#" onclick="showConfirmationModal('mark this task for approval', '<%= file.id %>')">
+                    <i class="fa-solid fa-file-circle-check mr-2"></i> For Approval
+                  </a>
+                  <a class="custom-dropdown-item" href="#" onclick="showConfirmationModal('add remarks', '<%= file.id %>')">
+                    <i class="fa-solid fa-comment mr-2"></i>
+                    <% if (file.remarks === '') { %>
+                      Add Remarks
+                    <% } else { %>
+                      Add Update
+                    <% } %>
+                  </a>
+                <% } %>
+                <% if (user.hrrole === 'ADMIN' && file.status === 'FOR APPROVAL') { %>
+                  <a class="custom-dropdown-item" href="#" onclick="showConfirmationModal('set this task as approved', '<%= file.id %>')">
+                    <i class="fa-solid fa-check"></i> Approve
+                  </a>
+                  <a class="custom-dropdown-item" href="#" onclick="showConfirmationModal('mark this task for reassignment', '<%= file.id %>')">
+                    <i class="fa-solid fa-arrow-rotate-right"></i> Reassign
+                  </a>
+                <% } %>
+                <% if (user.hrrole === 'ADMIN' && file.status === 'APPROVED') { %>
+                  <a class="custom-dropdown-item" href="#" onclick="showConfirmationModal('move this task to archive', '<%= file.id %>')">
+                    <i class="fa-solid fa-box-archive"></i> Archive
+                  </a>
+                <% } %>
+                <% if (user.hrrole !== 'ADMIN' && file.assignTo === 'None') { %>
+                  <a class="custom-dropdown-item" href="#" onclick="showAcceptTaskModal('<%= file.id %>', '<%= user.email %>')">
+                    <i class="fa-solid fa-users"></i> Take Task
+                  </a>
+                <% } %>
+              </div>
             </div>
           </div>
-          </div>
+        </div>
       <% } %>
     </div>
       <% if (fileDes !== "Archive" && remarks.length !== 0) { %>
@@ -212,7 +235,9 @@
                   else if (user.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
                   else if (user.hrrole === "ROLE 3") { %> Admin Officer <% }
                   else if (user.hrrole === "ROLE 4") { %> Admin Assistant <% }
-                  else if (user.hrrole === "ROLE 5") { %> Admin Aide <% } %>
+                  else if (user.hrrole === "ROLE 5") { %> Admin Aide <% } 
+                  else if (user.hrrole === "ADMIN2") { %> Department Head II <% }
+                  %>
             </option>
             <% } 
           }) %>
@@ -239,8 +264,7 @@
         <p><strong>Task Due Date: </strong><%= file.dueDate.toISOString().split('T')[0] %></p>
         <p><strong>Task Instructions: </strong></p>
         <textarea class="form-control modal-instruction" readonly>
-          <%= file.fileInstruction %></textarea
-        >
+          <%= file.fileInstruction %></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="confirmAccept">Confirm</button>
@@ -250,5 +274,27 @@
   </div>
 </div>
   <%- include('../layouts/modals/confirm') %>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const dropdown = document.querySelector(".custom-file-dropdown");
+    const button = dropdown.querySelector(".custom-btn");
+    const menu = dropdown.querySelector(".custom-dropdown-menu");
+
+    // Show dropdown when button is hovered
+    button.addEventListener("mouseenter", () => {
+      menu.classList.add("visible");
+    });
+
+    // Keep dropdown visible when hovering over the menu
+    menu.addEventListener("mouseenter", () => {
+      menu.classList.add("visible");
+    });
+
+    // Hide dropdown when mouse leaves the button or menu
+    dropdown.addEventListener("mouseleave", () => {
+      menu.classList.remove("visible");
+    });
+  });
+  </script>
   <%- include('../layouts/footer') -%>
 </body>

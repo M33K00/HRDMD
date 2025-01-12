@@ -634,6 +634,7 @@ router.get("/view_file/:id", async (req, res) => {
     const remarks = await TaskTimeline.find({ fileCode: file.fileCode });
     const users = await LogInCollection.find({
       department: "HR Department",
+      email: { $ne: file.email },
     });
     
 

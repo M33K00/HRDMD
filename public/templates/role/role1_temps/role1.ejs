@@ -6,7 +6,7 @@
   <% } %>
   <div class="page-body fade-in">
     <div class="page-name">
-      <h1 class="text-uppercase">Task Manager</h1>
+      <h1 class="text-uppercase"><span><i class="fa-solid fa-list-check" style="margin-right: 15px;"></i></span>Task Manager</h1>
     </div>
     <p class="text-muted text-center mt-3" style="font-size: large;">You currently have <strong><%= submittedFiles.length %></strong> task(s) assigned to you.</p>
     <div id="alertContainer" class="bottom-right">
@@ -40,7 +40,7 @@
     <%# Folder Buttons %>
     <div class="tabs-container">
       <h5 class="folder-title">Tabs:</h5>
-      <button class="btn btn-secondary" onclick="window.location.reload();">
+      <button class="refresh-button" onclick="window.location.reload();">
         <i class="fa-solid fa-rotate-right"></i>
       </button>
     </div>
