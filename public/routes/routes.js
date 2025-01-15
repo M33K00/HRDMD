@@ -25,6 +25,7 @@ const DaysPresentA = require("../models/dayspresentA");
 const DaysAbsentA = require("../models/daysabsentA");
 const SubmittedFiles = require("../models/submitted_files");
 const ArchivedFiles = require("../models/archivedfiles");
+const Departments = require("../models/departments");
 
 // 201 File Models
 const AppPaper = require("../models/201File/appPaper");
@@ -122,7 +123,7 @@ router.post("/pendingDTRCount", async (req, res) => {
     });
 
     const pendingLeave = await LeaveApplications.countDocuments({
-      status: "PENDING"
+      Status: "Pending"
     });
 
     const activeEmp = await Attendance.countDocuments({
@@ -948,22 +949,22 @@ router.get("/add_employees", (req, res) => {
 
 router.get("/view_employees", async (req, res) => {
   try {
-    const logincollections = await LogInCollection.find({
-      accountClosed: { $ne: true },
+    const perPage = 10; // Number of departments per page
+    const page = parseInt(req.query.page) || 1; // Current page, default to 1
+
+    const totalDepartments = await Departments.countDocuments(); // Total number of departments
+    const allDepartments = await Departments.find()
+      .sort({ deptAbbrev: 1 }) // Sort A-Z
+      .skip((page - 1) * perPage) // Skip records for previous pages
+      .limit(perPage); // Limit results to `perPage`
+
+    res.render("HRIS/view_employees", {
+      allDepartments,
+      currentPage: page,
+      totalPages: Math.ceil(totalDepartments / perPage),
     });
-    const departments = {
-      allD: "active",
-      HR: "inactive",
-      DP1: "inactive",
-      DP2: "inactive",
-      DP3: "inactive",
-      DP4: "inactive",
-      DP5: "inactive",
-      DP6: "inactive",
-    };
-    logincollections.sort((a, b) => a.verified - b.verified);
-    res.render("HRIS/view_employees", { logincollections, departments });
   } catch (error) {
+    console.error(error);
     res.status(500).send("Internal Server Error");
   }
 });
@@ -2077,6 +2078,84 @@ router.post("/DTRApprove", async (req, res) => {
   }
 });
 
+router.post("/addDepartment", async (req, res) => {
+  try {
+    const deptAbbrev = req.body.abbreviation;
+    const newDepartment = req.body.department;
+
+    // Validate inputs
+    if (!newDepartment) {
+      return res.json({ error: "Department name is required." });
+    }
+    if (newDepartment.length > 100) {
+      return res.json({ error: "Department name should be less than 100 characters." });
+    }
+    if (newDepartment.length < 10) {
+      return res.json({ error: "Department name should be at least 10 characters." });
+    }
+
+    if (!deptAbbrev) {
+      return res.json({ error: "Department abbreviation is required." });
+    }
+    if (deptAbbrev.length > 20) {
+      return res.json({ error: "Department abbreviation should be less than 20 characters." });
+    }
+    if (deptAbbrev.length < 2) {
+      return res.json({ error: "Department abbreviation should be at least 2 characters." });
+    }
+
+    // Check if the department already exists
+    const existingDepartment = await Departments.findOne({
+      deptName: newDepartment,
+    });
+
+    const existingAbbreviation = await Departments.findOne({
+      deptAbbrev: deptAbbrev,
+    });
+
+    if (existingAbbreviation) {
+      return res.json({ error: "Department abbreviation already exists." });
+    }
+
+    if (existingDepartment) {
+      return res.json({ error: "Department already exists." });
+    }
+
+    // Create and save new department
+    const department = new Departments({
+      deptName: newDepartment,
+      deptAbbrev: deptAbbrev,
+    });
+
+    await department.save();
+
+    res.json({ success: true, message: "Department added successfully." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/view-department/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const department = await Departments.findById(id);
+
+    if (!department) {
+      return res.status(404).send("Department not found");
+    }
+
+    const employees = await LogInCollection.find({
+      department: department.deptAbbrev,
+    });
+
+    res.render("HRIS/viewDepartment", { department, employees });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 router.get("/addacc", (req, res) => {
   res.render("addacc");

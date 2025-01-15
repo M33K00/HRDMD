@@ -1099,3 +1099,33 @@
   text-align: left;
   font-size: small;
 }
+
+.deptbtn {
+  width: 35px;
+  margin: 2px;
+  color:#4d4d4d;
+  background-color: white;
+  border: #6c757d 1px solid;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.deptbtn:hover {
+  background-color: #6c757d;
+  color: white;
+}
+
+.deptbtn-del {
+  width: 35px;
+  margin: 2px;
+  color: rgb(173, 0, 0);
+  background-color: white;
+  border: #dc3545 1px solid;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.deptbtn-del:hover {
+  background-color: #dc3545;
+  color: white;
+}

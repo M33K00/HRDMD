@@ -1,0 +1,54 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/navhrisP') -%>
+  <%- include('../layouts/sidenavP') %>
+  <div class="page-body fade-in">
+    <div class="page-name">
+        <h1><%= department.deptAbbrev %>:</h1>
+        <a href="/view_employees" class="btn btn-secondary">Go Back</a>
+    </div>
+    <p class="text-muted"><%= department.deptName %></p>
+    <input
+      class="form-control me-sm-2"
+      type="text"
+      id="accInput"
+      placeholder="Search"
+      style="margin-bottom: 20px"
+      oninput="searchTables()"
+    />
+    <% if (employees.length > 0) { %>
+      <table class="table table-hover table-bordered table-striped">
+        <thead>
+          <tr class="table-primary text-uppercase">
+            <th scope="col">Name</th>
+            <th scope="col">ID Number</th>
+            <th scope="col">Employment Status</th>
+            <th scope="col" style="text-align: center">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="myTable">
+          <% employees.forEach((employee) => { %>
+            <tr class="text-uppercase">
+              <td class="fw-bold"><%- employee.name %> <%- employee.lastname %></td>
+              <td class="fw-bold"><%- employee.employeeiD %></td>
+              <td class="fw-bold"><%- employee.empStatus %></td>
+              <td style="text-align: center">
+                <a href="/view_emp_data/<%- employee.email %>" type="button" class="deptbtn" id="viewDept">
+                  <i class="fa-solid fa-eye"></i>
+                </a>
+                <a href="#" type="button" class="deptbtn-del" id="closeDept">
+                  <i class="fa-solid fa-xmark"></i>
+                </a>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="text-center">
+        <h2 class="text-secondary mt-5">No Employees Registered</h2>
+      </div>
+    <% } %>
+  </div>
+</body>
+<%- include('../layouts/footer') %>
