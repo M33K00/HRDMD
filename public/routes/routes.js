@@ -954,14 +954,19 @@ router.get("/view_employees", async (req, res) => {
 
     const totalDepartments = await Departments.countDocuments(); // Total number of departments
     const allDepartments = await Departments.find()
+
+    const paginatedDepartments = await Departments.find()
       .sort({ deptAbbrev: 1 }) // Sort A-Z
       .skip((page - 1) * perPage) // Skip records for previous pages
       .limit(perPage); // Limit results to `perPage`
 
     res.render("HRIS/view_employees", {
+      totalDepartments,
       allDepartments,
+      paginatedDepartments,
       currentPage: page,
       totalPages: Math.ceil(totalDepartments / perPage),
+      perPage,
     });
   } catch (error) {
     console.error(error);

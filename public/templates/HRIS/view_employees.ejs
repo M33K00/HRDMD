@@ -4,7 +4,7 @@
   <%- include('../layouts/sidenavP') %>
   <div class="page-body fade-in">
     <div class="page-name">
-      <h1 class="text-uppercase">All departments:</h1>
+      <h1 class="text-uppercase">All departments: </h1>
       <% if (user.hrrole === "ADMIN" || user.mEmp === true) { %>
         <a 
           href="#" 
@@ -19,72 +19,76 @@
       Manage the departments registered in the system.
     </p>
     <input
-      class="form-control me-sm-2"
-      type="text"
-      id="accInput"
-      placeholder="Search"
-      style="margin-bottom: 20px"
-      oninput="searchTables()"
-    />
-    <% if (allDepartments.length > 0) { %>
-      <table class="table table-hover table-bordered table-striped">
-        <thead>
-          <tr class="table-primary text-uppercase">
-            <th scope="col">Abbreviation</th>
-            <th scope="col">Department Name</th>
-            <th scope="col">Employee Count</th>
-            <th scope="col" style="text-align: center">Actions</th>
+    class="form-control me-sm-2"
+    type="text"
+    id="accInput"
+    placeholder="Search"
+    style="margin-bottom: 20px"
+    oninput="filterDepartments()"
+  />
+  
+  <% if (allDepartments.length > 0) { %>
+    <table class="table table-hover table-bordered table-striped">
+      <thead>
+        <tr class="table-primary text-uppercase">
+          <th scope="col">Abbreviation</th>
+          <th scope="col">Department Name</th>
+          <th scope="col">Employee Count</th>
+          <th scope="col" style="text-align: center">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="myTable">
+        <% paginatedDepartments.forEach((department) => { %>
+          <tr class="text-uppercase">
+            <td class="fw-bold"><%- department.deptAbbrev %></td>
+            <td class="fw-bold" title="<%- department.deptName %>">
+              <%- department.deptName.length > 30 ? department.deptName.substring(0, 30) + '...' : department.deptName %>
+            </td>
+            <td><%- department.employees.length %></td>
+            <td style="text-align: center">
+              <a href="/view-department/<%- department._id %>" type="button" class="deptbtn" id="viewDept">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+              <a href="#" type="button" class="deptbtn" id="renameDept">
+                <i class="fa-solid fa-pen"></i>
+              </a>
+              <a href="#" type="button" class="deptbtn-del" id="closeDept">
+                <i class="fa-solid fa-xmark"></i>
+              </a>
+            </td>
           </tr>
-        </thead>
-        <tbody id="myTable">
-          <% allDepartments.forEach((department) => { %>
-            <tr class="text-uppercase">
-              <td class="fw-bold"><%- department.deptAbbrev %></td>
-              <td class="fw-bold" title="<%- department.deptName %>">
-                <%- department.deptName.length > 30 ? department.deptName.substring(0, 30) + '...' : department.deptName %>
-              </td>              
-              <td><%- department.employees.length %></td>
-              <td style="text-align: center">
-                <a href="/view-department/<%- department._id %>" type="button" class="deptbtn" id="viewDept">
-                  <i class="fa-solid fa-eye"></i>
-                </a>
-                <a href="#" type="button" class="deptbtn" id="renameDept">
-                  <i class="fa-solid fa-pen"></i>
-                </a>
-                <a href="#" type="button" class="deptbtn-del" id="closeDept">
-                  <i class="fa-solid fa-xmark"></i>
-                </a>
-              </td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-          <% if (currentPage > 1) { %>
-            <li class="page-item">
-              <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-          <% } %>
-          <% for (let i = 1; i <= totalPages; i++) { %>
-            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-            </li>
-          <% } %>
-          <% if (currentPage < totalPages) { %>
-            <li class="page-item">
-              <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          <% } %>
-        </ul>
-      </nav>
-    <% } else { %>
-      <p>No departments found.</p>
-    <% } %>    
+        <% }); %>
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+      <p class="pagination-hint" id="pageinationHint">
+        Showing <%= (currentPage - 1) * perPage + 1 %> to <%= Math.min(currentPage * perPage, totalDepartments) %> of <%= totalDepartments %>
+      </p>
+      <ul class="pagination justify-content-center">
+        <% if (currentPage > 1) { %>
+          <li class="page-item">
+            <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        <% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+          </li>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+          <li class="page-item">
+            <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        <% } %>
+      </ul>
+    </nav>
+  <% } else { %>
+    <p>No departments found.</p>
+  <% } %>
   </div>
   <div
   class="modal fade"
@@ -169,5 +173,53 @@
       alert("An error occurred while adding the department.");
     }
   });
+</script>
+<script>
+  let allDepartments = <%- JSON.stringify(allDepartments) %>; // Store all departments
+
+  function filterDepartments() {
+    const input = document.getElementById('accInput').value.toLowerCase(); // Get the search query
+    const rows = document.querySelectorAll('#myTable tr'); // Get all table rows
+    const pageinationHint = document.getElementById('pageinationHint');
+
+    pageinationHint.style.display = 'none';
+
+    // First, filter all departments based on the search query
+    const filteredDepartments = allDepartments.filter(department => {
+      return (
+        department.deptAbbrev.toLowerCase().includes(input) || 
+        department.deptName.toLowerCase().includes(input)
+      );
+    });
+
+    // Now, update the table with the filtered departments
+    const tbody = document.getElementById('myTable');
+    tbody.innerHTML = ''; // Clear current rows
+
+    filteredDepartments.forEach(department => {
+      const row = document.createElement('tr');
+      row.classList.add('text-uppercase');
+
+      row.innerHTML = `
+        <td class="fw-bold">${department.deptAbbrev}</td>
+        <td class="fw-bold" title="${department.deptName}">
+          ${department.deptName.length > 30 ? department.deptName.substring(0, 30) + '...' : department.deptName}
+        </td>
+        <td>${department.employees.length}</td>
+        <td style="text-align: center">
+          <a href="/view-department/${department._id}" type="button" class="deptbtn" id="viewDept">
+            <i class="fa-solid fa-eye"></i>
+          </a>
+          <a href="#" type="button" class="deptbtn" id="renameDept">
+            <i class="fa-solid fa-pen"></i>
+          </a>
+          <a href="#" type="button" class="deptbtn-del" id="closeDept">
+            <i class="fa-solid fa-xmark"></i>
+          </a>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
 </script>
 <%- include('../layouts/footer') %>

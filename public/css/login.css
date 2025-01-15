@@ -295,3 +295,8 @@ button.next {
   right: 10px;
   cursor: pointer;
 }
+
+#department option {
+  width: 2010px; /* Adjust the width as needed */
+  height: 40px; /* Adjust the height as needed */
+}

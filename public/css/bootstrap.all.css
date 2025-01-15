@@ -279,7 +279,7 @@ body.modal-open .modal-backdrop {
 .page-body {
   position: relative;
   overflow: visible;
-  margin-top: 80px;
+  margin-top: 60px;
   margin-left: 250px;
   padding: 40px;
   flex: 1;

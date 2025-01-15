@@ -32,21 +32,17 @@
           placeholder="Password"
           required
         />
-          <select
-            type="text"
-            name="department"
-            class="form-select mb-3 mt-3"
-            id="department"
-          >
-            <option value="" disabled selected>Department</option>
-            <option value="HR Department">HR Department</option>
-            <option value="Department 1">PESO Department</option>
-            <option value="Department 2">CC Development Office</option>
-            <option value="Department 3">OAS Department</option>
-            <option value="Department 4">BTM Department</option>
-            <option value="Department 5">BPL Department</option>
-            <option value="Department 6">CAD Department</option>
-          </select>
+        <select
+        name="department"
+        class="form-select mb-3 mt-3"
+        id="department"
+      >
+        <option value="" disabled selected>Department</option>
+        <% depts.forEach(element => { %>
+          <option value="<%= element.deptAbbrev %>"><%= element.deptAbbrev %> - <%= element.deptName %></option>
+        <% }) %>
+      </select>
+      
         <div class="email-error" ></div>
         <div class="password-error"></div>
         <p class="text-muted" style="font-size: small; font-style: italic;">Upon creating your account, you will be asked to finish your profile once the department verifies your account.</p>
@@ -98,5 +94,13 @@
     slideIndex--;
     showSlide(slideIndex);
   }
+</script>
+<script>
+  $(document).ready(function() {
+    $('#department').select2({
+      placeholder: "Department", // Set placeholder
+      allowClear: true // Allow the user to clear the selection
+    });
+  });
 </script>
 <%- include('./layouts/signupfooter') %>

@@ -1,6 +1,7 @@
 require("dotenv").config();
 const LogInCollection = require("../models/logincollections");
 const Attendance = require("../models/attendance");
+const departments = require("../models/departments");
 const jwt = require("jsonwebtoken");
 
 // Handle errors
@@ -60,8 +61,14 @@ module.exports.login_get = (req, res) => {
   res.render("login");
 };
 
-module.exports.signup_get = (req, res) => {
-  res.render("signup");
+module.exports.signup_get = async (req, res) => {
+  try {
+    const depts = await departments.find({});
+    res.render("signup", { depts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
 };
 
 module.exports.login_post = async (req, res) => {
