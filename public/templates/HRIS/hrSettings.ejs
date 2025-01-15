@@ -28,13 +28,10 @@
                   id="department"
                   class="form-select"
                 >
-                  <option value="HR">HR Department</option>
-                  <option value="DP1">PESO Department</option>
-                  <option value="DP2">CCD Office</option>
-                  <option value="DP3">OAS Department</option>
-                  <option value="DP4">BTM Department</option>
-                  <option value="DP5">BPL Department</option>
-                  <option value="DP6">CAD Department</option>
+                  <option value="" disabled selected></option>
+                  <% departments.forEach(element => { %>
+                    <option value="<%= element.deptAbbrev %>"><%= element.deptAbbrev %></option>
+                  <% }) %>
                 </select>
               </div>
               <div class="col-md-3 printSelect">
@@ -155,5 +152,13 @@
     const value = this.value;
     if (value < 1) this.value = 1;
     if (value > 31) this.value = 31;
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    $('#department').select2({
+      placeholder: "Department", // Set placeholder
+      allowClear: true // Allow the user to clear the selection
+    });
   });
 </script>

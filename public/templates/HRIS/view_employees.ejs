@@ -184,7 +184,6 @@
 
     pageinationHint.style.display = 'none';
 
-    // First, filter all departments based on the search query
     const filteredDepartments = allDepartments.filter(department => {
       return (
         department.deptAbbrev.toLowerCase().includes(input) || 
@@ -192,7 +191,6 @@
       );
     });
 
-    // Now, update the table with the filtered departments
     const tbody = document.getElementById('myTable');
     tbody.innerHTML = ''; // Clear current rows
 

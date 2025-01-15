@@ -1582,7 +1582,7 @@ router.post("/markAbsent", async (req, res) => {
   }
 });
 
-
+// PRINT DTR PER DEPARTMENT
 router.get("/hrSettings", checkHRSettings, async (req, res) => {
   try {
     let hrSettings = await req.models.HRSettings.findOne();
@@ -1597,7 +1597,9 @@ router.get("/hrSettings", checkHRSettings, async (req, res) => {
       });
     }
 
-    res.render("HRIS/hrSettings", { hrSettings });
+    const departments = await Departments.find({});
+
+    res.render("HRIS/hrSettings", { hrSettings, departments });
   } catch (err) {
     console.error("Error fetching HR settings:", err);
     res.status(500).send("Error fetching HR settings.");
@@ -1668,36 +1670,8 @@ router.post("/hrSettings", checkHRSettings, async (req, res) => {
 
 router.get("/print-hr-dtr/:department/:month", async (req, res) => {
   try {
-    const reqdep = req.params.department;
+    const department = req.params.department;
     const month = req.params.month;
-
-    let department;
-
-    switch (reqdep) {
-      case "HR":
-        department = "HR Department";
-        break;
-      case "DP1":
-        department = "Department 1";
-        break;
-      case "DP2":
-        department = "Department 2";
-        break;
-      case "DP3":
-        department = "Department 3";
-        break;
-      case "DP4":
-        department = "Department 4";
-        break;
-      case "DP5":
-        department = "Department 5";
-        break;
-      case "DP6":
-        department = "Department 6";
-        break;
-      default:
-        return res.status(404).send("Department not found");
-    }
 
     const employees = await LogInCollection.find({
       department: department,
