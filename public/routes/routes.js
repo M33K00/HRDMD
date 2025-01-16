@@ -504,11 +504,14 @@ router.get("/edit/:id", async (req, res) => {
       return res.redirect("/manage_accounts");
     }
 
+    const departments = await Departments.find({});
+
     // Render the edit_users template with the retrieved user data
     res.render("edit_users", {
       title: "Edit Account",
       logincollections: logincollections,
       attendance: attendance,
+      departments: departments,
     });
   } catch (err) {
     // Log and handle errors gracefully
@@ -560,6 +563,16 @@ router.post("/update/:id", upload, async (req, res) => {
 
     console.log(req.body);
 
+    const addEmpToDept = await Departments.findOneAndUpdate(
+      { deptAbbrev: req.body.department },
+      { $push: { employees: userLogin.employeeID } },
+      { new: true } // Return the modified document after update
+    );
+
+    if (!addEmpToDept) {
+      return res.json({ message: "Department not found", type: "DANGER" });
+    }
+    
     const result = await LogInCollection.findByIdAndUpdate(
       id,
       {
@@ -1262,6 +1275,8 @@ router.post("/manage-leave/:id", async (req, res) => {
 
 router.get("/view_emp_data/:email", checkHRSettings, async (req, res) => {
   try {
+    const fromPage = req.params.fromPage;
+
     let email = req.params.email;
     let hrSettings = await req.models.HRSettings.findOne();
     let logincollections = await LogInCollection.findOne({ email: email });
@@ -1286,6 +1301,7 @@ router.get("/view_emp_data/:email", checkHRSettings, async (req, res) => {
       results: results,
       VLPoints: VLPoints,
       SLPoints: SLPoints,
+      fromPage: fromPage,
     });
   } catch (err) {
     // Log and handle errors gracefully
@@ -2135,6 +2151,34 @@ router.get("/view-department/:id", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+// View All Employees
+router.get("/all_employees", async (req, res) => {
+  try {
+    const perPage = 15; // Number of departments per page
+    const page = parseInt(req.query.page) || 1; // Current page, default to 1
+
+    const totalEmployees = await LogInCollection.countDocuments(); // Total number of employees
+    const employees = await LogInCollection.find()
+
+    const paginatedEmployees = await LogInCollection.find()
+      .sort({ name: 1 })
+      .skip((page - 1) * perPage) // Skip records for previous pages
+      .limit(perPage); // Limit results to `perPage`
+
+    res.render("HRIS/allEmployees", { 
+      employees,
+      currentPage: page,
+      paginatedEmployees,
+      totalEmployees,
+      totalPages: Math.ceil(totalEmployees / perPage),
+      perPage
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+})
 
 router.get("/addacc", (req, res) => {
   res.render("addacc");

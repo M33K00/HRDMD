@@ -51,7 +51,7 @@ const checkUser = (req, res, next) => {
 
 const checkRole = (req, res, next) => {
   const user = res.locals.user;
-  if (user.department === "HR Department" && (user.hrrole !== "ADMIN" && user.hrrole !== "ADMIN2")) {
+  if (user.department === "HRDMD" && (user.hrrole !== "ADMIN" && user.hrrole !== "ADMIN2")) {
     res.redirect("/role1");
   } else {
    next();

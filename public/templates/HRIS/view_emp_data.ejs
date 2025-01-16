@@ -5,9 +5,7 @@
   <div class="page-body fade-in">
     <div class="page-name">
       <h1>View Employee Details:</h1>
-      <div class="account-options">
-        <a href="/view_employees" class="btn btn-secondary">Go Back</a>
-      </div>
+      <a href="/view_employees" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Go Back</a>
     </div>
     <% if (logincollections.accountClosed === true) { %>
       <div class="alert alert-danger">
@@ -72,15 +70,7 @@
         </p>
         <p><b>Email:</b> <%= logincollections.email %></p>
         <p><b>Emp. Status:</b> <%= logincollections.empStatus %></p>
-        <p><b>Department:</b> <% if (logincollections.department === 'HR Department') { %>
-         HR Department <% } else if (logincollections.department === 'Department 1') { %>
-         PESO Department <% } else if (logincollections.department === 'Department 2') { %>
-         CCD Office <% } else if (logincollections.department === 'Department 3') { %>
-         OAS Department <% } else if (logincollections.department === 'Department 4') { %>
-         BTM Department <% } else if (logincollections.department === 'Department 5') { %>
-         BPL Department <% } else if (logincollections.department === 'Department 6') { %>
-          CAD Department
-        <% } %></p>
+        <p><b>Department:</b> <%= logincollections.department  %></p>
         <p><b>Position:</b> <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
           else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
           else if (logincollections.hrrole === "ROLE 3") { %> Admin Officer <% } else if

@@ -23,6 +23,7 @@
             <th scope="col">Name</th>
             <th scope="col">ID Number</th>
             <th scope="col">Employment Status</th>
+            <th scope="col">ACC Status</th>
             <th scope="col" style="text-align: center">Actions</th>
           </tr>
         </thead>
@@ -30,8 +31,13 @@
           <% employees.forEach((employee) => { %>
             <tr class="text-uppercase">
               <td class="fw-bold"><%- employee.name %> <%- employee.lastname %></td>
-              <td class="fw-bold"><%- employee.employeeiD %></td>
-              <td class="fw-bold"><%- employee.empStatus %></td>
+              <td><%- employee.employeeID %></td>
+              <td><%- employee.empStatus %></td>
+              <% if (!employee.verified) { %>
+                <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
+              <% } else { %>
+                <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
+              <% } %>
               <td style="text-align: center">
                 <a href="/view_emp_data/<%- employee.email %>" type="button" class="deptbtn" id="viewDept">
                   <i class="fa-solid fa-eye"></i>

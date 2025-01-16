@@ -1,0 +1,88 @@
+<%- include('../layouts/hrislayout') -%>
+<body>
+  <%- include('../layouts/navhrisP') -%>
+  <%- include('../layouts/sidenavP') %>
+  <div class="page-body fade-in">
+    <div class="page-name">
+      <h1 class="text-uppercase">All employees: </h1>
+      <a href="/view_employees" class="btn btn-secondary">GO BACK</a>
+    </div>
+    <p class="text-muted">Search and view all employees registered in the system.</p>
+    <input
+        class="form-control me-sm-2"
+        type="text"
+        id="accInput"
+        placeholder="Search"
+        style="margin-bottom: 20px"
+        oninput="filterDepartments()"
+    />
+    <div class="border mb-3 mt-3"></div>
+    <div class="otherBtns d-flex justify-content-end mb-3">
+        <a href="/add_employees" class="btn btn-secondary fw-bold"><i class="fa-solid fa-plus me-1"></i> add employee</a>
+    </div>
+    <% if (employees.length > 0) { %>
+        <table class="table table-hover table-bordered table-striped">
+          <thead>
+            <tr class="table-primary text-uppercase">
+              <th scope="col">Name</th>
+              <th scope="col">Employee ID</th>
+              <th scope="col">Department</th>
+              <th scope="col">ACC Status</th>
+              <th scope="col" style="text-align: center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="myTable">
+            <% paginatedEmployees.forEach((employee) => { %>
+              <tr class="text-uppercase">
+                <td class="fw-bold"><%- employee.name %> <%- employee.lastname %></td>
+                <td class="fw-bold"><%- employee.employeeID %></td>
+                <td class="fw-bold"><%- employee.department %></td>
+                <% if (!employee.verified) { %>
+                    <td class="text-center"><span class="badge rounded-pill bg-warning">UNVERIFIED</span></td>
+                <% } else { %>
+                    <td class="text-center"><span class="badge rounded-pill bg-success">VERIFIED</span></td>
+                <% } %>
+                <td style="text-align: center">
+                  <a href="/view_emp_data/<%- employee.email %>" type="button" class="deptbtn" title="View Employee" id="viewDept">
+                    <i class="fa-solid fa-eye"></i>
+                  </a>
+                  <a href="#" type="button" class="deptbtn-del" title="Close Account" id="closeDept">
+                    <i class="fa-solid fa-xmark"></i>
+                  </a>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation">
+          <p class="pagination-hint" id="pageinationHint">
+            Showing <%= (currentPage - 1) * perPage + 1 %> to <%= Math.min(currentPage * perPage, totalEmployees) %> of <%= totalEmployees %>
+          </p>
+          <ul class="pagination justify-content-center">
+            <% if (currentPage > 1) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+            <% } %>
+            <% for (let i = 1; i <= totalPages; i++) { %>
+              <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+              </li>
+            <% } %>
+            <% if (currentPage < totalPages) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            <% } %>
+          </ul>
+        </nav>
+      <% } else { %>
+        <p>No departments found.</p>
+      <% } %>
+  </div>
+</body>
+<%- include('../layouts/footer') %>
