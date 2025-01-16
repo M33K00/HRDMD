@@ -51,22 +51,33 @@
               <a href="/view-department/<%- department._id %>" type="button" class="deptbtn" id="viewDept">
                 <i class="fa-solid fa-eye"></i>
               </a>
-              <a 
-                href="#" 
-                type="button" 
-                class="deptbtn" 
-                id="renameDept"
-                data-bs-toggle="modal"
-                data-bs-target="#renameModal"
-                data-bs-deptID="<%- department._id %>"
-                data-bs-deptName="<%- department.deptName %>"
-                data-bs-deptAbbrev="<%- department.deptAbbrev %>"
-              >
-                <i class="fa-solid fa-pen"></i>
-              </a>
-              <a href="#" type="button" class="deptbtn-del" id="closeDept">
-                <i class="fa-solid fa-xmark"></i>
-              </a>
+              <% if (department.deptAbbrev !== "HRDMD") { %>
+                <a 
+                  href="#" 
+                  type="button" 
+                  class="deptbtn" 
+                  id="renameDept"
+                  data-bs-toggle="modal"
+                  data-bs-target="#renameModal"
+                  data-bs-deptID="<%- department._id %>"
+                  data-bs-deptName="<%- department.deptName %>"
+                  data-bs-deptAbbrev="<%- department.deptAbbrev %>"
+                >
+                  <i class="fa-solid fa-pen"></i>
+                </a>
+                <a 
+                  href="#" 
+                  type="button" 
+                  class="deptbtn-del" 
+                  id="closeDept"
+                  data-bs-toggle="modal"
+                  data-bs-target="#closeModal"
+                  data-bs-deptID="<%- department._id %>"
+                  data-bs-deptAbbrev="<%- department.deptAbbrev %>"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </a>
+              <% } %>
             </td>
           </tr>
         <% }); %>
@@ -194,6 +205,49 @@
     </div>
   </div>
   </div>
+  <%# CLOSE DEPARTMENT MODAL %>
+  <div
+  class="modal fade"
+  id="closeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="closeModalLabel"
+  aria-hidden="true"
+  >
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="margin-top: 120px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger text-uppercase fw-bold" id="closeModalLabel">Close Department</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form id="closeForm">
+        <div class="modal-body">
+          <p >Are you sure you want to close the <strong id="closeModalText"></strong> department?</p>
+          <div class="mt-4" id="remarksInputContainer">
+            <label for="closedReason" class="form-label">Reason for closure:</label>
+            <textarea type="text" class="form-control remarks-textbox" id="closedReason" required></textarea>
+          </div>
+          <div class="mt-4">
+            <p class="text-danger mt-2">
+              Closing selected department will also affect all employees in the department.
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-danger">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  </div>
 </div>
 </body>
 <%# SCRIPT FOR ADD DEPARTMENT %>
@@ -316,6 +370,27 @@
     });
   });
 </script>
+<%# SCRIPT FOR CLOSING DEPARTMENT %>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const closeModal = document.getElementById("closeModal");
+    const closeForm = document.getElementById("closeForm");
+    const closeError = document.querySelector(".close-error");
+
+    let deptID = "";
+    let deptAbbrev = "";
+
+    closeModal.addEventListener("show.bs.modal", (event) => {
+      const button = event.relatedTarget;
+      const closeModalText = document.getElementById("closeModalText");
+
+      deptID = button.getAttribute("data-bs-deptID");
+      deptAbbrev = button.getAttribute("data-bs-deptAbbrev");
+
+      closeModalText.textContent = deptAbbrev;
+    })
+  });
+</script>
 <script>
   let allDepartments = <%- JSON.stringify(allDepartments) %>; // Store all departments
 
@@ -350,12 +425,33 @@
           <a href="/view-department/${department._id}" type="button" class="deptbtn" id="viewDept">
             <i class="fa-solid fa-eye"></i>
           </a>
-          <a href="#" type="button" class="deptbtn" id="renameDept">
-            <i class="fa-solid fa-pen"></i>
-          </a>
-          <a href="#" type="button" class="deptbtn-del" id="closeDept">
-            <i class="fa-solid fa-xmark"></i>
-          </a>
+          ${department.deptAbbrev !== "HRDMD" ? `
+            <a 
+              href="#" 
+              type="button" 
+              class="deptbtn" 
+              id="renameDept"
+              data-bs-toggle="modal"
+              data-bs-target="#renameModal"
+              data-bs-deptID="${department._id}"
+              data-bs-deptName="${department.deptName}"
+              data-bs-deptAbbrev="${department.deptAbbrev}"
+            >
+              <i class="fa-solid fa-pen"></i>
+            </a>
+            <a 
+              href="#" 
+              type="button" 
+              class="deptbtn-del" 
+              id="closeDept"
+              data-bs-toggle="modal"
+              data-bs-target="#closeModal"
+              data-bs-deptID="${department._id}"
+              data-bs-deptAbbrev="${department.deptAbbrev}"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </a>
+          ` : ''}
         </td>
       `;
       tbody.appendChild(row);
