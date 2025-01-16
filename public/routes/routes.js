@@ -2131,6 +2131,99 @@ router.post("/addDepartment", async (req, res) => {
   }
 });
 
+// Rename Department
+router.post("/renameDepartment", async (req, res) => {
+  try {
+    const id = req.body.deptID;
+    const currentName = req.body.currentDeptName;
+    const currentAbbrev = req.body.currentDeptAbbrev;
+    const newName = req.body.newDeptName;
+    const newAbbrev = req.body.newDeptAbbrev;
+
+    // Validate inputs
+    if (!newName) {
+      return res.json({ error: "New department name is required." });
+    }
+    if (newName.length > 100) {
+      return res.json({ error: "New department name should be less than 100 characters." });
+    }
+    if (newName.length < 10) {
+      return res.json({ error: "New department name should be at least 10 characters." });
+    }
+
+    if (!newAbbrev) {
+      return res.json({ error: "New department abbreviation is required." });
+    }
+    if (newAbbrev.length > 20) {
+      return res.json({ error: "New department abbreviation should be less than 20 characters." });
+    }
+    if (newAbbrev.length < 2) {
+      return res.json({ error: "New department abbreviation should be at least 2 characters." });
+    }
+
+    // Check if the new abbreviation already exists (only if it changed)
+    if (currentAbbrev !== newAbbrev) {
+      const existingAbbreviation = await Departments.findOne({
+        deptAbbrev: newAbbrev,
+      });
+      if (existingAbbreviation) {
+        return res.json({ error: "New department abbreviation already exists." });
+      }
+    }
+
+    // Check if the new name already exists (only if it changed)
+    if (currentName !== newName) {
+      const existingName = await Departments.findOne({
+        deptName: newName,
+      });
+      if (existingName) {
+        return res.json({ error: "New department name already exists." });
+      }
+    }
+
+    // Update employees' department field if abbreviation changes
+    if (currentAbbrev !== newAbbrev) {
+      const employees = await LogInCollection.find({
+        department: currentAbbrev,
+      });
+
+      for (const employee of employees) {
+        employee.department = newAbbrev;
+        await employee.save();
+      }
+    }
+
+    // Prepare the update object
+    const updateData = {};
+    if (currentName !== newName) {
+      updateData.deptName = newName;
+    }
+    if (currentAbbrev !== newAbbrev) {
+      updateData.deptAbbrev = newAbbrev;
+    }
+
+    // Update the department only if there are changes
+    if (Object.keys(updateData).length > 0) {
+      const result = await Departments.updateOne(
+        { _id: id },
+        { $set: updateData }
+      );
+
+      if (result.modifiedCount === 1) {
+        res.json({ success: true, message: "Department renamed successfully." });
+      } else {
+        res.json({ error: "Failed to rename department." });
+      }
+    } else {
+      res.json({ success: true, message: "No changes were made to the department." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
 router.get("/view-department/:id", async (req, res) => {
   try {
     const id = req.params.id;

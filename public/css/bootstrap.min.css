@@ -1135,3 +1135,13 @@
   text-decoration: none;
   color: #6c757d;
 }
+
+.deptAbbrev-errorR {
+  position: absolute;
+  font-style: italic;
+}
+
+.dept-errorR {
+  position: absolute;
+  font-style: italic;
+}

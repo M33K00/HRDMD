@@ -51,7 +51,17 @@
               <a href="/view-department/<%- department._id %>" type="button" class="deptbtn" id="viewDept">
                 <i class="fa-solid fa-eye"></i>
               </a>
-              <a href="#" type="button" class="deptbtn" id="renameDept">
+              <a 
+                href="#" 
+                type="button" 
+                class="deptbtn" 
+                id="renameDept"
+                data-bs-toggle="modal"
+                data-bs-target="#renameModal"
+                data-bs-deptID="<%- department._id %>"
+                data-bs-deptName="<%- department.deptName %>"
+                data-bs-deptAbbrev="<%- department.deptAbbrev %>"
+              >
                 <i class="fa-solid fa-pen"></i>
               </a>
               <a href="#" type="button" class="deptbtn-del" id="closeDept">
@@ -92,6 +102,8 @@
     <p>No departments found.</p>
   <% } %>
   </div>
+  <%# MODALS %>
+  <%# ADD DEPARTMENT MODAL %>
   <div
   class="modal fade"
   id="addDepartmentModal"
@@ -99,7 +111,7 @@
   role="dialog"
   aria-labelledby="addDepartmentModalLabel"
   aria-hidden="true"
->
+  >
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -116,12 +128,60 @@
           <div id="remarksInputContainer">
             <label for="deptInput" class="form-label">Abbreviation:</label>
             <input type="text" class="form-control" id="deptAbbrev" required />
-            <div class="deptAbbrev-error invalid-feedback"></div>
+            <div class="deptAbbrev-error invalid-feedback fade-in"></div>
           </div>
-          <div id="remarksInputContainer">
+          <div class="mt-4" id="remarksInputContainer">
             <label for="deptInput" class="form-label">Department Name:</label>
             <input type="text" class="form-control" id="deptInput" required />
-            <div class="dept-error invalid-feedback"></div>
+            <div class="dept-error invalid-feedback fade-in"></div>
+          </div>
+        </div>
+        <div class="modal-footer mt-4">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  </div>
+  <%# RENAME DEPARTMENT MODAL %>
+  <div
+  class="modal fade"
+  id="renameModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="renameModalLabel"
+  aria-hidden="true"
+  >
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="margin-top: 100px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="renameModalLabel">Rename Department</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form id="renameForm">
+        <div class="modal-body">
+          <div id="remarksInputContainer">
+            <label for="deptInput" class="form-label">Abbreviation:</label> 
+            <input type="text" class="form-control" id="renameInput" required />
+            <div class="deptAbbrev-errorR invalid-feedback fade-in"></div>
+          </div>
+          <div class="mt-5" id="remarksInputContainer">
+            <label for="deptInput" class="form-label">Department Name:</label>
+            <input type="text" class="form-control" id="renameCurrent" required />
+            <div class="dept-errorR invalid-feedback fade-in"></div>
+          </div>
+          <div class="mt-5 border-top">
+            <p class="text-danger mt-2">
+              Renaming selected department will also affect all employees in the department.
+            </p>
           </div>
         </div>
         <div class="modal-footer">
@@ -133,8 +193,10 @@
       </form>
     </div>
   </div>
+  </div>
 </div>
 </body>
+<%# SCRIPT FOR ADD DEPARTMENT %>
 <script>
   const form = document.getElementById("addDeptForm");
   const deptAbbrevError = document.querySelector(".deptAbbrev-error");
@@ -163,7 +225,10 @@
 
       const data = await result.json();
 
-      if (data.error) {
+      if (data.error && data.error.includes("abbreviation")) {
+        deptAbbrevInput.classList.add("is-invalid");
+        deptAbbrevError.textContent = data.error;
+      } else if (data.error && data.error.includes("name")) {
         deptInput.classList.add("is-invalid");
         deptError.textContent = data.error;
       } else {
@@ -174,6 +239,81 @@
       console.error("Error:", err);
       alert("An error occurred while adding the department.");
     }
+  });
+</script>
+<%# SCRIPT FOR RENAME DEPARTMENT %>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const renameModal = document.getElementById("renameModal");
+    const deptAbbrevError = document.querySelector(".deptAbbrev-errorR");
+    const deptError = document.querySelector(".dept-errorR");
+    const renameInput = document.getElementById("renameInput");
+    const renameCurrent = document.getElementById("renameCurrent");
+
+    let deptID = "";
+    let deptName = "";
+    let deptAbbrev = "";
+
+    // Listen for when the modal is about to be shown
+    renameModal.addEventListener("show.bs.modal", (event) => {
+      // Get the button that triggered the modal
+      const button = event.relatedTarget;
+
+      // Clear previous error messages
+      deptAbbrevError.textContent = "";
+      renameInput.classList.remove("is-invalid");
+      deptError.textContent = "";
+      renameCurrent.classList.remove("is-invalid");
+
+      // Extract the data attributes from the button
+      deptID = button.getAttribute("data-bs-deptID");
+      deptName = button.getAttribute("data-bs-deptName");
+      deptAbbrev = button.getAttribute("data-bs-deptAbbrev");
+
+      // Populate the input fields in the modal
+      renameInput.value = deptAbbrev || ""; // Default to empty string if null
+      renameCurrent.value = deptName || ""; // Default to empty string if null
+    });
+
+
+    // Handle form submission
+    const renameForm = document.getElementById("renameForm");
+    renameForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const abbrev = renameInput.value.trim();
+      const current = renameCurrent.value.trim();
+
+      try {
+        const result = await fetch("/renameDepartment", {
+          method: "POST",
+          body: JSON.stringify({ 
+            deptID: deptID,
+            currentDeptName: deptName,
+            currentDeptAbbrev: deptAbbrev,
+            newDeptName: current, 
+            newDeptAbbrev: abbrev 
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await result.json();
+
+        if (data.error && data.error.includes("abbreviation")) {
+          renameInput.classList.add("is-invalid");
+          deptAbbrevError.textContent = data.error;
+        } else if (data.error && data.error.includes("name")) {
+          renameCurrent.classList.add("is-invalid");
+          deptError.textContent = data.error;
+        } else {
+          alert("Department renamed successfully!");
+          window.location.reload();
+        }
+      } catch (err) {
+        console.error("Error:", err);
+        alert("An error occurred while renaming the department.");
+      }
+    });
   });
 </script>
 <script>
