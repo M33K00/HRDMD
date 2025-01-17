@@ -223,15 +223,45 @@ router.get("/view_leave/:email", async (req, res) => {
   try {
     const userEmail = req.params.email; // Retrieve email from URL parameter
 
+    // Leave Applications without Done/Expired status
     const leaveapplications = await LeaveApplications.find({
       email: userEmail,
+      Status: { $ne: "Done/Expired" },
+    });
+
+    // Sort Leave Applications (Approved -> Pending -> Done/Expired)
+    leaveapplications.sort((a, b) => {
+      if (a.Status === "Approved" && b.Status !== "Approved") {
+        return -1;
+      } else if (a.Status !== "Approved" && b.Status === "Approved") {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    // Leave Applications with Done/Expired status
+    const leaveapplicationsDone = await LeaveApplications.find({
+      email: userEmail,
+      Status: "Done/Expired",
+    });
+
+    // Sort Done/Expired Leave Applications by StartDate
+    leaveapplicationsDone.sort((a, b) => {
+      if (a.StartDate < b.StartDate) {
+        return 1;
+      } else if (a.StartDate > b.StartDate) {
+        return -1;
+      } else {
+        return 0;
+      }
     });
 
     const attendance = await Attendance.findOne({ 
       email: userEmail 
     });
 
-    res.render("HRISUSER/view_leave", { leaveapplications, attendance });
+    res.render("HRISUSER/view_leave", { leaveapplications, attendance, leaveapplicationsDone });
   } catch (err) {
     // Log and handle errors gracefully
     console.error("Error viewing leave applications:", err);

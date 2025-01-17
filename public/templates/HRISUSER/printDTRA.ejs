@@ -61,55 +61,47 @@
                       7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"
                     };
               %>
-            <div class="rounded-box-print mt-3">
+            <div class="rounded-box-print csForm48 mt-3" style="Times New Roman', Times, serif;">
             <div class="page-content p-4 bg-white" id="page-content">
-                <h3 class="text-center mt-3">DAILY TIME RECORD</h3>
-                <h5 class="text-uppercase mt-5">For the month of: <%= monthMap[month] %> <%= year %></h5>
-                <table id="table" class="table table-bordered" style="width: 100%">
+              <i class="formName" style="font-family: 'Times New Roman', Times, serif;">Civil Service Form No. 48</i>
+                <h3 class="text-center mt-3" style="font-family: 'Times New Roman', Times, serif;">DAILY TIME RECORD</h3>
+                <h5 class="mt-5" style="font-family: 'Times New Roman', Times, serif;">For the month of: <%= monthMap[month] %> <%= year %></h5>
+                <table id="table" class="table table-bordered" style="width: 100%; border: 1px solid black" >
                     <tr>
-                      <td style="width: 50%"><strong>Name:</strong> <%= user.name %> <%= user.lastname %></td>
-                      <td><strong>Email:</strong> <%= user.email %></td>
+                      <td style="width: 50%; border: 1px solid black"><strong>Name:</strong> <%= user.name %> <%= user.lastname %></td>
+                      <td style="border: 1px solid black"><strong>Email:</strong> <%= user.email %></td>
                     </tr>
                     <tr>
-                      <td><strong>Position:</strong> <% if (user.hrrole === "ROLE 1") { %> Administrative Officer <% }
+                      <td style="border: 1px solid black"><strong>Position:</strong> <% if (user.hrrole === "ROLE 1") { %> Administrative Officer <% }
                         else if (user.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }
                         else if (user.hrrole === "ROLE 3") { %> Admin Officer <% } else if
                         (user.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
                         (user.hrrole === "ROLE 5") { %> Admin Aide <% } else if (user.hrrole
-                        === "ADMIN") { %> Department Head <% } %></td>
-                      <td><strong>Department:</strong> 
-                        <% if (user.department === 'HR Department') { %>
-                      HR Department <% } else if (user.department === 'Department 1') { %>
-                      PESO Department <% } else if (user.department === 'Department 2') { %>
-                      CCD Office <% } else if (user.department === 'Department 3') { %>
-                      OAS Department <% } else if (user.department === 'Department 4') { %>
-                      BTM Department <% } else if (user.department === 'Department 5') { %>
-                      BPL Department <% } else if (user.department === 'Department 6') { %>
-                      CAD Department
-                     <% } %>
+                        === "ADMIN") { %> Department Head <% } else if (user.hrrole === "ADMIN2") { %> Department Head II <% } %></td>
+                      <td style="border: 1px solid black"><strong>Department:</strong> 
+                        <%= user.department %>
                       </td>
                     </tr>
                   </table>
-                <table id="table" class="table table-bordered">
-                    <h5 class="mt-4">DAYS PRESENT:</h5>
+                <table id="table" class="table table-bordered" style="border: 1px solid black">
                   <thead>
                     <% if (daysPresent != '') { %>
-                    <tr class="table-dark text-center text-uppercase">
-                        <th>Date</th>
-                        <th>Time In</th>
-                        <th>Time Out</th>
-                        <th>Undertime</th>
-                        <th>Total Time</th>
+                    <tr class="table text-center text-uppercase" style="border: 1px solid black">
+                        <th style="border: 1px solid black">Date</th>
+                        <th style="border: 1px solid black">Time In</th>
+                        <th style="border: 1px solid black">Time Out</th>
+                        <th style="border: 1px solid black">Undertime</th>
+                        <th style="border: 1px solid black">Hours</th>
                     </tr>
                   </thead>
                   <tbody>
                     <% // Sort dayspresent array by date (from latest to oldest)
                         daysPresent.sort((a, b) => new Date(b.date) - new Date(a.date));
                         daysPresent.forEach((row, index) => { %>
-                          <tr class="text-center">
-                            <td><%= row.date.toISOString().slice(0, 10) %></td>
-                        <td><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
-                        <td><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+                          <tr class="text-center" style="border: 1px solid black">
+                            <td style="border: 1px solid black"><%= row.date.toISOString().slice(0, 10) %></td>
+                        <td style="border: 1px solid black"><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
+                        <td style="border: 1px solid black"><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
                           <% } else if (row.timeOut === null && row.forFile === true && row.FFapproved === "N/A") { %>
                             <i class="text-warning fa-solid fa-circle-exclamation"></i>
                           <% } else if (row.timeOut === null && row.forFile === false && row.FFapproved === "APPROVED") { %>
@@ -118,8 +110,8 @@
                             ONGOING
                           <% } %>
                         </td>
-                        <td><%= row.underTime.toFixed(2) %></td>
-                        <td><%= row.totalTime.toFixed(2) %></td>
+                        <td style="border: 1px solid black"><%= row.underTime.toFixed(2) %></td>
+                        <td style="border: 1px solid black"><%= row.totalTime.toFixed(2) %></td>
                       </tr>
                           <% }) %>
                           <!-- Add TOTAL row -->
@@ -136,10 +128,10 @@
                   of arrival and departure from the office.
                 </p>
                 <div class="csf-border">
-                  <p class="mt-3">VERIFIED as to the prescribed office hours:</p>
+                  <p class="mt-3" style="font-family: 'Times New Roman', Times, serif;">VERIFIED as to the prescribed office hours:</p>
                 </div>
-                <div class="csf-border text-center">
-                  <p>In Charge</p>
+                <div class="csf-border text-center"> 
+                  <p style="font-family: 'Times New Roman', Times, serif;">In Charge</p>
                 </div>
               </div>
             </div>

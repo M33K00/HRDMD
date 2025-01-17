@@ -5,7 +5,18 @@
   <div class="page-body fade-in">
     <div class="page-name">
       <h1>Leave Applications</h1>
-      <a href="/apply_leave/<%= user.email %>" class="btn btn-primary">Apply Leave</a>
+      <a 
+        href="/apply_leave/<%= user.email %>" 
+        <% if (attendance.availableSL == 0 || attendance.availableVL == 0 || attendance.availableSPL == 0) { %>
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="You have no leave balance"
+        <% } %>
+        class="btn 
+        <% if (attendance.availableSL == 0 || attendance.availableVL == 0 || attendance.availableSPL == 0) { %>
+          btn-dark disabled
+        <% } else { %> btn-primary<% } %>
+        ">Apply Leave</a>
     </div>
     <p class="text-muted mb-4">Check your leave applications</p>
     <div class="leave-count-div">
@@ -49,13 +60,13 @@
       oninput="searchTables()"
     />
     <div class="hris-container">
-      <% const pendingApplications = leaveapplications.filter(row => row.Status
-      === 'Pending'); %> <% const approvedApplications =
-      leaveapplications.filter(row => row.Status === 'Approved'); %> <% const
-      declinedApplications = leaveapplications.filter(row => row.Status ===
-      'Declined'); %> <% const totalApplications = leaveapplications.length; %>
-      <% const approvedCount = approvedApplications.length; %> <% const
-      pendingCount = pendingApplications.length; %>
+      <% const pendingApplications = leaveapplications.filter(row => row.Status=== 'Pending'); %> 
+      <% const approvedApplications = leaveapplications.filter(row => row.Status === 'Approved'); %> 
+      <% const declinedApplications = leaveapplications.filter(row => row.Status === 'Declined'); %> 
+      <% const totalApplications = leaveapplications.length; %>
+      <% const approvedCount = approvedApplications.length; %> 
+      <% const pendingCount = pendingApplications.length; %>
+      <% const declinedCount = declinedApplications.length; %>
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item" role="presentation">
           <a
@@ -97,7 +108,18 @@
             aria-selected="false"
             role="tab"
             tabindex="-1"
-            >Declined (<%= approvedCount %>)</a
+            >Declined (<%= declinedCount %>)</a
+          >
+        </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            data-bs-toggle="tab"
+            href="#done"
+            aria-selected="false"
+            role="tab"
+            tabindex="-1"
+            >Done/Expired (<%= leaveapplicationsDone.length %>)</a
           >
         </li>
       </ul>
@@ -273,6 +295,47 @@
                       <%= row.AppliedDate.toISOString().split('T')[0] %> <% } %>
                     </td>
                     <td><%= row.Period %></td>
+                    <td
+                      style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
+                    >
+                      <%= row.Status %>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+            <% } else { %>
+            <h2 class="text-center text-secondary mt-5">
+              No declined leave applications
+            </h2>
+            <% } %>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="done" role="tabpanel">
+          <div
+            class="tab-pane fade show mb-4"
+            id="all-applications"
+            role="tabpanel"
+          >
+            <% if (leaveapplicationsDone.length > 0) { %>
+            <div class="table-responsive mt-3">
+              <table id="table" class="table table-hover">
+                <thead>
+                  <tr class="table-dark">
+                    <th style="width: 100px">Type</th>
+                    <th style="width: 100px">Applied Date</th>
+                    <th style="width: 100px">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% leaveapplicationsDone.forEach((row, index) => { %>
+                  <tr class="clickable-row" data-href="#" data-reason="<%= row.reason %>">
+                    <td><%= row.Type %></td>
+                    <td>
+                      <% if (row.AppliedDate === null) { %> N/A <% } else { %>
+                      <%= row.AppliedDate.toISOString().split('T')[0] %> <% } %>
+                    </td>
                     <td
                       style="font-weight: 600;<% if (row.Status === 'Declined') { %> color: red; <% } else if (row.Status === 'Approved') { %> color: green; <% } else { %> color: orange; <% } %>"
                     >

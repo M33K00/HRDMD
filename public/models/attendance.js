@@ -63,27 +63,27 @@ const attendanceSchema = new mongoose.Schema({
   availableSL: {
     type: Number,
     required: false,
-    default: 15,
+    default: 0,
   },
   availableVL: {
     type: Number,
     required: false,
-    default: 15,
+    default: 0,
   },
   availableSPL: {
     type: Number,
     required: false,
-    default: 3,
+    default: 0,
   },
   VLPoints: {
     type: Number,
     required: false,
-    default: 1.25,
+    default: 0,
   },
   SLPoints: {
     type: Number,
     required: false,
-    default: 1.25,
+    default: 0,
   },
 });
 

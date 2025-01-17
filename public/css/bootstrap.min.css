@@ -732,6 +732,7 @@
   border-radius: 5px;
   border: 1px solid #9c9c9c;
   padding: 20px;
+  font-family: 'Times New Roman', Times, serif;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px);
 }
@@ -998,6 +999,10 @@
   background-color: #b02a37; /* Darker red for hover */
   border-color: #940c12; /* Border color on hover */
   /* No change in padding, margin, or border width */
+}
+
+.csForm48 {
+  height: 1500px;
 }
 
 .csf {
