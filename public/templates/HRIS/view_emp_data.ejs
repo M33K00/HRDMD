@@ -22,10 +22,17 @@
       <h4 class="text-muted">HRIS Profile Information:</h4>
       <% if (logincollections.hrrole !== "ADMIN") { %>
         <div class="file-dropdown">
-          <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Actions
-          </button>
-          <ul class="dropdown-menu">
+          <button
+                class="custom-btn custom-dropdown-toggle"
+                type="button"
+                id="customDropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                ACTIONS
+              </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li><a class="dropdown-item" href="/edit/<%= logincollections._id %>">Manage Account</a></li>
             <li><a class="dropdown-item mt-1" href="/view-dtr/<%= logincollections._id %>">View DTR</a></li>
             <% if (logincollections.department === 'HR Department' && user.hrrole === "ADMIN") { %>

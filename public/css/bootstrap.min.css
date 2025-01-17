@@ -1146,6 +1146,11 @@
   font-style: italic;
 }
 
+.close-error {
+  font-weight: 600;
+  font-style: italic;
+}
+
 .spinner-container {
   position: fixed;
   top: 50%;
@@ -1158,4 +1163,56 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.totalCount {
+  border:#6c757d 1px solid;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  background-color: white;
+}
+
+.deptBTN {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 50px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  border: #6c757d 1px solid;
+  cursor: pointer;
+  color: #4d4d4d;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.deptBTNL {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 200px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  border: #6c757d 1px solid;
+  cursor: pointer;
+  color: #4d4d4d;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.deptBTN:hover {
+  background-color: #6c757d;
+  color: white;
+}
+
+.deptBTNL:hover {
+  background-color: #6c757d;
+  color: white;
 }

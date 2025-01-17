@@ -1,3 +1,4 @@
+const { closeDelimiter } = require("ejs");
 const mongoose = require("mongoose");
 
 const departmentSchema = new mongoose.Schema({
@@ -13,6 +14,21 @@ const departmentSchema = new mongoose.Schema({
         type: Array,
         required: false,
         default: []
+    },
+    closed: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    closedReason: {
+        type: String,
+        required: false,
+        default: ""
+    },
+    closedDate: {
+        type: Date,
+        required: false,
+        default: null
     }
 });
 

@@ -84,13 +84,10 @@
               class="form-select"
               id="department"
             >
-            <option value="HR Department">HR Department</option>
-            <option value="Department 1">PESO Department</option>
-            <option value="Department 2">CC Development Office</option>
-            <option value="Department 3">OAS Department</option>
-            <option value="Department 4">BTM Department</option>
-            <option value="Department 5">BPL Department</option>
-            <option value="Department 6">CAD Department</option>
+            <option value="" disabled selected>Department</option>
+            <% departments.forEach(element => { %>
+              <option value="<%= element.deptAbbrev %>"><%= element.deptAbbrev %> - <%= element.deptName %></option>
+            <% }) %>
             </select>
           </div>
           <div class="form-item">
@@ -180,7 +177,7 @@
         <div class="d-flex justify-content-end">
           <input type="submit" value="Register Employee" class="btn btn-success btn mt-4" />
           <a
-            href="/view_employees"
+            href="/all_employees"
             class="btn btn-secondary mt-4"
             style="margin-left: 10px; width: 180px;"
             >CANCEL</a

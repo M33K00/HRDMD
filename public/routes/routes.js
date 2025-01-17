@@ -164,6 +164,12 @@ router.post("/addacc", upload, async (req, res) => {
 
     const parsedBirthday = new Date(req.body.birthday);
 
+    // Add employee to the department
+    await Departments.findOneAndUpdate(
+      { name: req.body.department },
+      { $push: { employees: req.body.employeeID } }
+    );
+
     const data = {
       name: req.body.name,
       birthday: parsedBirthday,
@@ -293,6 +299,12 @@ router.post("/add_employee", upload, async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
     console.log("Password:", newPassword);
+    
+    // Add employee to the department
+    await Departments.findOneAndUpdate(
+      { name: req.body.department },
+      { $push: { employees: req.body.employeeID } }
+    );
 
     const data = {
       name: req.body.name,
@@ -504,7 +516,9 @@ router.get("/edit/:id", async (req, res) => {
       return res.redirect("/manage_accounts");
     }
 
-    const departments = await Departments.find({});
+    const departments = await Departments.find({
+      closed: false,
+    });
 
     // Render the edit_users template with the retrieved user data
     res.render("edit_users", {
@@ -563,6 +577,15 @@ router.post("/update/:id", upload, async (req, res) => {
 
     console.log(req.body);
 
+    // If user changed departments, remove user from previous department.
+    if (userLogin.department != req.body.department) {
+      await Departments.findOneAndUpdate(
+        { deptAbbrev: userLogin.department },
+        { $pull: { employees: userLogin.employeeID } }
+      );
+    }
+
+    // If user changed departments, add user to new department.
     const addEmpToDept = await Departments.findOneAndUpdate(
       { deptAbbrev: req.body.department },
       { $push: { employees: userLogin.employeeID } },
@@ -956,24 +979,44 @@ router.get("/hris", async (req, res) => {
   }
 });
 
-router.get("/add_employees", (req, res) => {
-  res.render("HRIS/add_employees");
+router.get("/add_employees", async (req, res) => {
+  const departments = await Departments.find({
+    closed: false
+  });
+  res.render("HRIS/add_employees", { departments });
 });
 
+// View Employees (Departments)
 router.get("/view_employees", async (req, res) => {
   try {
+    const closedPage = false;
     const perPage = 10; // Number of departments per page
     const page = parseInt(req.query.page) || 1; // Current page, default to 1
+    const employeecount = await LogInCollection.countDocuments();
 
-    const totalDepartments = await Departments.countDocuments(); // Total number of departments
-    const allDepartments = await Departments.find()
+    const totalDepartments = await Departments.countDocuments(
+      {
+        closed: false,
+      }
+    ); // Total number of departments
+    const allDepartments = await Departments.find(
+      {
+        closed: false,
+      }
+    )
 
-    const paginatedDepartments = await Departments.find()
+    const paginatedDepartments = await Departments.find(
+      {
+        closed: false,
+      }
+    )
       .sort({ deptAbbrev: 1 }) // Sort A-Z
       .skip((page - 1) * perPage) // Skip records for previous pages
       .limit(perPage); // Limit results to `perPage`
 
     res.render("HRIS/view_employees", {
+      closedPage,
+      employeecount,
       totalDepartments,
       allDepartments,
       paginatedDepartments,
@@ -986,6 +1029,48 @@ router.get("/view_employees", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+// View All Closed Departments
+router.get("/closed_departments", async (req, res) => {
+  try {
+    const closedPage = true;
+    const perPage = 10; // Number of departments per page
+    const page = parseInt(req.query.page) || 1; // Current page, default to 1
+
+    const totalDepartments = await Departments.countDocuments(
+      {
+        closed: true,
+      }
+    ); // Total number of departments
+    const allDepartments = await Departments.find(
+      {
+        closed: true,
+      }
+    )
+
+    const paginatedDepartments = await Departments.find(
+      {
+        closed: true,
+      }
+    )
+      .sort({ deptAbbrev: 1 }) // Sort A-Z
+      .skip((page - 1) * perPage) // Skip records for previous pages
+      .limit(perPage); // Limit results to `perPage`
+
+    res.render("HRIS/view_employees", {
+      closedPage,
+      totalDepartments,
+      allDepartments,
+      paginatedDepartments,
+      currentPage: page,
+      totalPages: Math.ceil(totalDepartments / perPage),
+      perPage,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+})
 
 router.get("/closed_accounts", async (req, res) => {
   try {
@@ -2073,6 +2158,7 @@ router.post("/DTRApprove", async (req, res) => {
   }
 });
 
+// Add Department
 router.post("/addDepartment", async (req, res) => {
   try {
     const deptAbbrev = req.body.abbreviation;
@@ -2223,6 +2309,53 @@ router.post("/renameDepartment", async (req, res) => {
   }
 });
 
+// Close Department
+router.post("/closeDepartment", async (req, res) => {
+  try {
+    const id = req.body.deptID;
+    const closedReason = req.body.closedReason;
+
+    // Find Department
+    const department = await Departments.findById(id);
+
+    if (!department) {
+      return res.json({ error: "Department not found." });
+    }
+
+    // Check if Department has employees
+    const employees = await LogInCollection.find({
+      department: department.deptAbbrev,
+    });
+
+    if (employees.length > 0) {
+      return res.json({ error: "Department has employees. Cannot be closed." });
+    }
+
+    // Check if Reason is provided
+    if (!closedReason) {
+      return res.json({ error: "Closed Reason is required." });
+    }
+
+    // Close Department
+    const result = await Departments.updateOne(
+      { _id: id },
+      { $set: { 
+        closed: true, 
+        closedReason: closedReason,
+        closedDate: new Date()
+      } }
+    );
+
+    if (result.modifiedCount === 1) {
+      res.json({ success: true, message: "Department closed successfully." });
+    } else {
+      res.json({ error: "Failed to close department." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+})
 
 router.get("/view-department/:id", async (req, res) => {
   try {
