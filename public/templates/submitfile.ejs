@@ -72,7 +72,7 @@
               <select name="assignTo" class="form-control" id="assignTo" required>
                 <option value="None" disabled selected>Select a user</option>
                 <% users.forEach(user => { 
-                  if (user.department === "HR Department" && user.hrrole !== "ADMIN" && !user.accountClosed) { %>
+                  if (user.department === "HRDMD" && user.hrrole !== "ADMIN" && !user.accountClosed) { %>
                     <option value="<%= `${user.name} ${user.lastname},${user.email}` %>">
                       <strong><%= user.name %></strong> - 
                       <% if (user.hrrole === "ROLE 1") { %> Administrative Officer <% }

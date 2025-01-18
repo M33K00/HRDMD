@@ -1469,3 +1469,19 @@ body.modal-open .modal-backdrop {
   outline: none; /* Remove the default outline for better aesthetics */
   box-shadow: 0 0 0 3px rgba(21, 140, 186, 0.3); /* Add focus ring */
 }
+
+.profile-lvl {
+  background-color: #ffffff;
+}
+
+.profile-lvl-tab {
+  display: flex; /* Use flexbox to arrange children in a row */
+  justify-content: space-between; /* Add space between the divs */
+  gap: 10px; /* Optional: Add some space between the divs */
+}
+
+.profile-lvl-tab > div {
+  flex: 1; /* Make the divs take equal space */
+  text-align: center; /* Optional: Center-align text inside the divs */
+  padding: 10px; /* Optional: Add some padding inside the divs */
+}

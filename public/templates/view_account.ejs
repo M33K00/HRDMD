@@ -89,103 +89,201 @@
       </div>
   </div>
   <div class="profile-lvl mt-4">
-    <div class="lvl-content">
-        <div class="lvl-square">
-          <p class="fw-bold" style="margin: 0;"><%= level %></p>
-        </div>
-        <div class="lvl-info">
-          <p><strong>Account Level:</strong> <%= level %></p>
-          <p><strong>EXP:</strong> <%= exp %> / <%= requiredExp %></p>
-        </div>
-        <div class="task-title">
-          <p class="text-uppercase" style="font-weight: 600;">
-            <% if (level <= 10 ) { %>
-              Task Novice
+    <div class="profile-lvl-tab">
+        <div class="current-lvl">
+          <div class="lvl-content">
+          <div class="lvl-square">
+            <p class="fw-bold" style="margin: 0;"><%= level %></p>
+          </div>
+          <div class="lvl-info">
+            <p><strong>Account Level:</strong> <%= level %></p>
+            <p><strong>EXP:</strong> <%= logincollections.exp %> / <%= nextLevelExp %></p>
+          </div>
+          <div class="task-title">
+            <p class="text-uppercase" style="font-weight: 600;">
+              <% if (level <= 10 ) { %>
+                Task Novice
+              <% } else if (level <= 20) { %>
+                Task Beginner
+              <% } else if (level <= 30) { %>
+                Task Intermediate
+              <% } else if (level <= 40) { %>
+                Task Proficient
+              <% } else if (level <= 50) { %>
+                Task Master
+              <% } else if (level <= 60) { %>
+                Task Grandmaster
+              <% } else if (level <= 70) { %>
+                Task Legend
+              <% } %>
+            </p>
+            <% if (level <= 10) { %>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
             <% } else if (level <= 20) { %>
-              Task Beginner
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
             <% } else if (level <= 30) { %>
-              Task Intermediate
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
             <% } else if (level <= 40) { %>
-              Task Proficient
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
             <% } else if (level <= 50) { %>
-              Task Master
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
             <% } else if (level <= 60) { %>
-              Task Grandmaster
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
             <% } else if (level <= 70) { %>
-              Task Legend
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-regular fa-star"></i>
+            <% } else if (level <= 80) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            <% } else if (level <= 90) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+            <% } else if (level <= 100) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
             <% } %>
-          </p>
-          <% if (level <= 10) { %>
-            <i class="fa-solid fa-star-half-stroke"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-          <% } else if (level <= 20) { %>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-          <% } else if (level <= 30) { %>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half-stroke"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-          <% } else if (level <= 40) { %>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-          <% } else if (level <= 50) { %>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half-stroke"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-          <% } else if (level <= 60) { %>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-          <% } else if (level <= 70) { %>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half-stroke"></i>
-            <i class="fa-regular fa-star"></i>
-          <% } else if (level <= 80) { %>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-          <% } else if (level <= 90) { %>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half-stroke"></i>
-          <% } else if (level <= 100) { %>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-          <% } %>
+          </div>
         </div>
-      </div>
-      <div class="progress mt-2">
-        <div 
-          class="progress-bar progress-bar-striped progress-bar-animated bg-info" 
-          role="progressbar" 
-          style="width: <%= (exp / requiredExp) * 100 %>%;" 
-          aria-valuenow="50" 
-          aria-valuemin="0" 
-          aria-valuemax="100">
+        <div class="progress mt-2">
+          <div 
+            class="progress-bar progress-bar-striped progress-bar-animated bg-info" 
+            role="progressbar" 
+            style="width: <%= (remainingExp / nextLevelExp) * 100 %>%;"
+            aria-valuenow="<%= remainingExp %>" 
+            aria-valuemin="0" 
+            aria-valuemax="<%= nextLevelExp %>">
+          </div>
+        </div>
+        </div>
+        <div class="previous-lvl">
+          <div class="lvl-content">
+          <div class="lvl-square-prev">
+            <p class="fw-bold" style="margin: 0;"><%= logincollections.prevLevel %></p>
+          </div>
+          <div class="lvl-info">
+            <p><strong>LEVEL:</strong> <%= logincollections.prevLevel %></p>
+            <p><strong>EXP:</strong> <%= logincollections.prevExp %> </p>
+          </div>
+          <div class="task-title-prev">
+            <p class="text-uppercase" style="font-weight: 600;">
+              <% if (logincollections.prevLevel <= 10 ) { %>
+                Task Novice
+              <% } else if (logincollections.prevLevel <= 20) { %>
+                Task Beginner
+              <% } else if (logincollections.prevLevel <= 30) { %>
+                Task Intermediate
+              <% } else if (logincollections.prevLevel <= 40) { %>
+                Task Proficient
+              <% } else if (logincollections.prevLevel <= 50) { %>
+                Task Master
+              <% } else if (logincollections.prevLevel <= 60) { %>
+                Task Grandmaster
+              <% } else if (logincollections.prevLevel <= 70) { %>
+                Task Legend
+              <% } %>
+            </p>
+            <% if (logincollections.prevLevel <= 10) { %>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            <% } else if (logincollections.prevLevel <= 20) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            <% } else if (logincollections.prevLevel <= 30) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            <% } else if (logincollections.prevLevel <= 40) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            <% } else if (logincollections.prevLevel <= 50) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            <% } else if (logincollections.prevLevel <= 60) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            <% } else if (logincollections.prevLevel <= 70) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-regular fa-star"></i>
+            <% } else if (logincollections.prevLevel <= 80) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            <% } else if (logincollections.prevLevel <= 90) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+            <% } else if (logincollections.prevLevel <= 100) { %>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            <% } %>
+          </div>
+        </div>
+          <div>
+            <p>Last Year's Level</p>
+          </div>
         </div>
       </div>
     </div>

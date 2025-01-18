@@ -6,6 +6,24 @@ const Attendance = require("../models/attendance");
 const SubmittedFiles = require("../models/submitted_files");
 const ArchivedFiles = require("../models/archivedfiles");
 
+
+// Level Function
+function calculateLevel(exp) {
+  let level = 1; // Start at level 1
+  let requiredExp = 100; // Start with 100 exp for level 1
+  let totalRequiredExp = 100; // Total experience needed for the next level
+
+  // Loop through each level, accumulating required experience for each level
+  while (exp >= requiredExp) {
+    exp -= requiredExp; // Deduct the required experience for the current level
+    level++; // Increase the level
+    requiredExp += 100; // Increase the required experience for the next level by 100
+    totalRequiredExp += requiredExp; // Add the required experience for the next level
+  }
+
+  return { level, remainingExp: exp, nextLevelExp: totalRequiredExp };
+}
+
 // Edit Account
 router.get("/editacc/:employeeID", async (req, res) => {
   try {
@@ -101,9 +119,11 @@ router.get("/view-user/:id", async (req, res) => {
     let ratio = pendingCount > 0 ? (approvedCount / pendingCount).toFixed(2) : 0;
 
     // Level Variables
-    const { exp, level } = logincollections;
-    const requiredExp = 100 * level;
-    const nextLevelExp = 100 * (level + 1);
+    let exp = logincollections.exp;
+    let level = calculateLevel(exp).level;
+    let requiredExp = calculateLevel(exp).requiredExp;
+    let nextLevelExp = calculateLevel(exp).nextLevelExp;
+    let remainingExp = calculateLevel(exp).remainingExp;
 
     // Render the view_account template with the retrieved data
     res.render("role/view_user", {
@@ -115,7 +135,8 @@ router.get("/view-user/:id", async (req, res) => {
       exp: exp,
       level: level,
       requiredExp: requiredExp,
-      nextLevelExp: nextLevelExp
+      nextLevelExp: nextLevelExp,
+      remainingExp: remainingExp
     });
   } catch (err) {
     // Log and handle errors gracefully

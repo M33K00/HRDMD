@@ -73,6 +73,23 @@ const userDocumentsArray = [
   OfficeOrder,
 ];
 
+// Level function
+function calculateLevel(exp) {
+  let level = 1; // Start at level 1
+  let requiredExp = 100; // Start with 100 exp for level 1
+  let totalRequiredExp = 100; // Total experience needed for the next level
+
+  // Loop through each level, accumulating required experience for each level
+  while (exp >= requiredExp) {
+    exp -= requiredExp; // Deduct the required experience for the current level
+    level++; // Increase the level
+    requiredExp += 100; // Increase the required experience for the next level by 100
+    totalRequiredExp += requiredExp; // Add the required experience for the next level
+  }
+
+  return { level, remainingExp: exp, nextLevelExp: totalRequiredExp };
+}
+
 const findDocumentsByEmail = async (email, batchSize = 5) => {
   const results = [];
 
@@ -466,9 +483,11 @@ router.get("/view/:id", async (req, res) => {
     let ratio = pendingCount > 0 ? (approvedCount / pendingCount).toFixed(2) : 0;
 
     // Calculate Exp
-    const { exp, level } = logincollections;
-    const requiredExp = 100 * level;
-    const nextLevelExp = 100 * (level + 1);
+    let exp = logincollections.exp;
+    let level = calculateLevel(exp).level;
+    let requiredExp = calculateLevel(exp).requiredExp;
+    let nextLevelExp = calculateLevel(exp).nextLevelExp;
+    let remainingExp = calculateLevel(exp).remainingExp;
 
     // Render the view_account template with the retrieved data
     res.render("view_account", {
@@ -477,6 +496,8 @@ router.get("/view/:id", async (req, res) => {
       ratio: ratio,
       exp: exp,
       level: level,
+      nextLevelExp: nextLevelExp,
+      remainingExp: remainingExp,
       requiredExp: requiredExp,
       nextLevelExp: nextLevelExp,
       pendingFiles: pendingFiles,
@@ -909,6 +930,7 @@ router.get("/manage_accounts", async (req, res) => {
     const totalItems = await LogInCollection.countDocuments(); // Total number of items
 
     const logincollections = await LogInCollection.find({
+      department: "HRDMD",
       accountClosed: { $ne: true },})
       .skip((page - 1) * ITEMS_PER_PAGE) // Skip items based on current page
       .limit(ITEMS_PER_PAGE); // Limit the number of items per page

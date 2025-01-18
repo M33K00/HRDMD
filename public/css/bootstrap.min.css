@@ -912,6 +912,20 @@
   margin-top: 370px;
 }
 
+.current-lvl { 
+  border:rgba(21, 140, 186, 0.5) 3px solid;
+  border-radius: 4px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 5px 8px rgba(21, 140, 186, 0.1), 0px 0px 8px #158cba;
+}
+
+.previous-lvl { 
+  border:rgba(0, 0, 0, 0.1) 2px solid;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: gray;
+}
+
 .profile-lvl {
   display: flex;
   flex-direction: column;
@@ -936,7 +950,20 @@
 }
 
 .lvl-square {
-  border: rgba(0, 0, 0, 0.1) 1px solid;
+  border: rgba(21, 140, 186, 0.5) 5px solid;
+  border-radius: 4px;
+  background-color: white;
+  width: 90px;
+  height: 90px; /* Add height for a square shape */
+  display: flex; /* Flexbox to enable centering */
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  text-align: center; /* Ensures text alignment inside the box */
+  font-size: 30px;
+}
+
+.lvl-square-prev {
+  border: rgba(0, 0, 0, 0.1) 5px solid;
   border-radius: 4px;
   width: 90px;
   height: 90px; /* Add height for a square shape */
@@ -949,6 +976,7 @@
 
 .lvl-info {
   flex-grow: 1;
+  text-align: left;
 }
 
 .task-title {
@@ -961,10 +989,28 @@
 
 .task-title i {
   margin-right: 10px;
-  color: #ff9900;
+  color: #1ba2d8;
   animation: glow 2s infinite alternate;
 }
 
+.previous-level {
+  color: gray;
+}
+
+.task-title-prev {
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: 10px;
+  justify-content: center;
+  text-align: center;
+  color: gray;
+}
+
+.task-title-prev i {
+  margin-right: 10px;
+  color: gray;
+  animation: glow 2s infinite alternate;
+}
 
 .progress {
   border: rgba(0, 0, 0, 0.1) 1px solid;

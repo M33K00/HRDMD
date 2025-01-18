@@ -136,11 +136,21 @@ const logInSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  // Level Fields
   exp: {
     type: Number,
     default: 0,
   },
   level: {
+    type: Number,
+    default: 1,
+  },
+  prevExp: {
+    type: Number,
+    default: 0,
+  },
+  prevLevel: {
     type: Number,
     default: 1,
   },

@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 
 // Models
 const LeaveApplications = require("../models/leaveapplications");
+const LoginCollections = require("../models/logincollections");
 const Attendance = require("../models/attendance");
 const LastUpdate = require("../models/lastUpdate");
 const SubmittedFiles = require("../models/submitted_files");
@@ -113,6 +114,8 @@ async function updateLeaveApplications() {
   }
 }
 
+
+// Function to update VL/SL/SPL points
 async function updateAttendancePoints() {
   try {
     // Update attendance points for all records
@@ -138,6 +141,31 @@ async function updateAttendancePoints() {
   }
 }
 
+// Function to Reset TaskManager Levels
+async function resetTaskManagerLevels() {
+  try {
+    const users = await LoginCollections.find({ department: "HRDMD" });
+
+    for (const user of users) {
+      const currentLevel = user.level;
+      const currentExp = user.exp;
+
+      user.prevLevel = currentLevel;
+      user.prevExp = currentExp;
+
+      user.level = 1;
+      user.exp = 0;
+
+      await user.save();
+    }
+
+    console.log("Task Manager Levels Reset for all HRDMD users");
+  } catch (error) {
+    console.error("Error resetting task manager levels:", error);
+  }
+}
+
+
 
 // Function to perform a backup check on server startup
 async function performBackupCheck() {
@@ -150,7 +178,10 @@ async function performBackupCheck() {
     // If no update for the current year, perform the update
     if (!lastUpdate || lastUpdate.year < currentYear) {
       console.log("Missed annual update. Running update now...");
-      await updateAttendancePoints();
+      await Promise.all([
+        updateAttendancePoints(),
+        resetTaskManagerLevels()
+      ])
     } else {
       console.log("Annual update for this year already applied.");
     }
@@ -167,7 +198,7 @@ function scheduleAnnualUpdate() {
     console.log("Annual attendance points update completed.");
   });
 
-  console.log("Scheduled task for annual attendance points update.");
+  console.log("Scheduled task for annual attendance points and task manager levels update.");
 }
 
 setInterval(updateLeaveApplications, 60 * 60 * 1000);
