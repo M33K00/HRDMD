@@ -120,7 +120,6 @@ var upload = multer({
   storage: storage,
 }).single("image");
 
-
 // Login Page Routes
 router.get("/login", authController.login_get);
 

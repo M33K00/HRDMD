@@ -61,6 +61,7 @@ router.get("/editacc/:employeeID", async (req, res) => {
 // Change Password
 router.post("/change-password", async (req, res) => {
   const { currentPassword, oldHashedPassword, newPassword, employeeID } = req.body;
+  console.log(req.body); // Log the received data for debugging
   try {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(newPassword, salt);
@@ -84,6 +85,7 @@ router.post("/change-password", async (req, res) => {
     res.json({ success: false, error: "server_error" });
   }
 });
+
 
 
 // View a user

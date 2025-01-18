@@ -18,41 +18,6 @@
 });
 </script>
 <script>
-  const loadingSpinner = document.getElementById("loadingSpinner");
-
-  function showSpinner() {
-    loadingSpinner.style.display = "flex";
-  }
-
-  function hideSpinner() {
-    loadingSpinner.style.display = "none";
-  }
-
-  const originalFetch = window.fetch;
-
-  window.fetch = async (...args) => {
-    const [url, options] = args;
-    
-    // Check if the method is POST or GET before showing the spinner
-    if (options && (options.method === 'POST' || options.method === 'GET')) {
-      showSpinner(); // Show spinner before the request
-    }
-
-    try {
-      const response = await originalFetch(...args); // Make the fetch call
-      return response; // Return the response for further handling
-    } catch (error) {
-      console.error("Fetch error:", error);
-      throw error; // Re-throw the error so it's not swallowed
-    } finally {
-      // Only hide the spinner for POST and GET requests
-      if (options && (options.method === 'POST' || options.method === 'GET')) {
-        hideSpinner();
-      }
-    }
-  };
-</script>
-<script>
   document.addEventListener("DOMContentLoaded", function () {
     const toggleSidebar = document.getElementById("toggleSidebar");
     const sidebar = document.getElementById("sidebar");

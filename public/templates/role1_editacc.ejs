@@ -350,17 +350,24 @@
         employeeID: employeeID
       };
   
+      console.log(passwordData);
+
       try {
         const response = await fetch("/change-password", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(passwordData),
+          body: JSON.stringify({
+            currentPassword: currentPassword.value,
+            oldHashedPassword: oldHashedPassword.value,
+            newPassword: newPasswordValue,
+            employeeID: employeeID
+          })
         });
-  
+
         const data = await response.json();
-  
+
         if (data.success) {
           alert("Password changed successfully!");
           window.location.href = "/editacc/" + employeeID; // Redirect to the edit account page
@@ -368,7 +375,7 @@
           handlePasswordChangeError(data.error);
         }
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error Password:", error);
         alert("An error occurred while changing the password.");
       }
     });
