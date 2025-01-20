@@ -408,6 +408,7 @@ document.getElementById('currentDate').textContent = formattedDate;
     }
 
     const data = await response.json();
+    
     // Update the DOM element with the pending DTR count
     document.getElementById("activeTask").textContent = data.activeTasks;
     document.getElementById("activeEmp").textContent = data.activeEmp;

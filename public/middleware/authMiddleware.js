@@ -67,9 +67,22 @@ const checkRoleHR = (req, res, next) => {
   }
 };
 
+// Check if User is already timed-in
+const checkTimedIn = (req, res, next) => {
+  const user = res.locals.userAttendance;
+  if (user) {
+    if (user.status === "OUT") {
+      res.redirect("/clockin/" + user.email);
+    } else {
+      next();
+    }
+  }
+}
+
 module.exports = {
   requireAuth,
   checkUser,
   checkRole,
   checkRoleHR,
+  checkTimedIn
 };

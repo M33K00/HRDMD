@@ -17,14 +17,16 @@ body.modal-open .modal-backdrop {
 
 .app-version {
   display: flex;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%); /* Center horizontally */
+  position: fixed;
+  bottom: -20px;
+  right: 0%;
   padding: 10px;
   color: #000000;
   font-size: 10px;
   text-align: center; /* Center text within the element */
+  z-index: 9998;
+  background-color: rgba(255, 255, 255, 0.1); 
+  backdrop-filter: blur(5px);
 }
 
 .page-body-start {
@@ -894,7 +896,7 @@ body.modal-open .modal-backdrop {
   position: fixed;
   bottom: 10px;
   right: 10px;
-  z-index: 1000; /* Ensure it's above other elements */
+  z-index: 9999; /* Ensure it's above other elements */
 }
 
 .top-middle {

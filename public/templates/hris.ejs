@@ -52,21 +52,24 @@
       <div class="tab">
         <p class="fw-bold text-uppercase">Employee Count:</p>
         <div class="tab-count d-flex justify-content-end mt-5">
-          420
+          <span><%= employeecount.length %></span>
         </div>
       </div>
       <div class="tab">
         <p class="fw-bold text-uppercase">Pending Leave:</p>
         <div class="tab-count d-flex justify-content-end mt-5">
-          69
+          <span id="pendingLeave"></span>
         </div>
       </div>
       <div class="tab">
         <p class="fw-bold text-uppercase">Pending DTR:</p>
         <div class="tab-count d-flex justify-content-end mt-5">
-          39
+          <span id="pendingDTR"></span>
         </div>
       </div>
+    </div>
+    <div class="mt-2">
+      <i class="text-muted">These statistics are updated every 2 seconds.</i>
     </div>
   </div>
 </body>
@@ -104,4 +107,32 @@
 
   // Initial call to set the clock and background immediately when the page loads
   updateClock();
+</script>
+<script>
+  async function fetchPendingDTRCount() {
+  try {
+    // Send a POST request to the "pendingDTRCount" route
+    const response = await fetch("/pendingDTRCount", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch pending DTR count");
+    }
+
+    const data = await response.json();
+    // Update the DOM element with the pending DTR count
+    document.getElementById("pendingDTR").textContent = data.pendingDTR;
+    document.getElementById("pendingLeave").textContent = data.pendingLeave;
+  } catch (error) {
+      console.error("Error fetching pending DTR count:", error);
+      document.getElementById("pendingDTR").textContent = "Error";
+    }
+  }
+  // Call the function when the page loads
+  fetchPendingDTRCount();
+  setInterval(fetchPendingDTRCount, 2000);
 </script>
