@@ -969,17 +969,17 @@ body.modal-open .modal-backdrop {
 }
 
 .div-pending {
-  background-color: orange;
+  color: rgb(233, 136, 72);
   border: rgb(233, 136, 72) 2px solid;
 }
 
 .div-revision {
-  background-color: #ff6600;
+  color: rgb(255, 60, 0);
   border: rgb(255, 60, 0) 2px solid;
 }
 
 .div-approved {
-  background-color: green;
+  color: rgb(52, 173, 52);
   border: rgb(52, 173, 52) 2px solid;
 }
 
@@ -1001,8 +1001,6 @@ body.modal-open .modal-backdrop {
   left: 10px; /* Adjust as needed */
   font-size: 20px;
   font-weight: 600;
-  color: #ffffff;
-  text-shadow: #000000 1px 0 10px;
 }
 
 .stat-count {
@@ -1012,8 +1010,6 @@ body.modal-open .modal-backdrop {
   right: 10px; /* Adjust as needed */
   font-size: 45px;
   font-weight: 600;
-  color: white;
-  text-shadow: #000000 1px 0 10px;
 }
 
 .div-cut-title {
@@ -1484,4 +1480,31 @@ body.modal-open .modal-backdrop {
   flex: 1; /* Make the divs take equal space */
   text-align: center; /* Optional: Center-align text inside the divs */
   padding: 10px; /* Optional: Add some padding inside the divs */
+}
+
+.hris-tab {
+  display: flex; /* Use flexbox to arrange children in a row */
+  justify-content: space-between; /* Add space between the divs */
+  gap: 10px; /* Optional: Add some space between the divs */
+}
+
+.hris-tab > div {
+  flex: 1; /* Make the divs take equal space */
+  padding: 10px; /* Optional: Add some padding inside the divs */
+  border-radius: 5px;
+  border: #929292 solid 1px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  transition: all 0.3s ease-in-out;
+}
+
+.hris-tab > div:hover {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.tab-count {
+  font-size: 40px;
+  font-weight: 600;
+  color: #646464;
+  margin-right: 10px;
 }
