@@ -59,15 +59,9 @@
       <div class="sidebar-buttons">
         <ul>
           <li>
-            <% if (user.hrrole === "ADMIN") { %>
-            <a href="/view/<%= user._id %>"
-              ><i class="fa-solid fa-gear"></i>Account Settings</a
-            >
-            <% } else { %>
             <a href="/view_profile/<%= user.email %>"
               ><i class="fa-solid fa-gear"></i>Account Settings</a
             >
-            <% } %>
           </li>
           <% if (user.mEmp === true || user.mLeave === true || user.mDTR === true || user.hrrole === "ADMIN") { %>
           <li>

@@ -14,9 +14,8 @@
         id="accInput"
         placeholder="Search"
         style="margin-bottom: 20px"
-        oninput="filterDepartments()"
+        oninput="searchTable()"
     />
-    <div class="border mb-3 mt-3"></div>
     <div class="otherBtns d-flex justify-content-end mb-3">
         <a href="/add_employees" class="deptBTNL fw-bold text-uppercase"><i class="fa-solid fa-plus me-1"></i> add employee</a>
     </div>
@@ -86,3 +85,28 @@
   </div>
 </body>
 <%- include('../layouts/footer') %>
+<script>
+  function searchTable() {
+    let input = document.getElementById("accInput");
+    let filter = input.value.toUpperCase();
+    let table = document.getElementById("myTable");
+    let tr = table.getElementsByTagName("tr");
+    
+    for (let i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td");
+        let found = false;
+        
+        for (let j = 0; j < td.length - 1; j++) { // Exclude action buttons from search
+            if (td[j]) {
+                let txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        
+        tr[i].style.display = found ? "" : "none";
+    }
+}
+</script>

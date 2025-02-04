@@ -6,7 +6,7 @@
             <h1 class="text-uppercase">Print DTR</h1>
             <a class="btn btn-primary" href="/dtr_user/<%= user.id %>">RETURN TO DTR</a>
         </div>
-        <div class="rounded-box-print">
+        <div class="rounded-box-print" style="width: 800px;">
           <div>
             <h5 class="text-uppercase fw-bold">DTR Report:</h5>
           </div>
@@ -83,25 +83,67 @@
                       </td>
                     </tr>
                   </table>
-                <table id="table" class="table table-bordered" style="border: 1px solid black">
+                  <table id="table" class="table table-bordered" style="border: 1px solid black">
                   <thead>
-                    <% if (daysPresent != '') { %>
+                    <% if (daysPresent.length > 0) { %>
                     <tr class="table text-center text-uppercase" style="border: 1px solid black">
-                        <th style="border: 1px solid black">Date</th>
-                        <th style="border: 1px solid black">Time In</th>
-                        <th style="border: 1px solid black">Time Out</th>
-                        <th style="border: 1px solid black">Undertime</th>
-                        <th style="border: 1px solid black">Hours</th>
+                      <th rowspan="2" style="border: 1px solid black; text-align: center; vertical-align: middle;">Days</th>
+                      <th colspan="2" style="border: 1px solid black">A.M.</th>
+                      <th colspan="2" style="border: 1px solid black">P.M.</th>
+                      <th rowspan="2" style="border: 1px solid black; text-align: center; vertical-align: middle;">Undertime</th>
+                      <th rowspan="2" style="border: 1px solid black; text-align: center; vertical-align: middle;">Hours</th>
+                    </tr>
+                    <tr class="table text-center" style="border: 1px solid black">
+                      <th style="border: 1px solid black">Arrival</th>
+                      <th style="border: 1px solid black">Departure</th>
+                      <th style="border: 1px solid black">Arrival</th>
+                      <th style="border: 1px solid black">Departure</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <% // Sort dayspresent array by date (from latest to oldest)
-                        daysPresent.sort((a, b) => new Date(b.date) - new Date(a.date));
-                        daysPresent.forEach((row, index) => { %>
-                          <tr class="text-center" style="border: 1px solid black">
-                            <td style="border: 1px solid black"><%= row.date.toISOString().slice(0, 10) %></td>
-                        <td style="border: 1px solid black"><%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></td>
-                        <td style="border: 1px solid black"><% if (row.timeOut !== null) { %><%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+                    <% 
+                      const daysInMonth = 31;
+                      const recordsByDate = Object.fromEntries(daysPresent.map(row => [new Date(row.date).getDate(), row])); // Map records by day
+
+                      for (let day = 1; day <= daysInMonth; day++) { 
+                        const row = recordsByDate[day] || null; // Get record for the day or set null if missing
+                    %>
+                    <tr class="text-center" style="border: 1px solid black">
+                      <td style="border: 1px solid black"><%= day %></td>
+                      <% if (row) { 
+                          const timeInHour = new Date(row.timeIn).getHours();
+                          const timeOutHour = row.timeOut ? new Date(row.timeOut).getHours() : null;
+
+                          const isTimeInAM = timeInHour < 12;
+                          const isTimeOutAM = timeOutHour !== null && timeOutHour < 12;
+                          const isTimeInPM = timeInHour >= 12;
+                          const isTimeOutPM = timeOutHour !== null && timeOutHour >= 12;
+                      %>
+                        <!-- AM Arrival -->
+                        <td style="border: 1px solid black">
+                          <% if (isTimeInAM) { %>
+                            <%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+                          <% } %>
+                        </td>
+
+                        <!-- AM Departure -->
+                        <td style="border: 1px solid black">
+                          <% if (isTimeOutAM) { %>
+                            <%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+                          <% } %>
+                        </td>
+
+                        <!-- PM Arrival -->
+                        <td style="border: 1px solid black">
+                          <% if (isTimeInPM) { %>
+                            <%= row.timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+                          <% } %>
+                        </td>
+
+                        <!-- PM Departure -->
+                        <td style="border: 1px solid black">
+                          <% if (isTimeOutPM) { %>
+                            <%= row.timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
                           <% } else if (row.timeOut === null && row.forFile === true && row.FFapproved === "N/A") { %>
                             <i class="text-warning fa-solid fa-circle-exclamation"></i>
                           <% } else if (row.timeOut === null && row.forFile === false && row.FFapproved === "APPROVED") { %>
@@ -110,19 +152,31 @@
                             ONGOING
                           <% } %>
                         </td>
+
                         <td style="border: 1px solid black"><%= row.underTime.toFixed(2) %></td>
                         <td style="border: 1px solid black"><%= row.totalTime.toFixed(2) %></td>
-                      </tr>
-                          <% }) %>
-                          <!-- Add TOTAL row -->
-                          <% const total = daysPresent.reduce((acc, row) => acc + row.totalTime, 0); %>
-                          <tr class="text-center fw-bold">
-                            <td colspan="4">TOTAL</td>
-                            <td colspan="1"><%= total.toFixed(2) %></td>
-                          </tr>
+                      <% } else { %>
+                        <!-- Empty row for missing days -->
+                        <td style="border: 1px solid black"></td>
+                        <td style="border: 1px solid black"></td>
+                        <td style="border: 1px solid black"></td>
+                        <td style="border: 1px solid black"></td>
+                        <td style="border: 1px solid black"></td>
+                        <td style="border: 1px solid black"></td>
+                      <% } %>
+                    </tr>
+                    <% } %>
+
+                    <!-- Add TOTAL row -->
+                    <% const total = daysPresent.reduce((acc, row) => acc + row.totalTime, 0); %>
+                    <tr class="text-center fw-bold">
+                      <td colspan="6">TOTAL</td>
+                      <td colspan="1"><%= total.toFixed(2) %></td>
+                    </tr>
                   </tbody>
                   <% } %>
                 </table>
+
                 <p class="csf">I certify on my honor that the above is a true and correct report
                   of the hours of work performed, record of which was made daily at the time 
                   of arrival and departure from the office.
@@ -162,39 +216,20 @@
 <script>
     document.getElementById("download").addEventListener("click", () => {
         // Select the content of the div
-        var element = document.getElementById("page-content");
-        var userID = document.getElementById("userID").value;
-        console.log(userID);
-
-        // Define the desired DPI (dots per inch), which sets the resolution
-        var dpi = 600; // You can use any DPI value like 300, 600, etc.
+        const element = document.getElementById("page-content");
+        const userID = document.getElementById("userID").value;
         
-        // A4 page dimensions in pixels at the given DPI (A4 is 210mm x 297mm)
-        var a4WidthInPixels = 210 
-        var a4HeightInPixels = 297 
-
-        // Define scale for html2canvas based on DPI
-        var scale = dpi / 72;  // Convert DPI to scale factor for html2canvas (default 72 DPI)
-
-        // Configure the options for the PDF
-        var opt = {
-            filename: "DTR_" + userID + ".pdf",
-            image: { type: "jpeg", quality: 2.0 },
-            html2canvas: { 
-                scale: scale,  // Set scaling factor based on DPI
-                useCORS: true,  // Useful for external images
-                logging: false,  // Disable logging for cleaner output
-            },
-            jsPDF: { 
-                unit: "mm",  // Use pixels as the unit (instead of mm or pt)
-                format: [a4WidthInPixels, a4HeightInPixels],  // Custom A4 size in pixels
-                orientation: "portrait",  // Set the orientation of the page
-                compress: true  // Optional compression to reduce PDF size
-            },
-        };
-
-        // Use html2pdf to create and download the PDF
-        html2pdf().from(element).set(opt).save();
+        html2pdf(element, {
+        margin: 10, // Adjust margins as needed
+        filename: `DTR Report ${userID}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { 
+            unit: 'px',
+            format: [700, 1750], // Set dimensions in pixels
+            orientation: 'portrait' // 'portrait' or 'landscape'
+        }
+    });
     });
 </script>
 <%- include('../layouts/footer') %>

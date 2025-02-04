@@ -2234,7 +2234,12 @@ router.get("/printDTRuser/:employeeID", async (req, res) => {
     const employeeID = req.params.employeeID;
     const logincollections = await LogInCollection.findOne({ employeeID: employeeID });
     const attendance = await Attendance.findOne({ email: logincollections.email });
-    const daysPresent = await DaysPresent.find({ email: logincollections.email });
+    const daysPresent = await DaysPresent.find({ 
+      email: logincollections.email, 
+      $nor: [
+          { timeOut: null, FFapproved: "N/A" }
+      ]
+    });  
     const VLPoints = await calculateMonthlyVLPoints(logincollections.email, attendance.VLPoints);
     const SLPoints = await calculateMonthlySLPoints(logincollections.email, attendance.SLPoints);
     const year = "";

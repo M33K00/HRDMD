@@ -673,6 +673,84 @@ router.post("/update/:id", upload, async (req, res) => {
   }
 });
 
+// Update Account for employee side
+router.post("/updateEMP/:id", upload, async (req, res) => {
+  try {
+    let id = req.params.id;
+    let new_image = "";
+
+    const userLogin = await LogInCollection.findById(id);
+    if (!userLogin) {
+      // Handle the case where the user's _id is not found
+      res.status(404).send("User not found.");
+      return; // Exit the function early
+    }
+
+    if (req.file) {
+      new_image = req.file.filename;
+      try {
+        // Delete old image if a new image is uploaded
+        if (req.body.old_image != "") {
+          fs.unlinkSync("./files/images/" + req.body.old_image);
+        }
+      } catch (err) {
+        console.error(err);
+        // If an error occurs during file deletion, it shouldn't affect the update process
+      }
+    } else {
+      new_image = req.body.old_image;
+    }
+
+    // Update the user
+    if (req.body.birthday) {
+      const datePartOnly = req.body.birthday.split("T")[0];
+      parsedBirthday = new Date(datePartOnly); // Assign a value if req.body.birthday exists
+    } else {
+      parsedBirthday = userLogin.birthday;
+    }
+
+    console.log(req.body);
+    
+    const result = await LogInCollection.findByIdAndUpdate(
+      id,
+      {
+        name: req.body.name,
+        lastname: req.body.lastname,
+        middleName: req.body.middleName,
+        suffix: req.body.suffix,
+        birthday: parsedBirthday,
+        contact: req.body.contact,
+        email: req.body.email,
+        image: new_image,
+      },
+      { new: true } // Return the modified document after update
+    );
+
+    if (!result) {
+      return res.json({ message: "User not found", type: "DANGER" });
+    }
+
+    req.session.message = {
+      type: "success",
+      message: "User updated successfully",
+    };
+    // Redirect after successful update
+    if (req.body.userInput) {
+      if (req.body.email) {
+        return res.redirect("/view_profile/" + req.body.email);
+      } else {
+        return res.redirect("/view_profile/" + userLogin.email);
+      }
+    } else {
+      return res.redirect("/view_emp_data/" + userLogin.email);
+    }
+  } catch (err) {
+    console.error(err);
+    // Handle errors and provide a response
+    return res.json({ message: err.message, type: "DANGER" });
+  }
+});
+
 // Update account for users
 router.post("/update-user/:id", async (req, res) => {
   const form = new formidable.IncomingForm({

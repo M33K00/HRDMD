@@ -34,9 +34,13 @@
       <p><b>Email:</b> <%= logincollections.email %></p>
       <p><b>Contact:</b> <%= logincollections.contact %></p>
       <p>
-        <b>Birthday:</b> <%=
-        logincollections.birthday.toISOString().split('T')[0] %>
-      </p>
+        <b>Birthday:</b> 
+        <% if (logincollections.birthday === null) { %> 
+          Birthday Not Set
+        <% } else { %>
+          <%= logincollections.birthday.toISOString().split('T')[0] %>
+        <% } %>
+      </p>      
       <p><b>Employee ID:</b> <%= logincollections.employeeID %></p>
       <p><b>HR Position:</b> <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
         else if (logincollections.hrrole === "ROLE 2") { %> Senior Admin Assistant <% }

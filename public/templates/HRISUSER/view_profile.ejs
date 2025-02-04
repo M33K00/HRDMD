@@ -25,25 +25,15 @@
         <p><b>Email:</b> <%= logincollections.email %></p>
         
         <p>
-          <b>Birthday:</b> <%=
-          logincollections.birthday.toISOString().split('T')[0] %>
+          <b>Birthday:</b>
+          <% if (logincollections.birthday === null) { %>
+            N/A
+          <% } else { %>
+            <%= logincollections.birthday.toISOString().split('T')[0] %>
+          <% } %>
         </p>
         <p><b>Department:</b>
-          <% if (logincollections.department === "Department 1") { %>
-            PESO Department 
-          <% } else if (logincollections.department === "Department 2") { %> 
-            CC Development Office 
-          <% } else if (logincollections.department === "Department 3") { %> 
-            OAS Department 
-          <% } else if (logincollections.department === "Department 4") { %> 
-            BTM Department 
-          <% } else if (logincollections.department === "Department 5") { %> 
-            BPL Department 
-          <% } else if (logincollections.department === "Department 6") { %> 
-            City Assessor's Office 
-          <% } else if (logincollections.department === "HR Department") { %> 
-            HR DEPARTMENT 
-          <% } %>
+          <%= logincollections.department %>
         </p>        
         <p><b>Position:</b>
           <% if (logincollections.hrrole === "ROLE 1") { %> Administrative Officer <% }
@@ -51,7 +41,7 @@
           else if (logincollections.hrrole === "ROLE 3") { %> Admin Officer <% } else if
           (logincollections.hrrole === "ROLE 4") { %> Admin Assistant <% } else if
           (logincollections.hrrole === "ROLE 5") { %> Admin Aide <% } else if (logincollections.hrrole
-          === "ADMIN") { %> Department Head <% } %>
+          === "ADMIN") { %> Department Head <% } else if (logincollections.hrrole === "ADMIN2") { %> Department Head II <% } %>
         </p>
       </div>
         <div class="account-stat mt-3">
