@@ -615,7 +615,7 @@ router.get("/clockin/:email", checkHRSettings, async (req, res) => {
       email: email,
       timeIn: currentTime,
       timeLate: `${hoursLate}:${minutesLate}`,
-      date: new Date(new Date().setHours(0, 0, 0, 0)),
+      date: new Date(),
     };
     await DaysPresent.create(dpData);
 
