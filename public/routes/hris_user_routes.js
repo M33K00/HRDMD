@@ -787,12 +787,26 @@ router.get("/clockout/:email", async (req, res) => {
 
     const totalHoursDecimal = timeDifference / 3600000;
 
-     // Get today's date
-     const today = new Date();
-     today.setHours(0, 0, 0, 0);
- 
-     // Find record for today
-     const dp = await DaysPresent.findOne({ email: email, date: today });
+    // Get today's date
+    const today = new Date();
+
+    console.log("Today's date:", today);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const dp = await DaysPresent.findOne({
+      email: email,
+      date: { $gte: today, $lt: tomorrow } // Matches any record within today
+    });
+
+    if (!dp) {
+      req.session.message = {
+        type: "danger",
+        message: "No record found for today.",
+      }
+      res.redirect("/dtr_user/" + userLogin._id);
+    }
 
      // Find record for yesterday
      const yesterday = new Date();
