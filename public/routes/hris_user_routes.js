@@ -789,16 +789,17 @@ router.get("/clockout/:email", async (req, res) => {
 
     // Get today's date
     const today = new Date();
-
-    console.log("Today's date:", today);
+    today.setUTCHours(0, 0, 0, 0);
 
     const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setUTCDate(tomorrow.getDate() + 1);
 
     const dp = await DaysPresent.findOne({
       email: email,
       date: { $gte: today, $lt: tomorrow } // Matches any record within today
     });
+
+    console.log("Query Range:", today, "to", tomorrow);
 
     if (!dp) {
       req.session.message = {
