@@ -2,7 +2,7 @@
 
 ## Project Description
 
-An app specifically made for HR Departments with built-in HRMS and Document Tracker
+An app specifically made for HR Departments with built-in HRMS and Task Tracker/Manager
 
 ## Installation
 
