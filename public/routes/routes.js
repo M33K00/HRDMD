@@ -943,7 +943,7 @@ router.get("/", checkJWT, (req, res) => {
   res.render("login");
 });
 
-router.get("/startpage", checkTimedIn, async (req, res) => {
+router.get("/startpage", async (req, res) => {
   const dateToday = new Date().toLocaleDateString().split("T")[0];
 
   // Count the number of active tasks

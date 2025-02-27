@@ -13,6 +13,7 @@ const bodyParser = require("body-parser");
 // Models
 const LeaveApplications = require("../models/leaveapplications");
 const LoginCollections = require("../models/logincollections");
+const Departments = require("../models/departments");
 const Attendance = require("../models/attendance");
 const LastUpdate = require("../models/lastUpdate");
 const SubmittedFiles = require("../models/submitted_files");
@@ -96,6 +97,51 @@ db.once("open", async () => {
   scheduleAnnualUpdate();
 });
 
+// Function to check if there is an account available
+async function ensureAdminAccount() {
+  try{
+    const count = await LoginCollections.countDocuments();
+    if (count === 0) {
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash("password", salt);
+      const adminAccount = new LoginCollections({
+        name: "Admin",
+        email: "admin@hrdmd",
+        password: hashedPassword,
+        hrrole: "ADMIN",
+        department: "HRDMD",
+        verified: true,
+      });
+
+      await adminAccount.save();
+      console.log("Admin account created successfully");
+    } else {
+      console.log("Admin account already exists");
+    }
+  } catch (error) {
+    console.error("Error ensuring admin account:", error);
+  }
+}
+
+// Function to check if HRDMD department exists
+async function ensureHRDMDDepartment() {
+  try {
+    const count = await Departments.countDocuments({ deptAbbrev: "HRDMD" });
+    if (count === 0) {
+      const hrdmdDepartment = new Departments({ 
+        deptName: "HUMAN RESOURCES DEVELOPMENT AND MANAGEMENT DEPARTMENT",
+        deptAbbrev: "HRDMD" 
+      });
+      await hrdmdDepartment.save();
+      console.log("HRDMD department created successfully");
+    } else {
+      console.log("HRDMD department already exists");
+    }
+  } catch (error) {
+    console.error("Error ensuring HRDMD department:", error);
+  }
+}
+
 // Function to update the collection
 async function updateLeaveApplications() {
   try {
@@ -165,6 +211,17 @@ async function resetTaskManagerLevels() {
   }
 }
 
+// Ensure database is populated
+async function initializeSetup() {
+  try {
+    await ensureHRDMDDepartment();
+    await ensureAdminAccount();
+  } catch (error) {
+    console.error("Error initializing setup:", error);
+  }
+}
+// Call the initialization function
+initializeSetup();
 
 
 // Function to perform a backup check on server startup
