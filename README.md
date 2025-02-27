@@ -2,7 +2,7 @@
 
 ## Project Description
 
-An app specifically made for HR Departments with built-in HRMS and Document Tracker
+An app specifically made for HR Departments with built-in HRMS and Task Tracker/Manager
 
 ## Installation
 
@@ -37,6 +37,6 @@ This folder contains various subfolders to organize different types of files.
 
 ## Status and stuff
 
-Currently in progress, probably 30% done
+Currently in progress, probably 90% done
 
 This is a capstone project conducted in CVSU Bacoor Branch
